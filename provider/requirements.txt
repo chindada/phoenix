@@ -1,0 +1,9 @@
+grpcio
+grpcio-tools
+shioaji
+shioaji[speed]
+ruff
+mypy
+types-protobuf
+types-grpcio
+pylint

@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.env
+.mypy_cache/
+.ruff_cache/
+
+# Go
+bin/
+processor/bin/
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# TEMP
+TEMP.md
+
+# CERT
+*.pfx
+
+# PROD
+logs/*
+!logs/.gitkeep
+data/*
+!data/.gitkeep
