@@ -21,7 +21,182 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Trading account information including account type, person ID, broker ID, account ID, and signed status.
+type Empty struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Empty) Reset() {
+	*x = Empty{}
+	mi := &file_provider_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Empty) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Empty) ProtoMessage() {}
+
+func (x *Empty) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Empty.ProtoReflect.Descriptor instead.
+func (*Empty) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{0}
+}
+
+type LoginRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ApiKey        string                 `protobuf:"bytes,1,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
+	SecretKey     string                 `protobuf:"bytes,2,opt,name=secret_key,json=secretKey,proto3" json:"secret_key,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LoginRequest) Reset() {
+	*x = LoginRequest{}
+	mi := &file_provider_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LoginRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginRequest) ProtoMessage() {}
+
+func (x *LoginRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginRequest.ProtoReflect.Descriptor instead.
+func (*LoginRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *LoginRequest) GetApiKey() string {
+	if x != nil {
+		return x.ApiKey
+	}
+	return ""
+}
+
+func (x *LoginRequest) GetSecretKey() string {
+	if x != nil {
+		return x.SecretKey
+	}
+	return ""
+}
+
+type LoginResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Accounts      []*Account             `protobuf:"bytes,1,rep,name=accounts,proto3" json:"accounts,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LoginResponse) Reset() {
+	*x = LoginResponse{}
+	mi := &file_provider_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LoginResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginResponse) ProtoMessage() {}
+
+func (x *LoginResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginResponse.ProtoReflect.Descriptor instead.
+func (*LoginResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *LoginResponse) GetAccounts() []*Account {
+	if x != nil {
+		return x.Accounts
+	}
+	return nil
+}
+
+type LogoutResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LogoutResponse) Reset() {
+	*x = LogoutResponse{}
+	mi := &file_provider_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LogoutResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LogoutResponse) ProtoMessage() {}
+
+func (x *LogoutResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LogoutResponse.ProtoReflect.Descriptor instead.
+func (*LogoutResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *LogoutResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
 type Account struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	AccountType   string                 `protobuf:"bytes,1,opt,name=account_type,json=accountType,proto3" json:"account_type,omitempty"`
@@ -36,7 +211,7 @@ type Account struct {
 
 func (x *Account) Reset() {
 	*x = Account{}
-	mi := &file_provider_proto_msgTypes[0]
+	mi := &file_provider_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -48,7 +223,7 @@ func (x *Account) String() string {
 func (*Account) ProtoMessage() {}
 
 func (x *Account) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[0]
+	mi := &file_provider_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -61,7 +236,7 @@ func (x *Account) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Account.ProtoReflect.Descriptor instead.
 func (*Account) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{0}
+	return file_provider_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Account) GetAccountType() string {
@@ -106,27 +281,202 @@ func (x *Account) GetUsername() string {
 	return ""
 }
 
-// Detailed contract information for various instruments like stocks, futures, options, and indices.
+type UsageStatus struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Connections    int64                  `protobuf:"varint,1,opt,name=connections,proto3" json:"connections,omitempty"`
+	Bytes          int64                  `protobuf:"varint,2,opt,name=bytes,proto3" json:"bytes,omitempty"`
+	LimitBytes     int64                  `protobuf:"varint,3,opt,name=limit_bytes,json=limitBytes,proto3" json:"limit_bytes,omitempty"`
+	RemainingBytes int64                  `protobuf:"varint,4,opt,name=remaining_bytes,json=remainingBytes,proto3" json:"remaining_bytes,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *UsageStatus) Reset() {
+	*x = UsageStatus{}
+	mi := &file_provider_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UsageStatus) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UsageStatus) ProtoMessage() {}
+
+func (x *UsageStatus) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UsageStatus.ProtoReflect.Descriptor instead.
+func (*UsageStatus) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *UsageStatus) GetConnections() int64 {
+	if x != nil {
+		return x.Connections
+	}
+	return 0
+}
+
+func (x *UsageStatus) GetBytes() int64 {
+	if x != nil {
+		return x.Bytes
+	}
+	return 0
+}
+
+func (x *UsageStatus) GetLimitBytes() int64 {
+	if x != nil {
+		return x.LimitBytes
+	}
+	return 0
+}
+
+func (x *UsageStatus) GetRemainingBytes() int64 {
+	if x != nil {
+		return x.RemainingBytes
+	}
+	return 0
+}
+
+type ListAccountsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Accounts      []*Account             `protobuf:"bytes,1,rep,name=accounts,proto3" json:"accounts,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAccountsResponse) Reset() {
+	*x = ListAccountsResponse{}
+	mi := &file_provider_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAccountsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAccountsResponse) ProtoMessage() {}
+
+func (x *ListAccountsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAccountsResponse.ProtoReflect.Descriptor instead.
+func (*ListAccountsResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ListAccountsResponse) GetAccounts() []*Account {
+	if x != nil {
+		return x.Accounts
+	}
+	return nil
+}
+
+type AccountBalance struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AccBalance    float64                `protobuf:"fixed64,1,opt,name=acc_balance,json=accBalance,proto3" json:"acc_balance,omitempty"`
+	Date          string                 `protobuf:"bytes,2,opt,name=date,proto3" json:"date,omitempty"`
+	Errmsg        string                 `protobuf:"bytes,3,opt,name=errmsg,proto3" json:"errmsg,omitempty"`
+	Currency      string                 `protobuf:"bytes,4,opt,name=currency,proto3" json:"currency,omitempty"` // inferred, usually present
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AccountBalance) Reset() {
+	*x = AccountBalance{}
+	mi := &file_provider_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AccountBalance) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AccountBalance) ProtoMessage() {}
+
+func (x *AccountBalance) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AccountBalance.ProtoReflect.Descriptor instead.
+func (*AccountBalance) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *AccountBalance) GetAccBalance() float64 {
+	if x != nil {
+		return x.AccBalance
+	}
+	return 0
+}
+
+func (x *AccountBalance) GetDate() string {
+	if x != nil {
+		return x.Date
+	}
+	return ""
+}
+
+func (x *AccountBalance) GetErrmsg() string {
+	if x != nil {
+		return x.Errmsg
+	}
+	return ""
+}
+
+func (x *AccountBalance) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
+}
+
+// Simplified Contract message
 type Contract struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SecurityType  string                 `protobuf:"bytes,1,opt,name=security_type,json=securityType,proto3" json:"security_type,omitempty"`
-	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
-	Symbol        string                 `protobuf:"bytes,3,opt,name=symbol,proto3" json:"symbol,omitempty"`
-	Exchange      string                 `protobuf:"bytes,4,opt,name=exchange,proto3" json:"exchange,omitempty"`
+	Exchange      string                 `protobuf:"bytes,2,opt,name=exchange,proto3" json:"exchange,omitempty"`
+	Code          string                 `protobuf:"bytes,3,opt,name=code,proto3" json:"code,omitempty"`
+	Symbol        string                 `protobuf:"bytes,4,opt,name=symbol,proto3" json:"symbol,omitempty"`
 	Name          string                 `protobuf:"bytes,5,opt,name=name,proto3" json:"name,omitempty"`
 	Currency      string                 `protobuf:"bytes,6,opt,name=currency,proto3" json:"currency,omitempty"`
-	LimitUp       float64                `protobuf:"fixed64,7,opt,name=limit_up,json=limitUp,proto3" json:"limit_up,omitempty"`
-	LimitDown     float64                `protobuf:"fixed64,8,opt,name=limit_down,json=limitDown,proto3" json:"limit_down,omitempty"`
-	Reference     float64                `protobuf:"fixed64,9,opt,name=reference,proto3" json:"reference,omitempty"`
-	UpdateDate    string                 `protobuf:"bytes,10,opt,name=update_date,json=updateDate,proto3" json:"update_date,omitempty"`
-	DayTrade      string                 `protobuf:"bytes,11,opt,name=day_trade,json=dayTrade,proto3" json:"day_trade,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Contract) Reset() {
 	*x = Contract{}
-	mi := &file_provider_proto_msgTypes[1]
+	mi := &file_provider_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -138,7 +488,7 @@ func (x *Contract) String() string {
 func (*Contract) ProtoMessage() {}
 
 func (x *Contract) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[1]
+	mi := &file_provider_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -151,12 +501,19 @@ func (x *Contract) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Contract.ProtoReflect.Descriptor instead.
 func (*Contract) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{1}
+	return file_provider_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Contract) GetSecurityType() string {
 	if x != nil {
 		return x.SecurityType
+	}
+	return ""
+}
+
+func (x *Contract) GetExchange() string {
+	if x != nil {
+		return x.Exchange
 	}
 	return ""
 }
@@ -175,13 +532,6 @@ func (x *Contract) GetSymbol() string {
 	return ""
 }
 
-func (x *Contract) GetExchange() string {
-	if x != nil {
-		return x.Exchange
-	}
-	return ""
-}
-
 func (x *Contract) GetName() string {
 	if x != nil {
 		return x.Name
@@ -196,63 +546,69 @@ func (x *Contract) GetCurrency() string {
 	return ""
 }
 
-func (x *Contract) GetLimitUp() float64 {
-	if x != nil {
-		return x.LimitUp
-	}
-	return 0
+type ComboContract struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Simplified
+	Code          string `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Contract) GetLimitDown() float64 {
-	if x != nil {
-		return x.LimitDown
-	}
-	return 0
+func (x *ComboContract) Reset() {
+	*x = ComboContract{}
+	mi := &file_provider_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
 }
 
-func (x *Contract) GetReference() float64 {
-	if x != nil {
-		return x.Reference
-	}
-	return 0
+func (x *ComboContract) String() string {
+	return protoimpl.X.MessageStringOf(x)
 }
 
-func (x *Contract) GetUpdateDate() string {
+func (*ComboContract) ProtoMessage() {}
+
+func (x *ComboContract) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[9]
 	if x != nil {
-		return x.UpdateDate
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ComboContract.ProtoReflect.Descriptor instead.
+func (*ComboContract) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ComboContract) GetCode() string {
+	if x != nil {
+		return x.Code
 	}
 	return ""
 }
 
-func (x *Contract) GetDayTrade() string {
-	if x != nil {
-		return x.DayTrade
-	}
-	return ""
-}
-
-// Trading order details including action, price, quantity, and order type.
 type Order struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Action        string                 `protobuf:"bytes,1,opt,name=action,proto3" json:"action,omitempty"`
 	Price         float64                `protobuf:"fixed64,2,opt,name=price,proto3" json:"price,omitempty"`
 	Quantity      int64                  `protobuf:"varint,3,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	PriceType     string                 `protobuf:"bytes,4,opt,name=price_type,json=priceType,proto3" json:"price_type,omitempty"`
-	OrderType     string                 `protobuf:"bytes,5,opt,name=order_type,json=orderType,proto3" json:"order_type,omitempty"`
-	OrderLot      string                 `protobuf:"bytes,6,opt,name=order_lot,json=orderLot,proto3" json:"order_lot,omitempty"`
-	OrderCond     string                 `protobuf:"bytes,7,opt,name=order_cond,json=orderCond,proto3" json:"order_cond,omitempty"`
-	Id            string                 `protobuf:"bytes,8,opt,name=id,proto3" json:"id,omitempty"`
-	Seqno         string                 `protobuf:"bytes,9,opt,name=seqno,proto3" json:"seqno,omitempty"`
-	Ordno         string                 `protobuf:"bytes,10,opt,name=ordno,proto3" json:"ordno,omitempty"`
-	Account       *Account               `protobuf:"bytes,11,opt,name=account,proto3" json:"account,omitempty"`
-	CustomField   string                 `protobuf:"bytes,12,opt,name=custom_field,json=customField,proto3" json:"custom_field,omitempty"`
+	Id            string                 `protobuf:"bytes,4,opt,name=id,proto3" json:"id,omitempty"`
+	Seqno         string                 `protobuf:"bytes,5,opt,name=seqno,proto3" json:"seqno,omitempty"`
+	Ordno         string                 `protobuf:"bytes,6,opt,name=ordno,proto3" json:"ordno,omitempty"`
+	Account       *Account               `protobuf:"bytes,7,opt,name=account,proto3" json:"account,omitempty"`
+	PriceType     string                 `protobuf:"bytes,8,opt,name=price_type,json=priceType,proto3" json:"price_type,omitempty"`
+	OrderType     string                 `protobuf:"bytes,9,opt,name=order_type,json=orderType,proto3" json:"order_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Order) Reset() {
 	*x = Order{}
-	mi := &file_provider_proto_msgTypes[2]
+	mi := &file_provider_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -264,7 +620,7 @@ func (x *Order) String() string {
 func (*Order) ProtoMessage() {}
 
 func (x *Order) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[2]
+	mi := &file_provider_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -277,7 +633,7 @@ func (x *Order) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Order.ProtoReflect.Descriptor instead.
 func (*Order) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{2}
+	return file_provider_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *Order) GetAction() string {
@@ -299,34 +655,6 @@ func (x *Order) GetQuantity() int64 {
 		return x.Quantity
 	}
 	return 0
-}
-
-func (x *Order) GetPriceType() string {
-	if x != nil {
-		return x.PriceType
-	}
-	return ""
-}
-
-func (x *Order) GetOrderType() string {
-	if x != nil {
-		return x.OrderType
-	}
-	return ""
-}
-
-func (x *Order) GetOrderLot() string {
-	if x != nil {
-		return x.OrderLot
-	}
-	return ""
-}
-
-func (x *Order) GetOrderCond() string {
-	if x != nil {
-		return x.OrderCond
-	}
-	return ""
 }
 
 func (x *Order) GetId() string {
@@ -357,35 +685,224 @@ func (x *Order) GetAccount() *Account {
 	return nil
 }
 
-func (x *Order) GetCustomField() string {
+func (x *Order) GetPriceType() string {
 	if x != nil {
-		return x.CustomField
+		return x.PriceType
 	}
 	return ""
 }
 
-// Information about placed trading orders and their execution status.
+func (x *Order) GetOrderType() string {
+	if x != nil {
+		return x.OrderType
+	}
+	return ""
+}
+
+type ComboOrder struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Action        string                 `protobuf:"bytes,1,opt,name=action,proto3" json:"action,omitempty"`
+	Price         float64                `protobuf:"fixed64,2,opt,name=price,proto3" json:"price,omitempty"`
+	Quantity      int64                  `protobuf:"varint,3,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	Id            string                 `protobuf:"bytes,4,opt,name=id,proto3" json:"id,omitempty"`
+	Seqno         string                 `protobuf:"bytes,5,opt,name=seqno,proto3" json:"seqno,omitempty"`
+	Ordno         string                 `protobuf:"bytes,6,opt,name=ordno,proto3" json:"ordno,omitempty"`
+	Account       *Account               `protobuf:"bytes,7,opt,name=account,proto3" json:"account,omitempty"`
+	PriceType     string                 `protobuf:"bytes,8,opt,name=price_type,json=priceType,proto3" json:"price_type,omitempty"`
+	OrderType     string                 `protobuf:"bytes,9,opt,name=order_type,json=orderType,proto3" json:"order_type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ComboOrder) Reset() {
+	*x = ComboOrder{}
+	mi := &file_provider_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ComboOrder) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ComboOrder) ProtoMessage() {}
+
+func (x *ComboOrder) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ComboOrder.ProtoReflect.Descriptor instead.
+func (*ComboOrder) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *ComboOrder) GetAction() string {
+	if x != nil {
+		return x.Action
+	}
+	return ""
+}
+
+func (x *ComboOrder) GetPrice() float64 {
+	if x != nil {
+		return x.Price
+	}
+	return 0
+}
+
+func (x *ComboOrder) GetQuantity() int64 {
+	if x != nil {
+		return x.Quantity
+	}
+	return 0
+}
+
+func (x *ComboOrder) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *ComboOrder) GetSeqno() string {
+	if x != nil {
+		return x.Seqno
+	}
+	return ""
+}
+
+func (x *ComboOrder) GetOrdno() string {
+	if x != nil {
+		return x.Ordno
+	}
+	return ""
+}
+
+func (x *ComboOrder) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+func (x *ComboOrder) GetPriceType() string {
+	if x != nil {
+		return x.PriceType
+	}
+	return ""
+}
+
+func (x *ComboOrder) GetOrderType() string {
+	if x != nil {
+		return x.OrderType
+	}
+	return ""
+}
+
+type OrderStatus struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Id             string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Status         string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	StatusCode     string                 `protobuf:"bytes,3,opt,name=status_code,json=statusCode,proto3" json:"status_code,omitempty"`
+	OrderDatetime  string                 `protobuf:"bytes,4,opt,name=order_datetime,json=orderDatetime,proto3" json:"order_datetime,omitempty"` // datetime
+	DealQuantity   int64                  `protobuf:"varint,5,opt,name=deal_quantity,json=dealQuantity,proto3" json:"deal_quantity,omitempty"`
+	CancelQuantity int64                  `protobuf:"varint,6,opt,name=cancel_quantity,json=cancelQuantity,proto3" json:"cancel_quantity,omitempty"` // deals list omitted for brevity for now
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *OrderStatus) Reset() {
+	*x = OrderStatus{}
+	mi := &file_provider_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrderStatus) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrderStatus) ProtoMessage() {}
+
+func (x *OrderStatus) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrderStatus.ProtoReflect.Descriptor instead.
+func (*OrderStatus) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *OrderStatus) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *OrderStatus) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *OrderStatus) GetStatusCode() string {
+	if x != nil {
+		return x.StatusCode
+	}
+	return ""
+}
+
+func (x *OrderStatus) GetOrderDatetime() string {
+	if x != nil {
+		return x.OrderDatetime
+	}
+	return ""
+}
+
+func (x *OrderStatus) GetDealQuantity() int64 {
+	if x != nil {
+		return x.DealQuantity
+	}
+	return 0
+}
+
+func (x *OrderStatus) GetCancelQuantity() int64 {
+	if x != nil {
+		return x.CancelQuantity
+	}
+	return 0
+}
+
 type Trade struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	Id                string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`         // Order ID
-	Status            string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"` // e.g., PendingSubmit, Filled
-	StatusCode        string                 `protobuf:"bytes,3,opt,name=status_code,json=statusCode,proto3" json:"status_code,omitempty"`
-	OrderTs           int64                  `protobuf:"varint,4,opt,name=order_ts,json=orderTs,proto3" json:"order_ts,omitempty"`
-	Msg               string                 `protobuf:"bytes,5,opt,name=msg,proto3" json:"msg,omitempty"`
-	Price             float64                `protobuf:"fixed64,6,opt,name=price,proto3" json:"price,omitempty"`
-	Quantity          int64                  `protobuf:"varint,7,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	FilledQuantity    int64                  `protobuf:"varint,8,opt,name=filled_quantity,json=filledQuantity,proto3" json:"filled_quantity,omitempty"`
-	CancelledQuantity int64                  `protobuf:"varint,9,opt,name=cancelled_quantity,json=cancelledQuantity,proto3" json:"cancelled_quantity,omitempty"`
-	Ordno             string                 `protobuf:"bytes,10,opt,name=ordno,proto3" json:"ordno,omitempty"`
-	Contract          *Contract              `protobuf:"bytes,11,opt,name=contract,proto3" json:"contract,omitempty"`
-	Order             *Order                 `protobuf:"bytes,12,opt,name=order,proto3" json:"order,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Contract      *Contract              `protobuf:"bytes,1,opt,name=contract,proto3" json:"contract,omitempty"`
+	Order         *Order                 `protobuf:"bytes,2,opt,name=order,proto3" json:"order,omitempty"`
+	Status        *OrderStatus           `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Trade) Reset() {
 	*x = Trade{}
-	mi := &file_provider_proto_msgTypes[3]
+	mi := &file_provider_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -397,7 +914,7 @@ func (x *Trade) String() string {
 func (*Trade) ProtoMessage() {}
 
 func (x *Trade) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[3]
+	mi := &file_provider_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -410,77 +927,7 @@ func (x *Trade) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Trade.ProtoReflect.Descriptor instead.
 func (*Trade) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *Trade) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *Trade) GetStatus() string {
-	if x != nil {
-		return x.Status
-	}
-	return ""
-}
-
-func (x *Trade) GetStatusCode() string {
-	if x != nil {
-		return x.StatusCode
-	}
-	return ""
-}
-
-func (x *Trade) GetOrderTs() int64 {
-	if x != nil {
-		return x.OrderTs
-	}
-	return 0
-}
-
-func (x *Trade) GetMsg() string {
-	if x != nil {
-		return x.Msg
-	}
-	return ""
-}
-
-func (x *Trade) GetPrice() float64 {
-	if x != nil {
-		return x.Price
-	}
-	return 0
-}
-
-func (x *Trade) GetQuantity() int64 {
-	if x != nil {
-		return x.Quantity
-	}
-	return 0
-}
-
-func (x *Trade) GetFilledQuantity() int64 {
-	if x != nil {
-		return x.FilledQuantity
-	}
-	return 0
-}
-
-func (x *Trade) GetCancelledQuantity() int64 {
-	if x != nil {
-		return x.CancelledQuantity
-	}
-	return 0
-}
-
-func (x *Trade) GetOrdno() string {
-	if x != nil {
-		return x.Ordno
-	}
-	return ""
+	return file_provider_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *Trade) GetContract() *Contract {
@@ -497,46 +944,38 @@ func (x *Trade) GetOrder() *Order {
 	return nil
 }
 
-// Real-time or historical tick data for a contract, including price and volume.
-type Tick struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	Code            string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
-	Datetime        string                 `protobuf:"bytes,2,opt,name=datetime,proto3" json:"datetime,omitempty"`
-	Open            float64                `protobuf:"fixed64,3,opt,name=open,proto3" json:"open,omitempty"`
-	AvgPrice        float64                `protobuf:"fixed64,4,opt,name=avg_price,json=avgPrice,proto3" json:"avg_price,omitempty"`
-	Close           float64                `protobuf:"fixed64,5,opt,name=close,proto3" json:"close,omitempty"`
-	High            float64                `protobuf:"fixed64,6,opt,name=high,proto3" json:"high,omitempty"`
-	Low             float64                `protobuf:"fixed64,7,opt,name=low,proto3" json:"low,omitempty"`
-	Amount          float64                `protobuf:"fixed64,8,opt,name=amount,proto3" json:"amount,omitempty"`
-	TotalAmount     float64                `protobuf:"fixed64,9,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"`
-	Volume          int64                  `protobuf:"varint,10,opt,name=volume,proto3" json:"volume,omitempty"`
-	TotalVolume     int64                  `protobuf:"varint,11,opt,name=total_volume,json=totalVolume,proto3" json:"total_volume,omitempty"`
-	TickType        int32                  `protobuf:"varint,12,opt,name=tick_type,json=tickType,proto3" json:"tick_type,omitempty"`
-	ChgType         int32                  `protobuf:"varint,13,opt,name=chg_type,json=chgType,proto3" json:"chg_type,omitempty"`
-	PriceChg        float64                `protobuf:"fixed64,14,opt,name=price_chg,json=priceChg,proto3" json:"price_chg,omitempty"`
-	PctChg          float64                `protobuf:"fixed64,15,opt,name=pct_chg,json=pctChg,proto3" json:"pct_chg,omitempty"`
-	BidSideTotalVol int64                  `protobuf:"varint,16,opt,name=bid_side_total_vol,json=bidSideTotalVol,proto3" json:"bid_side_total_vol,omitempty"`
-	AskSideTotalVol int64                  `protobuf:"varint,17,opt,name=ask_side_total_vol,json=askSideTotalVol,proto3" json:"ask_side_total_vol,omitempty"`
-	Simtrade        bool                   `protobuf:"varint,18,opt,name=simtrade,proto3" json:"simtrade,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+func (x *Trade) GetStatus() *OrderStatus {
+	if x != nil {
+		return x.Status
+	}
+	return nil
 }
 
-func (x *Tick) Reset() {
-	*x = Tick{}
-	mi := &file_provider_proto_msgTypes[4]
+type ComboTrade struct {
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	Contract *ComboContract         `protobuf:"bytes,1,opt,name=contract,proto3" json:"contract,omitempty"`
+	Order    *ComboOrder            `protobuf:"bytes,2,opt,name=order,proto3" json:"order,omitempty"`
+	// Status might be slightly different or same
+	Status        *OrderStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ComboTrade) Reset() {
+	*x = ComboTrade{}
+	mi := &file_provider_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Tick) String() string {
+func (x *ComboTrade) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Tick) ProtoMessage() {}
+func (*ComboTrade) ProtoMessage() {}
 
-func (x *Tick) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[4]
+func (x *ComboTrade) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -547,166 +986,604 @@ func (x *Tick) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Tick.ProtoReflect.Descriptor instead.
-func (*Tick) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{4}
+// Deprecated: Use ComboTrade.ProtoReflect.Descriptor instead.
+func (*ComboTrade) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *Tick) GetCode() string {
+func (x *ComboTrade) GetContract() *ComboContract {
+	if x != nil {
+		return x.Contract
+	}
+	return nil
+}
+
+func (x *ComboTrade) GetOrder() *ComboOrder {
+	if x != nil {
+		return x.Order
+	}
+	return nil
+}
+
+func (x *ComboTrade) GetStatus() *OrderStatus {
+	if x != nil {
+		return x.Status
+	}
+	return nil
+}
+
+type PlaceOrderRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Contract      *Contract              `protobuf:"bytes,1,opt,name=contract,proto3" json:"contract,omitempty"`
+	Order         *Order                 `protobuf:"bytes,2,opt,name=order,proto3" json:"order,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PlaceOrderRequest) Reset() {
+	*x = PlaceOrderRequest{}
+	mi := &file_provider_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlaceOrderRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlaceOrderRequest) ProtoMessage() {}
+
+func (x *PlaceOrderRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlaceOrderRequest.ProtoReflect.Descriptor instead.
+func (*PlaceOrderRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *PlaceOrderRequest) GetContract() *Contract {
+	if x != nil {
+		return x.Contract
+	}
+	return nil
+}
+
+func (x *PlaceOrderRequest) GetOrder() *Order {
+	if x != nil {
+		return x.Order
+	}
+	return nil
+}
+
+type PlaceComboOrderRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ComboContract *ComboContract         `protobuf:"bytes,1,opt,name=combo_contract,json=comboContract,proto3" json:"combo_contract,omitempty"`
+	Order         *ComboOrder            `protobuf:"bytes,2,opt,name=order,proto3" json:"order,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PlaceComboOrderRequest) Reset() {
+	*x = PlaceComboOrderRequest{}
+	mi := &file_provider_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlaceComboOrderRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlaceComboOrderRequest) ProtoMessage() {}
+
+func (x *PlaceComboOrderRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlaceComboOrderRequest.ProtoReflect.Descriptor instead.
+func (*PlaceComboOrderRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *PlaceComboOrderRequest) GetComboContract() *ComboContract {
+	if x != nil {
+		return x.ComboContract
+	}
+	return nil
+}
+
+func (x *PlaceComboOrderRequest) GetOrder() *ComboOrder {
+	if x != nil {
+		return x.Order
+	}
+	return nil
+}
+
+type UpdateOrderRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Trade         *Trade                 `protobuf:"bytes,1,opt,name=trade,proto3" json:"trade,omitempty"` // Needs ID/Seqno/Ordno identification usually
+	Price         float64                `protobuf:"fixed64,2,opt,name=price,proto3" json:"price,omitempty"`
+	Quantity      int64                  `protobuf:"varint,3,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateOrderRequest) Reset() {
+	*x = UpdateOrderRequest{}
+	mi := &file_provider_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateOrderRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateOrderRequest) ProtoMessage() {}
+
+func (x *UpdateOrderRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateOrderRequest.ProtoReflect.Descriptor instead.
+func (*UpdateOrderRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *UpdateOrderRequest) GetTrade() *Trade {
+	if x != nil {
+		return x.Trade
+	}
+	return nil
+}
+
+func (x *UpdateOrderRequest) GetPrice() float64 {
+	if x != nil {
+		return x.Price
+	}
+	return 0
+}
+
+func (x *UpdateOrderRequest) GetQuantity() int64 {
+	if x != nil {
+		return x.Quantity
+	}
+	return 0
+}
+
+type CancelOrderRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Trade         *Trade                 `protobuf:"bytes,1,opt,name=trade,proto3" json:"trade,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CancelOrderRequest) Reset() {
+	*x = CancelOrderRequest{}
+	mi := &file_provider_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CancelOrderRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CancelOrderRequest) ProtoMessage() {}
+
+func (x *CancelOrderRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CancelOrderRequest.ProtoReflect.Descriptor instead.
+func (*CancelOrderRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *CancelOrderRequest) GetTrade() *Trade {
+	if x != nil {
+		return x.Trade
+	}
+	return nil
+}
+
+type CancelComboOrderRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Combotrade    *ComboTrade            `protobuf:"bytes,1,opt,name=combotrade,proto3" json:"combotrade,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CancelComboOrderRequest) Reset() {
+	*x = CancelComboOrderRequest{}
+	mi := &file_provider_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CancelComboOrderRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CancelComboOrderRequest) ProtoMessage() {}
+
+func (x *CancelComboOrderRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CancelComboOrderRequest.ProtoReflect.Descriptor instead.
+func (*CancelComboOrderRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *CancelComboOrderRequest) GetCombotrade() *ComboTrade {
+	if x != nil {
+		return x.Combotrade
+	}
+	return nil
+}
+
+type UpdateStatusRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateStatusRequest) Reset() {
+	*x = UpdateStatusRequest{}
+	mi := &file_provider_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateStatusRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateStatusRequest) ProtoMessage() {}
+
+func (x *UpdateStatusRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateStatusRequest.ProtoReflect.Descriptor instead.
+func (*UpdateStatusRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *UpdateStatusRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+type ListTradesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Trades        []*Trade               `protobuf:"bytes,1,rep,name=trades,proto3" json:"trades,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListTradesResponse) Reset() {
+	*x = ListTradesResponse{}
+	mi := &file_provider_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListTradesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListTradesResponse) ProtoMessage() {}
+
+func (x *ListTradesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListTradesResponse.ProtoReflect.Descriptor instead.
+func (*ListTradesResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *ListTradesResponse) GetTrades() []*Trade {
+	if x != nil {
+		return x.Trades
+	}
+	return nil
+}
+
+type ListComboTradesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ComboTrades   []*ComboTrade          `protobuf:"bytes,1,rep,name=combo_trades,json=comboTrades,proto3" json:"combo_trades,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListComboTradesResponse) Reset() {
+	*x = ListComboTradesResponse{}
+	mi := &file_provider_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListComboTradesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListComboTradesResponse) ProtoMessage() {}
+
+func (x *ListComboTradesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListComboTradesResponse.ProtoReflect.Descriptor instead.
+func (*ListComboTradesResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *ListComboTradesResponse) GetComboTrades() []*ComboTrade {
+	if x != nil {
+		return x.ComboTrades
+	}
+	return nil
+}
+
+type GetOrderDealRecordsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetOrderDealRecordsRequest) Reset() {
+	*x = GetOrderDealRecordsRequest{}
+	mi := &file_provider_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetOrderDealRecordsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOrderDealRecordsRequest) ProtoMessage() {}
+
+func (x *GetOrderDealRecordsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOrderDealRecordsRequest.ProtoReflect.Descriptor instead.
+func (*GetOrderDealRecordsRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *GetOrderDealRecordsRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+type GetOrderDealRecordsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// simplified representation
+	Records       []*OrderDealRecord `protobuf:"bytes,1,rep,name=records,proto3" json:"records,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetOrderDealRecordsResponse) Reset() {
+	*x = GetOrderDealRecordsResponse{}
+	mi := &file_provider_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetOrderDealRecordsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOrderDealRecordsResponse) ProtoMessage() {}
+
+func (x *GetOrderDealRecordsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOrderDealRecordsResponse.ProtoReflect.Descriptor instead.
+func (*GetOrderDealRecordsResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *GetOrderDealRecordsResponse) GetRecords() []*OrderDealRecord {
+	if x != nil {
+		return x.Records
+	}
+	return nil
+}
+
+type OrderDealRecord struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Action        string                 `protobuf:"bytes,2,opt,name=action,proto3" json:"action,omitempty"`
+	Price         float64                `protobuf:"fixed64,3,opt,name=price,proto3" json:"price,omitempty"`
+	Quantity      int64                  `protobuf:"varint,4,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	Ts            string                 `protobuf:"bytes,5,opt,name=ts,proto3" json:"ts,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrderDealRecord) Reset() {
+	*x = OrderDealRecord{}
+	mi := &file_provider_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrderDealRecord) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrderDealRecord) ProtoMessage() {}
+
+func (x *OrderDealRecord) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrderDealRecord.ProtoReflect.Descriptor instead.
+func (*OrderDealRecord) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *OrderDealRecord) GetCode() string {
 	if x != nil {
 		return x.Code
 	}
 	return ""
 }
 
-func (x *Tick) GetDatetime() string {
+func (x *OrderDealRecord) GetAction() string {
 	if x != nil {
-		return x.Datetime
+		return x.Action
 	}
 	return ""
 }
 
-func (x *Tick) GetOpen() float64 {
+func (x *OrderDealRecord) GetPrice() float64 {
 	if x != nil {
-		return x.Open
+		return x.Price
 	}
 	return 0
 }
 
-func (x *Tick) GetAvgPrice() float64 {
+func (x *OrderDealRecord) GetQuantity() int64 {
 	if x != nil {
-		return x.AvgPrice
+		return x.Quantity
 	}
 	return 0
 }
 
-func (x *Tick) GetClose() float64 {
+func (x *OrderDealRecord) GetTs() string {
 	if x != nil {
-		return x.Close
+		return x.Ts
 	}
-	return 0
+	return ""
 }
 
-func (x *Tick) GetHigh() float64 {
-	if x != nil {
-		return x.High
-	}
-	return 0
-}
-
-func (x *Tick) GetLow() float64 {
-	if x != nil {
-		return x.Low
-	}
-	return 0
-}
-
-func (x *Tick) GetAmount() float64 {
-	if x != nil {
-		return x.Amount
-	}
-	return 0
-}
-
-func (x *Tick) GetTotalAmount() float64 {
-	if x != nil {
-		return x.TotalAmount
-	}
-	return 0
-}
-
-func (x *Tick) GetVolume() int64 {
-	if x != nil {
-		return x.Volume
-	}
-	return 0
-}
-
-func (x *Tick) GetTotalVolume() int64 {
-	if x != nil {
-		return x.TotalVolume
-	}
-	return 0
-}
-
-func (x *Tick) GetTickType() int32 {
-	if x != nil {
-		return x.TickType
-	}
-	return 0
-}
-
-func (x *Tick) GetChgType() int32 {
-	if x != nil {
-		return x.ChgType
-	}
-	return 0
-}
-
-func (x *Tick) GetPriceChg() float64 {
-	if x != nil {
-		return x.PriceChg
-	}
-	return 0
-}
-
-func (x *Tick) GetPctChg() float64 {
-	if x != nil {
-		return x.PctChg
-	}
-	return 0
-}
-
-func (x *Tick) GetBidSideTotalVol() int64 {
-	if x != nil {
-		return x.BidSideTotalVol
-	}
-	return 0
-}
-
-func (x *Tick) GetAskSideTotalVol() int64 {
-	if x != nil {
-		return x.AskSideTotalVol
-	}
-	return 0
-}
-
-func (x *Tick) GetSimtrade() bool {
-	if x != nil {
-		return x.Simtrade
-	}
-	return false
-}
-
-// Historical candlestick (K-bar) data including open, high, low, close prices, and volume.
-type Kbar struct {
+type ListPositionsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Ts            int64                  `protobuf:"varint,1,opt,name=ts,proto3" json:"ts,omitempty"`
-	Open          float64                `protobuf:"fixed64,2,opt,name=open,proto3" json:"open,omitempty"`
-	High          float64                `protobuf:"fixed64,3,opt,name=high,proto3" json:"high,omitempty"`
-	Low           float64                `protobuf:"fixed64,4,opt,name=low,proto3" json:"low,omitempty"`
-	Close         float64                `protobuf:"fixed64,5,opt,name=close,proto3" json:"close,omitempty"`
-	Volume        int64                  `protobuf:"varint,6,opt,name=volume,proto3" json:"volume,omitempty"`
-	Amount        float64                `protobuf:"fixed64,7,opt,name=amount,proto3" json:"amount,omitempty"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	Unit          string                 `protobuf:"bytes,2,opt,name=unit,proto3" json:"unit,omitempty"` // "Common", "Share" etc
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Kbar) Reset() {
-	*x = Kbar{}
-	mi := &file_provider_proto_msgTypes[5]
+func (x *ListPositionsRequest) Reset() {
+	*x = ListPositionsRequest{}
+	mi := &file_provider_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Kbar) String() string {
+func (x *ListPositionsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Kbar) ProtoMessage() {}
+func (*ListPositionsRequest) ProtoMessage() {}
 
-func (x *Kbar) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[5]
+func (x *ListPositionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -717,88 +1594,2787 @@ func (x *Kbar) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Kbar.ProtoReflect.Descriptor instead.
-func (*Kbar) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{5}
+// Deprecated: Use ListPositionsRequest.ProtoReflect.Descriptor instead.
+func (*ListPositionsRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{26}
 }
 
-func (x *Kbar) GetTs() int64 {
+func (x *ListPositionsRequest) GetAccount() *Account {
 	if x != nil {
-		return x.Ts
+		return x.Account
+	}
+	return nil
+}
+
+func (x *ListPositionsRequest) GetUnit() string {
+	if x != nil {
+		return x.Unit
+	}
+	return ""
+}
+
+type StockPosition struct {
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	Id                   int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Code                 string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Direction            string                 `protobuf:"bytes,3,opt,name=direction,proto3" json:"direction,omitempty"`
+	Quantity             int64                  `protobuf:"varint,4,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	Price                float64                `protobuf:"fixed64,5,opt,name=price,proto3" json:"price,omitempty"`
+	LastPrice            float64                `protobuf:"fixed64,6,opt,name=last_price,json=lastPrice,proto3" json:"last_price,omitempty"`
+	Pnl                  float64                `protobuf:"fixed64,7,opt,name=pnl,proto3" json:"pnl,omitempty"`
+	YdQuantity           int64                  `protobuf:"varint,8,opt,name=yd_quantity,json=ydQuantity,proto3" json:"yd_quantity,omitempty"`
+	Cond                 string                 `protobuf:"bytes,9,opt,name=cond,proto3" json:"cond,omitempty"`
+	MarginPurchaseAmount int64                  `protobuf:"varint,10,opt,name=margin_purchase_amount,json=marginPurchaseAmount,proto3" json:"margin_purchase_amount,omitempty"`
+	Collateral           int64                  `protobuf:"varint,11,opt,name=collateral,proto3" json:"collateral,omitempty"`
+	ShortSaleMargin      int64                  `protobuf:"varint,12,opt,name=short_sale_margin,json=shortSaleMargin,proto3" json:"short_sale_margin,omitempty"`
+	Interest             int64                  `protobuf:"varint,13,opt,name=interest,proto3" json:"interest,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *StockPosition) Reset() {
+	*x = StockPosition{}
+	mi := &file_provider_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StockPosition) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StockPosition) ProtoMessage() {}
+
+func (x *StockPosition) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StockPosition.ProtoReflect.Descriptor instead.
+func (*StockPosition) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *StockPosition) GetId() int64 {
+	if x != nil {
+		return x.Id
 	}
 	return 0
 }
 
-func (x *Kbar) GetOpen() float64 {
+func (x *StockPosition) GetCode() string {
 	if x != nil {
-		return x.Open
+		return x.Code
+	}
+	return ""
+}
+
+func (x *StockPosition) GetDirection() string {
+	if x != nil {
+		return x.Direction
+	}
+	return ""
+}
+
+func (x *StockPosition) GetQuantity() int64 {
+	if x != nil {
+		return x.Quantity
 	}
 	return 0
 }
 
-func (x *Kbar) GetHigh() float64 {
+func (x *StockPosition) GetPrice() float64 {
 	if x != nil {
-		return x.High
+		return x.Price
 	}
 	return 0
 }
 
-func (x *Kbar) GetLow() float64 {
+func (x *StockPosition) GetLastPrice() float64 {
 	if x != nil {
-		return x.Low
+		return x.LastPrice
 	}
 	return 0
 }
 
-func (x *Kbar) GetClose() float64 {
+func (x *StockPosition) GetPnl() float64 {
 	if x != nil {
-		return x.Close
+		return x.Pnl
 	}
 	return 0
 }
 
-func (x *Kbar) GetVolume() int64 {
+func (x *StockPosition) GetYdQuantity() int64 {
 	if x != nil {
-		return x.Volume
+		return x.YdQuantity
 	}
 	return 0
 }
 
-func (x *Kbar) GetAmount() float64 {
+func (x *StockPosition) GetCond() string {
+	if x != nil {
+		return x.Cond
+	}
+	return ""
+}
+
+func (x *StockPosition) GetMarginPurchaseAmount() int64 {
+	if x != nil {
+		return x.MarginPurchaseAmount
+	}
+	return 0
+}
+
+func (x *StockPosition) GetCollateral() int64 {
+	if x != nil {
+		return x.Collateral
+	}
+	return 0
+}
+
+func (x *StockPosition) GetShortSaleMargin() int64 {
+	if x != nil {
+		return x.ShortSaleMargin
+	}
+	return 0
+}
+
+func (x *StockPosition) GetInterest() int64 {
+	if x != nil {
+		return x.Interest
+	}
+	return 0
+}
+
+type FuturePosition struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Direction     string                 `protobuf:"bytes,3,opt,name=direction,proto3" json:"direction,omitempty"`
+	Quantity      int64                  `protobuf:"varint,4,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	Price         float64                `protobuf:"fixed64,5,opt,name=price,proto3" json:"price,omitempty"`
+	LastPrice     float64                `protobuf:"fixed64,6,opt,name=last_price,json=lastPrice,proto3" json:"last_price,omitempty"`
+	Pnl           float64                `protobuf:"fixed64,7,opt,name=pnl,proto3" json:"pnl,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FuturePosition) Reset() {
+	*x = FuturePosition{}
+	mi := &file_provider_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FuturePosition) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FuturePosition) ProtoMessage() {}
+
+func (x *FuturePosition) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FuturePosition.ProtoReflect.Descriptor instead.
+func (*FuturePosition) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *FuturePosition) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *FuturePosition) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *FuturePosition) GetDirection() string {
+	if x != nil {
+		return x.Direction
+	}
+	return ""
+}
+
+func (x *FuturePosition) GetQuantity() int64 {
+	if x != nil {
+		return x.Quantity
+	}
+	return 0
+}
+
+func (x *FuturePosition) GetPrice() float64 {
+	if x != nil {
+		return x.Price
+	}
+	return 0
+}
+
+func (x *FuturePosition) GetLastPrice() float64 {
+	if x != nil {
+		return x.LastPrice
+	}
+	return 0
+}
+
+func (x *FuturePosition) GetPnl() float64 {
+	if x != nil {
+		return x.Pnl
+	}
+	return 0
+}
+
+type Position struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Position:
+	//
+	//	*Position_StockPosition
+	//	*Position_FuturePosition
+	Position      isPosition_Position `protobuf_oneof:"position"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Position) Reset() {
+	*x = Position{}
+	mi := &file_provider_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Position) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Position) ProtoMessage() {}
+
+func (x *Position) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Position.ProtoReflect.Descriptor instead.
+func (*Position) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *Position) GetPosition() isPosition_Position {
+	if x != nil {
+		return x.Position
+	}
+	return nil
+}
+
+func (x *Position) GetStockPosition() *StockPosition {
+	if x != nil {
+		if x, ok := x.Position.(*Position_StockPosition); ok {
+			return x.StockPosition
+		}
+	}
+	return nil
+}
+
+func (x *Position) GetFuturePosition() *FuturePosition {
+	if x != nil {
+		if x, ok := x.Position.(*Position_FuturePosition); ok {
+			return x.FuturePosition
+		}
+	}
+	return nil
+}
+
+type isPosition_Position interface {
+	isPosition_Position()
+}
+
+type Position_StockPosition struct {
+	StockPosition *StockPosition `protobuf:"bytes,1,opt,name=stock_position,json=stockPosition,proto3,oneof"`
+}
+
+type Position_FuturePosition struct {
+	FuturePosition *FuturePosition `protobuf:"bytes,2,opt,name=future_position,json=futurePosition,proto3,oneof"`
+}
+
+func (*Position_StockPosition) isPosition_Position() {}
+
+func (*Position_FuturePosition) isPosition_Position() {}
+
+type ListPositionsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Positions     []*Position            `protobuf:"bytes,1,rep,name=positions,proto3" json:"positions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPositionsResponse) Reset() {
+	*x = ListPositionsResponse{}
+	mi := &file_provider_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPositionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPositionsResponse) ProtoMessage() {}
+
+func (x *ListPositionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPositionsResponse.ProtoReflect.Descriptor instead.
+func (*ListPositionsResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *ListPositionsResponse) GetPositions() []*Position {
+	if x != nil {
+		return x.Positions
+	}
+	return nil
+}
+
+type ListPositionDetailRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	DetailId      int64                  `protobuf:"varint,2,opt,name=detail_id,json=detailId,proto3" json:"detail_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPositionDetailRequest) Reset() {
+	*x = ListPositionDetailRequest{}
+	mi := &file_provider_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPositionDetailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPositionDetailRequest) ProtoMessage() {}
+
+func (x *ListPositionDetailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPositionDetailRequest.ProtoReflect.Descriptor instead.
+func (*ListPositionDetailRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *ListPositionDetailRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+func (x *ListPositionDetailRequest) GetDetailId() int64 {
+	if x != nil {
+		return x.DetailId
+	}
+	return 0
+}
+
+type StockPositionDetail struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// simplified
+	Date          string  `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
+	Code          string  `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Quantity      int64   `protobuf:"varint,3,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	Price         float64 `protobuf:"fixed64,4,opt,name=price,proto3" json:"price,omitempty"`
+	LastPrice     float64 `protobuf:"fixed64,5,opt,name=last_price,json=lastPrice,proto3" json:"last_price,omitempty"`
+	Pnl           float64 `protobuf:"fixed64,6,opt,name=pnl,proto3" json:"pnl,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StockPositionDetail) Reset() {
+	*x = StockPositionDetail{}
+	mi := &file_provider_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StockPositionDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StockPositionDetail) ProtoMessage() {}
+
+func (x *StockPositionDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StockPositionDetail.ProtoReflect.Descriptor instead.
+func (*StockPositionDetail) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *StockPositionDetail) GetDate() string {
+	if x != nil {
+		return x.Date
+	}
+	return ""
+}
+
+func (x *StockPositionDetail) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *StockPositionDetail) GetQuantity() int64 {
+	if x != nil {
+		return x.Quantity
+	}
+	return 0
+}
+
+func (x *StockPositionDetail) GetPrice() float64 {
+	if x != nil {
+		return x.Price
+	}
+	return 0
+}
+
+func (x *StockPositionDetail) GetLastPrice() float64 {
+	if x != nil {
+		return x.LastPrice
+	}
+	return 0
+}
+
+func (x *StockPositionDetail) GetPnl() float64 {
+	if x != nil {
+		return x.Pnl
+	}
+	return 0
+}
+
+type FuturePositionDetail struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// simplified
+	Date          string  `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
+	Code          string  `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Quantity      int64   `protobuf:"varint,3,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	Price         float64 `protobuf:"fixed64,4,opt,name=price,proto3" json:"price,omitempty"`
+	LastPrice     float64 `protobuf:"fixed64,5,opt,name=last_price,json=lastPrice,proto3" json:"last_price,omitempty"`
+	Pnl           float64 `protobuf:"fixed64,6,opt,name=pnl,proto3" json:"pnl,omitempty"`
+	EntryQuantity int64   `protobuf:"varint,7,opt,name=entry_quantity,json=entryQuantity,proto3" json:"entry_quantity,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FuturePositionDetail) Reset() {
+	*x = FuturePositionDetail{}
+	mi := &file_provider_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FuturePositionDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FuturePositionDetail) ProtoMessage() {}
+
+func (x *FuturePositionDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FuturePositionDetail.ProtoReflect.Descriptor instead.
+func (*FuturePositionDetail) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *FuturePositionDetail) GetDate() string {
+	if x != nil {
+		return x.Date
+	}
+	return ""
+}
+
+func (x *FuturePositionDetail) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *FuturePositionDetail) GetQuantity() int64 {
+	if x != nil {
+		return x.Quantity
+	}
+	return 0
+}
+
+func (x *FuturePositionDetail) GetPrice() float64 {
+	if x != nil {
+		return x.Price
+	}
+	return 0
+}
+
+func (x *FuturePositionDetail) GetLastPrice() float64 {
+	if x != nil {
+		return x.LastPrice
+	}
+	return 0
+}
+
+func (x *FuturePositionDetail) GetPnl() float64 {
+	if x != nil {
+		return x.Pnl
+	}
+	return 0
+}
+
+func (x *FuturePositionDetail) GetEntryQuantity() int64 {
+	if x != nil {
+		return x.EntryQuantity
+	}
+	return 0
+}
+
+type PositionDetail struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Detail:
+	//
+	//	*PositionDetail_StockDetail
+	//	*PositionDetail_FutureDetail
+	Detail        isPositionDetail_Detail `protobuf_oneof:"detail"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PositionDetail) Reset() {
+	*x = PositionDetail{}
+	mi := &file_provider_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PositionDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PositionDetail) ProtoMessage() {}
+
+func (x *PositionDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PositionDetail.ProtoReflect.Descriptor instead.
+func (*PositionDetail) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *PositionDetail) GetDetail() isPositionDetail_Detail {
+	if x != nil {
+		return x.Detail
+	}
+	return nil
+}
+
+func (x *PositionDetail) GetStockDetail() *StockPositionDetail {
+	if x != nil {
+		if x, ok := x.Detail.(*PositionDetail_StockDetail); ok {
+			return x.StockDetail
+		}
+	}
+	return nil
+}
+
+func (x *PositionDetail) GetFutureDetail() *FuturePositionDetail {
+	if x != nil {
+		if x, ok := x.Detail.(*PositionDetail_FutureDetail); ok {
+			return x.FutureDetail
+		}
+	}
+	return nil
+}
+
+type isPositionDetail_Detail interface {
+	isPositionDetail_Detail()
+}
+
+type PositionDetail_StockDetail struct {
+	StockDetail *StockPositionDetail `protobuf:"bytes,1,opt,name=stock_detail,json=stockDetail,proto3,oneof"`
+}
+
+type PositionDetail_FutureDetail struct {
+	FutureDetail *FuturePositionDetail `protobuf:"bytes,2,opt,name=future_detail,json=futureDetail,proto3,oneof"`
+}
+
+func (*PositionDetail_StockDetail) isPositionDetail_Detail() {}
+
+func (*PositionDetail_FutureDetail) isPositionDetail_Detail() {}
+
+type ListPositionDetailResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Details       []*PositionDetail      `protobuf:"bytes,1,rep,name=details,proto3" json:"details,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPositionDetailResponse) Reset() {
+	*x = ListPositionDetailResponse{}
+	mi := &file_provider_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPositionDetailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPositionDetailResponse) ProtoMessage() {}
+
+func (x *ListPositionDetailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPositionDetailResponse.ProtoReflect.Descriptor instead.
+func (*ListPositionDetailResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *ListPositionDetailResponse) GetDetails() []*PositionDetail {
+	if x != nil {
+		return x.Details
+	}
+	return nil
+}
+
+type ListProfitLossRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	BeginDate     string                 `protobuf:"bytes,2,opt,name=begin_date,json=beginDate,proto3" json:"begin_date,omitempty"`
+	EndDate       string                 `protobuf:"bytes,3,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListProfitLossRequest) Reset() {
+	*x = ListProfitLossRequest{}
+	mi := &file_provider_proto_msgTypes[36]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListProfitLossRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListProfitLossRequest) ProtoMessage() {}
+
+func (x *ListProfitLossRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[36]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListProfitLossRequest.ProtoReflect.Descriptor instead.
+func (*ListProfitLossRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *ListProfitLossRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+func (x *ListProfitLossRequest) GetBeginDate() string {
+	if x != nil {
+		return x.BeginDate
+	}
+	return ""
+}
+
+func (x *ListProfitLossRequest) GetEndDate() string {
+	if x != nil {
+		return x.EndDate
+	}
+	return ""
+}
+
+type StockProfitLoss struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Dseq          string                 `protobuf:"bytes,1,opt,name=dseq,proto3" json:"dseq,omitempty"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Quantity      int64                  `protobuf:"varint,3,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	Price         float64                `protobuf:"fixed64,4,opt,name=price,proto3" json:"price,omitempty"`
+	Pnl           float64                `protobuf:"fixed64,5,opt,name=pnl,proto3" json:"pnl,omitempty"`
+	PrRatio       float64                `protobuf:"fixed64,6,opt,name=pr_ratio,json=prRatio,proto3" json:"pr_ratio,omitempty"`
+	Cond          string                 `protobuf:"bytes,7,opt,name=cond,proto3" json:"cond,omitempty"`
+	Date          string                 `protobuf:"bytes,8,opt,name=date,proto3" json:"date,omitempty"`
+	Seqno         string                 `protobuf:"bytes,9,opt,name=seqno,proto3" json:"seqno,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StockProfitLoss) Reset() {
+	*x = StockProfitLoss{}
+	mi := &file_provider_proto_msgTypes[37]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StockProfitLoss) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StockProfitLoss) ProtoMessage() {}
+
+func (x *StockProfitLoss) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[37]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StockProfitLoss.ProtoReflect.Descriptor instead.
+func (*StockProfitLoss) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *StockProfitLoss) GetDseq() string {
+	if x != nil {
+		return x.Dseq
+	}
+	return ""
+}
+
+func (x *StockProfitLoss) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *StockProfitLoss) GetQuantity() int64 {
+	if x != nil {
+		return x.Quantity
+	}
+	return 0
+}
+
+func (x *StockProfitLoss) GetPrice() float64 {
+	if x != nil {
+		return x.Price
+	}
+	return 0
+}
+
+func (x *StockProfitLoss) GetPnl() float64 {
+	if x != nil {
+		return x.Pnl
+	}
+	return 0
+}
+
+func (x *StockProfitLoss) GetPrRatio() float64 {
+	if x != nil {
+		return x.PrRatio
+	}
+	return 0
+}
+
+func (x *StockProfitLoss) GetCond() string {
+	if x != nil {
+		return x.Cond
+	}
+	return ""
+}
+
+func (x *StockProfitLoss) GetDate() string {
+	if x != nil {
+		return x.Date
+	}
+	return ""
+}
+
+func (x *StockProfitLoss) GetSeqno() string {
+	if x != nil {
+		return x.Seqno
+	}
+	return ""
+}
+
+type FutureProfitLoss struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Date          string                 `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Quantity      int64                  `protobuf:"varint,3,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	EntryPrice    float64                `protobuf:"fixed64,4,opt,name=entry_price,json=entryPrice,proto3" json:"entry_price,omitempty"`
+	CoverPrice    float64                `protobuf:"fixed64,5,opt,name=cover_price,json=coverPrice,proto3" json:"cover_price,omitempty"`
+	Direction     string                 `protobuf:"bytes,6,opt,name=direction,proto3" json:"direction,omitempty"`
+	Pnl           float64                `protobuf:"fixed64,7,opt,name=pnl,proto3" json:"pnl,omitempty"`
+	Tax           int64                  `protobuf:"varint,8,opt,name=tax,proto3" json:"tax,omitempty"`
+	Fee           int64                  `protobuf:"varint,9,opt,name=fee,proto3" json:"fee,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FutureProfitLoss) Reset() {
+	*x = FutureProfitLoss{}
+	mi := &file_provider_proto_msgTypes[38]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FutureProfitLoss) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FutureProfitLoss) ProtoMessage() {}
+
+func (x *FutureProfitLoss) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[38]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FutureProfitLoss.ProtoReflect.Descriptor instead.
+func (*FutureProfitLoss) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{38}
+}
+
+func (x *FutureProfitLoss) GetDate() string {
+	if x != nil {
+		return x.Date
+	}
+	return ""
+}
+
+func (x *FutureProfitLoss) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *FutureProfitLoss) GetQuantity() int64 {
+	if x != nil {
+		return x.Quantity
+	}
+	return 0
+}
+
+func (x *FutureProfitLoss) GetEntryPrice() float64 {
+	if x != nil {
+		return x.EntryPrice
+	}
+	return 0
+}
+
+func (x *FutureProfitLoss) GetCoverPrice() float64 {
+	if x != nil {
+		return x.CoverPrice
+	}
+	return 0
+}
+
+func (x *FutureProfitLoss) GetDirection() string {
+	if x != nil {
+		return x.Direction
+	}
+	return ""
+}
+
+func (x *FutureProfitLoss) GetPnl() float64 {
+	if x != nil {
+		return x.Pnl
+	}
+	return 0
+}
+
+func (x *FutureProfitLoss) GetTax() int64 {
+	if x != nil {
+		return x.Tax
+	}
+	return 0
+}
+
+func (x *FutureProfitLoss) GetFee() int64 {
+	if x != nil {
+		return x.Fee
+	}
+	return 0
+}
+
+type ProfitLoss struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Item:
+	//
+	//	*ProfitLoss_StockPnl
+	//	*ProfitLoss_FuturePnl
+	Item          isProfitLoss_Item `protobuf_oneof:"item"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProfitLoss) Reset() {
+	*x = ProfitLoss{}
+	mi := &file_provider_proto_msgTypes[39]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProfitLoss) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProfitLoss) ProtoMessage() {}
+
+func (x *ProfitLoss) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[39]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProfitLoss.ProtoReflect.Descriptor instead.
+func (*ProfitLoss) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{39}
+}
+
+func (x *ProfitLoss) GetItem() isProfitLoss_Item {
+	if x != nil {
+		return x.Item
+	}
+	return nil
+}
+
+func (x *ProfitLoss) GetStockPnl() *StockProfitLoss {
+	if x != nil {
+		if x, ok := x.Item.(*ProfitLoss_StockPnl); ok {
+			return x.StockPnl
+		}
+	}
+	return nil
+}
+
+func (x *ProfitLoss) GetFuturePnl() *FutureProfitLoss {
+	if x != nil {
+		if x, ok := x.Item.(*ProfitLoss_FuturePnl); ok {
+			return x.FuturePnl
+		}
+	}
+	return nil
+}
+
+type isProfitLoss_Item interface {
+	isProfitLoss_Item()
+}
+
+type ProfitLoss_StockPnl struct {
+	StockPnl *StockProfitLoss `protobuf:"bytes,1,opt,name=stock_pnl,json=stockPnl,proto3,oneof"`
+}
+
+type ProfitLoss_FuturePnl struct {
+	FuturePnl *FutureProfitLoss `protobuf:"bytes,2,opt,name=future_pnl,json=futurePnl,proto3,oneof"`
+}
+
+func (*ProfitLoss_StockPnl) isProfitLoss_Item() {}
+
+func (*ProfitLoss_FuturePnl) isProfitLoss_Item() {}
+
+type ListProfitLossResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ProfitLosses  []*ProfitLoss          `protobuf:"bytes,1,rep,name=profit_losses,json=profitLosses,proto3" json:"profit_losses,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListProfitLossResponse) Reset() {
+	*x = ListProfitLossResponse{}
+	mi := &file_provider_proto_msgTypes[40]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListProfitLossResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListProfitLossResponse) ProtoMessage() {}
+
+func (x *ListProfitLossResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[40]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListProfitLossResponse.ProtoReflect.Descriptor instead.
+func (*ListProfitLossResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{40}
+}
+
+func (x *ListProfitLossResponse) GetProfitLosses() []*ProfitLoss {
+	if x != nil {
+		return x.ProfitLosses
+	}
+	return nil
+}
+
+type ListProfitLossDetailRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	DetailId      int64                  `protobuf:"varint,2,opt,name=detail_id,json=detailId,proto3" json:"detail_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListProfitLossDetailRequest) Reset() {
+	*x = ListProfitLossDetailRequest{}
+	mi := &file_provider_proto_msgTypes[41]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListProfitLossDetailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListProfitLossDetailRequest) ProtoMessage() {}
+
+func (x *ListProfitLossDetailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[41]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListProfitLossDetailRequest.ProtoReflect.Descriptor instead.
+func (*ListProfitLossDetailRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *ListProfitLossDetailRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+func (x *ListProfitLossDetailRequest) GetDetailId() int64 {
+	if x != nil {
+		return x.DetailId
+	}
+	return 0
+}
+
+type StockProfitDetail struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Price         float64                `protobuf:"fixed64,1,opt,name=price,proto3" json:"price,omitempty"`
+	Cost          int64                  `protobuf:"varint,2,opt,name=cost,proto3" json:"cost,omitempty"`
+	Interest      int64                  `protobuf:"varint,3,opt,name=interest,proto3" json:"interest,omitempty"` // ...
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StockProfitDetail) Reset() {
+	*x = StockProfitDetail{}
+	mi := &file_provider_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StockProfitDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StockProfitDetail) ProtoMessage() {}
+
+func (x *StockProfitDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StockProfitDetail.ProtoReflect.Descriptor instead.
+func (*StockProfitDetail) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *StockProfitDetail) GetPrice() float64 {
+	if x != nil {
+		return x.Price
+	}
+	return 0
+}
+
+func (x *StockProfitDetail) GetCost() int64 {
+	if x != nil {
+		return x.Cost
+	}
+	return 0
+}
+
+func (x *StockProfitDetail) GetInterest() int64 {
+	if x != nil {
+		return x.Interest
+	}
+	return 0
+}
+
+type FutureProfitDetail struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Direction     string                 `protobuf:"bytes,1,opt,name=direction,proto3" json:"direction,omitempty"`
+	EntryDate     string                 `protobuf:"bytes,2,opt,name=entry_date,json=entryDate,proto3" json:"entry_date,omitempty"`
+	EntryPrice    float64                `protobuf:"fixed64,3,opt,name=entry_price,json=entryPrice,proto3" json:"entry_price,omitempty"`
+	CoverPrice    float64                `protobuf:"fixed64,4,opt,name=cover_price,json=coverPrice,proto3" json:"cover_price,omitempty"`
+	Pnl           int64                  `protobuf:"varint,5,opt,name=pnl,proto3" json:"pnl,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FutureProfitDetail) Reset() {
+	*x = FutureProfitDetail{}
+	mi := &file_provider_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FutureProfitDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FutureProfitDetail) ProtoMessage() {}
+
+func (x *FutureProfitDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FutureProfitDetail.ProtoReflect.Descriptor instead.
+func (*FutureProfitDetail) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *FutureProfitDetail) GetDirection() string {
+	if x != nil {
+		return x.Direction
+	}
+	return ""
+}
+
+func (x *FutureProfitDetail) GetEntryDate() string {
+	if x != nil {
+		return x.EntryDate
+	}
+	return ""
+}
+
+func (x *FutureProfitDetail) GetEntryPrice() float64 {
+	if x != nil {
+		return x.EntryPrice
+	}
+	return 0
+}
+
+func (x *FutureProfitDetail) GetCoverPrice() float64 {
+	if x != nil {
+		return x.CoverPrice
+	}
+	return 0
+}
+
+func (x *FutureProfitDetail) GetPnl() int64 {
+	if x != nil {
+		return x.Pnl
+	}
+	return 0
+}
+
+type ProfitDetail struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Detail:
+	//
+	//	*ProfitDetail_StockDetail
+	//	*ProfitDetail_FutureDetail
+	Detail        isProfitDetail_Detail `protobuf_oneof:"detail"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProfitDetail) Reset() {
+	*x = ProfitDetail{}
+	mi := &file_provider_proto_msgTypes[44]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProfitDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProfitDetail) ProtoMessage() {}
+
+func (x *ProfitDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[44]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProfitDetail.ProtoReflect.Descriptor instead.
+func (*ProfitDetail) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{44}
+}
+
+func (x *ProfitDetail) GetDetail() isProfitDetail_Detail {
+	if x != nil {
+		return x.Detail
+	}
+	return nil
+}
+
+func (x *ProfitDetail) GetStockDetail() *StockProfitDetail {
+	if x != nil {
+		if x, ok := x.Detail.(*ProfitDetail_StockDetail); ok {
+			return x.StockDetail
+		}
+	}
+	return nil
+}
+
+func (x *ProfitDetail) GetFutureDetail() *FutureProfitDetail {
+	if x != nil {
+		if x, ok := x.Detail.(*ProfitDetail_FutureDetail); ok {
+			return x.FutureDetail
+		}
+	}
+	return nil
+}
+
+type isProfitDetail_Detail interface {
+	isProfitDetail_Detail()
+}
+
+type ProfitDetail_StockDetail struct {
+	StockDetail *StockProfitDetail `protobuf:"bytes,1,opt,name=stock_detail,json=stockDetail,proto3,oneof"`
+}
+
+type ProfitDetail_FutureDetail struct {
+	FutureDetail *FutureProfitDetail `protobuf:"bytes,2,opt,name=future_detail,json=futureDetail,proto3,oneof"`
+}
+
+func (*ProfitDetail_StockDetail) isProfitDetail_Detail() {}
+
+func (*ProfitDetail_FutureDetail) isProfitDetail_Detail() {}
+
+type ListProfitLossDetailResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Details       []*ProfitDetail        `protobuf:"bytes,1,rep,name=details,proto3" json:"details,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListProfitLossDetailResponse) Reset() {
+	*x = ListProfitLossDetailResponse{}
+	mi := &file_provider_proto_msgTypes[45]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListProfitLossDetailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListProfitLossDetailResponse) ProtoMessage() {}
+
+func (x *ListProfitLossDetailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[45]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListProfitLossDetailResponse.ProtoReflect.Descriptor instead.
+func (*ListProfitLossDetailResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{45}
+}
+
+func (x *ListProfitLossDetailResponse) GetDetails() []*ProfitDetail {
+	if x != nil {
+		return x.Details
+	}
+	return nil
+}
+
+type ListProfitLossSummaryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListProfitLossSummaryRequest) Reset() {
+	*x = ListProfitLossSummaryRequest{}
+	mi := &file_provider_proto_msgTypes[46]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListProfitLossSummaryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListProfitLossSummaryRequest) ProtoMessage() {}
+
+func (x *ListProfitLossSummaryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[46]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListProfitLossSummaryRequest.ProtoReflect.Descriptor instead.
+func (*ListProfitLossSummaryRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{46}
+}
+
+func (x *ListProfitLossSummaryRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+type StockProfitLossSummary struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EntryCost     int64                  `protobuf:"varint,1,opt,name=entry_cost,json=entryCost,proto3" json:"entry_cost,omitempty"`
+	CoverCost     int64                  `protobuf:"varint,2,opt,name=cover_cost,json=coverCost,proto3" json:"cover_cost,omitempty"` // ...
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StockProfitLossSummary) Reset() {
+	*x = StockProfitLossSummary{}
+	mi := &file_provider_proto_msgTypes[47]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StockProfitLossSummary) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StockProfitLossSummary) ProtoMessage() {}
+
+func (x *StockProfitLossSummary) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[47]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StockProfitLossSummary.ProtoReflect.Descriptor instead.
+func (*StockProfitLossSummary) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{47}
+}
+
+func (x *StockProfitLossSummary) GetEntryCost() int64 {
+	if x != nil {
+		return x.EntryCost
+	}
+	return 0
+}
+
+func (x *StockProfitLossSummary) GetCoverCost() int64 {
+	if x != nil {
+		return x.CoverCost
+	}
+	return 0
+}
+
+type FutureProfitLossSummary struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Direction     string                 `protobuf:"bytes,1,opt,name=direction,proto3" json:"direction,omitempty"`
+	Tax           int64                  `protobuf:"varint,2,opt,name=tax,proto3" json:"tax,omitempty"`
+	Fee           int64                  `protobuf:"varint,3,opt,name=fee,proto3" json:"fee,omitempty"` // ...
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FutureProfitLossSummary) Reset() {
+	*x = FutureProfitLossSummary{}
+	mi := &file_provider_proto_msgTypes[48]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FutureProfitLossSummary) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FutureProfitLossSummary) ProtoMessage() {}
+
+func (x *FutureProfitLossSummary) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[48]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FutureProfitLossSummary.ProtoReflect.Descriptor instead.
+func (*FutureProfitLossSummary) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{48}
+}
+
+func (x *FutureProfitLossSummary) GetDirection() string {
+	if x != nil {
+		return x.Direction
+	}
+	return ""
+}
+
+func (x *FutureProfitLossSummary) GetTax() int64 {
+	if x != nil {
+		return x.Tax
+	}
+	return 0
+}
+
+func (x *FutureProfitLossSummary) GetFee() int64 {
+	if x != nil {
+		return x.Fee
+	}
+	return 0
+}
+
+type ProfitLossSummary struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Summary:
+	//
+	//	*ProfitLossSummary_StockSummary
+	//	*ProfitLossSummary_FutureSummary
+	Summary       isProfitLossSummary_Summary `protobuf_oneof:"summary"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProfitLossSummary) Reset() {
+	*x = ProfitLossSummary{}
+	mi := &file_provider_proto_msgTypes[49]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProfitLossSummary) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProfitLossSummary) ProtoMessage() {}
+
+func (x *ProfitLossSummary) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[49]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProfitLossSummary.ProtoReflect.Descriptor instead.
+func (*ProfitLossSummary) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{49}
+}
+
+func (x *ProfitLossSummary) GetSummary() isProfitLossSummary_Summary {
+	if x != nil {
+		return x.Summary
+	}
+	return nil
+}
+
+func (x *ProfitLossSummary) GetStockSummary() *StockProfitLossSummary {
+	if x != nil {
+		if x, ok := x.Summary.(*ProfitLossSummary_StockSummary); ok {
+			return x.StockSummary
+		}
+	}
+	return nil
+}
+
+func (x *ProfitLossSummary) GetFutureSummary() *FutureProfitLossSummary {
+	if x != nil {
+		if x, ok := x.Summary.(*ProfitLossSummary_FutureSummary); ok {
+			return x.FutureSummary
+		}
+	}
+	return nil
+}
+
+type isProfitLossSummary_Summary interface {
+	isProfitLossSummary_Summary()
+}
+
+type ProfitLossSummary_StockSummary struct {
+	StockSummary *StockProfitLossSummary `protobuf:"bytes,1,opt,name=stock_summary,json=stockSummary,proto3,oneof"`
+}
+
+type ProfitLossSummary_FutureSummary struct {
+	FutureSummary *FutureProfitLossSummary `protobuf:"bytes,2,opt,name=future_summary,json=futureSummary,proto3,oneof"`
+}
+
+func (*ProfitLossSummary_StockSummary) isProfitLossSummary_Summary() {}
+
+func (*ProfitLossSummary_FutureSummary) isProfitLossSummary_Summary() {}
+
+type ListProfitLossSummaryResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Summaries     []*ProfitLossSummary   `protobuf:"bytes,1,rep,name=summaries,proto3" json:"summaries,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListProfitLossSummaryResponse) Reset() {
+	*x = ListProfitLossSummaryResponse{}
+	mi := &file_provider_proto_msgTypes[50]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListProfitLossSummaryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListProfitLossSummaryResponse) ProtoMessage() {}
+
+func (x *ListProfitLossSummaryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[50]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListProfitLossSummaryResponse.ProtoReflect.Descriptor instead.
+func (*ListProfitLossSummaryResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{50}
+}
+
+func (x *ListProfitLossSummaryResponse) GetSummaries() []*ProfitLossSummary {
+	if x != nil {
+		return x.Summaries
+	}
+	return nil
+}
+
+type GetSettlementsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSettlementsRequest) Reset() {
+	*x = GetSettlementsRequest{}
+	mi := &file_provider_proto_msgTypes[51]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSettlementsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSettlementsRequest) ProtoMessage() {}
+
+func (x *GetSettlementsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[51]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSettlementsRequest.ProtoReflect.Descriptor instead.
+func (*GetSettlementsRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{51}
+}
+
+func (x *GetSettlementsRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+type Settlement struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Date          string                 `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
+	Amount        float64                `protobuf:"fixed64,2,opt,name=amount,proto3" json:"amount,omitempty"`
+	TMoney        float64                `protobuf:"fixed64,3,opt,name=t_money,json=tMoney,proto3" json:"t_money,omitempty"`
+	TDay          string                 `protobuf:"bytes,4,opt,name=t_day,json=tDay,proto3" json:"t_day,omitempty"`
+	T1Money       float64                `protobuf:"fixed64,5,opt,name=t1_money,json=t1Money,proto3" json:"t1_money,omitempty"`
+	T1Day         string                 `protobuf:"bytes,6,opt,name=t1_day,json=t1Day,proto3" json:"t1_day,omitempty"`
+	T2Money       float64                `protobuf:"fixed64,7,opt,name=t2_money,json=t2Money,proto3" json:"t2_money,omitempty"`
+	T2Day         string                 `protobuf:"bytes,8,opt,name=t2_day,json=t2Day,proto3" json:"t2_day,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Settlement) Reset() {
+	*x = Settlement{}
+	mi := &file_provider_proto_msgTypes[52]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Settlement) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Settlement) ProtoMessage() {}
+
+func (x *Settlement) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[52]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Settlement.ProtoReflect.Descriptor instead.
+func (*Settlement) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{52}
+}
+
+func (x *Settlement) GetDate() string {
+	if x != nil {
+		return x.Date
+	}
+	return ""
+}
+
+func (x *Settlement) GetAmount() float64 {
 	if x != nil {
 		return x.Amount
 	}
 	return 0
 }
 
-// Real-time market snapshot for a contract, providing a summary of current market conditions.
+func (x *Settlement) GetTMoney() float64 {
+	if x != nil {
+		return x.TMoney
+	}
+	return 0
+}
+
+func (x *Settlement) GetTDay() string {
+	if x != nil {
+		return x.TDay
+	}
+	return ""
+}
+
+func (x *Settlement) GetT1Money() float64 {
+	if x != nil {
+		return x.T1Money
+	}
+	return 0
+}
+
+func (x *Settlement) GetT1Day() string {
+	if x != nil {
+		return x.T1Day
+	}
+	return ""
+}
+
+func (x *Settlement) GetT2Money() float64 {
+	if x != nil {
+		return x.T2Money
+	}
+	return 0
+}
+
+func (x *Settlement) GetT2Day() string {
+	if x != nil {
+		return x.T2Day
+	}
+	return ""
+}
+
+type GetSettlementsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Settlements   []*Settlement          `protobuf:"bytes,1,rep,name=settlements,proto3" json:"settlements,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSettlementsResponse) Reset() {
+	*x = GetSettlementsResponse{}
+	mi := &file_provider_proto_msgTypes[53]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSettlementsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSettlementsResponse) ProtoMessage() {}
+
+func (x *GetSettlementsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[53]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSettlementsResponse.ProtoReflect.Descriptor instead.
+func (*GetSettlementsResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{53}
+}
+
+func (x *GetSettlementsResponse) GetSettlements() []*Settlement {
+	if x != nil {
+		return x.Settlements
+	}
+	return nil
+}
+
+type GetMarginRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMarginRequest) Reset() {
+	*x = GetMarginRequest{}
+	mi := &file_provider_proto_msgTypes[54]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMarginRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMarginRequest) ProtoMessage() {}
+
+func (x *GetMarginRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[54]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMarginRequest.ProtoReflect.Descriptor instead.
+func (*GetMarginRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{54}
+}
+
+func (x *GetMarginRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+type Margin struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Equity            float64                `protobuf:"fixed64,1,opt,name=equity,proto3" json:"equity,omitempty"`
+	AvailableMargin   float64                `protobuf:"fixed64,2,opt,name=available_margin,json=availableMargin,proto3" json:"available_margin,omitempty"`
+	InitialMargin     float64                `protobuf:"fixed64,3,opt,name=initial_margin,json=initialMargin,proto3" json:"initial_margin,omitempty"`
+	MaintenanceMargin float64                `protobuf:"fixed64,4,opt,name=maintenance_margin,json=maintenanceMargin,proto3" json:"maintenance_margin,omitempty"` // ... many fields
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *Margin) Reset() {
+	*x = Margin{}
+	mi := &file_provider_proto_msgTypes[55]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Margin) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Margin) ProtoMessage() {}
+
+func (x *Margin) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[55]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Margin.ProtoReflect.Descriptor instead.
+func (*Margin) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{55}
+}
+
+func (x *Margin) GetEquity() float64 {
+	if x != nil {
+		return x.Equity
+	}
+	return 0
+}
+
+func (x *Margin) GetAvailableMargin() float64 {
+	if x != nil {
+		return x.AvailableMargin
+	}
+	return 0
+}
+
+func (x *Margin) GetInitialMargin() float64 {
+	if x != nil {
+		return x.InitialMargin
+	}
+	return 0
+}
+
+func (x *Margin) GetMaintenanceMargin() float64 {
+	if x != nil {
+		return x.MaintenanceMargin
+	}
+	return 0
+}
+
+type GetTradingLimitsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetTradingLimitsRequest) Reset() {
+	*x = GetTradingLimitsRequest{}
+	mi := &file_provider_proto_msgTypes[56]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetTradingLimitsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTradingLimitsRequest) ProtoMessage() {}
+
+func (x *GetTradingLimitsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[56]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTradingLimitsRequest.ProtoReflect.Descriptor instead.
+func (*GetTradingLimitsRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{56}
+}
+
+func (x *GetTradingLimitsRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+type TradingLimits struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	TradingLimit     int64                  `protobuf:"varint,1,opt,name=trading_limit,json=tradingLimit,proto3" json:"trading_limit,omitempty"`
+	TradingUsed      int64                  `protobuf:"varint,2,opt,name=trading_used,json=tradingUsed,proto3" json:"trading_used,omitempty"`
+	TradingAvailable int64                  `protobuf:"varint,3,opt,name=trading_available,json=tradingAvailable,proto3" json:"trading_available,omitempty"`
+	MarginLimit      int64                  `protobuf:"varint,4,opt,name=margin_limit,json=marginLimit,proto3" json:"margin_limit,omitempty"`
+	MarginUsed       int64                  `protobuf:"varint,5,opt,name=margin_used,json=marginUsed,proto3" json:"margin_used,omitempty"`
+	MarginAvailable  int64                  `protobuf:"varint,6,opt,name=margin_available,json=marginAvailable,proto3" json:"margin_available,omitempty"`
+	ShortLimit       int64                  `protobuf:"varint,7,opt,name=short_limit,json=shortLimit,proto3" json:"short_limit,omitempty"`
+	ShortUsed        int64                  `protobuf:"varint,8,opt,name=short_used,json=shortUsed,proto3" json:"short_used,omitempty"`
+	ShortAvailable   int64                  `protobuf:"varint,9,opt,name=short_available,json=shortAvailable,proto3" json:"short_available,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *TradingLimits) Reset() {
+	*x = TradingLimits{}
+	mi := &file_provider_proto_msgTypes[57]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TradingLimits) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TradingLimits) ProtoMessage() {}
+
+func (x *TradingLimits) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[57]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TradingLimits.ProtoReflect.Descriptor instead.
+func (*TradingLimits) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{57}
+}
+
+func (x *TradingLimits) GetTradingLimit() int64 {
+	if x != nil {
+		return x.TradingLimit
+	}
+	return 0
+}
+
+func (x *TradingLimits) GetTradingUsed() int64 {
+	if x != nil {
+		return x.TradingUsed
+	}
+	return 0
+}
+
+func (x *TradingLimits) GetTradingAvailable() int64 {
+	if x != nil {
+		return x.TradingAvailable
+	}
+	return 0
+}
+
+func (x *TradingLimits) GetMarginLimit() int64 {
+	if x != nil {
+		return x.MarginLimit
+	}
+	return 0
+}
+
+func (x *TradingLimits) GetMarginUsed() int64 {
+	if x != nil {
+		return x.MarginUsed
+	}
+	return 0
+}
+
+func (x *TradingLimits) GetMarginAvailable() int64 {
+	if x != nil {
+		return x.MarginAvailable
+	}
+	return 0
+}
+
+func (x *TradingLimits) GetShortLimit() int64 {
+	if x != nil {
+		return x.ShortLimit
+	}
+	return 0
+}
+
+func (x *TradingLimits) GetShortUsed() int64 {
+	if x != nil {
+		return x.ShortUsed
+	}
+	return 0
+}
+
+func (x *TradingLimits) GetShortAvailable() int64 {
+	if x != nil {
+		return x.ShortAvailable
+	}
+	return 0
+}
+
+type GetStockReserveSummaryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetStockReserveSummaryRequest) Reset() {
+	*x = GetStockReserveSummaryRequest{}
+	mi := &file_provider_proto_msgTypes[58]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetStockReserveSummaryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetStockReserveSummaryRequest) ProtoMessage() {}
+
+func (x *GetStockReserveSummaryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[58]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetStockReserveSummaryRequest.ProtoReflect.Descriptor instead.
+func (*GetStockReserveSummaryRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{58}
+}
+
+func (x *GetStockReserveSummaryRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+type ReserveStocksSummaryResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// JSON string or structured fields for ReserveStocksSummary
+	// Using simple string for complex nested response for now or define minimal structure
+	ResponseJson  string `protobuf:"bytes,1,opt,name=response_json,json=responseJson,proto3" json:"response_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReserveStocksSummaryResponse) Reset() {
+	*x = ReserveStocksSummaryResponse{}
+	mi := &file_provider_proto_msgTypes[59]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReserveStocksSummaryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReserveStocksSummaryResponse) ProtoMessage() {}
+
+func (x *ReserveStocksSummaryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[59]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReserveStocksSummaryResponse.ProtoReflect.Descriptor instead.
+func (*ReserveStocksSummaryResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{59}
+}
+
+func (x *ReserveStocksSummaryResponse) GetResponseJson() string {
+	if x != nil {
+		return x.ResponseJson
+	}
+	return ""
+}
+
+type GetStockReserveDetailRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetStockReserveDetailRequest) Reset() {
+	*x = GetStockReserveDetailRequest{}
+	mi := &file_provider_proto_msgTypes[60]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetStockReserveDetailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetStockReserveDetailRequest) ProtoMessage() {}
+
+func (x *GetStockReserveDetailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[60]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetStockReserveDetailRequest.ProtoReflect.Descriptor instead.
+func (*GetStockReserveDetailRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{60}
+}
+
+func (x *GetStockReserveDetailRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+type ReserveStocksDetailResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ResponseJson  string                 `protobuf:"bytes,1,opt,name=response_json,json=responseJson,proto3" json:"response_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReserveStocksDetailResponse) Reset() {
+	*x = ReserveStocksDetailResponse{}
+	mi := &file_provider_proto_msgTypes[61]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReserveStocksDetailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReserveStocksDetailResponse) ProtoMessage() {}
+
+func (x *ReserveStocksDetailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[61]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReserveStocksDetailResponse.ProtoReflect.Descriptor instead.
+func (*ReserveStocksDetailResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{61}
+}
+
+func (x *ReserveStocksDetailResponse) GetResponseJson() string {
+	if x != nil {
+		return x.ResponseJson
+	}
+	return ""
+}
+
+type ReserveStockRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	Contract      *Contract              `protobuf:"bytes,2,opt,name=contract,proto3" json:"contract,omitempty"`
+	Share         int64                  `protobuf:"varint,3,opt,name=share,proto3" json:"share,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReserveStockRequest) Reset() {
+	*x = ReserveStockRequest{}
+	mi := &file_provider_proto_msgTypes[62]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReserveStockRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReserveStockRequest) ProtoMessage() {}
+
+func (x *ReserveStockRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[62]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReserveStockRequest.ProtoReflect.Descriptor instead.
+func (*ReserveStockRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{62}
+}
+
+func (x *ReserveStockRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+func (x *ReserveStockRequest) GetContract() *Contract {
+	if x != nil {
+		return x.Contract
+	}
+	return nil
+}
+
+func (x *ReserveStockRequest) GetShare() int64 {
+	if x != nil {
+		return x.Share
+	}
+	return 0
+}
+
+type ReserveStockResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ResponseJson  string                 `protobuf:"bytes,1,opt,name=response_json,json=responseJson,proto3" json:"response_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReserveStockResponse) Reset() {
+	*x = ReserveStockResponse{}
+	mi := &file_provider_proto_msgTypes[63]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReserveStockResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReserveStockResponse) ProtoMessage() {}
+
+func (x *ReserveStockResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[63]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReserveStockResponse.ProtoReflect.Descriptor instead.
+func (*ReserveStockResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{63}
+}
+
+func (x *ReserveStockResponse) GetResponseJson() string {
+	if x != nil {
+		return x.ResponseJson
+	}
+	return ""
+}
+
+type GetEarmarkingDetailRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetEarmarkingDetailRequest) Reset() {
+	*x = GetEarmarkingDetailRequest{}
+	mi := &file_provider_proto_msgTypes[64]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetEarmarkingDetailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetEarmarkingDetailRequest) ProtoMessage() {}
+
+func (x *GetEarmarkingDetailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[64]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetEarmarkingDetailRequest.ProtoReflect.Descriptor instead.
+func (*GetEarmarkingDetailRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{64}
+}
+
+func (x *GetEarmarkingDetailRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+type EarmarkStocksDetailResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ResponseJson  string                 `protobuf:"bytes,1,opt,name=response_json,json=responseJson,proto3" json:"response_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EarmarkStocksDetailResponse) Reset() {
+	*x = EarmarkStocksDetailResponse{}
+	mi := &file_provider_proto_msgTypes[65]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EarmarkStocksDetailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EarmarkStocksDetailResponse) ProtoMessage() {}
+
+func (x *EarmarkStocksDetailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[65]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EarmarkStocksDetailResponse.ProtoReflect.Descriptor instead.
+func (*EarmarkStocksDetailResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{65}
+}
+
+func (x *EarmarkStocksDetailResponse) GetResponseJson() string {
+	if x != nil {
+		return x.ResponseJson
+	}
+	return ""
+}
+
+type ReserveEarmarkingRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	Contract      *Contract              `protobuf:"bytes,2,opt,name=contract,proto3" json:"contract,omitempty"`
+	Share         int64                  `protobuf:"varint,3,opt,name=share,proto3" json:"share,omitempty"`
+	Price         float64                `protobuf:"fixed64,4,opt,name=price,proto3" json:"price,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReserveEarmarkingRequest) Reset() {
+	*x = ReserveEarmarkingRequest{}
+	mi := &file_provider_proto_msgTypes[66]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReserveEarmarkingRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReserveEarmarkingRequest) ProtoMessage() {}
+
+func (x *ReserveEarmarkingRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[66]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReserveEarmarkingRequest.ProtoReflect.Descriptor instead.
+func (*ReserveEarmarkingRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{66}
+}
+
+func (x *ReserveEarmarkingRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+func (x *ReserveEarmarkingRequest) GetContract() *Contract {
+	if x != nil {
+		return x.Contract
+	}
+	return nil
+}
+
+func (x *ReserveEarmarkingRequest) GetShare() int64 {
+	if x != nil {
+		return x.Share
+	}
+	return 0
+}
+
+func (x *ReserveEarmarkingRequest) GetPrice() float64 {
+	if x != nil {
+		return x.Price
+	}
+	return 0
+}
+
+type ReserveEarmarkingResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ResponseJson  string                 `protobuf:"bytes,1,opt,name=response_json,json=responseJson,proto3" json:"response_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReserveEarmarkingResponse) Reset() {
+	*x = ReserveEarmarkingResponse{}
+	mi := &file_provider_proto_msgTypes[67]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReserveEarmarkingResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReserveEarmarkingResponse) ProtoMessage() {}
+
+func (x *ReserveEarmarkingResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[67]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReserveEarmarkingResponse.ProtoReflect.Descriptor instead.
+func (*ReserveEarmarkingResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{67}
+}
+
+func (x *ReserveEarmarkingResponse) GetResponseJson() string {
+	if x != nil {
+		return x.ResponseJson
+	}
+	return ""
+}
+
+type GetSnapshotsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// simplified contract identification
+	ContractCodes []string `protobuf:"bytes,1,rep,name=contract_codes,json=contractCodes,proto3" json:"contract_codes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSnapshotsRequest) Reset() {
+	*x = GetSnapshotsRequest{}
+	mi := &file_provider_proto_msgTypes[68]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSnapshotsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSnapshotsRequest) ProtoMessage() {}
+
+func (x *GetSnapshotsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[68]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSnapshotsRequest.ProtoReflect.Descriptor instead.
+func (*GetSnapshotsRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{68}
+}
+
+func (x *GetSnapshotsRequest) GetContractCodes() []string {
+	if x != nil {
+		return x.ContractCodes
+	}
+	return nil
+}
+
+type GetSnapshotsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Snapshots     []*Snapshot            `protobuf:"bytes,1,rep,name=snapshots,proto3" json:"snapshots,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSnapshotsResponse) Reset() {
+	*x = GetSnapshotsResponse{}
+	mi := &file_provider_proto_msgTypes[69]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSnapshotsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSnapshotsResponse) ProtoMessage() {}
+
+func (x *GetSnapshotsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[69]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSnapshotsResponse.ProtoReflect.Descriptor instead.
+func (*GetSnapshotsResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{69}
+}
+
+func (x *GetSnapshotsResponse) GetSnapshots() []*Snapshot {
+	if x != nil {
+		return x.Snapshots
+	}
+	return nil
+}
+
 type Snapshot struct {
-	state              protoimpl.MessageState `protogen:"open.v1"`
-	Ts                 int64                  `protobuf:"varint,1,opt,name=ts,proto3" json:"ts,omitempty"`
-	Code               string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
-	Exchange           string                 `protobuf:"bytes,3,opt,name=exchange,proto3" json:"exchange,omitempty"`
-	Open               float64                `protobuf:"fixed64,4,opt,name=open,proto3" json:"open,omitempty"`
-	High               float64                `protobuf:"fixed64,5,opt,name=high,proto3" json:"high,omitempty"`
-	Low                float64                `protobuf:"fixed64,6,opt,name=low,proto3" json:"low,omitempty"`
-	Close              float64                `protobuf:"fixed64,7,opt,name=close,proto3" json:"close,omitempty"`
-	AveragePrice       float64                `protobuf:"fixed64,8,opt,name=average_price,json=averagePrice,proto3" json:"average_price,omitempty"`
-	Volume             int64                  `protobuf:"varint,9,opt,name=volume,proto3" json:"volume,omitempty"`
-	TotalVolume        int64                  `protobuf:"varint,10,opt,name=total_volume,json=totalVolume,proto3" json:"total_volume,omitempty"`
-	Amount             float64                `protobuf:"fixed64,11,opt,name=amount,proto3" json:"amount,omitempty"`
-	TotalAmount        float64                `protobuf:"fixed64,12,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"`
-	PriceChange        float64                `protobuf:"fixed64,13,opt,name=price_change,json=priceChange,proto3" json:"price_change,omitempty"`
-	PriceChangePercent float64                `protobuf:"fixed64,14,opt,name=price_change_percent,json=priceChangePercent,proto3" json:"price_change_percent,omitempty"`
-	BuyPrice           float64                `protobuf:"fixed64,15,opt,name=buy_price,json=buyPrice,proto3" json:"buy_price,omitempty"`
-	BuyVolume          int64                  `protobuf:"varint,16,opt,name=buy_volume,json=buyVolume,proto3" json:"buy_volume,omitempty"`
-	SellPrice          float64                `protobuf:"fixed64,17,opt,name=sell_price,json=sellPrice,proto3" json:"sell_price,omitempty"`
-	SellVolume         int64                  `protobuf:"varint,18,opt,name=sell_volume,json=sellVolume,proto3" json:"sell_volume,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Ts            int64                  `protobuf:"varint,1,opt,name=ts,proto3" json:"ts,omitempty"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Exchange      string                 `protobuf:"bytes,3,opt,name=exchange,proto3" json:"exchange,omitempty"`
+	Open          float64                `protobuf:"fixed64,4,opt,name=open,proto3" json:"open,omitempty"`
+	High          float64                `protobuf:"fixed64,5,opt,name=high,proto3" json:"high,omitempty"`
+	Low           float64                `protobuf:"fixed64,6,opt,name=low,proto3" json:"low,omitempty"`
+	Close         float64                `protobuf:"fixed64,7,opt,name=close,proto3" json:"close,omitempty"`
+	ChangePrice   float64                `protobuf:"fixed64,8,opt,name=change_price,json=changePrice,proto3" json:"change_price,omitempty"`
+	ChangeRate    float64                `protobuf:"fixed64,9,opt,name=change_rate,json=changeRate,proto3" json:"change_rate,omitempty"`
+	AveragePrice  float64                `protobuf:"fixed64,10,opt,name=average_price,json=averagePrice,proto3" json:"average_price,omitempty"`
+	Volume        int64                  `protobuf:"varint,11,opt,name=volume,proto3" json:"volume,omitempty"`
+	TotalVolume   int64                  `protobuf:"varint,12,opt,name=total_volume,json=totalVolume,proto3" json:"total_volume,omitempty"`
+	Amount        int64                  `protobuf:"varint,13,opt,name=amount,proto3" json:"amount,omitempty"`
+	TotalAmount   int64                  `protobuf:"varint,14,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"`
+	BuyPrice      float64                `protobuf:"fixed64,15,opt,name=buy_price,json=buyPrice,proto3" json:"buy_price,omitempty"`
+	BuyVolume     int64                  `protobuf:"varint,16,opt,name=buy_volume,json=buyVolume,proto3" json:"buy_volume,omitempty"`
+	SellPrice     float64                `protobuf:"fixed64,17,opt,name=sell_price,json=sellPrice,proto3" json:"sell_price,omitempty"`
+	SellVolume    int64                  `protobuf:"varint,18,opt,name=sell_volume,json=sellVolume,proto3" json:"sell_volume,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Snapshot) Reset() {
 	*x = Snapshot{}
-	mi := &file_provider_proto_msgTypes[6]
+	mi := &file_provider_proto_msgTypes[70]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -810,7 +4386,7 @@ func (x *Snapshot) String() string {
 func (*Snapshot) ProtoMessage() {}
 
 func (x *Snapshot) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[6]
+	mi := &file_provider_proto_msgTypes[70]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -823,7 +4399,7 @@ func (x *Snapshot) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Snapshot.ProtoReflect.Descriptor instead.
 func (*Snapshot) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{6}
+	return file_provider_proto_rawDescGZIP(), []int{70}
 }
 
 func (x *Snapshot) GetTs() int64 {
@@ -875,6 +4451,20 @@ func (x *Snapshot) GetClose() float64 {
 	return 0
 }
 
+func (x *Snapshot) GetChangePrice() float64 {
+	if x != nil {
+		return x.ChangePrice
+	}
+	return 0
+}
+
+func (x *Snapshot) GetChangeRate() float64 {
+	if x != nil {
+		return x.ChangeRate
+	}
+	return 0
+}
+
 func (x *Snapshot) GetAveragePrice() float64 {
 	if x != nil {
 		return x.AveragePrice
@@ -896,30 +4486,16 @@ func (x *Snapshot) GetTotalVolume() int64 {
 	return 0
 }
 
-func (x *Snapshot) GetAmount() float64 {
+func (x *Snapshot) GetAmount() int64 {
 	if x != nil {
 		return x.Amount
 	}
 	return 0
 }
 
-func (x *Snapshot) GetTotalAmount() float64 {
+func (x *Snapshot) GetTotalAmount() int64 {
 	if x != nil {
 		return x.TotalAmount
-	}
-	return 0
-}
-
-func (x *Snapshot) GetPriceChange() float64 {
-	if x != nil {
-		return x.PriceChange
-	}
-	return 0
-}
-
-func (x *Snapshot) GetPriceChangePercent() float64 {
-	if x != nil {
-		return x.PriceChangePercent
 	}
 	return 0
 }
@@ -952,1063 +4528,17 @@ func (x *Snapshot) GetSellVolume() int64 {
 	return 0
 }
 
-// Realized profit and loss for a specific trade or period.
-type ProfitLoss struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
-	Seqno         string                 `protobuf:"bytes,3,opt,name=seqno,proto3" json:"seqno,omitempty"`
-	Dseq          string                 `protobuf:"bytes,4,opt,name=dseq,proto3" json:"dseq,omitempty"`
-	Quantity      int64                  `protobuf:"varint,5,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	Price         float64                `protobuf:"fixed64,6,opt,name=price,proto3" json:"price,omitempty"`
-	Pnl           float64                `protobuf:"fixed64,7,opt,name=pnl,proto3" json:"pnl,omitempty"`
-	PrRatio       float64                `protobuf:"fixed64,8,opt,name=pr_ratio,json=prRatio,proto3" json:"pr_ratio,omitempty"`
-	Cond          string                 `protobuf:"bytes,9,opt,name=cond,proto3" json:"cond,omitempty"`
-	Date          string                 `protobuf:"bytes,10,opt,name=date,proto3" json:"date,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ProfitLoss) Reset() {
-	*x = ProfitLoss{}
-	mi := &file_provider_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ProfitLoss) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ProfitLoss) ProtoMessage() {}
-
-func (x *ProfitLoss) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ProfitLoss.ProtoReflect.Descriptor instead.
-func (*ProfitLoss) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *ProfitLoss) GetId() int64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-func (x *ProfitLoss) GetCode() string {
-	if x != nil {
-		return x.Code
-	}
-	return ""
-}
-
-func (x *ProfitLoss) GetSeqno() string {
-	if x != nil {
-		return x.Seqno
-	}
-	return ""
-}
-
-func (x *ProfitLoss) GetDseq() string {
-	if x != nil {
-		return x.Dseq
-	}
-	return ""
-}
-
-func (x *ProfitLoss) GetQuantity() int64 {
-	if x != nil {
-		return x.Quantity
-	}
-	return 0
-}
-
-func (x *ProfitLoss) GetPrice() float64 {
-	if x != nil {
-		return x.Price
-	}
-	return 0
-}
-
-func (x *ProfitLoss) GetPnl() float64 {
-	if x != nil {
-		return x.Pnl
-	}
-	return 0
-}
-
-func (x *ProfitLoss) GetPrRatio() float64 {
-	if x != nil {
-		return x.PrRatio
-	}
-	return 0
-}
-
-func (x *ProfitLoss) GetCond() string {
-	if x != nil {
-		return x.Cond
-	}
-	return ""
-}
-
-func (x *ProfitLoss) GetDate() string {
-	if x != nil {
-		return x.Date
-	}
-	return ""
-}
-
-// Stock account settlement details, including date and amount.
-type Settlement struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Date          string                 `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
-	Amount        float64                `protobuf:"fixed64,2,opt,name=amount,proto3" json:"amount,omitempty"`
-	TTime         string                 `protobuf:"bytes,3,opt,name=t_time,json=tTime,proto3" json:"t_time,omitempty"` // "T" or "T+1" etc, renamed to avoid conflict
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Settlement) Reset() {
-	*x = Settlement{}
-	mi := &file_provider_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Settlement) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Settlement) ProtoMessage() {}
-
-func (x *Settlement) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Settlement.ProtoReflect.Descriptor instead.
-func (*Settlement) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *Settlement) GetDate() string {
-	if x != nil {
-		return x.Date
-	}
-	return ""
-}
-
-func (x *Settlement) GetAmount() float64 {
-	if x != nil {
-		return x.Amount
-	}
-	return 0
-}
-
-func (x *Settlement) GetTTime() string {
-	if x != nil {
-		return x.TTime
-	}
-	return ""
-}
-
-// Unrealized gain or loss for currently held positions.
-type Position struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
-	Direction     string                 `protobuf:"bytes,3,opt,name=direction,proto3" json:"direction,omitempty"`
-	Quantity      int64                  `protobuf:"varint,4,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	Price         float64                `protobuf:"fixed64,5,opt,name=price,proto3" json:"price,omitempty"`
-	LastPrice     float64                `protobuf:"fixed64,6,opt,name=last_price,json=lastPrice,proto3" json:"last_price,omitempty"`
-	Pnl           float64                `protobuf:"fixed64,7,opt,name=pnl,proto3" json:"pnl,omitempty"`
-	Cond          string                 `protobuf:"bytes,8,opt,name=cond,proto3" json:"cond,omitempty"`
-	OrderType     string                 `protobuf:"bytes,9,opt,name=order_type,json=orderType,proto3" json:"order_type,omitempty"`  // e.g., ROD
-	PriceType     string                 `protobuf:"bytes,10,opt,name=price_type,json=priceType,proto3" json:"price_type,omitempty"` // e.g., LMT
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Position) Reset() {
-	*x = Position{}
-	mi := &file_provider_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Position) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Position) ProtoMessage() {}
-
-func (x *Position) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Position.ProtoReflect.Descriptor instead.
-func (*Position) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *Position) GetId() int64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-func (x *Position) GetCode() string {
-	if x != nil {
-		return x.Code
-	}
-	return ""
-}
-
-func (x *Position) GetDirection() string {
-	if x != nil {
-		return x.Direction
-	}
-	return ""
-}
-
-func (x *Position) GetQuantity() int64 {
-	if x != nil {
-		return x.Quantity
-	}
-	return 0
-}
-
-func (x *Position) GetPrice() float64 {
-	if x != nil {
-		return x.Price
-	}
-	return 0
-}
-
-func (x *Position) GetLastPrice() float64 {
-	if x != nil {
-		return x.LastPrice
-	}
-	return 0
-}
-
-func (x *Position) GetPnl() float64 {
-	if x != nil {
-		return x.Pnl
-	}
-	return 0
-}
-
-func (x *Position) GetCond() string {
-	if x != nil {
-		return x.Cond
-	}
-	return ""
-}
-
-func (x *Position) GetOrderType() string {
-	if x != nil {
-		return x.OrderType
-	}
-	return ""
-}
-
-func (x *Position) GetPriceType() string {
-	if x != nil {
-		return x.PriceType
-	}
-	return ""
-}
-
-type Empty struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Empty) Reset() {
-	*x = Empty{}
-	mi := &file_provider_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Empty) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Empty) ProtoMessage() {}
-
-func (x *Empty) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Empty.ProtoReflect.Descriptor instead.
-func (*Empty) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{10}
-}
-
-// Request message for Login method.
-type LoginRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	PersonId      string                 `protobuf:"bytes,1,opt,name=person_id,json=personId,proto3" json:"person_id,omitempty"`
-	Passwd        string                 `protobuf:"bytes,2,opt,name=passwd,proto3" json:"passwd,omitempty"`
-	ApiKey        string                 `protobuf:"bytes,3,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
-	SecretKey     string                 `protobuf:"bytes,4,opt,name=secret_key,json=secretKey,proto3" json:"secret_key,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *LoginRequest) Reset() {
-	*x = LoginRequest{}
-	mi := &file_provider_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *LoginRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*LoginRequest) ProtoMessage() {}
-
-func (x *LoginRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use LoginRequest.ProtoReflect.Descriptor instead.
-func (*LoginRequest) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{11}
-}
-
-func (x *LoginRequest) GetPersonId() string {
-	if x != nil {
-		return x.PersonId
-	}
-	return ""
-}
-
-func (x *LoginRequest) GetPasswd() string {
-	if x != nil {
-		return x.Passwd
-	}
-	return ""
-}
-
-func (x *LoginRequest) GetApiKey() string {
-	if x != nil {
-		return x.ApiKey
-	}
-	return ""
-}
-
-func (x *LoginRequest) GetSecretKey() string {
-	if x != nil {
-		return x.SecretKey
-	}
-	return ""
-}
-
-// Response message for Login method.
-type LoginResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *LoginResponse) Reset() {
-	*x = LoginResponse{}
-	mi := &file_provider_proto_msgTypes[12]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *LoginResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*LoginResponse) ProtoMessage() {}
-
-func (x *LoginResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[12]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use LoginResponse.ProtoReflect.Descriptor instead.
-func (*LoginResponse) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{12}
-}
-
-func (x *LoginResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-func (x *LoginResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-// Response message for ListAccounts method.
-type ListAccountsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Accounts      []*Account             `protobuf:"bytes,1,rep,name=accounts,proto3" json:"accounts,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListAccountsResponse) Reset() {
-	*x = ListAccountsResponse{}
-	mi := &file_provider_proto_msgTypes[13]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListAccountsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListAccountsResponse) ProtoMessage() {}
-
-func (x *ListAccountsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[13]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListAccountsResponse.ProtoReflect.Descriptor instead.
-func (*ListAccountsResponse) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{13}
-}
-
-func (x *ListAccountsResponse) GetAccounts() []*Account {
-	if x != nil {
-		return x.Accounts
-	}
-	return nil
-}
-
-// Response message for GetAccountBalance method.
-type AccountBalanceResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Balance       float64                `protobuf:"fixed64,1,opt,name=balance,proto3" json:"balance,omitempty"`
-	Currency      string                 `protobuf:"bytes,2,opt,name=currency,proto3" json:"currency,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AccountBalanceResponse) Reset() {
-	*x = AccountBalanceResponse{}
-	mi := &file_provider_proto_msgTypes[14]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AccountBalanceResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AccountBalanceResponse) ProtoMessage() {}
-
-func (x *AccountBalanceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[14]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AccountBalanceResponse.ProtoReflect.Descriptor instead.
-func (*AccountBalanceResponse) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{14}
-}
-
-func (x *AccountBalanceResponse) GetBalance() float64 {
-	if x != nil {
-		return x.Balance
-	}
-	return 0
-}
-
-func (x *AccountBalanceResponse) GetCurrency() string {
-	if x != nil {
-		return x.Currency
-	}
-	return ""
-}
-
-// Response message for ListSettlements method.
-type ListSettlementsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Settlements   []*Settlement          `protobuf:"bytes,1,rep,name=settlements,proto3" json:"settlements,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListSettlementsResponse) Reset() {
-	*x = ListSettlementsResponse{}
-	mi := &file_provider_proto_msgTypes[15]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListSettlementsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListSettlementsResponse) ProtoMessage() {}
-
-func (x *ListSettlementsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[15]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListSettlementsResponse.ProtoReflect.Descriptor instead.
-func (*ListSettlementsResponse) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{15}
-}
-
-func (x *ListSettlementsResponse) GetSettlements() []*Settlement {
-	if x != nil {
-		return x.Settlements
-	}
-	return nil
-}
-
-// Request message for ListProfitLoss method.
-type ListProfitLossRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	BeginDate     string                 `protobuf:"bytes,1,opt,name=begin_date,json=beginDate,proto3" json:"begin_date,omitempty"`
-	EndDate       string                 `protobuf:"bytes,2,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListProfitLossRequest) Reset() {
-	*x = ListProfitLossRequest{}
-	mi := &file_provider_proto_msgTypes[16]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListProfitLossRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListProfitLossRequest) ProtoMessage() {}
-
-func (x *ListProfitLossRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[16]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListProfitLossRequest.ProtoReflect.Descriptor instead.
-func (*ListProfitLossRequest) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{16}
-}
-
-func (x *ListProfitLossRequest) GetBeginDate() string {
-	if x != nil {
-		return x.BeginDate
-	}
-	return ""
-}
-
-func (x *ListProfitLossRequest) GetEndDate() string {
-	if x != nil {
-		return x.EndDate
-	}
-	return ""
-}
-
-// Response message for ListProfitLoss method.
-type ListProfitLossResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ProfitLoss    []*ProfitLoss          `protobuf:"bytes,1,rep,name=profit_loss,json=profitLoss,proto3" json:"profit_loss,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListProfitLossResponse) Reset() {
-	*x = ListProfitLossResponse{}
-	mi := &file_provider_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListProfitLossResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListProfitLossResponse) ProtoMessage() {}
-
-func (x *ListProfitLossResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListProfitLossResponse.ProtoReflect.Descriptor instead.
-func (*ListProfitLossResponse) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{17}
-}
-
-func (x *ListProfitLossResponse) GetProfitLoss() []*ProfitLoss {
-	if x != nil {
-		return x.ProfitLoss
-	}
-	return nil
-}
-
-// Response message for ListPositions method.
-type ListPositionsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Positions     []*Position            `protobuf:"bytes,1,rep,name=positions,proto3" json:"positions,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListPositionsResponse) Reset() {
-	*x = ListPositionsResponse{}
-	mi := &file_provider_proto_msgTypes[18]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListPositionsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListPositionsResponse) ProtoMessage() {}
-
-func (x *ListPositionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[18]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListPositionsResponse.ProtoReflect.Descriptor instead.
-func (*ListPositionsResponse) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{18}
-}
-
-func (x *ListPositionsResponse) GetPositions() []*Position {
-	if x != nil {
-		return x.Positions
-	}
-	return nil
-}
-
-// Request message for PlaceOrder method.
-type PlaceOrderRequest struct {
-	state                protoimpl.MessageState `protogen:"open.v1"`
-	ContractCode         string                 `protobuf:"bytes,1,opt,name=contract_code,json=contractCode,proto3" json:"contract_code,omitempty"`
-	ContractSecurityType string                 `protobuf:"bytes,2,opt,name=contract_security_type,json=contractSecurityType,proto3" json:"contract_security_type,omitempty"` // e.g., "STK", "FUT"
-	Action               string                 `protobuf:"bytes,3,opt,name=action,proto3" json:"action,omitempty"`                                                           // "Buy", "Sell"
-	Price                float64                `protobuf:"fixed64,4,opt,name=price,proto3" json:"price,omitempty"`
-	Quantity             int64                  `protobuf:"varint,5,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	PriceType            string                 `protobuf:"bytes,6,opt,name=price_type,json=priceType,proto3" json:"price_type,omitempty"` // "LMT", "MKT"
-	OrderType            string                 `protobuf:"bytes,7,opt,name=order_type,json=orderType,proto3" json:"order_type,omitempty"` // "ROD", "IOC", "FOK"
-	OrderLot             string                 `protobuf:"bytes,8,opt,name=order_lot,json=orderLot,proto3" json:"order_lot,omitempty"`    // "Common", "IntradayOdd"
-	AccountId            string                 `protobuf:"bytes,9,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"` // Optional, to specify account
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
-}
-
-func (x *PlaceOrderRequest) Reset() {
-	*x = PlaceOrderRequest{}
-	mi := &file_provider_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *PlaceOrderRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PlaceOrderRequest) ProtoMessage() {}
-
-func (x *PlaceOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use PlaceOrderRequest.ProtoReflect.Descriptor instead.
-func (*PlaceOrderRequest) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{19}
-}
-
-func (x *PlaceOrderRequest) GetContractCode() string {
-	if x != nil {
-		return x.ContractCode
-	}
-	return ""
-}
-
-func (x *PlaceOrderRequest) GetContractSecurityType() string {
-	if x != nil {
-		return x.ContractSecurityType
-	}
-	return ""
-}
-
-func (x *PlaceOrderRequest) GetAction() string {
-	if x != nil {
-		return x.Action
-	}
-	return ""
-}
-
-func (x *PlaceOrderRequest) GetPrice() float64 {
-	if x != nil {
-		return x.Price
-	}
-	return 0
-}
-
-func (x *PlaceOrderRequest) GetQuantity() int64 {
-	if x != nil {
-		return x.Quantity
-	}
-	return 0
-}
-
-func (x *PlaceOrderRequest) GetPriceType() string {
-	if x != nil {
-		return x.PriceType
-	}
-	return ""
-}
-
-func (x *PlaceOrderRequest) GetOrderType() string {
-	if x != nil {
-		return x.OrderType
-	}
-	return ""
-}
-
-func (x *PlaceOrderRequest) GetOrderLot() string {
-	if x != nil {
-		return x.OrderLot
-	}
-	return ""
-}
-
-func (x *PlaceOrderRequest) GetAccountId() string {
-	if x != nil {
-		return x.AccountId
-	}
-	return ""
-}
-
-// Request message for UpdateOrder method.
-type UpdateOrderRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TradeId       string                 `protobuf:"bytes,1,opt,name=trade_id,json=tradeId,proto3" json:"trade_id,omitempty"`
-	Price         float64                `protobuf:"fixed64,2,opt,name=price,proto3" json:"price,omitempty"`
-	Quantity      int64                  `protobuf:"varint,3,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateOrderRequest) Reset() {
-	*x = UpdateOrderRequest{}
-	mi := &file_provider_proto_msgTypes[20]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateOrderRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateOrderRequest) ProtoMessage() {}
-
-func (x *UpdateOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[20]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateOrderRequest.ProtoReflect.Descriptor instead.
-func (*UpdateOrderRequest) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{20}
-}
-
-func (x *UpdateOrderRequest) GetTradeId() string {
-	if x != nil {
-		return x.TradeId
-	}
-	return ""
-}
-
-func (x *UpdateOrderRequest) GetPrice() float64 {
-	if x != nil {
-		return x.Price
-	}
-	return 0
-}
-
-func (x *UpdateOrderRequest) GetQuantity() int64 {
-	if x != nil {
-		return x.Quantity
-	}
-	return 0
-}
-
-// Request message for CancelOrder method.
-type CancelOrderRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TradeId       string                 `protobuf:"bytes,1,opt,name=trade_id,json=tradeId,proto3" json:"trade_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CancelOrderRequest) Reset() {
-	*x = CancelOrderRequest{}
-	mi := &file_provider_proto_msgTypes[21]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CancelOrderRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CancelOrderRequest) ProtoMessage() {}
-
-func (x *CancelOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[21]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CancelOrderRequest.ProtoReflect.Descriptor instead.
-func (*CancelOrderRequest) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{21}
-}
-
-func (x *CancelOrderRequest) GetTradeId() string {
-	if x != nil {
-		return x.TradeId
-	}
-	return ""
-}
-
-// Response message for PlaceOrder, UpdateOrder, and CancelOrder methods.
-type TradeResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Trade         *Trade                 `protobuf:"bytes,1,opt,name=trade,proto3" json:"trade,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *TradeResponse) Reset() {
-	*x = TradeResponse{}
-	mi := &file_provider_proto_msgTypes[22]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *TradeResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TradeResponse) ProtoMessage() {}
-
-func (x *TradeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[22]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TradeResponse.ProtoReflect.Descriptor instead.
-func (*TradeResponse) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{22}
-}
-
-func (x *TradeResponse) GetTrade() *Trade {
-	if x != nil {
-		return x.Trade
-	}
-	return nil
-}
-
-// Response message for ListTrades method.
-type ListTradesResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Trades        []*Trade               `protobuf:"bytes,1,rep,name=trades,proto3" json:"trades,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListTradesResponse) Reset() {
-	*x = ListTradesResponse{}
-	mi := &file_provider_proto_msgTypes[23]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListTradesResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListTradesResponse) ProtoMessage() {}
-
-func (x *ListTradesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[23]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListTradesResponse.ProtoReflect.Descriptor instead.
-func (*ListTradesResponse) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{23}
-}
-
-func (x *ListTradesResponse) GetTrades() []*Trade {
-	if x != nil {
-		return x.Trades
-	}
-	return nil
-}
-
-// Request message for GetTicks method.
 type GetTicksRequest struct {
-	state                protoimpl.MessageState `protogen:"open.v1"`
-	ContractCode         string                 `protobuf:"bytes,1,opt,name=contract_code,json=contractCode,proto3" json:"contract_code,omitempty"`
-	ContractSecurityType string                 `protobuf:"bytes,2,opt,name=contract_security_type,json=contractSecurityType,proto3" json:"contract_security_type,omitempty"`
-	Date                 string                 `protobuf:"bytes,3,opt,name=date,proto3" json:"date,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ContractCode  string                 `protobuf:"bytes,1,opt,name=contract_code,json=contractCode,proto3" json:"contract_code,omitempty"`
+	Date          string                 `protobuf:"bytes,2,opt,name=date,proto3" json:"date,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GetTicksRequest) Reset() {
 	*x = GetTicksRequest{}
-	mi := &file_provider_proto_msgTypes[24]
+	mi := &file_provider_proto_msgTypes[71]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2020,7 +4550,7 @@ func (x *GetTicksRequest) String() string {
 func (*GetTicksRequest) ProtoMessage() {}
 
 func (x *GetTicksRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[24]
+	mi := &file_provider_proto_msgTypes[71]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2033,19 +4563,12 @@ func (x *GetTicksRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTicksRequest.ProtoReflect.Descriptor instead.
 func (*GetTicksRequest) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{24}
+	return file_provider_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *GetTicksRequest) GetContractCode() string {
 	if x != nil {
 		return x.ContractCode
-	}
-	return ""
-}
-
-func (x *GetTicksRequest) GetContractSecurityType() string {
-	if x != nil {
-		return x.ContractSecurityType
 	}
 	return ""
 }
@@ -2057,29 +4580,35 @@ func (x *GetTicksRequest) GetDate() string {
 	return ""
 }
 
-// Response message for GetTicks method.
-type GetTicksResponse struct {
+type Ticks struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Ticks         []*Tick                `protobuf:"bytes,1,rep,name=ticks,proto3" json:"ticks,omitempty"`
+	Ts            []int64                `protobuf:"varint,1,rep,packed,name=ts,proto3" json:"ts,omitempty"`
+	Close         []float64              `protobuf:"fixed64,2,rep,packed,name=close,proto3" json:"close,omitempty"`
+	Volume        []int64                `protobuf:"varint,3,rep,packed,name=volume,proto3" json:"volume,omitempty"`
+	BidPrice      []float64              `protobuf:"fixed64,4,rep,packed,name=bid_price,json=bidPrice,proto3" json:"bid_price,omitempty"`
+	BidVolume     []int64                `protobuf:"varint,5,rep,packed,name=bid_volume,json=bidVolume,proto3" json:"bid_volume,omitempty"`
+	AskPrice      []float64              `protobuf:"fixed64,6,rep,packed,name=ask_price,json=askPrice,proto3" json:"ask_price,omitempty"`
+	AskVolume     []int64                `protobuf:"varint,7,rep,packed,name=ask_volume,json=askVolume,proto3" json:"ask_volume,omitempty"`
+	TickType      []int32                `protobuf:"varint,8,rep,packed,name=tick_type,json=tickType,proto3" json:"tick_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetTicksResponse) Reset() {
-	*x = GetTicksResponse{}
-	mi := &file_provider_proto_msgTypes[25]
+func (x *Ticks) Reset() {
+	*x = Ticks{}
+	mi := &file_provider_proto_msgTypes[72]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetTicksResponse) String() string {
+func (x *Ticks) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetTicksResponse) ProtoMessage() {}
+func (*Ticks) ProtoMessage() {}
 
-func (x *GetTicksResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[25]
+func (x *Ticks) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[72]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2090,32 +4619,79 @@ func (x *GetTicksResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetTicksResponse.ProtoReflect.Descriptor instead.
-func (*GetTicksResponse) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{25}
+// Deprecated: Use Ticks.ProtoReflect.Descriptor instead.
+func (*Ticks) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{72}
 }
 
-func (x *GetTicksResponse) GetTicks() []*Tick {
+func (x *Ticks) GetTs() []int64 {
 	if x != nil {
-		return x.Ticks
+		return x.Ts
 	}
 	return nil
 }
 
-// Request message for GetKbars method.
+func (x *Ticks) GetClose() []float64 {
+	if x != nil {
+		return x.Close
+	}
+	return nil
+}
+
+func (x *Ticks) GetVolume() []int64 {
+	if x != nil {
+		return x.Volume
+	}
+	return nil
+}
+
+func (x *Ticks) GetBidPrice() []float64 {
+	if x != nil {
+		return x.BidPrice
+	}
+	return nil
+}
+
+func (x *Ticks) GetBidVolume() []int64 {
+	if x != nil {
+		return x.BidVolume
+	}
+	return nil
+}
+
+func (x *Ticks) GetAskPrice() []float64 {
+	if x != nil {
+		return x.AskPrice
+	}
+	return nil
+}
+
+func (x *Ticks) GetAskVolume() []int64 {
+	if x != nil {
+		return x.AskVolume
+	}
+	return nil
+}
+
+func (x *Ticks) GetTickType() []int32 {
+	if x != nil {
+		return x.TickType
+	}
+	return nil
+}
+
 type GetKbarsRequest struct {
-	state                protoimpl.MessageState `protogen:"open.v1"`
-	ContractCode         string                 `protobuf:"bytes,1,opt,name=contract_code,json=contractCode,proto3" json:"contract_code,omitempty"`
-	ContractSecurityType string                 `protobuf:"bytes,2,opt,name=contract_security_type,json=contractSecurityType,proto3" json:"contract_security_type,omitempty"`
-	StartDate            string                 `protobuf:"bytes,3,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
-	EndDate              string                 `protobuf:"bytes,4,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ContractCode  string                 `protobuf:"bytes,1,opt,name=contract_code,json=contractCode,proto3" json:"contract_code,omitempty"`
+	StartDate     string                 `protobuf:"bytes,2,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
+	EndDate       string                 `protobuf:"bytes,3,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GetKbarsRequest) Reset() {
 	*x = GetKbarsRequest{}
-	mi := &file_provider_proto_msgTypes[26]
+	mi := &file_provider_proto_msgTypes[73]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2127,7 +4703,7 @@ func (x *GetKbarsRequest) String() string {
 func (*GetKbarsRequest) ProtoMessage() {}
 
 func (x *GetKbarsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[26]
+	mi := &file_provider_proto_msgTypes[73]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2140,19 +4716,12 @@ func (x *GetKbarsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetKbarsRequest.ProtoReflect.Descriptor instead.
 func (*GetKbarsRequest) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{26}
+	return file_provider_proto_rawDescGZIP(), []int{73}
 }
 
 func (x *GetKbarsRequest) GetContractCode() string {
 	if x != nil {
 		return x.ContractCode
-	}
-	return ""
-}
-
-func (x *GetKbarsRequest) GetContractSecurityType() string {
-	if x != nil {
-		return x.ContractSecurityType
 	}
 	return ""
 }
@@ -2171,29 +4740,34 @@ func (x *GetKbarsRequest) GetEndDate() string {
 	return ""
 }
 
-// Response message for GetKbars method.
-type GetKbarsResponse struct {
+type Kbars struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Kbars         []*Kbar                `protobuf:"bytes,1,rep,name=kbars,proto3" json:"kbars,omitempty"`
+	Ts            []int64                `protobuf:"varint,1,rep,packed,name=ts,proto3" json:"ts,omitempty"`
+	Open          []float64              `protobuf:"fixed64,2,rep,packed,name=open,proto3" json:"open,omitempty"`
+	High          []float64              `protobuf:"fixed64,3,rep,packed,name=high,proto3" json:"high,omitempty"`
+	Low           []float64              `protobuf:"fixed64,4,rep,packed,name=low,proto3" json:"low,omitempty"`
+	Close         []float64              `protobuf:"fixed64,5,rep,packed,name=close,proto3" json:"close,omitempty"`
+	Volume        []int64                `protobuf:"varint,6,rep,packed,name=volume,proto3" json:"volume,omitempty"`
+	Amount        []float64              `protobuf:"fixed64,7,rep,packed,name=amount,proto3" json:"amount,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetKbarsResponse) Reset() {
-	*x = GetKbarsResponse{}
-	mi := &file_provider_proto_msgTypes[27]
+func (x *Kbars) Reset() {
+	*x = Kbars{}
+	mi := &file_provider_proto_msgTypes[74]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetKbarsResponse) String() string {
+func (x *Kbars) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetKbarsResponse) ProtoMessage() {}
+func (*Kbars) ProtoMessage() {}
 
-func (x *GetKbarsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[27]
+func (x *Kbars) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[74]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2204,41 +4778,210 @@ func (x *GetKbarsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetKbarsResponse.ProtoReflect.Descriptor instead.
-func (*GetKbarsResponse) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{27}
+// Deprecated: Use Kbars.ProtoReflect.Descriptor instead.
+func (*Kbars) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{74}
 }
 
-func (x *GetKbarsResponse) GetKbars() []*Kbar {
+func (x *Kbars) GetTs() []int64 {
 	if x != nil {
-		return x.Kbars
+		return x.Ts
 	}
 	return nil
 }
 
-// Request message for GetSnapshots method.
-type GetSnapshotsRequest struct {
+func (x *Kbars) GetOpen() []float64 {
+	if x != nil {
+		return x.Open
+	}
+	return nil
+}
+
+func (x *Kbars) GetHigh() []float64 {
+	if x != nil {
+		return x.High
+	}
+	return nil
+}
+
+func (x *Kbars) GetLow() []float64 {
+	if x != nil {
+		return x.Low
+	}
+	return nil
+}
+
+func (x *Kbars) GetClose() []float64 {
+	if x != nil {
+		return x.Close
+	}
+	return nil
+}
+
+func (x *Kbars) GetVolume() []int64 {
+	if x != nil {
+		return x.Volume
+	}
+	return nil
+}
+
+func (x *Kbars) GetAmount() []float64 {
+	if x != nil {
+		return x.Amount
+	}
+	return nil
+}
+
+type GetDailyQuotesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Date          string                 `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetDailyQuotesRequest) Reset() {
+	*x = GetDailyQuotesRequest{}
+	mi := &file_provider_proto_msgTypes[75]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetDailyQuotesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetDailyQuotesRequest) ProtoMessage() {}
+
+func (x *GetDailyQuotesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[75]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetDailyQuotesRequest.ProtoReflect.Descriptor instead.
+func (*GetDailyQuotesRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{75}
+}
+
+func (x *GetDailyQuotesRequest) GetDate() string {
+	if x != nil {
+		return x.Date
+	}
+	return ""
+}
+
+type DailyQuotes struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          []string               `protobuf:"bytes,1,rep,name=code,proto3" json:"code,omitempty"`
+	Open          []float64              `protobuf:"fixed64,2,rep,packed,name=open,proto3" json:"open,omitempty"`
+	High          []float64              `protobuf:"fixed64,3,rep,packed,name=high,proto3" json:"high,omitempty"`
+	Low           []float64              `protobuf:"fixed64,4,rep,packed,name=low,proto3" json:"low,omitempty"`
+	Close         []float64              `protobuf:"fixed64,5,rep,packed,name=close,proto3" json:"close,omitempty"`
+	Volume        []int64                `protobuf:"varint,6,rep,packed,name=volume,proto3" json:"volume,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DailyQuotes) Reset() {
+	*x = DailyQuotes{}
+	mi := &file_provider_proto_msgTypes[76]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DailyQuotes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DailyQuotes) ProtoMessage() {}
+
+func (x *DailyQuotes) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[76]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DailyQuotes.ProtoReflect.Descriptor instead.
+func (*DailyQuotes) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{76}
+}
+
+func (x *DailyQuotes) GetCode() []string {
+	if x != nil {
+		return x.Code
+	}
+	return nil
+}
+
+func (x *DailyQuotes) GetOpen() []float64 {
+	if x != nil {
+		return x.Open
+	}
+	return nil
+}
+
+func (x *DailyQuotes) GetHigh() []float64 {
+	if x != nil {
+		return x.High
+	}
+	return nil
+}
+
+func (x *DailyQuotes) GetLow() []float64 {
+	if x != nil {
+		return x.Low
+	}
+	return nil
+}
+
+func (x *DailyQuotes) GetClose() []float64 {
+	if x != nil {
+		return x.Close
+	}
+	return nil
+}
+
+func (x *DailyQuotes) GetVolume() []int64 {
+	if x != nil {
+		return x.Volume
+	}
+	return nil
+}
+
+type CreditEnquiresRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ContractCodes []string               `protobuf:"bytes,1,rep,name=contract_codes,json=contractCodes,proto3" json:"contract_codes,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetSnapshotsRequest) Reset() {
-	*x = GetSnapshotsRequest{}
-	mi := &file_provider_proto_msgTypes[28]
+func (x *CreditEnquiresRequest) Reset() {
+	*x = CreditEnquiresRequest{}
+	mi := &file_provider_proto_msgTypes[77]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetSnapshotsRequest) String() string {
+func (x *CreditEnquiresRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetSnapshotsRequest) ProtoMessage() {}
+func (*CreditEnquiresRequest) ProtoMessage() {}
 
-func (x *GetSnapshotsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[28]
+func (x *CreditEnquiresRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[77]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2249,41 +4992,40 @@ func (x *GetSnapshotsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetSnapshotsRequest.ProtoReflect.Descriptor instead.
-func (*GetSnapshotsRequest) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{28}
+// Deprecated: Use CreditEnquiresRequest.ProtoReflect.Descriptor instead.
+func (*CreditEnquiresRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{77}
 }
 
-func (x *GetSnapshotsRequest) GetContractCodes() []string {
+func (x *CreditEnquiresRequest) GetContractCodes() []string {
 	if x != nil {
 		return x.ContractCodes
 	}
 	return nil
 }
 
-// Response message for GetSnapshots method.
-type GetSnapshotsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Snapshots     []*Snapshot            `protobuf:"bytes,1,rep,name=snapshots,proto3" json:"snapshots,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+type CreditEnquiresResponse struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	CreditEnquires []*CreditEnquire       `protobuf:"bytes,1,rep,name=credit_enquires,json=creditEnquires,proto3" json:"credit_enquires,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
-func (x *GetSnapshotsResponse) Reset() {
-	*x = GetSnapshotsResponse{}
-	mi := &file_provider_proto_msgTypes[29]
+func (x *CreditEnquiresResponse) Reset() {
+	*x = CreditEnquiresResponse{}
+	mi := &file_provider_proto_msgTypes[78]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetSnapshotsResponse) String() string {
+func (x *CreditEnquiresResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetSnapshotsResponse) ProtoMessage() {}
+func (*CreditEnquiresResponse) ProtoMessage() {}
 
-func (x *GetSnapshotsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[29]
+func (x *CreditEnquiresResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[78]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2294,43 +5036,42 @@ func (x *GetSnapshotsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetSnapshotsResponse.ProtoReflect.Descriptor instead.
-func (*GetSnapshotsResponse) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{29}
+// Deprecated: Use CreditEnquiresResponse.ProtoReflect.Descriptor instead.
+func (*CreditEnquiresResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{78}
 }
 
-func (x *GetSnapshotsResponse) GetSnapshots() []*Snapshot {
+func (x *CreditEnquiresResponse) GetCreditEnquires() []*CreditEnquire {
 	if x != nil {
-		return x.Snapshots
+		return x.CreditEnquires
 	}
 	return nil
 }
 
-// Request message for SubscribeQuote method.
-type SubscribeQuoteRequest struct {
-	state                protoimpl.MessageState `protogen:"open.v1"`
-	ContractCode         string                 `protobuf:"bytes,1,opt,name=contract_code,json=contractCode,proto3" json:"contract_code,omitempty"`
-	ContractSecurityType string                 `protobuf:"bytes,2,opt,name=contract_security_type,json=contractSecurityType,proto3" json:"contract_security_type,omitempty"`
-	QuoteType            string                 `protobuf:"bytes,3,opt,name=quote_type,json=quoteType,proto3" json:"quote_type,omitempty"` // "tick", "bidask"
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+type CreditEnquire struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	StockId       string                 `protobuf:"bytes,1,opt,name=stock_id,json=stockId,proto3" json:"stock_id,omitempty"`
+	MarginUnit    int64                  `protobuf:"varint,2,opt,name=margin_unit,json=marginUnit,proto3" json:"margin_unit,omitempty"`
+	ShortUnit     int64                  `protobuf:"varint,3,opt,name=short_unit,json=shortUnit,proto3" json:"short_unit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SubscribeQuoteRequest) Reset() {
-	*x = SubscribeQuoteRequest{}
-	mi := &file_provider_proto_msgTypes[30]
+func (x *CreditEnquire) Reset() {
+	*x = CreditEnquire{}
+	mi := &file_provider_proto_msgTypes[79]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SubscribeQuoteRequest) String() string {
+func (x *CreditEnquire) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SubscribeQuoteRequest) ProtoMessage() {}
+func (*CreditEnquire) ProtoMessage() {}
 
-func (x *SubscribeQuoteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[30]
+func (x *CreditEnquire) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[79]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2341,57 +5082,54 @@ func (x *SubscribeQuoteRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SubscribeQuoteRequest.ProtoReflect.Descriptor instead.
-func (*SubscribeQuoteRequest) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{30}
+// Deprecated: Use CreditEnquire.ProtoReflect.Descriptor instead.
+func (*CreditEnquire) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{79}
 }
 
-func (x *SubscribeQuoteRequest) GetContractCode() string {
+func (x *CreditEnquire) GetStockId() string {
 	if x != nil {
-		return x.ContractCode
+		return x.StockId
 	}
 	return ""
 }
 
-func (x *SubscribeQuoteRequest) GetContractSecurityType() string {
+func (x *CreditEnquire) GetMarginUnit() int64 {
 	if x != nil {
-		return x.ContractSecurityType
+		return x.MarginUnit
 	}
-	return ""
+	return 0
 }
 
-func (x *SubscribeQuoteRequest) GetQuoteType() string {
+func (x *CreditEnquire) GetShortUnit() int64 {
 	if x != nil {
-		return x.QuoteType
+		return x.ShortUnit
 	}
-	return ""
+	return 0
 }
 
-// Request message for UnsubscribeQuote method.
-type UnsubscribeQuoteRequest struct {
-	state                protoimpl.MessageState `protogen:"open.v1"`
-	ContractCode         string                 `protobuf:"bytes,1,opt,name=contract_code,json=contractCode,proto3" json:"contract_code,omitempty"`
-	ContractSecurityType string                 `protobuf:"bytes,2,opt,name=contract_security_type,json=contractSecurityType,proto3" json:"contract_security_type,omitempty"`
-	QuoteType            string                 `protobuf:"bytes,3,opt,name=quote_type,json=quoteType,proto3" json:"quote_type,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+type GetShortStockSourcesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ContractCodes []string               `protobuf:"bytes,1,rep,name=contract_codes,json=contractCodes,proto3" json:"contract_codes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UnsubscribeQuoteRequest) Reset() {
-	*x = UnsubscribeQuoteRequest{}
-	mi := &file_provider_proto_msgTypes[31]
+func (x *GetShortStockSourcesRequest) Reset() {
+	*x = GetShortStockSourcesRequest{}
+	mi := &file_provider_proto_msgTypes[80]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UnsubscribeQuoteRequest) String() string {
+func (x *GetShortStockSourcesRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UnsubscribeQuoteRequest) ProtoMessage() {}
+func (*GetShortStockSourcesRequest) ProtoMessage() {}
 
-func (x *UnsubscribeQuoteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_proto_msgTypes[31]
+func (x *GetShortStockSourcesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[80]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2402,37 +5140,856 @@ func (x *UnsubscribeQuoteRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UnsubscribeQuoteRequest.ProtoReflect.Descriptor instead.
-func (*UnsubscribeQuoteRequest) Descriptor() ([]byte, []int) {
-	return file_provider_proto_rawDescGZIP(), []int{31}
+// Deprecated: Use GetShortStockSourcesRequest.ProtoReflect.Descriptor instead.
+func (*GetShortStockSourcesRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{80}
 }
 
-func (x *UnsubscribeQuoteRequest) GetContractCode() string {
+func (x *GetShortStockSourcesRequest) GetContractCodes() []string {
 	if x != nil {
-		return x.ContractCode
+		return x.ContractCodes
+	}
+	return nil
+}
+
+type GetShortStockSourcesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Sources       []*ShortStockSource    `protobuf:"bytes,1,rep,name=sources,proto3" json:"sources,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetShortStockSourcesResponse) Reset() {
+	*x = GetShortStockSourcesResponse{}
+	mi := &file_provider_proto_msgTypes[81]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetShortStockSourcesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetShortStockSourcesResponse) ProtoMessage() {}
+
+func (x *GetShortStockSourcesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[81]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetShortStockSourcesResponse.ProtoReflect.Descriptor instead.
+func (*GetShortStockSourcesResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{81}
+}
+
+func (x *GetShortStockSourcesResponse) GetSources() []*ShortStockSource {
+	if x != nil {
+		return x.Sources
+	}
+	return nil
+}
+
+type ShortStockSource struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Code             string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	ShortStockSource int64                  `protobuf:"varint,2,opt,name=short_stock_source,json=shortStockSource,proto3" json:"short_stock_source,omitempty"`
+	Ts               int64                  `protobuf:"varint,3,opt,name=ts,proto3" json:"ts,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *ShortStockSource) Reset() {
+	*x = ShortStockSource{}
+	mi := &file_provider_proto_msgTypes[82]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ShortStockSource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ShortStockSource) ProtoMessage() {}
+
+func (x *ShortStockSource) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[82]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ShortStockSource.ProtoReflect.Descriptor instead.
+func (*ShortStockSource) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{82}
+}
+
+func (x *ShortStockSource) GetCode() string {
+	if x != nil {
+		return x.Code
 	}
 	return ""
 }
 
-func (x *UnsubscribeQuoteRequest) GetContractSecurityType() string {
+func (x *ShortStockSource) GetShortStockSource() int64 {
 	if x != nil {
-		return x.ContractSecurityType
+		return x.ShortStockSource
+	}
+	return 0
+}
+
+func (x *ShortStockSource) GetTs() int64 {
+	if x != nil {
+		return x.Ts
+	}
+	return 0
+}
+
+type GetScannersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ScannerType   string                 `protobuf:"bytes,1,opt,name=scanner_type,json=scannerType,proto3" json:"scanner_type,omitempty"`
+	Ascending     bool                   `protobuf:"varint,2,opt,name=ascending,proto3" json:"ascending,omitempty"`
+	Date          string                 `protobuf:"bytes,3,opt,name=date,proto3" json:"date,omitempty"`
+	Count         int32                  `protobuf:"varint,4,opt,name=count,proto3" json:"count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetScannersRequest) Reset() {
+	*x = GetScannersRequest{}
+	mi := &file_provider_proto_msgTypes[83]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetScannersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetScannersRequest) ProtoMessage() {}
+
+func (x *GetScannersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[83]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetScannersRequest.ProtoReflect.Descriptor instead.
+func (*GetScannersRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{83}
+}
+
+func (x *GetScannersRequest) GetScannerType() string {
+	if x != nil {
+		return x.ScannerType
 	}
 	return ""
 }
 
-func (x *UnsubscribeQuoteRequest) GetQuoteType() string {
+func (x *GetScannersRequest) GetAscending() bool {
 	if x != nil {
-		return x.QuoteType
+		return x.Ascending
+	}
+	return false
+}
+
+func (x *GetScannersRequest) GetDate() string {
+	if x != nil {
+		return x.Date
 	}
 	return ""
+}
+
+func (x *GetScannersRequest) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+type GetScannersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Scanners      []*ScannerItem         `protobuf:"bytes,1,rep,name=scanners,proto3" json:"scanners,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetScannersResponse) Reset() {
+	*x = GetScannersResponse{}
+	mi := &file_provider_proto_msgTypes[84]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetScannersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetScannersResponse) ProtoMessage() {}
+
+func (x *GetScannersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[84]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetScannersResponse.ProtoReflect.Descriptor instead.
+func (*GetScannersResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{84}
+}
+
+func (x *GetScannersResponse) GetScanners() []*ScannerItem {
+	if x != nil {
+		return x.Scanners
+	}
+	return nil
+}
+
+type ScannerItem struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Close         float64                `protobuf:"fixed64,3,opt,name=close,proto3" json:"close,omitempty"`
+	ChangePrice   float64                `protobuf:"fixed64,4,opt,name=change_price,json=changePrice,proto3" json:"change_price,omitempty"`
+	TotalVolume   int64                  `protobuf:"varint,5,opt,name=total_volume,json=totalVolume,proto3" json:"total_volume,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ScannerItem) Reset() {
+	*x = ScannerItem{}
+	mi := &file_provider_proto_msgTypes[85]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ScannerItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ScannerItem) ProtoMessage() {}
+
+func (x *ScannerItem) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[85]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ScannerItem.ProtoReflect.Descriptor instead.
+func (*ScannerItem) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{85}
+}
+
+func (x *ScannerItem) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *ScannerItem) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *ScannerItem) GetClose() float64 {
+	if x != nil {
+		return x.Close
+	}
+	return 0
+}
+
+func (x *ScannerItem) GetChangePrice() float64 {
+	if x != nil {
+		return x.ChangePrice
+	}
+	return 0
+}
+
+func (x *ScannerItem) GetTotalVolume() int64 {
+	if x != nil {
+		return x.TotalVolume
+	}
+	return 0
+}
+
+type Punish struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          []string               `protobuf:"bytes,1,rep,name=code,proto3" json:"code,omitempty"`
+	StartDate     []string               `protobuf:"bytes,2,rep,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
+	EndDate       []string               `protobuf:"bytes,3,rep,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
+	Interval      []string               `protobuf:"bytes,4,rep,name=interval,proto3" json:"interval,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Punish) Reset() {
+	*x = Punish{}
+	mi := &file_provider_proto_msgTypes[86]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Punish) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Punish) ProtoMessage() {}
+
+func (x *Punish) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[86]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Punish.ProtoReflect.Descriptor instead.
+func (*Punish) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{86}
+}
+
+func (x *Punish) GetCode() []string {
+	if x != nil {
+		return x.Code
+	}
+	return nil
+}
+
+func (x *Punish) GetStartDate() []string {
+	if x != nil {
+		return x.StartDate
+	}
+	return nil
+}
+
+func (x *Punish) GetEndDate() []string {
+	if x != nil {
+		return x.EndDate
+	}
+	return nil
+}
+
+func (x *Punish) GetInterval() []string {
+	if x != nil {
+		return x.Interval
+	}
+	return nil
+}
+
+type Notice struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          []string               `protobuf:"bytes,1,rep,name=code,proto3" json:"code,omitempty"`
+	Reason        []string               `protobuf:"bytes,2,rep,name=reason,proto3" json:"reason,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Notice) Reset() {
+	*x = Notice{}
+	mi := &file_provider_proto_msgTypes[87]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Notice) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Notice) ProtoMessage() {}
+
+func (x *Notice) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[87]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Notice.ProtoReflect.Descriptor instead.
+func (*Notice) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{87}
+}
+
+func (x *Notice) GetCode() []string {
+	if x != nil {
+		return x.Code
+	}
+	return nil
+}
+
+func (x *Notice) GetReason() []string {
+	if x != nil {
+		return x.Reason
+	}
+	return nil
+}
+
+type FetchContractsRequest struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	ContractDownload bool                   `protobuf:"varint,1,opt,name=contract_download,json=contractDownload,proto3" json:"contract_download,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *FetchContractsRequest) Reset() {
+	*x = FetchContractsRequest{}
+	mi := &file_provider_proto_msgTypes[88]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchContractsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchContractsRequest) ProtoMessage() {}
+
+func (x *FetchContractsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[88]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchContractsRequest.ProtoReflect.Descriptor instead.
+func (*FetchContractsRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{88}
+}
+
+func (x *FetchContractsRequest) GetContractDownload() bool {
+	if x != nil {
+		return x.ContractDownload
+	}
+	return false
+}
+
+type ActivateCARequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CaPath        string                 `protobuf:"bytes,1,opt,name=ca_path,json=caPath,proto3" json:"ca_path,omitempty"`
+	CaPasswd      string                 `protobuf:"bytes,2,opt,name=ca_passwd,json=caPasswd,proto3" json:"ca_passwd,omitempty"`
+	PersonId      string                 `protobuf:"bytes,3,opt,name=person_id,json=personId,proto3" json:"person_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ActivateCARequest) Reset() {
+	*x = ActivateCARequest{}
+	mi := &file_provider_proto_msgTypes[89]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ActivateCARequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ActivateCARequest) ProtoMessage() {}
+
+func (x *ActivateCARequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[89]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ActivateCARequest.ProtoReflect.Descriptor instead.
+func (*ActivateCARequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{89}
+}
+
+func (x *ActivateCARequest) GetCaPath() string {
+	if x != nil {
+		return x.CaPath
+	}
+	return ""
+}
+
+func (x *ActivateCARequest) GetCaPasswd() string {
+	if x != nil {
+		return x.CaPasswd
+	}
+	return ""
+}
+
+func (x *ActivateCARequest) GetPersonId() string {
+	if x != nil {
+		return x.PersonId
+	}
+	return ""
+}
+
+type ActivateCAResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ActivateCAResponse) Reset() {
+	*x = ActivateCAResponse{}
+	mi := &file_provider_proto_msgTypes[90]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ActivateCAResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ActivateCAResponse) ProtoMessage() {}
+
+func (x *ActivateCAResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[90]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ActivateCAResponse.ProtoReflect.Descriptor instead.
+func (*ActivateCAResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{90}
+}
+
+func (x *ActivateCAResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+type GetCAExpireTimeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PersonId      string                 `protobuf:"bytes,1,opt,name=person_id,json=personId,proto3" json:"person_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCAExpireTimeRequest) Reset() {
+	*x = GetCAExpireTimeRequest{}
+	mi := &file_provider_proto_msgTypes[91]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCAExpireTimeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCAExpireTimeRequest) ProtoMessage() {}
+
+func (x *GetCAExpireTimeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[91]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCAExpireTimeRequest.ProtoReflect.Descriptor instead.
+func (*GetCAExpireTimeRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{91}
+}
+
+func (x *GetCAExpireTimeRequest) GetPersonId() string {
+	if x != nil {
+		return x.PersonId
+	}
+	return ""
+}
+
+type GetCAExpireTimeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ExpireTime    string                 `protobuf:"bytes,1,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCAExpireTimeResponse) Reset() {
+	*x = GetCAExpireTimeResponse{}
+	mi := &file_provider_proto_msgTypes[92]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCAExpireTimeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCAExpireTimeResponse) ProtoMessage() {}
+
+func (x *GetCAExpireTimeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[92]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCAExpireTimeResponse.ProtoReflect.Descriptor instead.
+func (*GetCAExpireTimeResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{92}
+}
+
+func (x *GetCAExpireTimeResponse) GetExpireTime() string {
+	if x != nil {
+		return x.ExpireTime
+	}
+	return ""
+}
+
+type SubscribeTradeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SubscribeTradeRequest) Reset() {
+	*x = SubscribeTradeRequest{}
+	mi := &file_provider_proto_msgTypes[93]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubscribeTradeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubscribeTradeRequest) ProtoMessage() {}
+
+func (x *SubscribeTradeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[93]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubscribeTradeRequest.ProtoReflect.Descriptor instead.
+func (*SubscribeTradeRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{93}
+}
+
+func (x *SubscribeTradeRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+type SubscribeTradeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SubscribeTradeResponse) Reset() {
+	*x = SubscribeTradeResponse{}
+	mi := &file_provider_proto_msgTypes[94]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubscribeTradeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubscribeTradeResponse) ProtoMessage() {}
+
+func (x *SubscribeTradeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[94]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubscribeTradeResponse.ProtoReflect.Descriptor instead.
+func (*SubscribeTradeResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{94}
+}
+
+func (x *SubscribeTradeResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+type UnsubscribeTradeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UnsubscribeTradeRequest) Reset() {
+	*x = UnsubscribeTradeRequest{}
+	mi := &file_provider_proto_msgTypes[95]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UnsubscribeTradeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnsubscribeTradeRequest) ProtoMessage() {}
+
+func (x *UnsubscribeTradeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[95]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnsubscribeTradeRequest.ProtoReflect.Descriptor instead.
+func (*UnsubscribeTradeRequest) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{95}
+}
+
+func (x *UnsubscribeTradeRequest) GetAccount() *Account {
+	if x != nil {
+		return x.Account
+	}
+	return nil
+}
+
+type UnsubscribeTradeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UnsubscribeTradeResponse) Reset() {
+	*x = UnsubscribeTradeResponse{}
+	mi := &file_provider_proto_msgTypes[96]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UnsubscribeTradeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnsubscribeTradeResponse) ProtoMessage() {}
+
+func (x *UnsubscribeTradeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_proto_msgTypes[96]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnsubscribeTradeResponse.ProtoReflect.Descriptor instead.
+func (*UnsubscribeTradeResponse) Descriptor() ([]byte, []int) {
+	return file_provider_proto_rawDescGZIP(), []int{96}
+}
+
+func (x *UnsubscribeTradeResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
 }
 
 var File_provider_proto protoreflect.FileDescriptor
 
 const file_provider_proto_rawDesc = "" +
 	"\n" +
-	"\x0eprovider.proto\x12\x02v1\"\xb9\x01\n" +
+	"\x0eprovider.proto\x12\x02v1\"\a\n" +
+	"\x05Empty\"F\n" +
+	"\fLoginRequest\x12\x17\n" +
+	"\aapi_key\x18\x01 \x01(\tR\x06apiKey\x12\x1d\n" +
+	"\n" +
+	"secret_key\x18\x02 \x01(\tR\tsecretKey\"8\n" +
+	"\rLoginResponse\x12'\n" +
+	"\baccounts\x18\x01 \x03(\v2\v.v1.AccountR\baccounts\"*\n" +
+	"\x0eLogoutResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xb9\x01\n" +
 	"\aAccount\x12!\n" +
 	"\faccount_type\x18\x01 \x01(\tR\vaccountType\x12\x1b\n" +
 	"\tperson_id\x18\x02 \x01(\tR\bpersonId\x12\x1b\n" +
@@ -2440,124 +5997,108 @@ const file_provider_proto_rawDesc = "" +
 	"\n" +
 	"account_id\x18\x04 \x01(\tR\taccountId\x12\x16\n" +
 	"\x06signed\x18\x05 \x01(\bR\x06signed\x12\x1a\n" +
-	"\busername\x18\x06 \x01(\tR\busername\"\xbd\x02\n" +
+	"\busername\x18\x06 \x01(\tR\busername\"\x8f\x01\n" +
+	"\vUsageStatus\x12 \n" +
+	"\vconnections\x18\x01 \x01(\x03R\vconnections\x12\x14\n" +
+	"\x05bytes\x18\x02 \x01(\x03R\x05bytes\x12\x1f\n" +
+	"\vlimit_bytes\x18\x03 \x01(\x03R\n" +
+	"limitBytes\x12'\n" +
+	"\x0fremaining_bytes\x18\x04 \x01(\x03R\x0eremainingBytes\"?\n" +
+	"\x14ListAccountsResponse\x12'\n" +
+	"\baccounts\x18\x01 \x03(\v2\v.v1.AccountR\baccounts\"y\n" +
+	"\x0eAccountBalance\x12\x1f\n" +
+	"\vacc_balance\x18\x01 \x01(\x01R\n" +
+	"accBalance\x12\x12\n" +
+	"\x04date\x18\x02 \x01(\tR\x04date\x12\x16\n" +
+	"\x06errmsg\x18\x03 \x01(\tR\x06errmsg\x12\x1a\n" +
+	"\bcurrency\x18\x04 \x01(\tR\bcurrency\"\xa7\x01\n" +
 	"\bContract\x12#\n" +
-	"\rsecurity_type\x18\x01 \x01(\tR\fsecurityType\x12\x12\n" +
-	"\x04code\x18\x02 \x01(\tR\x04code\x12\x16\n" +
-	"\x06symbol\x18\x03 \x01(\tR\x06symbol\x12\x1a\n" +
-	"\bexchange\x18\x04 \x01(\tR\bexchange\x12\x12\n" +
+	"\rsecurity_type\x18\x01 \x01(\tR\fsecurityType\x12\x1a\n" +
+	"\bexchange\x18\x02 \x01(\tR\bexchange\x12\x12\n" +
+	"\x04code\x18\x03 \x01(\tR\x04code\x12\x16\n" +
+	"\x06symbol\x18\x04 \x01(\tR\x06symbol\x12\x12\n" +
 	"\x04name\x18\x05 \x01(\tR\x04name\x12\x1a\n" +
-	"\bcurrency\x18\x06 \x01(\tR\bcurrency\x12\x19\n" +
-	"\blimit_up\x18\a \x01(\x01R\alimitUp\x12\x1d\n" +
-	"\n" +
-	"limit_down\x18\b \x01(\x01R\tlimitDown\x12\x1c\n" +
-	"\treference\x18\t \x01(\x01R\treference\x12\x1f\n" +
-	"\vupdate_date\x18\n" +
-	" \x01(\tR\n" +
-	"updateDate\x12\x1b\n" +
-	"\tday_trade\x18\v \x01(\tR\bdayTrade\"\xd1\x02\n" +
+	"\bcurrency\x18\x06 \x01(\tR\bcurrency\"#\n" +
+	"\rComboContract\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\tR\x04code\"\xf2\x01\n" +
 	"\x05Order\x12\x16\n" +
 	"\x06action\x18\x01 \x01(\tR\x06action\x12\x14\n" +
 	"\x05price\x18\x02 \x01(\x01R\x05price\x12\x1a\n" +
-	"\bquantity\x18\x03 \x01(\x03R\bquantity\x12\x1d\n" +
+	"\bquantity\x18\x03 \x01(\x03R\bquantity\x12\x0e\n" +
+	"\x02id\x18\x04 \x01(\tR\x02id\x12\x14\n" +
+	"\x05seqno\x18\x05 \x01(\tR\x05seqno\x12\x14\n" +
+	"\x05ordno\x18\x06 \x01(\tR\x05ordno\x12%\n" +
+	"\aaccount\x18\a \x01(\v2\v.v1.AccountR\aaccount\x12\x1d\n" +
 	"\n" +
-	"price_type\x18\x04 \x01(\tR\tpriceType\x12\x1d\n" +
+	"price_type\x18\b \x01(\tR\tpriceType\x12\x1d\n" +
 	"\n" +
-	"order_type\x18\x05 \x01(\tR\torderType\x12\x1b\n" +
-	"\torder_lot\x18\x06 \x01(\tR\borderLot\x12\x1d\n" +
+	"order_type\x18\t \x01(\tR\torderType\"\xf7\x01\n" +
 	"\n" +
-	"order_cond\x18\a \x01(\tR\torderCond\x12\x0e\n" +
-	"\x02id\x18\b \x01(\tR\x02id\x12\x14\n" +
-	"\x05seqno\x18\t \x01(\tR\x05seqno\x12\x14\n" +
-	"\x05ordno\x18\n" +
-	" \x01(\tR\x05ordno\x12%\n" +
-	"\aaccount\x18\v \x01(\v2\v.v1.AccountR\aaccount\x12!\n" +
-	"\fcustom_field\x18\f \x01(\tR\vcustomField\"\xe8\x02\n" +
-	"\x05Trade\x12\x0e\n" +
+	"ComboOrder\x12\x16\n" +
+	"\x06action\x18\x01 \x01(\tR\x06action\x12\x14\n" +
+	"\x05price\x18\x02 \x01(\x01R\x05price\x12\x1a\n" +
+	"\bquantity\x18\x03 \x01(\x03R\bquantity\x12\x0e\n" +
+	"\x02id\x18\x04 \x01(\tR\x02id\x12\x14\n" +
+	"\x05seqno\x18\x05 \x01(\tR\x05seqno\x12\x14\n" +
+	"\x05ordno\x18\x06 \x01(\tR\x05ordno\x12%\n" +
+	"\aaccount\x18\a \x01(\v2\v.v1.AccountR\aaccount\x12\x1d\n" +
+	"\n" +
+	"price_type\x18\b \x01(\tR\tpriceType\x12\x1d\n" +
+	"\n" +
+	"order_type\x18\t \x01(\tR\torderType\"\xcb\x01\n" +
+	"\vOrderStatus\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x16\n" +
 	"\x06status\x18\x02 \x01(\tR\x06status\x12\x1f\n" +
 	"\vstatus_code\x18\x03 \x01(\tR\n" +
-	"statusCode\x12\x19\n" +
-	"\border_ts\x18\x04 \x01(\x03R\aorderTs\x12\x10\n" +
-	"\x03msg\x18\x05 \x01(\tR\x03msg\x12\x14\n" +
-	"\x05price\x18\x06 \x01(\x01R\x05price\x12\x1a\n" +
-	"\bquantity\x18\a \x01(\x03R\bquantity\x12'\n" +
-	"\x0ffilled_quantity\x18\b \x01(\x03R\x0efilledQuantity\x12-\n" +
-	"\x12cancelled_quantity\x18\t \x01(\x03R\x11cancelledQuantity\x12\x14\n" +
-	"\x05ordno\x18\n" +
-	" \x01(\tR\x05ordno\x12(\n" +
-	"\bcontract\x18\v \x01(\v2\f.v1.ContractR\bcontract\x12\x1f\n" +
-	"\x05order\x18\f \x01(\v2\t.v1.OrderR\x05order\"\xfd\x03\n" +
-	"\x04Tick\x12\x12\n" +
-	"\x04code\x18\x01 \x01(\tR\x04code\x12\x1a\n" +
-	"\bdatetime\x18\x02 \x01(\tR\bdatetime\x12\x12\n" +
-	"\x04open\x18\x03 \x01(\x01R\x04open\x12\x1b\n" +
-	"\tavg_price\x18\x04 \x01(\x01R\bavgPrice\x12\x14\n" +
-	"\x05close\x18\x05 \x01(\x01R\x05close\x12\x12\n" +
-	"\x04high\x18\x06 \x01(\x01R\x04high\x12\x10\n" +
-	"\x03low\x18\a \x01(\x01R\x03low\x12\x16\n" +
-	"\x06amount\x18\b \x01(\x01R\x06amount\x12!\n" +
-	"\ftotal_amount\x18\t \x01(\x01R\vtotalAmount\x12\x16\n" +
-	"\x06volume\x18\n" +
-	" \x01(\x03R\x06volume\x12!\n" +
-	"\ftotal_volume\x18\v \x01(\x03R\vtotalVolume\x12\x1b\n" +
-	"\ttick_type\x18\f \x01(\x05R\btickType\x12\x19\n" +
-	"\bchg_type\x18\r \x01(\x05R\achgType\x12\x1b\n" +
-	"\tprice_chg\x18\x0e \x01(\x01R\bpriceChg\x12\x17\n" +
-	"\apct_chg\x18\x0f \x01(\x01R\x06pctChg\x12+\n" +
-	"\x12bid_side_total_vol\x18\x10 \x01(\x03R\x0fbidSideTotalVol\x12+\n" +
-	"\x12ask_side_total_vol\x18\x11 \x01(\x03R\x0faskSideTotalVol\x12\x1a\n" +
-	"\bsimtrade\x18\x12 \x01(\bR\bsimtrade\"\x96\x01\n" +
-	"\x04Kbar\x12\x0e\n" +
-	"\x02ts\x18\x01 \x01(\x03R\x02ts\x12\x12\n" +
-	"\x04open\x18\x02 \x01(\x01R\x04open\x12\x12\n" +
-	"\x04high\x18\x03 \x01(\x01R\x04high\x12\x10\n" +
-	"\x03low\x18\x04 \x01(\x01R\x03low\x12\x14\n" +
-	"\x05close\x18\x05 \x01(\x01R\x05close\x12\x16\n" +
-	"\x06volume\x18\x06 \x01(\x03R\x06volume\x12\x16\n" +
-	"\x06amount\x18\a \x01(\x01R\x06amount\"\x86\x04\n" +
-	"\bSnapshot\x12\x0e\n" +
-	"\x02ts\x18\x01 \x01(\x03R\x02ts\x12\x12\n" +
-	"\x04code\x18\x02 \x01(\tR\x04code\x12\x1a\n" +
-	"\bexchange\x18\x03 \x01(\tR\bexchange\x12\x12\n" +
-	"\x04open\x18\x04 \x01(\x01R\x04open\x12\x12\n" +
-	"\x04high\x18\x05 \x01(\x01R\x04high\x12\x10\n" +
-	"\x03low\x18\x06 \x01(\x01R\x03low\x12\x14\n" +
-	"\x05close\x18\a \x01(\x01R\x05close\x12#\n" +
-	"\raverage_price\x18\b \x01(\x01R\faveragePrice\x12\x16\n" +
-	"\x06volume\x18\t \x01(\x03R\x06volume\x12!\n" +
-	"\ftotal_volume\x18\n" +
-	" \x01(\x03R\vtotalVolume\x12\x16\n" +
-	"\x06amount\x18\v \x01(\x01R\x06amount\x12!\n" +
-	"\ftotal_amount\x18\f \x01(\x01R\vtotalAmount\x12!\n" +
-	"\fprice_change\x18\r \x01(\x01R\vpriceChange\x120\n" +
-	"\x14price_change_percent\x18\x0e \x01(\x01R\x12priceChangePercent\x12\x1b\n" +
-	"\tbuy_price\x18\x0f \x01(\x01R\bbuyPrice\x12\x1d\n" +
+	"statusCode\x12%\n" +
+	"\x0eorder_datetime\x18\x04 \x01(\tR\rorderDatetime\x12#\n" +
+	"\rdeal_quantity\x18\x05 \x01(\x03R\fdealQuantity\x12'\n" +
+	"\x0fcancel_quantity\x18\x06 \x01(\x03R\x0ecancelQuantity\"{\n" +
+	"\x05Trade\x12(\n" +
+	"\bcontract\x18\x01 \x01(\v2\f.v1.ContractR\bcontract\x12\x1f\n" +
+	"\x05order\x18\x02 \x01(\v2\t.v1.OrderR\x05order\x12'\n" +
+	"\x06status\x18\x03 \x01(\v2\x0f.v1.OrderStatusR\x06status\"\x8a\x01\n" +
 	"\n" +
-	"buy_volume\x18\x10 \x01(\x03R\tbuyVolume\x12\x1d\n" +
+	"ComboTrade\x12-\n" +
+	"\bcontract\x18\x01 \x01(\v2\x11.v1.ComboContractR\bcontract\x12$\n" +
+	"\x05order\x18\x02 \x01(\v2\x0e.v1.ComboOrderR\x05order\x12'\n" +
+	"\x06status\x18\x03 \x01(\v2\x0f.v1.OrderStatusR\x06status\"^\n" +
+	"\x11PlaceOrderRequest\x12(\n" +
+	"\bcontract\x18\x01 \x01(\v2\f.v1.ContractR\bcontract\x12\x1f\n" +
+	"\x05order\x18\x02 \x01(\v2\t.v1.OrderR\x05order\"x\n" +
+	"\x16PlaceComboOrderRequest\x128\n" +
+	"\x0ecombo_contract\x18\x01 \x01(\v2\x11.v1.ComboContractR\rcomboContract\x12$\n" +
+	"\x05order\x18\x02 \x01(\v2\x0e.v1.ComboOrderR\x05order\"g\n" +
+	"\x12UpdateOrderRequest\x12\x1f\n" +
+	"\x05trade\x18\x01 \x01(\v2\t.v1.TradeR\x05trade\x12\x14\n" +
+	"\x05price\x18\x02 \x01(\x01R\x05price\x12\x1a\n" +
+	"\bquantity\x18\x03 \x01(\x03R\bquantity\"5\n" +
+	"\x12CancelOrderRequest\x12\x1f\n" +
+	"\x05trade\x18\x01 \x01(\v2\t.v1.TradeR\x05trade\"I\n" +
+	"\x17CancelComboOrderRequest\x12.\n" +
 	"\n" +
-	"sell_price\x18\x11 \x01(\x01R\tsellPrice\x12\x1f\n" +
-	"\vsell_volume\x18\x12 \x01(\x03R\n" +
-	"sellVolume\"\xe1\x01\n" +
-	"\n" +
-	"ProfitLoss\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
-	"\x04code\x18\x02 \x01(\tR\x04code\x12\x14\n" +
-	"\x05seqno\x18\x03 \x01(\tR\x05seqno\x12\x12\n" +
-	"\x04dseq\x18\x04 \x01(\tR\x04dseq\x12\x1a\n" +
-	"\bquantity\x18\x05 \x01(\x03R\bquantity\x12\x14\n" +
-	"\x05price\x18\x06 \x01(\x01R\x05price\x12\x10\n" +
-	"\x03pnl\x18\a \x01(\x01R\x03pnl\x12\x19\n" +
-	"\bpr_ratio\x18\b \x01(\x01R\aprRatio\x12\x12\n" +
-	"\x04cond\x18\t \x01(\tR\x04cond\x12\x12\n" +
-	"\x04date\x18\n" +
-	" \x01(\tR\x04date\"O\n" +
-	"\n" +
-	"Settlement\x12\x12\n" +
-	"\x04date\x18\x01 \x01(\tR\x04date\x12\x16\n" +
-	"\x06amount\x18\x02 \x01(\x01R\x06amount\x12\x15\n" +
-	"\x06t_time\x18\x03 \x01(\tR\x05tTime\"\x81\x02\n" +
-	"\bPosition\x12\x0e\n" +
+	"combotrade\x18\x01 \x01(\v2\x0e.v1.ComboTradeR\n" +
+	"combotrade\"<\n" +
+	"\x13UpdateStatusRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\"7\n" +
+	"\x12ListTradesResponse\x12!\n" +
+	"\x06trades\x18\x01 \x03(\v2\t.v1.TradeR\x06trades\"L\n" +
+	"\x17ListComboTradesResponse\x121\n" +
+	"\fcombo_trades\x18\x01 \x03(\v2\x0e.v1.ComboTradeR\vcomboTrades\"C\n" +
+	"\x1aGetOrderDealRecordsRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\"L\n" +
+	"\x1bGetOrderDealRecordsResponse\x12-\n" +
+	"\arecords\x18\x01 \x03(\v2\x13.v1.OrderDealRecordR\arecords\"\x7f\n" +
+	"\x0fOrderDealRecord\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\tR\x04code\x12\x16\n" +
+	"\x06action\x18\x02 \x01(\tR\x06action\x12\x14\n" +
+	"\x05price\x18\x03 \x01(\x01R\x05price\x12\x1a\n" +
+	"\bquantity\x18\x04 \x01(\x03R\bquantity\x12\x0e\n" +
+	"\x02ts\x18\x05 \x01(\tR\x02ts\"Q\n" +
+	"\x14ListPositionsRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\x12\x12\n" +
+	"\x04unit\x18\x02 \x01(\tR\x04unit\"\x87\x03\n" +
+	"\rStockPosition\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x1c\n" +
 	"\tdirection\x18\x03 \x01(\tR\tdirection\x12\x1a\n" +
@@ -2565,109 +6106,369 @@ const file_provider_proto_rawDesc = "" +
 	"\x05price\x18\x05 \x01(\x01R\x05price\x12\x1d\n" +
 	"\n" +
 	"last_price\x18\x06 \x01(\x01R\tlastPrice\x12\x10\n" +
-	"\x03pnl\x18\a \x01(\x01R\x03pnl\x12\x12\n" +
-	"\x04cond\x18\b \x01(\tR\x04cond\x12\x1d\n" +
+	"\x03pnl\x18\a \x01(\x01R\x03pnl\x12\x1f\n" +
+	"\vyd_quantity\x18\b \x01(\x03R\n" +
+	"ydQuantity\x12\x12\n" +
+	"\x04cond\x18\t \x01(\tR\x04cond\x124\n" +
+	"\x16margin_purchase_amount\x18\n" +
+	" \x01(\x03R\x14marginPurchaseAmount\x12\x1e\n" +
 	"\n" +
-	"order_type\x18\t \x01(\tR\torderType\x12\x1d\n" +
+	"collateral\x18\v \x01(\x03R\n" +
+	"collateral\x12*\n" +
+	"\x11short_sale_margin\x18\f \x01(\x03R\x0fshortSaleMargin\x12\x1a\n" +
+	"\binterest\x18\r \x01(\x03R\binterest\"\xb5\x01\n" +
+	"\x0eFuturePosition\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\x12\x1c\n" +
+	"\tdirection\x18\x03 \x01(\tR\tdirection\x12\x1a\n" +
+	"\bquantity\x18\x04 \x01(\x03R\bquantity\x12\x14\n" +
+	"\x05price\x18\x05 \x01(\x01R\x05price\x12\x1d\n" +
 	"\n" +
-	"price_type\x18\n" +
-	" \x01(\tR\tpriceType\"\a\n" +
-	"\x05Empty\"{\n" +
-	"\fLoginRequest\x12\x1b\n" +
-	"\tperson_id\x18\x01 \x01(\tR\bpersonId\x12\x16\n" +
-	"\x06passwd\x18\x02 \x01(\tR\x06passwd\x12\x17\n" +
-	"\aapi_key\x18\x03 \x01(\tR\x06apiKey\x12\x1d\n" +
+	"last_price\x18\x06 \x01(\x01R\tlastPrice\x12\x10\n" +
+	"\x03pnl\x18\a \x01(\x01R\x03pnl\"\x91\x01\n" +
+	"\bPosition\x12:\n" +
+	"\x0estock_position\x18\x01 \x01(\v2\x11.v1.StockPositionH\x00R\rstockPosition\x12=\n" +
+	"\x0ffuture_position\x18\x02 \x01(\v2\x12.v1.FuturePositionH\x00R\x0efuturePositionB\n" +
 	"\n" +
-	"secret_key\x18\x04 \x01(\tR\tsecretKey\"C\n" +
-	"\rLoginResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"?\n" +
-	"\x14ListAccountsResponse\x12'\n" +
-	"\baccounts\x18\x01 \x03(\v2\v.v1.AccountR\baccounts\"N\n" +
-	"\x16AccountBalanceResponse\x12\x18\n" +
-	"\abalance\x18\x01 \x01(\x01R\abalance\x12\x1a\n" +
-	"\bcurrency\x18\x02 \x01(\tR\bcurrency\"K\n" +
-	"\x17ListSettlementsResponse\x120\n" +
-	"\vsettlements\x18\x01 \x03(\v2\x0e.v1.SettlementR\vsettlements\"Q\n" +
-	"\x15ListProfitLossRequest\x12\x1d\n" +
-	"\n" +
-	"begin_date\x18\x01 \x01(\tR\tbeginDate\x12\x19\n" +
-	"\bend_date\x18\x02 \x01(\tR\aendDate\"I\n" +
-	"\x16ListProfitLossResponse\x12/\n" +
-	"\vprofit_loss\x18\x01 \x03(\v2\x0e.v1.ProfitLossR\n" +
-	"profitLoss\"C\n" +
+	"\bposition\"C\n" +
 	"\x15ListPositionsResponse\x12*\n" +
-	"\tpositions\x18\x01 \x03(\v2\f.v1.PositionR\tpositions\"\xb2\x02\n" +
-	"\x11PlaceOrderRequest\x12#\n" +
-	"\rcontract_code\x18\x01 \x01(\tR\fcontractCode\x124\n" +
-	"\x16contract_security_type\x18\x02 \x01(\tR\x14contractSecurityType\x12\x16\n" +
-	"\x06action\x18\x03 \x01(\tR\x06action\x12\x14\n" +
-	"\x05price\x18\x04 \x01(\x01R\x05price\x12\x1a\n" +
-	"\bquantity\x18\x05 \x01(\x03R\bquantity\x12\x1d\n" +
+	"\tpositions\x18\x01 \x03(\v2\f.v1.PositionR\tpositions\"_\n" +
+	"\x19ListPositionDetailRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\x12\x1b\n" +
+	"\tdetail_id\x18\x02 \x01(\x03R\bdetailId\"\xa0\x01\n" +
+	"\x13StockPositionDetail\x12\x12\n" +
+	"\x04date\x18\x01 \x01(\tR\x04date\x12\x12\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\x12\x1a\n" +
+	"\bquantity\x18\x03 \x01(\x03R\bquantity\x12\x14\n" +
+	"\x05price\x18\x04 \x01(\x01R\x05price\x12\x1d\n" +
 	"\n" +
-	"price_type\x18\x06 \x01(\tR\tpriceType\x12\x1d\n" +
+	"last_price\x18\x05 \x01(\x01R\tlastPrice\x12\x10\n" +
+	"\x03pnl\x18\x06 \x01(\x01R\x03pnl\"\xc8\x01\n" +
+	"\x14FuturePositionDetail\x12\x12\n" +
+	"\x04date\x18\x01 \x01(\tR\x04date\x12\x12\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\x12\x1a\n" +
+	"\bquantity\x18\x03 \x01(\x03R\bquantity\x12\x14\n" +
+	"\x05price\x18\x04 \x01(\x01R\x05price\x12\x1d\n" +
 	"\n" +
-	"order_type\x18\a \x01(\tR\torderType\x12\x1b\n" +
-	"\torder_lot\x18\b \x01(\tR\borderLot\x12\x1d\n" +
+	"last_price\x18\x05 \x01(\x01R\tlastPrice\x12\x10\n" +
+	"\x03pnl\x18\x06 \x01(\x01R\x03pnl\x12%\n" +
+	"\x0eentry_quantity\x18\a \x01(\x03R\rentryQuantity\"\x99\x01\n" +
+	"\x0ePositionDetail\x12<\n" +
+	"\fstock_detail\x18\x01 \x01(\v2\x17.v1.StockPositionDetailH\x00R\vstockDetail\x12?\n" +
+	"\rfuture_detail\x18\x02 \x01(\v2\x18.v1.FuturePositionDetailH\x00R\ffutureDetailB\b\n" +
+	"\x06detail\"J\n" +
+	"\x1aListPositionDetailResponse\x12,\n" +
+	"\adetails\x18\x01 \x03(\v2\x12.v1.PositionDetailR\adetails\"x\n" +
+	"\x15ListProfitLossRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\x12\x1d\n" +
 	"\n" +
-	"account_id\x18\t \x01(\tR\taccountId\"a\n" +
-	"\x12UpdateOrderRequest\x12\x19\n" +
-	"\btrade_id\x18\x01 \x01(\tR\atradeId\x12\x14\n" +
-	"\x05price\x18\x02 \x01(\x01R\x05price\x12\x1a\n" +
-	"\bquantity\x18\x03 \x01(\x03R\bquantity\"/\n" +
-	"\x12CancelOrderRequest\x12\x19\n" +
-	"\btrade_id\x18\x01 \x01(\tR\atradeId\"0\n" +
-	"\rTradeResponse\x12\x1f\n" +
-	"\x05trade\x18\x01 \x01(\v2\t.v1.TradeR\x05trade\"7\n" +
-	"\x12ListTradesResponse\x12!\n" +
-	"\x06trades\x18\x01 \x03(\v2\t.v1.TradeR\x06trades\"\x80\x01\n" +
-	"\x0fGetTicksRequest\x12#\n" +
-	"\rcontract_code\x18\x01 \x01(\tR\fcontractCode\x124\n" +
-	"\x16contract_security_type\x18\x02 \x01(\tR\x14contractSecurityType\x12\x12\n" +
-	"\x04date\x18\x03 \x01(\tR\x04date\"2\n" +
-	"\x10GetTicksResponse\x12\x1e\n" +
-	"\x05ticks\x18\x01 \x03(\v2\b.v1.TickR\x05ticks\"\xa6\x01\n" +
-	"\x0fGetKbarsRequest\x12#\n" +
-	"\rcontract_code\x18\x01 \x01(\tR\fcontractCode\x124\n" +
-	"\x16contract_security_type\x18\x02 \x01(\tR\x14contractSecurityType\x12\x1d\n" +
+	"begin_date\x18\x02 \x01(\tR\tbeginDate\x12\x19\n" +
+	"\bend_date\x18\x03 \x01(\tR\aendDate\"\xd6\x01\n" +
+	"\x0fStockProfitLoss\x12\x12\n" +
+	"\x04dseq\x18\x01 \x01(\tR\x04dseq\x12\x12\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\x12\x1a\n" +
+	"\bquantity\x18\x03 \x01(\x03R\bquantity\x12\x14\n" +
+	"\x05price\x18\x04 \x01(\x01R\x05price\x12\x10\n" +
+	"\x03pnl\x18\x05 \x01(\x01R\x03pnl\x12\x19\n" +
+	"\bpr_ratio\x18\x06 \x01(\x01R\aprRatio\x12\x12\n" +
+	"\x04cond\x18\a \x01(\tR\x04cond\x12\x12\n" +
+	"\x04date\x18\b \x01(\tR\x04date\x12\x14\n" +
+	"\x05seqno\x18\t \x01(\tR\x05seqno\"\xec\x01\n" +
+	"\x10FutureProfitLoss\x12\x12\n" +
+	"\x04date\x18\x01 \x01(\tR\x04date\x12\x12\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\x12\x1a\n" +
+	"\bquantity\x18\x03 \x01(\x03R\bquantity\x12\x1f\n" +
+	"\ventry_price\x18\x04 \x01(\x01R\n" +
+	"entryPrice\x12\x1f\n" +
+	"\vcover_price\x18\x05 \x01(\x01R\n" +
+	"coverPrice\x12\x1c\n" +
+	"\tdirection\x18\x06 \x01(\tR\tdirection\x12\x10\n" +
+	"\x03pnl\x18\a \x01(\x01R\x03pnl\x12\x10\n" +
+	"\x03tax\x18\b \x01(\x03R\x03tax\x12\x10\n" +
+	"\x03fee\x18\t \x01(\x03R\x03fee\"\x7f\n" +
 	"\n" +
-	"start_date\x18\x03 \x01(\tR\tstartDate\x12\x19\n" +
-	"\bend_date\x18\x04 \x01(\tR\aendDate\"2\n" +
-	"\x10GetKbarsResponse\x12\x1e\n" +
-	"\x05kbars\x18\x01 \x03(\v2\b.v1.KbarR\x05kbars\"<\n" +
+	"ProfitLoss\x122\n" +
+	"\tstock_pnl\x18\x01 \x01(\v2\x13.v1.StockProfitLossH\x00R\bstockPnl\x125\n" +
+	"\n" +
+	"future_pnl\x18\x02 \x01(\v2\x14.v1.FutureProfitLossH\x00R\tfuturePnlB\x06\n" +
+	"\x04item\"M\n" +
+	"\x16ListProfitLossResponse\x123\n" +
+	"\rprofit_losses\x18\x01 \x03(\v2\x0e.v1.ProfitLossR\fprofitLosses\"a\n" +
+	"\x1bListProfitLossDetailRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\x12\x1b\n" +
+	"\tdetail_id\x18\x02 \x01(\x03R\bdetailId\"Y\n" +
+	"\x11StockProfitDetail\x12\x14\n" +
+	"\x05price\x18\x01 \x01(\x01R\x05price\x12\x12\n" +
+	"\x04cost\x18\x02 \x01(\x03R\x04cost\x12\x1a\n" +
+	"\binterest\x18\x03 \x01(\x03R\binterest\"\xa5\x01\n" +
+	"\x12FutureProfitDetail\x12\x1c\n" +
+	"\tdirection\x18\x01 \x01(\tR\tdirection\x12\x1d\n" +
+	"\n" +
+	"entry_date\x18\x02 \x01(\tR\tentryDate\x12\x1f\n" +
+	"\ventry_price\x18\x03 \x01(\x01R\n" +
+	"entryPrice\x12\x1f\n" +
+	"\vcover_price\x18\x04 \x01(\x01R\n" +
+	"coverPrice\x12\x10\n" +
+	"\x03pnl\x18\x05 \x01(\x03R\x03pnl\"\x93\x01\n" +
+	"\fProfitDetail\x12:\n" +
+	"\fstock_detail\x18\x01 \x01(\v2\x15.v1.StockProfitDetailH\x00R\vstockDetail\x12=\n" +
+	"\rfuture_detail\x18\x02 \x01(\v2\x16.v1.FutureProfitDetailH\x00R\ffutureDetailB\b\n" +
+	"\x06detail\"J\n" +
+	"\x1cListProfitLossDetailResponse\x12*\n" +
+	"\adetails\x18\x01 \x03(\v2\x10.v1.ProfitDetailR\adetails\"E\n" +
+	"\x1cListProfitLossSummaryRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\"V\n" +
+	"\x16StockProfitLossSummary\x12\x1d\n" +
+	"\n" +
+	"entry_cost\x18\x01 \x01(\x03R\tentryCost\x12\x1d\n" +
+	"\n" +
+	"cover_cost\x18\x02 \x01(\x03R\tcoverCost\"[\n" +
+	"\x17FutureProfitLossSummary\x12\x1c\n" +
+	"\tdirection\x18\x01 \x01(\tR\tdirection\x12\x10\n" +
+	"\x03tax\x18\x02 \x01(\x03R\x03tax\x12\x10\n" +
+	"\x03fee\x18\x03 \x01(\x03R\x03fee\"\xa7\x01\n" +
+	"\x11ProfitLossSummary\x12A\n" +
+	"\rstock_summary\x18\x01 \x01(\v2\x1a.v1.StockProfitLossSummaryH\x00R\fstockSummary\x12D\n" +
+	"\x0efuture_summary\x18\x02 \x01(\v2\x1b.v1.FutureProfitLossSummaryH\x00R\rfutureSummaryB\t\n" +
+	"\asummary\"T\n" +
+	"\x1dListProfitLossSummaryResponse\x123\n" +
+	"\tsummaries\x18\x01 \x03(\v2\x15.v1.ProfitLossSummaryR\tsummaries\">\n" +
+	"\x15GetSettlementsRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\"\xca\x01\n" +
+	"\n" +
+	"Settlement\x12\x12\n" +
+	"\x04date\x18\x01 \x01(\tR\x04date\x12\x16\n" +
+	"\x06amount\x18\x02 \x01(\x01R\x06amount\x12\x17\n" +
+	"\at_money\x18\x03 \x01(\x01R\x06tMoney\x12\x13\n" +
+	"\x05t_day\x18\x04 \x01(\tR\x04tDay\x12\x19\n" +
+	"\bt1_money\x18\x05 \x01(\x01R\at1Money\x12\x15\n" +
+	"\x06t1_day\x18\x06 \x01(\tR\x05t1Day\x12\x19\n" +
+	"\bt2_money\x18\a \x01(\x01R\at2Money\x12\x15\n" +
+	"\x06t2_day\x18\b \x01(\tR\x05t2Day\"J\n" +
+	"\x16GetSettlementsResponse\x120\n" +
+	"\vsettlements\x18\x01 \x03(\v2\x0e.v1.SettlementR\vsettlements\"9\n" +
+	"\x10GetMarginRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\"\xa1\x01\n" +
+	"\x06Margin\x12\x16\n" +
+	"\x06equity\x18\x01 \x01(\x01R\x06equity\x12)\n" +
+	"\x10available_margin\x18\x02 \x01(\x01R\x0favailableMargin\x12%\n" +
+	"\x0einitial_margin\x18\x03 \x01(\x01R\rinitialMargin\x12-\n" +
+	"\x12maintenance_margin\x18\x04 \x01(\x01R\x11maintenanceMargin\"@\n" +
+	"\x17GetTradingLimitsRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\"\xdc\x02\n" +
+	"\rTradingLimits\x12#\n" +
+	"\rtrading_limit\x18\x01 \x01(\x03R\ftradingLimit\x12!\n" +
+	"\ftrading_used\x18\x02 \x01(\x03R\vtradingUsed\x12+\n" +
+	"\x11trading_available\x18\x03 \x01(\x03R\x10tradingAvailable\x12!\n" +
+	"\fmargin_limit\x18\x04 \x01(\x03R\vmarginLimit\x12\x1f\n" +
+	"\vmargin_used\x18\x05 \x01(\x03R\n" +
+	"marginUsed\x12)\n" +
+	"\x10margin_available\x18\x06 \x01(\x03R\x0fmarginAvailable\x12\x1f\n" +
+	"\vshort_limit\x18\a \x01(\x03R\n" +
+	"shortLimit\x12\x1d\n" +
+	"\n" +
+	"short_used\x18\b \x01(\x03R\tshortUsed\x12'\n" +
+	"\x0fshort_available\x18\t \x01(\x03R\x0eshortAvailable\"F\n" +
+	"\x1dGetStockReserveSummaryRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\"C\n" +
+	"\x1cReserveStocksSummaryResponse\x12#\n" +
+	"\rresponse_json\x18\x01 \x01(\tR\fresponseJson\"E\n" +
+	"\x1cGetStockReserveDetailRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\"B\n" +
+	"\x1bReserveStocksDetailResponse\x12#\n" +
+	"\rresponse_json\x18\x01 \x01(\tR\fresponseJson\"|\n" +
+	"\x13ReserveStockRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\x12(\n" +
+	"\bcontract\x18\x02 \x01(\v2\f.v1.ContractR\bcontract\x12\x14\n" +
+	"\x05share\x18\x03 \x01(\x03R\x05share\";\n" +
+	"\x14ReserveStockResponse\x12#\n" +
+	"\rresponse_json\x18\x01 \x01(\tR\fresponseJson\"C\n" +
+	"\x1aGetEarmarkingDetailRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\"B\n" +
+	"\x1bEarmarkStocksDetailResponse\x12#\n" +
+	"\rresponse_json\x18\x01 \x01(\tR\fresponseJson\"\x97\x01\n" +
+	"\x18ReserveEarmarkingRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\x12(\n" +
+	"\bcontract\x18\x02 \x01(\v2\f.v1.ContractR\bcontract\x12\x14\n" +
+	"\x05share\x18\x03 \x01(\x03R\x05share\x12\x14\n" +
+	"\x05price\x18\x04 \x01(\x01R\x05price\"@\n" +
+	"\x19ReserveEarmarkingResponse\x12#\n" +
+	"\rresponse_json\x18\x01 \x01(\tR\fresponseJson\"<\n" +
 	"\x13GetSnapshotsRequest\x12%\n" +
 	"\x0econtract_codes\x18\x01 \x03(\tR\rcontractCodes\"B\n" +
 	"\x14GetSnapshotsResponse\x12*\n" +
-	"\tsnapshots\x18\x01 \x03(\v2\f.v1.SnapshotR\tsnapshots\"\x91\x01\n" +
-	"\x15SubscribeQuoteRequest\x12#\n" +
-	"\rcontract_code\x18\x01 \x01(\tR\fcontractCode\x124\n" +
-	"\x16contract_security_type\x18\x02 \x01(\tR\x14contractSecurityType\x12\x1d\n" +
+	"\tsnapshots\x18\x01 \x03(\v2\f.v1.SnapshotR\tsnapshots\"\xf5\x03\n" +
+	"\bSnapshot\x12\x0e\n" +
+	"\x02ts\x18\x01 \x01(\x03R\x02ts\x12\x12\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\x12\x1a\n" +
+	"\bexchange\x18\x03 \x01(\tR\bexchange\x12\x12\n" +
+	"\x04open\x18\x04 \x01(\x01R\x04open\x12\x12\n" +
+	"\x04high\x18\x05 \x01(\x01R\x04high\x12\x10\n" +
+	"\x03low\x18\x06 \x01(\x01R\x03low\x12\x14\n" +
+	"\x05close\x18\a \x01(\x01R\x05close\x12!\n" +
+	"\fchange_price\x18\b \x01(\x01R\vchangePrice\x12\x1f\n" +
+	"\vchange_rate\x18\t \x01(\x01R\n" +
+	"changeRate\x12#\n" +
+	"\raverage_price\x18\n" +
+	" \x01(\x01R\faveragePrice\x12\x16\n" +
+	"\x06volume\x18\v \x01(\x03R\x06volume\x12!\n" +
+	"\ftotal_volume\x18\f \x01(\x03R\vtotalVolume\x12\x16\n" +
+	"\x06amount\x18\r \x01(\x03R\x06amount\x12!\n" +
+	"\ftotal_amount\x18\x0e \x01(\x03R\vtotalAmount\x12\x1b\n" +
+	"\tbuy_price\x18\x0f \x01(\x01R\bbuyPrice\x12\x1d\n" +
 	"\n" +
-	"quote_type\x18\x03 \x01(\tR\tquoteType\"\x93\x01\n" +
-	"\x17UnsubscribeQuoteRequest\x12#\n" +
-	"\rcontract_code\x18\x01 \x01(\tR\fcontractCode\x124\n" +
-	"\x16contract_security_type\x18\x02 \x01(\tR\x14contractSecurityType\x12\x1d\n" +
+	"buy_volume\x18\x10 \x01(\x03R\tbuyVolume\x12\x1d\n" +
 	"\n" +
-	"quote_type\x18\x03 \x01(\tR\tquoteType2\xb3\a\n" +
+	"sell_price\x18\x11 \x01(\x01R\tsellPrice\x12\x1f\n" +
+	"\vsell_volume\x18\x12 \x01(\x03R\n" +
+	"sellVolume\"J\n" +
+	"\x0fGetTicksRequest\x12#\n" +
+	"\rcontract_code\x18\x01 \x01(\tR\fcontractCode\x12\x12\n" +
+	"\x04date\x18\x02 \x01(\tR\x04date\"\xda\x01\n" +
+	"\x05Ticks\x12\x0e\n" +
+	"\x02ts\x18\x01 \x03(\x03R\x02ts\x12\x14\n" +
+	"\x05close\x18\x02 \x03(\x01R\x05close\x12\x16\n" +
+	"\x06volume\x18\x03 \x03(\x03R\x06volume\x12\x1b\n" +
+	"\tbid_price\x18\x04 \x03(\x01R\bbidPrice\x12\x1d\n" +
+	"\n" +
+	"bid_volume\x18\x05 \x03(\x03R\tbidVolume\x12\x1b\n" +
+	"\task_price\x18\x06 \x03(\x01R\baskPrice\x12\x1d\n" +
+	"\n" +
+	"ask_volume\x18\a \x03(\x03R\taskVolume\x12\x1b\n" +
+	"\ttick_type\x18\b \x03(\x05R\btickType\"p\n" +
+	"\x0fGetKbarsRequest\x12#\n" +
+	"\rcontract_code\x18\x01 \x01(\tR\fcontractCode\x12\x1d\n" +
+	"\n" +
+	"start_date\x18\x02 \x01(\tR\tstartDate\x12\x19\n" +
+	"\bend_date\x18\x03 \x01(\tR\aendDate\"\x97\x01\n" +
+	"\x05Kbars\x12\x0e\n" +
+	"\x02ts\x18\x01 \x03(\x03R\x02ts\x12\x12\n" +
+	"\x04open\x18\x02 \x03(\x01R\x04open\x12\x12\n" +
+	"\x04high\x18\x03 \x03(\x01R\x04high\x12\x10\n" +
+	"\x03low\x18\x04 \x03(\x01R\x03low\x12\x14\n" +
+	"\x05close\x18\x05 \x03(\x01R\x05close\x12\x16\n" +
+	"\x06volume\x18\x06 \x03(\x03R\x06volume\x12\x16\n" +
+	"\x06amount\x18\a \x03(\x01R\x06amount\"+\n" +
+	"\x15GetDailyQuotesRequest\x12\x12\n" +
+	"\x04date\x18\x01 \x01(\tR\x04date\"\x89\x01\n" +
+	"\vDailyQuotes\x12\x12\n" +
+	"\x04code\x18\x01 \x03(\tR\x04code\x12\x12\n" +
+	"\x04open\x18\x02 \x03(\x01R\x04open\x12\x12\n" +
+	"\x04high\x18\x03 \x03(\x01R\x04high\x12\x10\n" +
+	"\x03low\x18\x04 \x03(\x01R\x03low\x12\x14\n" +
+	"\x05close\x18\x05 \x03(\x01R\x05close\x12\x16\n" +
+	"\x06volume\x18\x06 \x03(\x03R\x06volume\">\n" +
+	"\x15CreditEnquiresRequest\x12%\n" +
+	"\x0econtract_codes\x18\x01 \x03(\tR\rcontractCodes\"T\n" +
+	"\x16CreditEnquiresResponse\x12:\n" +
+	"\x0fcredit_enquires\x18\x01 \x03(\v2\x11.v1.CreditEnquireR\x0ecreditEnquires\"j\n" +
+	"\rCreditEnquire\x12\x19\n" +
+	"\bstock_id\x18\x01 \x01(\tR\astockId\x12\x1f\n" +
+	"\vmargin_unit\x18\x02 \x01(\x03R\n" +
+	"marginUnit\x12\x1d\n" +
+	"\n" +
+	"short_unit\x18\x03 \x01(\x03R\tshortUnit\"D\n" +
+	"\x1bGetShortStockSourcesRequest\x12%\n" +
+	"\x0econtract_codes\x18\x01 \x03(\tR\rcontractCodes\"N\n" +
+	"\x1cGetShortStockSourcesResponse\x12.\n" +
+	"\asources\x18\x01 \x03(\v2\x14.v1.ShortStockSourceR\asources\"d\n" +
+	"\x10ShortStockSource\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\tR\x04code\x12,\n" +
+	"\x12short_stock_source\x18\x02 \x01(\x03R\x10shortStockSource\x12\x0e\n" +
+	"\x02ts\x18\x03 \x01(\x03R\x02ts\"\x7f\n" +
+	"\x12GetScannersRequest\x12!\n" +
+	"\fscanner_type\x18\x01 \x01(\tR\vscannerType\x12\x1c\n" +
+	"\tascending\x18\x02 \x01(\bR\tascending\x12\x12\n" +
+	"\x04date\x18\x03 \x01(\tR\x04date\x12\x14\n" +
+	"\x05count\x18\x04 \x01(\x05R\x05count\"B\n" +
+	"\x13GetScannersResponse\x12+\n" +
+	"\bscanners\x18\x01 \x03(\v2\x0f.v1.ScannerItemR\bscanners\"\x91\x01\n" +
+	"\vScannerItem\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\tR\x04code\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
+	"\x05close\x18\x03 \x01(\x01R\x05close\x12!\n" +
+	"\fchange_price\x18\x04 \x01(\x01R\vchangePrice\x12!\n" +
+	"\ftotal_volume\x18\x05 \x01(\x03R\vtotalVolume\"r\n" +
+	"\x06Punish\x12\x12\n" +
+	"\x04code\x18\x01 \x03(\tR\x04code\x12\x1d\n" +
+	"\n" +
+	"start_date\x18\x02 \x03(\tR\tstartDate\x12\x19\n" +
+	"\bend_date\x18\x03 \x03(\tR\aendDate\x12\x1a\n" +
+	"\binterval\x18\x04 \x03(\tR\binterval\"4\n" +
+	"\x06Notice\x12\x12\n" +
+	"\x04code\x18\x01 \x03(\tR\x04code\x12\x16\n" +
+	"\x06reason\x18\x02 \x03(\tR\x06reason\"D\n" +
+	"\x15FetchContractsRequest\x12+\n" +
+	"\x11contract_download\x18\x01 \x01(\bR\x10contractDownload\"f\n" +
+	"\x11ActivateCARequest\x12\x17\n" +
+	"\aca_path\x18\x01 \x01(\tR\x06caPath\x12\x1b\n" +
+	"\tca_passwd\x18\x02 \x01(\tR\bcaPasswd\x12\x1b\n" +
+	"\tperson_id\x18\x03 \x01(\tR\bpersonId\".\n" +
+	"\x12ActivateCAResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"5\n" +
+	"\x16GetCAExpireTimeRequest\x12\x1b\n" +
+	"\tperson_id\x18\x01 \x01(\tR\bpersonId\":\n" +
+	"\x17GetCAExpireTimeResponse\x12\x1f\n" +
+	"\vexpire_time\x18\x01 \x01(\tR\n" +
+	"expireTime\">\n" +
+	"\x15SubscribeTradeRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\"2\n" +
+	"\x16SubscribeTradeResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"@\n" +
+	"\x17UnsubscribeTradeRequest\x12%\n" +
+	"\aaccount\x18\x01 \x01(\v2\v.v1.AccountR\aaccount\"4\n" +
+	"\x18UnsubscribeTradeResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess2\xbd\x16\n" +
 	"\x0fShioajiProvider\x12.\n" +
-	"\x05Login\x12\x10.v1.LoginRequest\x1a\x11.v1.LoginResponse\"\x00\x125\n" +
-	"\fListAccounts\x12\t.v1.Empty\x1a\x18.v1.ListAccountsResponse\"\x00\x12<\n" +
-	"\x11GetAccountBalance\x12\t.v1.Empty\x1a\x1a.v1.AccountBalanceResponse\"\x00\x12;\n" +
-	"\x0fListSettlements\x12\t.v1.Empty\x1a\x1b.v1.ListSettlementsResponse\"\x00\x12I\n" +
-	"\x0eListProfitLoss\x12\x19.v1.ListProfitLossRequest\x1a\x1a.v1.ListProfitLossResponse\"\x00\x127\n" +
-	"\rListPositions\x12\t.v1.Empty\x1a\x19.v1.ListPositionsResponse\"\x00\x128\n" +
+	"\x05Login\x12\x10.v1.LoginRequest\x1a\x11.v1.LoginResponse\"\x00\x12)\n" +
+	"\x06Logout\x12\t.v1.Empty\x1a\x12.v1.LogoutResponse\"\x00\x12(\n" +
+	"\bGetUsage\x12\t.v1.Empty\x1a\x0f.v1.UsageStatus\"\x00\x125\n" +
+	"\fListAccounts\x12\t.v1.Empty\x1a\x18.v1.ListAccountsResponse\"\x00\x124\n" +
+	"\x11GetAccountBalance\x12\t.v1.Empty\x1a\x12.v1.AccountBalance\"\x00\x120\n" +
 	"\n" +
-	"PlaceOrder\x12\x15.v1.PlaceOrderRequest\x1a\x11.v1.TradeResponse\"\x00\x12:\n" +
-	"\vUpdateOrder\x12\x16.v1.UpdateOrderRequest\x1a\x11.v1.TradeResponse\"\x00\x12:\n" +
-	"\vCancelOrder\x12\x16.v1.CancelOrderRequest\x1a\x11.v1.TradeResponse\"\x00\x121\n" +
+	"PlaceOrder\x12\x15.v1.PlaceOrderRequest\x1a\t.v1.Trade\"\x00\x12?\n" +
+	"\x0fPlaceComboOrder\x12\x1a.v1.PlaceComboOrderRequest\x1a\x0e.v1.ComboTrade\"\x00\x122\n" +
+	"\vUpdateOrder\x12\x16.v1.UpdateOrderRequest\x1a\t.v1.Trade\"\x00\x122\n" +
+	"\vCancelOrder\x12\x16.v1.CancelOrderRequest\x1a\t.v1.Trade\"\x00\x12A\n" +
+	"\x10CancelComboOrder\x12\x1b.v1.CancelComboOrderRequest\x1a\x0e.v1.ComboTrade\"\x00\x124\n" +
+	"\fUpdateStatus\x12\x17.v1.UpdateStatusRequest\x1a\t.v1.Empty\"\x00\x129\n" +
+	"\x11UpdateComboStatus\x12\x17.v1.UpdateStatusRequest\x1a\t.v1.Empty\"\x00\x121\n" +
 	"\n" +
-	"ListTrades\x12\t.v1.Empty\x1a\x16.v1.ListTradesResponse\"\x00\x12&\n" +
-	"\fUpdateStatus\x12\t.v1.Empty\x1a\t.v1.Empty\"\x00\x127\n" +
-	"\bGetTicks\x12\x13.v1.GetTicksRequest\x1a\x14.v1.GetTicksResponse\"\x00\x127\n" +
-	"\bGetKbars\x12\x13.v1.GetKbarsRequest\x1a\x14.v1.GetKbarsResponse\"\x00\x12C\n" +
-	"\fGetSnapshots\x12\x17.v1.GetSnapshotsRequest\x1a\x18.v1.GetSnapshotsResponse\"\x00\x128\n" +
-	"\x0eSubscribeQuote\x12\x19.v1.SubscribeQuoteRequest\x1a\t.v1.Empty\"\x00\x12<\n" +
-	"\x10UnsubscribeQuote\x12\x1b.v1.UnsubscribeQuoteRequest\x1a\t.v1.Empty\"\x00B\x1aZ\x18phoenix/processor/pkg/pbb\x06proto3"
+	"ListTrades\x12\t.v1.Empty\x1a\x16.v1.ListTradesResponse\"\x00\x12;\n" +
+	"\x0fListComboTrades\x12\t.v1.Empty\x1a\x1b.v1.ListComboTradesResponse\"\x00\x12X\n" +
+	"\x13GetOrderDealRecords\x12\x1e.v1.GetOrderDealRecordsRequest\x1a\x1f.v1.GetOrderDealRecordsResponse\"\x00\x12F\n" +
+	"\rListPositions\x12\x18.v1.ListPositionsRequest\x1a\x19.v1.ListPositionsResponse\"\x00\x12U\n" +
+	"\x12ListPositionDetail\x12\x1d.v1.ListPositionDetailRequest\x1a\x1e.v1.ListPositionDetailResponse\"\x00\x12I\n" +
+	"\x0eListProfitLoss\x12\x19.v1.ListProfitLossRequest\x1a\x1a.v1.ListProfitLossResponse\"\x00\x12[\n" +
+	"\x14ListProfitLossDetail\x12\x1f.v1.ListProfitLossDetailRequest\x1a .v1.ListProfitLossDetailResponse\"\x00\x12^\n" +
+	"\x15ListProfitLossSummary\x12 .v1.ListProfitLossSummaryRequest\x1a!.v1.ListProfitLossSummaryResponse\"\x00\x12I\n" +
+	"\x0eGetSettlements\x12\x19.v1.GetSettlementsRequest\x1a\x1a.v1.GetSettlementsResponse\"\x00\x12J\n" +
+	"\x0fListSettlements\x12\x19.v1.GetSettlementsRequest\x1a\x1a.v1.GetSettlementsResponse\"\x00\x12/\n" +
+	"\tGetMargin\x12\x14.v1.GetMarginRequest\x1a\n" +
+	".v1.Margin\"\x00\x12D\n" +
+	"\x10GetTradingLimits\x12\x1b.v1.GetTradingLimitsRequest\x1a\x11.v1.TradingLimits\"\x00\x12_\n" +
+	"\x16GetStockReserveSummary\x12!.v1.GetStockReserveSummaryRequest\x1a .v1.ReserveStocksSummaryResponse\"\x00\x12\\\n" +
+	"\x15GetStockReserveDetail\x12 .v1.GetStockReserveDetailRequest\x1a\x1f.v1.ReserveStocksDetailResponse\"\x00\x12C\n" +
+	"\fReserveStock\x12\x17.v1.ReserveStockRequest\x1a\x18.v1.ReserveStockResponse\"\x00\x12X\n" +
+	"\x13GetEarmarkingDetail\x12\x1e.v1.GetEarmarkingDetailRequest\x1a\x1f.v1.EarmarkStocksDetailResponse\"\x00\x12R\n" +
+	"\x11ReserveEarmarking\x12\x1c.v1.ReserveEarmarkingRequest\x1a\x1d.v1.ReserveEarmarkingResponse\"\x00\x12C\n" +
+	"\fGetSnapshots\x12\x17.v1.GetSnapshotsRequest\x1a\x18.v1.GetSnapshotsResponse\"\x00\x12,\n" +
+	"\bGetTicks\x12\x13.v1.GetTicksRequest\x1a\t.v1.Ticks\"\x00\x12,\n" +
+	"\bGetKbars\x12\x13.v1.GetKbarsRequest\x1a\t.v1.Kbars\"\x00\x12>\n" +
+	"\x0eGetDailyQuotes\x12\x19.v1.GetDailyQuotesRequest\x1a\x0f.v1.DailyQuotes\"\x00\x12I\n" +
+	"\x0eCreditEnquires\x12\x19.v1.CreditEnquiresRequest\x1a\x1a.v1.CreditEnquiresResponse\"\x00\x12[\n" +
+	"\x14GetShortStockSources\x12\x1f.v1.GetShortStockSourcesRequest\x1a .v1.GetShortStockSourcesResponse\"\x00\x12@\n" +
+	"\vGetScanners\x12\x16.v1.GetScannersRequest\x1a\x17.v1.GetScannersResponse\"\x00\x12$\n" +
+	"\tGetPunish\x12\t.v1.Empty\x1a\n" +
+	".v1.Punish\"\x00\x12$\n" +
+	"\tGetNotice\x12\t.v1.Empty\x1a\n" +
+	".v1.Notice\"\x00\x128\n" +
+	"\x0eFetchContracts\x12\x19.v1.FetchContractsRequest\x1a\t.v1.Empty\"\x00\x12=\n" +
+	"\n" +
+	"ActivateCA\x12\x15.v1.ActivateCARequest\x1a\x16.v1.ActivateCAResponse\"\x00\x12L\n" +
+	"\x0fGetCAExpireTime\x12\x1a.v1.GetCAExpireTimeRequest\x1a\x1b.v1.GetCAExpireTimeResponse\"\x00\x12I\n" +
+	"\x0eSubscribeTrade\x12\x19.v1.SubscribeTradeRequest\x1a\x1a.v1.SubscribeTradeResponse\"\x00\x12O\n" +
+	"\x10UnsubscribeTrade\x12\x1b.v1.UnsubscribeTradeRequest\x1a\x1c.v1.UnsubscribeTradeResponse\"\x00B\x1aZ\x18phoenix/processor/pkg/pbb\x06proto3"
 
 var (
 	file_provider_proto_rawDescOnce sync.Once
@@ -2681,91 +6482,257 @@ func file_provider_proto_rawDescGZIP() []byte {
 	return file_provider_proto_rawDescData
 }
 
-var file_provider_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
+var file_provider_proto_msgTypes = make([]protoimpl.MessageInfo, 97)
 var file_provider_proto_goTypes = []any{
-	(*Account)(nil),                 // 0: v1.Account
-	(*Contract)(nil),                // 1: v1.Contract
-	(*Order)(nil),                   // 2: v1.Order
-	(*Trade)(nil),                   // 3: v1.Trade
-	(*Tick)(nil),                    // 4: v1.Tick
-	(*Kbar)(nil),                    // 5: v1.Kbar
-	(*Snapshot)(nil),                // 6: v1.Snapshot
-	(*ProfitLoss)(nil),              // 7: v1.ProfitLoss
-	(*Settlement)(nil),              // 8: v1.Settlement
-	(*Position)(nil),                // 9: v1.Position
-	(*Empty)(nil),                   // 10: v1.Empty
-	(*LoginRequest)(nil),            // 11: v1.LoginRequest
-	(*LoginResponse)(nil),           // 12: v1.LoginResponse
-	(*ListAccountsResponse)(nil),    // 13: v1.ListAccountsResponse
-	(*AccountBalanceResponse)(nil),  // 14: v1.AccountBalanceResponse
-	(*ListSettlementsResponse)(nil), // 15: v1.ListSettlementsResponse
-	(*ListProfitLossRequest)(nil),   // 16: v1.ListProfitLossRequest
-	(*ListProfitLossResponse)(nil),  // 17: v1.ListProfitLossResponse
-	(*ListPositionsResponse)(nil),   // 18: v1.ListPositionsResponse
-	(*PlaceOrderRequest)(nil),       // 19: v1.PlaceOrderRequest
-	(*UpdateOrderRequest)(nil),      // 20: v1.UpdateOrderRequest
-	(*CancelOrderRequest)(nil),      // 21: v1.CancelOrderRequest
-	(*TradeResponse)(nil),           // 22: v1.TradeResponse
-	(*ListTradesResponse)(nil),      // 23: v1.ListTradesResponse
-	(*GetTicksRequest)(nil),         // 24: v1.GetTicksRequest
-	(*GetTicksResponse)(nil),        // 25: v1.GetTicksResponse
-	(*GetKbarsRequest)(nil),         // 26: v1.GetKbarsRequest
-	(*GetKbarsResponse)(nil),        // 27: v1.GetKbarsResponse
-	(*GetSnapshotsRequest)(nil),     // 28: v1.GetSnapshotsRequest
-	(*GetSnapshotsResponse)(nil),    // 29: v1.GetSnapshotsResponse
-	(*SubscribeQuoteRequest)(nil),   // 30: v1.SubscribeQuoteRequest
-	(*UnsubscribeQuoteRequest)(nil), // 31: v1.UnsubscribeQuoteRequest
+	(*Empty)(nil),                         // 0: v1.Empty
+	(*LoginRequest)(nil),                  // 1: v1.LoginRequest
+	(*LoginResponse)(nil),                 // 2: v1.LoginResponse
+	(*LogoutResponse)(nil),                // 3: v1.LogoutResponse
+	(*Account)(nil),                       // 4: v1.Account
+	(*UsageStatus)(nil),                   // 5: v1.UsageStatus
+	(*ListAccountsResponse)(nil),          // 6: v1.ListAccountsResponse
+	(*AccountBalance)(nil),                // 7: v1.AccountBalance
+	(*Contract)(nil),                      // 8: v1.Contract
+	(*ComboContract)(nil),                 // 9: v1.ComboContract
+	(*Order)(nil),                         // 10: v1.Order
+	(*ComboOrder)(nil),                    // 11: v1.ComboOrder
+	(*OrderStatus)(nil),                   // 12: v1.OrderStatus
+	(*Trade)(nil),                         // 13: v1.Trade
+	(*ComboTrade)(nil),                    // 14: v1.ComboTrade
+	(*PlaceOrderRequest)(nil),             // 15: v1.PlaceOrderRequest
+	(*PlaceComboOrderRequest)(nil),        // 16: v1.PlaceComboOrderRequest
+	(*UpdateOrderRequest)(nil),            // 17: v1.UpdateOrderRequest
+	(*CancelOrderRequest)(nil),            // 18: v1.CancelOrderRequest
+	(*CancelComboOrderRequest)(nil),       // 19: v1.CancelComboOrderRequest
+	(*UpdateStatusRequest)(nil),           // 20: v1.UpdateStatusRequest
+	(*ListTradesResponse)(nil),            // 21: v1.ListTradesResponse
+	(*ListComboTradesResponse)(nil),       // 22: v1.ListComboTradesResponse
+	(*GetOrderDealRecordsRequest)(nil),    // 23: v1.GetOrderDealRecordsRequest
+	(*GetOrderDealRecordsResponse)(nil),   // 24: v1.GetOrderDealRecordsResponse
+	(*OrderDealRecord)(nil),               // 25: v1.OrderDealRecord
+	(*ListPositionsRequest)(nil),          // 26: v1.ListPositionsRequest
+	(*StockPosition)(nil),                 // 27: v1.StockPosition
+	(*FuturePosition)(nil),                // 28: v1.FuturePosition
+	(*Position)(nil),                      // 29: v1.Position
+	(*ListPositionsResponse)(nil),         // 30: v1.ListPositionsResponse
+	(*ListPositionDetailRequest)(nil),     // 31: v1.ListPositionDetailRequest
+	(*StockPositionDetail)(nil),           // 32: v1.StockPositionDetail
+	(*FuturePositionDetail)(nil),          // 33: v1.FuturePositionDetail
+	(*PositionDetail)(nil),                // 34: v1.PositionDetail
+	(*ListPositionDetailResponse)(nil),    // 35: v1.ListPositionDetailResponse
+	(*ListProfitLossRequest)(nil),         // 36: v1.ListProfitLossRequest
+	(*StockProfitLoss)(nil),               // 37: v1.StockProfitLoss
+	(*FutureProfitLoss)(nil),              // 38: v1.FutureProfitLoss
+	(*ProfitLoss)(nil),                    // 39: v1.ProfitLoss
+	(*ListProfitLossResponse)(nil),        // 40: v1.ListProfitLossResponse
+	(*ListProfitLossDetailRequest)(nil),   // 41: v1.ListProfitLossDetailRequest
+	(*StockProfitDetail)(nil),             // 42: v1.StockProfitDetail
+	(*FutureProfitDetail)(nil),            // 43: v1.FutureProfitDetail
+	(*ProfitDetail)(nil),                  // 44: v1.ProfitDetail
+	(*ListProfitLossDetailResponse)(nil),  // 45: v1.ListProfitLossDetailResponse
+	(*ListProfitLossSummaryRequest)(nil),  // 46: v1.ListProfitLossSummaryRequest
+	(*StockProfitLossSummary)(nil),        // 47: v1.StockProfitLossSummary
+	(*FutureProfitLossSummary)(nil),       // 48: v1.FutureProfitLossSummary
+	(*ProfitLossSummary)(nil),             // 49: v1.ProfitLossSummary
+	(*ListProfitLossSummaryResponse)(nil), // 50: v1.ListProfitLossSummaryResponse
+	(*GetSettlementsRequest)(nil),         // 51: v1.GetSettlementsRequest
+	(*Settlement)(nil),                    // 52: v1.Settlement
+	(*GetSettlementsResponse)(nil),        // 53: v1.GetSettlementsResponse
+	(*GetMarginRequest)(nil),              // 54: v1.GetMarginRequest
+	(*Margin)(nil),                        // 55: v1.Margin
+	(*GetTradingLimitsRequest)(nil),       // 56: v1.GetTradingLimitsRequest
+	(*TradingLimits)(nil),                 // 57: v1.TradingLimits
+	(*GetStockReserveSummaryRequest)(nil), // 58: v1.GetStockReserveSummaryRequest
+	(*ReserveStocksSummaryResponse)(nil),  // 59: v1.ReserveStocksSummaryResponse
+	(*GetStockReserveDetailRequest)(nil),  // 60: v1.GetStockReserveDetailRequest
+	(*ReserveStocksDetailResponse)(nil),   // 61: v1.ReserveStocksDetailResponse
+	(*ReserveStockRequest)(nil),           // 62: v1.ReserveStockRequest
+	(*ReserveStockResponse)(nil),          // 63: v1.ReserveStockResponse
+	(*GetEarmarkingDetailRequest)(nil),    // 64: v1.GetEarmarkingDetailRequest
+	(*EarmarkStocksDetailResponse)(nil),   // 65: v1.EarmarkStocksDetailResponse
+	(*ReserveEarmarkingRequest)(nil),      // 66: v1.ReserveEarmarkingRequest
+	(*ReserveEarmarkingResponse)(nil),     // 67: v1.ReserveEarmarkingResponse
+	(*GetSnapshotsRequest)(nil),           // 68: v1.GetSnapshotsRequest
+	(*GetSnapshotsResponse)(nil),          // 69: v1.GetSnapshotsResponse
+	(*Snapshot)(nil),                      // 70: v1.Snapshot
+	(*GetTicksRequest)(nil),               // 71: v1.GetTicksRequest
+	(*Ticks)(nil),                         // 72: v1.Ticks
+	(*GetKbarsRequest)(nil),               // 73: v1.GetKbarsRequest
+	(*Kbars)(nil),                         // 74: v1.Kbars
+	(*GetDailyQuotesRequest)(nil),         // 75: v1.GetDailyQuotesRequest
+	(*DailyQuotes)(nil),                   // 76: v1.DailyQuotes
+	(*CreditEnquiresRequest)(nil),         // 77: v1.CreditEnquiresRequest
+	(*CreditEnquiresResponse)(nil),        // 78: v1.CreditEnquiresResponse
+	(*CreditEnquire)(nil),                 // 79: v1.CreditEnquire
+	(*GetShortStockSourcesRequest)(nil),   // 80: v1.GetShortStockSourcesRequest
+	(*GetShortStockSourcesResponse)(nil),  // 81: v1.GetShortStockSourcesResponse
+	(*ShortStockSource)(nil),              // 82: v1.ShortStockSource
+	(*GetScannersRequest)(nil),            // 83: v1.GetScannersRequest
+	(*GetScannersResponse)(nil),           // 84: v1.GetScannersResponse
+	(*ScannerItem)(nil),                   // 85: v1.ScannerItem
+	(*Punish)(nil),                        // 86: v1.Punish
+	(*Notice)(nil),                        // 87: v1.Notice
+	(*FetchContractsRequest)(nil),         // 88: v1.FetchContractsRequest
+	(*ActivateCARequest)(nil),             // 89: v1.ActivateCARequest
+	(*ActivateCAResponse)(nil),            // 90: v1.ActivateCAResponse
+	(*GetCAExpireTimeRequest)(nil),        // 91: v1.GetCAExpireTimeRequest
+	(*GetCAExpireTimeResponse)(nil),       // 92: v1.GetCAExpireTimeResponse
+	(*SubscribeTradeRequest)(nil),         // 93: v1.SubscribeTradeRequest
+	(*SubscribeTradeResponse)(nil),        // 94: v1.SubscribeTradeResponse
+	(*UnsubscribeTradeRequest)(nil),       // 95: v1.UnsubscribeTradeRequest
+	(*UnsubscribeTradeResponse)(nil),      // 96: v1.UnsubscribeTradeResponse
 }
 var file_provider_proto_depIdxs = []int32{
-	0,  // 0: v1.Order.account:type_name -> v1.Account
-	1,  // 1: v1.Trade.contract:type_name -> v1.Contract
-	2,  // 2: v1.Trade.order:type_name -> v1.Order
-	0,  // 3: v1.ListAccountsResponse.accounts:type_name -> v1.Account
-	8,  // 4: v1.ListSettlementsResponse.settlements:type_name -> v1.Settlement
-	7,  // 5: v1.ListProfitLossResponse.profit_loss:type_name -> v1.ProfitLoss
-	9,  // 6: v1.ListPositionsResponse.positions:type_name -> v1.Position
-	3,  // 7: v1.TradeResponse.trade:type_name -> v1.Trade
-	3,  // 8: v1.ListTradesResponse.trades:type_name -> v1.Trade
-	4,  // 9: v1.GetTicksResponse.ticks:type_name -> v1.Tick
-	5,  // 10: v1.GetKbarsResponse.kbars:type_name -> v1.Kbar
-	6,  // 11: v1.GetSnapshotsResponse.snapshots:type_name -> v1.Snapshot
-	11, // 12: v1.ShioajiProvider.Login:input_type -> v1.LoginRequest
-	10, // 13: v1.ShioajiProvider.ListAccounts:input_type -> v1.Empty
-	10, // 14: v1.ShioajiProvider.GetAccountBalance:input_type -> v1.Empty
-	10, // 15: v1.ShioajiProvider.ListSettlements:input_type -> v1.Empty
-	16, // 16: v1.ShioajiProvider.ListProfitLoss:input_type -> v1.ListProfitLossRequest
-	10, // 17: v1.ShioajiProvider.ListPositions:input_type -> v1.Empty
-	19, // 18: v1.ShioajiProvider.PlaceOrder:input_type -> v1.PlaceOrderRequest
-	20, // 19: v1.ShioajiProvider.UpdateOrder:input_type -> v1.UpdateOrderRequest
-	21, // 20: v1.ShioajiProvider.CancelOrder:input_type -> v1.CancelOrderRequest
-	10, // 21: v1.ShioajiProvider.ListTrades:input_type -> v1.Empty
-	10, // 22: v1.ShioajiProvider.UpdateStatus:input_type -> v1.Empty
-	24, // 23: v1.ShioajiProvider.GetTicks:input_type -> v1.GetTicksRequest
-	26, // 24: v1.ShioajiProvider.GetKbars:input_type -> v1.GetKbarsRequest
-	28, // 25: v1.ShioajiProvider.GetSnapshots:input_type -> v1.GetSnapshotsRequest
-	30, // 26: v1.ShioajiProvider.SubscribeQuote:input_type -> v1.SubscribeQuoteRequest
-	31, // 27: v1.ShioajiProvider.UnsubscribeQuote:input_type -> v1.UnsubscribeQuoteRequest
-	12, // 28: v1.ShioajiProvider.Login:output_type -> v1.LoginResponse
-	13, // 29: v1.ShioajiProvider.ListAccounts:output_type -> v1.ListAccountsResponse
-	14, // 30: v1.ShioajiProvider.GetAccountBalance:output_type -> v1.AccountBalanceResponse
-	15, // 31: v1.ShioajiProvider.ListSettlements:output_type -> v1.ListSettlementsResponse
-	17, // 32: v1.ShioajiProvider.ListProfitLoss:output_type -> v1.ListProfitLossResponse
-	18, // 33: v1.ShioajiProvider.ListPositions:output_type -> v1.ListPositionsResponse
-	22, // 34: v1.ShioajiProvider.PlaceOrder:output_type -> v1.TradeResponse
-	22, // 35: v1.ShioajiProvider.UpdateOrder:output_type -> v1.TradeResponse
-	22, // 36: v1.ShioajiProvider.CancelOrder:output_type -> v1.TradeResponse
-	23, // 37: v1.ShioajiProvider.ListTrades:output_type -> v1.ListTradesResponse
-	10, // 38: v1.ShioajiProvider.UpdateStatus:output_type -> v1.Empty
-	25, // 39: v1.ShioajiProvider.GetTicks:output_type -> v1.GetTicksResponse
-	27, // 40: v1.ShioajiProvider.GetKbars:output_type -> v1.GetKbarsResponse
-	29, // 41: v1.ShioajiProvider.GetSnapshots:output_type -> v1.GetSnapshotsResponse
-	10, // 42: v1.ShioajiProvider.SubscribeQuote:output_type -> v1.Empty
-	10, // 43: v1.ShioajiProvider.UnsubscribeQuote:output_type -> v1.Empty
-	28, // [28:44] is the sub-list for method output_type
-	12, // [12:28] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	4,   // 0: v1.LoginResponse.accounts:type_name -> v1.Account
+	4,   // 1: v1.ListAccountsResponse.accounts:type_name -> v1.Account
+	4,   // 2: v1.Order.account:type_name -> v1.Account
+	4,   // 3: v1.ComboOrder.account:type_name -> v1.Account
+	8,   // 4: v1.Trade.contract:type_name -> v1.Contract
+	10,  // 5: v1.Trade.order:type_name -> v1.Order
+	12,  // 6: v1.Trade.status:type_name -> v1.OrderStatus
+	9,   // 7: v1.ComboTrade.contract:type_name -> v1.ComboContract
+	11,  // 8: v1.ComboTrade.order:type_name -> v1.ComboOrder
+	12,  // 9: v1.ComboTrade.status:type_name -> v1.OrderStatus
+	8,   // 10: v1.PlaceOrderRequest.contract:type_name -> v1.Contract
+	10,  // 11: v1.PlaceOrderRequest.order:type_name -> v1.Order
+	9,   // 12: v1.PlaceComboOrderRequest.combo_contract:type_name -> v1.ComboContract
+	11,  // 13: v1.PlaceComboOrderRequest.order:type_name -> v1.ComboOrder
+	13,  // 14: v1.UpdateOrderRequest.trade:type_name -> v1.Trade
+	13,  // 15: v1.CancelOrderRequest.trade:type_name -> v1.Trade
+	14,  // 16: v1.CancelComboOrderRequest.combotrade:type_name -> v1.ComboTrade
+	4,   // 17: v1.UpdateStatusRequest.account:type_name -> v1.Account
+	13,  // 18: v1.ListTradesResponse.trades:type_name -> v1.Trade
+	14,  // 19: v1.ListComboTradesResponse.combo_trades:type_name -> v1.ComboTrade
+	4,   // 20: v1.GetOrderDealRecordsRequest.account:type_name -> v1.Account
+	25,  // 21: v1.GetOrderDealRecordsResponse.records:type_name -> v1.OrderDealRecord
+	4,   // 22: v1.ListPositionsRequest.account:type_name -> v1.Account
+	27,  // 23: v1.Position.stock_position:type_name -> v1.StockPosition
+	28,  // 24: v1.Position.future_position:type_name -> v1.FuturePosition
+	29,  // 25: v1.ListPositionsResponse.positions:type_name -> v1.Position
+	4,   // 26: v1.ListPositionDetailRequest.account:type_name -> v1.Account
+	32,  // 27: v1.PositionDetail.stock_detail:type_name -> v1.StockPositionDetail
+	33,  // 28: v1.PositionDetail.future_detail:type_name -> v1.FuturePositionDetail
+	34,  // 29: v1.ListPositionDetailResponse.details:type_name -> v1.PositionDetail
+	4,   // 30: v1.ListProfitLossRequest.account:type_name -> v1.Account
+	37,  // 31: v1.ProfitLoss.stock_pnl:type_name -> v1.StockProfitLoss
+	38,  // 32: v1.ProfitLoss.future_pnl:type_name -> v1.FutureProfitLoss
+	39,  // 33: v1.ListProfitLossResponse.profit_losses:type_name -> v1.ProfitLoss
+	4,   // 34: v1.ListProfitLossDetailRequest.account:type_name -> v1.Account
+	42,  // 35: v1.ProfitDetail.stock_detail:type_name -> v1.StockProfitDetail
+	43,  // 36: v1.ProfitDetail.future_detail:type_name -> v1.FutureProfitDetail
+	44,  // 37: v1.ListProfitLossDetailResponse.details:type_name -> v1.ProfitDetail
+	4,   // 38: v1.ListProfitLossSummaryRequest.account:type_name -> v1.Account
+	47,  // 39: v1.ProfitLossSummary.stock_summary:type_name -> v1.StockProfitLossSummary
+	48,  // 40: v1.ProfitLossSummary.future_summary:type_name -> v1.FutureProfitLossSummary
+	49,  // 41: v1.ListProfitLossSummaryResponse.summaries:type_name -> v1.ProfitLossSummary
+	4,   // 42: v1.GetSettlementsRequest.account:type_name -> v1.Account
+	52,  // 43: v1.GetSettlementsResponse.settlements:type_name -> v1.Settlement
+	4,   // 44: v1.GetMarginRequest.account:type_name -> v1.Account
+	4,   // 45: v1.GetTradingLimitsRequest.account:type_name -> v1.Account
+	4,   // 46: v1.GetStockReserveSummaryRequest.account:type_name -> v1.Account
+	4,   // 47: v1.GetStockReserveDetailRequest.account:type_name -> v1.Account
+	4,   // 48: v1.ReserveStockRequest.account:type_name -> v1.Account
+	8,   // 49: v1.ReserveStockRequest.contract:type_name -> v1.Contract
+	4,   // 50: v1.GetEarmarkingDetailRequest.account:type_name -> v1.Account
+	4,   // 51: v1.ReserveEarmarkingRequest.account:type_name -> v1.Account
+	8,   // 52: v1.ReserveEarmarkingRequest.contract:type_name -> v1.Contract
+	70,  // 53: v1.GetSnapshotsResponse.snapshots:type_name -> v1.Snapshot
+	79,  // 54: v1.CreditEnquiresResponse.credit_enquires:type_name -> v1.CreditEnquire
+	82,  // 55: v1.GetShortStockSourcesResponse.sources:type_name -> v1.ShortStockSource
+	85,  // 56: v1.GetScannersResponse.scanners:type_name -> v1.ScannerItem
+	4,   // 57: v1.SubscribeTradeRequest.account:type_name -> v1.Account
+	4,   // 58: v1.UnsubscribeTradeRequest.account:type_name -> v1.Account
+	1,   // 59: v1.ShioajiProvider.Login:input_type -> v1.LoginRequest
+	0,   // 60: v1.ShioajiProvider.Logout:input_type -> v1.Empty
+	0,   // 61: v1.ShioajiProvider.GetUsage:input_type -> v1.Empty
+	0,   // 62: v1.ShioajiProvider.ListAccounts:input_type -> v1.Empty
+	0,   // 63: v1.ShioajiProvider.GetAccountBalance:input_type -> v1.Empty
+	15,  // 64: v1.ShioajiProvider.PlaceOrder:input_type -> v1.PlaceOrderRequest
+	16,  // 65: v1.ShioajiProvider.PlaceComboOrder:input_type -> v1.PlaceComboOrderRequest
+	17,  // 66: v1.ShioajiProvider.UpdateOrder:input_type -> v1.UpdateOrderRequest
+	18,  // 67: v1.ShioajiProvider.CancelOrder:input_type -> v1.CancelOrderRequest
+	19,  // 68: v1.ShioajiProvider.CancelComboOrder:input_type -> v1.CancelComboOrderRequest
+	20,  // 69: v1.ShioajiProvider.UpdateStatus:input_type -> v1.UpdateStatusRequest
+	20,  // 70: v1.ShioajiProvider.UpdateComboStatus:input_type -> v1.UpdateStatusRequest
+	0,   // 71: v1.ShioajiProvider.ListTrades:input_type -> v1.Empty
+	0,   // 72: v1.ShioajiProvider.ListComboTrades:input_type -> v1.Empty
+	23,  // 73: v1.ShioajiProvider.GetOrderDealRecords:input_type -> v1.GetOrderDealRecordsRequest
+	26,  // 74: v1.ShioajiProvider.ListPositions:input_type -> v1.ListPositionsRequest
+	31,  // 75: v1.ShioajiProvider.ListPositionDetail:input_type -> v1.ListPositionDetailRequest
+	36,  // 76: v1.ShioajiProvider.ListProfitLoss:input_type -> v1.ListProfitLossRequest
+	41,  // 77: v1.ShioajiProvider.ListProfitLossDetail:input_type -> v1.ListProfitLossDetailRequest
+	46,  // 78: v1.ShioajiProvider.ListProfitLossSummary:input_type -> v1.ListProfitLossSummaryRequest
+	51,  // 79: v1.ShioajiProvider.GetSettlements:input_type -> v1.GetSettlementsRequest
+	51,  // 80: v1.ShioajiProvider.ListSettlements:input_type -> v1.GetSettlementsRequest
+	54,  // 81: v1.ShioajiProvider.GetMargin:input_type -> v1.GetMarginRequest
+	56,  // 82: v1.ShioajiProvider.GetTradingLimits:input_type -> v1.GetTradingLimitsRequest
+	58,  // 83: v1.ShioajiProvider.GetStockReserveSummary:input_type -> v1.GetStockReserveSummaryRequest
+	60,  // 84: v1.ShioajiProvider.GetStockReserveDetail:input_type -> v1.GetStockReserveDetailRequest
+	62,  // 85: v1.ShioajiProvider.ReserveStock:input_type -> v1.ReserveStockRequest
+	64,  // 86: v1.ShioajiProvider.GetEarmarkingDetail:input_type -> v1.GetEarmarkingDetailRequest
+	66,  // 87: v1.ShioajiProvider.ReserveEarmarking:input_type -> v1.ReserveEarmarkingRequest
+	68,  // 88: v1.ShioajiProvider.GetSnapshots:input_type -> v1.GetSnapshotsRequest
+	71,  // 89: v1.ShioajiProvider.GetTicks:input_type -> v1.GetTicksRequest
+	73,  // 90: v1.ShioajiProvider.GetKbars:input_type -> v1.GetKbarsRequest
+	75,  // 91: v1.ShioajiProvider.GetDailyQuotes:input_type -> v1.GetDailyQuotesRequest
+	77,  // 92: v1.ShioajiProvider.CreditEnquires:input_type -> v1.CreditEnquiresRequest
+	80,  // 93: v1.ShioajiProvider.GetShortStockSources:input_type -> v1.GetShortStockSourcesRequest
+	83,  // 94: v1.ShioajiProvider.GetScanners:input_type -> v1.GetScannersRequest
+	0,   // 95: v1.ShioajiProvider.GetPunish:input_type -> v1.Empty
+	0,   // 96: v1.ShioajiProvider.GetNotice:input_type -> v1.Empty
+	88,  // 97: v1.ShioajiProvider.FetchContracts:input_type -> v1.FetchContractsRequest
+	89,  // 98: v1.ShioajiProvider.ActivateCA:input_type -> v1.ActivateCARequest
+	91,  // 99: v1.ShioajiProvider.GetCAExpireTime:input_type -> v1.GetCAExpireTimeRequest
+	93,  // 100: v1.ShioajiProvider.SubscribeTrade:input_type -> v1.SubscribeTradeRequest
+	95,  // 101: v1.ShioajiProvider.UnsubscribeTrade:input_type -> v1.UnsubscribeTradeRequest
+	2,   // 102: v1.ShioajiProvider.Login:output_type -> v1.LoginResponse
+	3,   // 103: v1.ShioajiProvider.Logout:output_type -> v1.LogoutResponse
+	5,   // 104: v1.ShioajiProvider.GetUsage:output_type -> v1.UsageStatus
+	6,   // 105: v1.ShioajiProvider.ListAccounts:output_type -> v1.ListAccountsResponse
+	7,   // 106: v1.ShioajiProvider.GetAccountBalance:output_type -> v1.AccountBalance
+	13,  // 107: v1.ShioajiProvider.PlaceOrder:output_type -> v1.Trade
+	14,  // 108: v1.ShioajiProvider.PlaceComboOrder:output_type -> v1.ComboTrade
+	13,  // 109: v1.ShioajiProvider.UpdateOrder:output_type -> v1.Trade
+	13,  // 110: v1.ShioajiProvider.CancelOrder:output_type -> v1.Trade
+	14,  // 111: v1.ShioajiProvider.CancelComboOrder:output_type -> v1.ComboTrade
+	0,   // 112: v1.ShioajiProvider.UpdateStatus:output_type -> v1.Empty
+	0,   // 113: v1.ShioajiProvider.UpdateComboStatus:output_type -> v1.Empty
+	21,  // 114: v1.ShioajiProvider.ListTrades:output_type -> v1.ListTradesResponse
+	22,  // 115: v1.ShioajiProvider.ListComboTrades:output_type -> v1.ListComboTradesResponse
+	24,  // 116: v1.ShioajiProvider.GetOrderDealRecords:output_type -> v1.GetOrderDealRecordsResponse
+	30,  // 117: v1.ShioajiProvider.ListPositions:output_type -> v1.ListPositionsResponse
+	35,  // 118: v1.ShioajiProvider.ListPositionDetail:output_type -> v1.ListPositionDetailResponse
+	40,  // 119: v1.ShioajiProvider.ListProfitLoss:output_type -> v1.ListProfitLossResponse
+	45,  // 120: v1.ShioajiProvider.ListProfitLossDetail:output_type -> v1.ListProfitLossDetailResponse
+	50,  // 121: v1.ShioajiProvider.ListProfitLossSummary:output_type -> v1.ListProfitLossSummaryResponse
+	53,  // 122: v1.ShioajiProvider.GetSettlements:output_type -> v1.GetSettlementsResponse
+	53,  // 123: v1.ShioajiProvider.ListSettlements:output_type -> v1.GetSettlementsResponse
+	55,  // 124: v1.ShioajiProvider.GetMargin:output_type -> v1.Margin
+	57,  // 125: v1.ShioajiProvider.GetTradingLimits:output_type -> v1.TradingLimits
+	59,  // 126: v1.ShioajiProvider.GetStockReserveSummary:output_type -> v1.ReserveStocksSummaryResponse
+	61,  // 127: v1.ShioajiProvider.GetStockReserveDetail:output_type -> v1.ReserveStocksDetailResponse
+	63,  // 128: v1.ShioajiProvider.ReserveStock:output_type -> v1.ReserveStockResponse
+	65,  // 129: v1.ShioajiProvider.GetEarmarkingDetail:output_type -> v1.EarmarkStocksDetailResponse
+	67,  // 130: v1.ShioajiProvider.ReserveEarmarking:output_type -> v1.ReserveEarmarkingResponse
+	69,  // 131: v1.ShioajiProvider.GetSnapshots:output_type -> v1.GetSnapshotsResponse
+	72,  // 132: v1.ShioajiProvider.GetTicks:output_type -> v1.Ticks
+	74,  // 133: v1.ShioajiProvider.GetKbars:output_type -> v1.Kbars
+	76,  // 134: v1.ShioajiProvider.GetDailyQuotes:output_type -> v1.DailyQuotes
+	78,  // 135: v1.ShioajiProvider.CreditEnquires:output_type -> v1.CreditEnquiresResponse
+	81,  // 136: v1.ShioajiProvider.GetShortStockSources:output_type -> v1.GetShortStockSourcesResponse
+	84,  // 137: v1.ShioajiProvider.GetScanners:output_type -> v1.GetScannersResponse
+	86,  // 138: v1.ShioajiProvider.GetPunish:output_type -> v1.Punish
+	87,  // 139: v1.ShioajiProvider.GetNotice:output_type -> v1.Notice
+	0,   // 140: v1.ShioajiProvider.FetchContracts:output_type -> v1.Empty
+	90,  // 141: v1.ShioajiProvider.ActivateCA:output_type -> v1.ActivateCAResponse
+	92,  // 142: v1.ShioajiProvider.GetCAExpireTime:output_type -> v1.GetCAExpireTimeResponse
+	94,  // 143: v1.ShioajiProvider.SubscribeTrade:output_type -> v1.SubscribeTradeResponse
+	96,  // 144: v1.ShioajiProvider.UnsubscribeTrade:output_type -> v1.UnsubscribeTradeResponse
+	102, // [102:145] is the sub-list for method output_type
+	59,  // [59:102] is the sub-list for method input_type
+	59,  // [59:59] is the sub-list for extension type_name
+	59,  // [59:59] is the sub-list for extension extendee
+	0,   // [0:59] is the sub-list for field type_name
 }
 
 func init() { file_provider_proto_init() }
@@ -2773,13 +6740,33 @@ func file_provider_proto_init() {
 	if File_provider_proto != nil {
 		return
 	}
+	file_provider_proto_msgTypes[29].OneofWrappers = []any{
+		(*Position_StockPosition)(nil),
+		(*Position_FuturePosition)(nil),
+	}
+	file_provider_proto_msgTypes[34].OneofWrappers = []any{
+		(*PositionDetail_StockDetail)(nil),
+		(*PositionDetail_FutureDetail)(nil),
+	}
+	file_provider_proto_msgTypes[39].OneofWrappers = []any{
+		(*ProfitLoss_StockPnl)(nil),
+		(*ProfitLoss_FuturePnl)(nil),
+	}
+	file_provider_proto_msgTypes[44].OneofWrappers = []any{
+		(*ProfitDetail_StockDetail)(nil),
+		(*ProfitDetail_FutureDetail)(nil),
+	}
+	file_provider_proto_msgTypes[49].OneofWrappers = []any{
+		(*ProfitLossSummary_StockSummary)(nil),
+		(*ProfitLossSummary_FutureSummary)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_provider_proto_rawDesc), len(file_provider_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   32,
+			NumMessages:   97,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -41,6 +41,16 @@ class ShioajiProviderStub(object):
                 request_serializer=provider__pb2.LoginRequest.SerializeToString,
                 response_deserializer=provider__pb2.LoginResponse.FromString,
                 _registered_method=True)
+        self.Logout = channel.unary_unary(
+                '/v1.ShioajiProvider/Logout',
+                request_serializer=provider__pb2.Empty.SerializeToString,
+                response_deserializer=provider__pb2.LogoutResponse.FromString,
+                _registered_method=True)
+        self.GetUsage = channel.unary_unary(
+                '/v1.ShioajiProvider/GetUsage',
+                request_serializer=provider__pb2.Empty.SerializeToString,
+                response_deserializer=provider__pb2.UsageStatus.FromString,
+                _registered_method=True)
         self.ListAccounts = channel.unary_unary(
                 '/v1.ShioajiProvider/ListAccounts',
                 request_serializer=provider__pb2.Empty.SerializeToString,
@@ -49,72 +59,197 @@ class ShioajiProviderStub(object):
         self.GetAccountBalance = channel.unary_unary(
                 '/v1.ShioajiProvider/GetAccountBalance',
                 request_serializer=provider__pb2.Empty.SerializeToString,
-                response_deserializer=provider__pb2.AccountBalanceResponse.FromString,
-                _registered_method=True)
-        self.ListSettlements = channel.unary_unary(
-                '/v1.ShioajiProvider/ListSettlements',
-                request_serializer=provider__pb2.Empty.SerializeToString,
-                response_deserializer=provider__pb2.ListSettlementsResponse.FromString,
-                _registered_method=True)
-        self.ListProfitLoss = channel.unary_unary(
-                '/v1.ShioajiProvider/ListProfitLoss',
-                request_serializer=provider__pb2.ListProfitLossRequest.SerializeToString,
-                response_deserializer=provider__pb2.ListProfitLossResponse.FromString,
-                _registered_method=True)
-        self.ListPositions = channel.unary_unary(
-                '/v1.ShioajiProvider/ListPositions',
-                request_serializer=provider__pb2.Empty.SerializeToString,
-                response_deserializer=provider__pb2.ListPositionsResponse.FromString,
+                response_deserializer=provider__pb2.AccountBalance.FromString,
                 _registered_method=True)
         self.PlaceOrder = channel.unary_unary(
                 '/v1.ShioajiProvider/PlaceOrder',
                 request_serializer=provider__pb2.PlaceOrderRequest.SerializeToString,
-                response_deserializer=provider__pb2.TradeResponse.FromString,
+                response_deserializer=provider__pb2.Trade.FromString,
+                _registered_method=True)
+        self.PlaceComboOrder = channel.unary_unary(
+                '/v1.ShioajiProvider/PlaceComboOrder',
+                request_serializer=provider__pb2.PlaceComboOrderRequest.SerializeToString,
+                response_deserializer=provider__pb2.ComboTrade.FromString,
                 _registered_method=True)
         self.UpdateOrder = channel.unary_unary(
                 '/v1.ShioajiProvider/UpdateOrder',
                 request_serializer=provider__pb2.UpdateOrderRequest.SerializeToString,
-                response_deserializer=provider__pb2.TradeResponse.FromString,
+                response_deserializer=provider__pb2.Trade.FromString,
                 _registered_method=True)
         self.CancelOrder = channel.unary_unary(
                 '/v1.ShioajiProvider/CancelOrder',
                 request_serializer=provider__pb2.CancelOrderRequest.SerializeToString,
-                response_deserializer=provider__pb2.TradeResponse.FromString,
+                response_deserializer=provider__pb2.Trade.FromString,
+                _registered_method=True)
+        self.CancelComboOrder = channel.unary_unary(
+                '/v1.ShioajiProvider/CancelComboOrder',
+                request_serializer=provider__pb2.CancelComboOrderRequest.SerializeToString,
+                response_deserializer=provider__pb2.ComboTrade.FromString,
+                _registered_method=True)
+        self.UpdateStatus = channel.unary_unary(
+                '/v1.ShioajiProvider/UpdateStatus',
+                request_serializer=provider__pb2.UpdateStatusRequest.SerializeToString,
+                response_deserializer=provider__pb2.Empty.FromString,
+                _registered_method=True)
+        self.UpdateComboStatus = channel.unary_unary(
+                '/v1.ShioajiProvider/UpdateComboStatus',
+                request_serializer=provider__pb2.UpdateStatusRequest.SerializeToString,
+                response_deserializer=provider__pb2.Empty.FromString,
                 _registered_method=True)
         self.ListTrades = channel.unary_unary(
                 '/v1.ShioajiProvider/ListTrades',
                 request_serializer=provider__pb2.Empty.SerializeToString,
                 response_deserializer=provider__pb2.ListTradesResponse.FromString,
                 _registered_method=True)
-        self.UpdateStatus = channel.unary_unary(
-                '/v1.ShioajiProvider/UpdateStatus',
+        self.ListComboTrades = channel.unary_unary(
+                '/v1.ShioajiProvider/ListComboTrades',
                 request_serializer=provider__pb2.Empty.SerializeToString,
-                response_deserializer=provider__pb2.Empty.FromString,
+                response_deserializer=provider__pb2.ListComboTradesResponse.FromString,
                 _registered_method=True)
-        self.GetTicks = channel.unary_unary(
-                '/v1.ShioajiProvider/GetTicks',
-                request_serializer=provider__pb2.GetTicksRequest.SerializeToString,
-                response_deserializer=provider__pb2.GetTicksResponse.FromString,
+        self.GetOrderDealRecords = channel.unary_unary(
+                '/v1.ShioajiProvider/GetOrderDealRecords',
+                request_serializer=provider__pb2.GetOrderDealRecordsRequest.SerializeToString,
+                response_deserializer=provider__pb2.GetOrderDealRecordsResponse.FromString,
                 _registered_method=True)
-        self.GetKbars = channel.unary_unary(
-                '/v1.ShioajiProvider/GetKbars',
-                request_serializer=provider__pb2.GetKbarsRequest.SerializeToString,
-                response_deserializer=provider__pb2.GetKbarsResponse.FromString,
+        self.ListPositions = channel.unary_unary(
+                '/v1.ShioajiProvider/ListPositions',
+                request_serializer=provider__pb2.ListPositionsRequest.SerializeToString,
+                response_deserializer=provider__pb2.ListPositionsResponse.FromString,
+                _registered_method=True)
+        self.ListPositionDetail = channel.unary_unary(
+                '/v1.ShioajiProvider/ListPositionDetail',
+                request_serializer=provider__pb2.ListPositionDetailRequest.SerializeToString,
+                response_deserializer=provider__pb2.ListPositionDetailResponse.FromString,
+                _registered_method=True)
+        self.ListProfitLoss = channel.unary_unary(
+                '/v1.ShioajiProvider/ListProfitLoss',
+                request_serializer=provider__pb2.ListProfitLossRequest.SerializeToString,
+                response_deserializer=provider__pb2.ListProfitLossResponse.FromString,
+                _registered_method=True)
+        self.ListProfitLossDetail = channel.unary_unary(
+                '/v1.ShioajiProvider/ListProfitLossDetail',
+                request_serializer=provider__pb2.ListProfitLossDetailRequest.SerializeToString,
+                response_deserializer=provider__pb2.ListProfitLossDetailResponse.FromString,
+                _registered_method=True)
+        self.ListProfitLossSummary = channel.unary_unary(
+                '/v1.ShioajiProvider/ListProfitLossSummary',
+                request_serializer=provider__pb2.ListProfitLossSummaryRequest.SerializeToString,
+                response_deserializer=provider__pb2.ListProfitLossSummaryResponse.FromString,
+                _registered_method=True)
+        self.GetSettlements = channel.unary_unary(
+                '/v1.ShioajiProvider/GetSettlements',
+                request_serializer=provider__pb2.GetSettlementsRequest.SerializeToString,
+                response_deserializer=provider__pb2.GetSettlementsResponse.FromString,
+                _registered_method=True)
+        self.ListSettlements = channel.unary_unary(
+                '/v1.ShioajiProvider/ListSettlements',
+                request_serializer=provider__pb2.GetSettlementsRequest.SerializeToString,
+                response_deserializer=provider__pb2.GetSettlementsResponse.FromString,
+                _registered_method=True)
+        self.GetMargin = channel.unary_unary(
+                '/v1.ShioajiProvider/GetMargin',
+                request_serializer=provider__pb2.GetMarginRequest.SerializeToString,
+                response_deserializer=provider__pb2.Margin.FromString,
+                _registered_method=True)
+        self.GetTradingLimits = channel.unary_unary(
+                '/v1.ShioajiProvider/GetTradingLimits',
+                request_serializer=provider__pb2.GetTradingLimitsRequest.SerializeToString,
+                response_deserializer=provider__pb2.TradingLimits.FromString,
+                _registered_method=True)
+        self.GetStockReserveSummary = channel.unary_unary(
+                '/v1.ShioajiProvider/GetStockReserveSummary',
+                request_serializer=provider__pb2.GetStockReserveSummaryRequest.SerializeToString,
+                response_deserializer=provider__pb2.ReserveStocksSummaryResponse.FromString,
+                _registered_method=True)
+        self.GetStockReserveDetail = channel.unary_unary(
+                '/v1.ShioajiProvider/GetStockReserveDetail',
+                request_serializer=provider__pb2.GetStockReserveDetailRequest.SerializeToString,
+                response_deserializer=provider__pb2.ReserveStocksDetailResponse.FromString,
+                _registered_method=True)
+        self.ReserveStock = channel.unary_unary(
+                '/v1.ShioajiProvider/ReserveStock',
+                request_serializer=provider__pb2.ReserveStockRequest.SerializeToString,
+                response_deserializer=provider__pb2.ReserveStockResponse.FromString,
+                _registered_method=True)
+        self.GetEarmarkingDetail = channel.unary_unary(
+                '/v1.ShioajiProvider/GetEarmarkingDetail',
+                request_serializer=provider__pb2.GetEarmarkingDetailRequest.SerializeToString,
+                response_deserializer=provider__pb2.EarmarkStocksDetailResponse.FromString,
+                _registered_method=True)
+        self.ReserveEarmarking = channel.unary_unary(
+                '/v1.ShioajiProvider/ReserveEarmarking',
+                request_serializer=provider__pb2.ReserveEarmarkingRequest.SerializeToString,
+                response_deserializer=provider__pb2.ReserveEarmarkingResponse.FromString,
                 _registered_method=True)
         self.GetSnapshots = channel.unary_unary(
                 '/v1.ShioajiProvider/GetSnapshots',
                 request_serializer=provider__pb2.GetSnapshotsRequest.SerializeToString,
                 response_deserializer=provider__pb2.GetSnapshotsResponse.FromString,
                 _registered_method=True)
-        self.SubscribeQuote = channel.unary_unary(
-                '/v1.ShioajiProvider/SubscribeQuote',
-                request_serializer=provider__pb2.SubscribeQuoteRequest.SerializeToString,
+        self.GetTicks = channel.unary_unary(
+                '/v1.ShioajiProvider/GetTicks',
+                request_serializer=provider__pb2.GetTicksRequest.SerializeToString,
+                response_deserializer=provider__pb2.Ticks.FromString,
+                _registered_method=True)
+        self.GetKbars = channel.unary_unary(
+                '/v1.ShioajiProvider/GetKbars',
+                request_serializer=provider__pb2.GetKbarsRequest.SerializeToString,
+                response_deserializer=provider__pb2.Kbars.FromString,
+                _registered_method=True)
+        self.GetDailyQuotes = channel.unary_unary(
+                '/v1.ShioajiProvider/GetDailyQuotes',
+                request_serializer=provider__pb2.GetDailyQuotesRequest.SerializeToString,
+                response_deserializer=provider__pb2.DailyQuotes.FromString,
+                _registered_method=True)
+        self.CreditEnquires = channel.unary_unary(
+                '/v1.ShioajiProvider/CreditEnquires',
+                request_serializer=provider__pb2.CreditEnquiresRequest.SerializeToString,
+                response_deserializer=provider__pb2.CreditEnquiresResponse.FromString,
+                _registered_method=True)
+        self.GetShortStockSources = channel.unary_unary(
+                '/v1.ShioajiProvider/GetShortStockSources',
+                request_serializer=provider__pb2.GetShortStockSourcesRequest.SerializeToString,
+                response_deserializer=provider__pb2.GetShortStockSourcesResponse.FromString,
+                _registered_method=True)
+        self.GetScanners = channel.unary_unary(
+                '/v1.ShioajiProvider/GetScanners',
+                request_serializer=provider__pb2.GetScannersRequest.SerializeToString,
+                response_deserializer=provider__pb2.GetScannersResponse.FromString,
+                _registered_method=True)
+        self.GetPunish = channel.unary_unary(
+                '/v1.ShioajiProvider/GetPunish',
+                request_serializer=provider__pb2.Empty.SerializeToString,
+                response_deserializer=provider__pb2.Punish.FromString,
+                _registered_method=True)
+        self.GetNotice = channel.unary_unary(
+                '/v1.ShioajiProvider/GetNotice',
+                request_serializer=provider__pb2.Empty.SerializeToString,
+                response_deserializer=provider__pb2.Notice.FromString,
+                _registered_method=True)
+        self.FetchContracts = channel.unary_unary(
+                '/v1.ShioajiProvider/FetchContracts',
+                request_serializer=provider__pb2.FetchContractsRequest.SerializeToString,
                 response_deserializer=provider__pb2.Empty.FromString,
                 _registered_method=True)
-        self.UnsubscribeQuote = channel.unary_unary(
-                '/v1.ShioajiProvider/UnsubscribeQuote',
-                request_serializer=provider__pb2.UnsubscribeQuoteRequest.SerializeToString,
-                response_deserializer=provider__pb2.Empty.FromString,
+        self.ActivateCA = channel.unary_unary(
+                '/v1.ShioajiProvider/ActivateCA',
+                request_serializer=provider__pb2.ActivateCARequest.SerializeToString,
+                response_deserializer=provider__pb2.ActivateCAResponse.FromString,
+                _registered_method=True)
+        self.GetCAExpireTime = channel.unary_unary(
+                '/v1.ShioajiProvider/GetCAExpireTime',
+                request_serializer=provider__pb2.GetCAExpireTimeRequest.SerializeToString,
+                response_deserializer=provider__pb2.GetCAExpireTimeResponse.FromString,
+                _registered_method=True)
+        self.SubscribeTrade = channel.unary_unary(
+                '/v1.ShioajiProvider/SubscribeTrade',
+                request_serializer=provider__pb2.SubscribeTradeRequest.SerializeToString,
+                response_deserializer=provider__pb2.SubscribeTradeResponse.FromString,
+                _registered_method=True)
+        self.UnsubscribeTrade = channel.unary_unary(
+                '/v1.ShioajiProvider/UnsubscribeTrade',
+                request_serializer=provider__pb2.UnsubscribeTradeRequest.SerializeToString,
+                response_deserializer=provider__pb2.UnsubscribeTradeResponse.FromString,
                 _registered_method=True)
 
 
@@ -124,113 +259,261 @@ class ShioajiProviderServicer(object):
     """
 
     def Login(self, request, context):
-        """Authenticates the user and establishes a connection with the Shioaji API.
-        """
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Logout(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetUsage(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListAccounts(self, request, context):
-        """Retrieves all available trading accounts for the logged-in user.
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetAccountBalance(self, request, context):
-        """Queries the current balance for the default stock account.
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def ListSettlements(self, request, context):
-        """Retrieves stock account settlement details.
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def ListProfitLoss(self, request, context):
-        """Queries realized profit and loss for a specified date range.
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def ListPositions(self, request, context):
-        """Retrieves current unrealized positions and their profit/loss.
+        """SetDefaultAccount is client-side only in Python, but we might need it if the server maintains state per connection
+        skipping for now or can add later if needed.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def PlaceOrder(self, request, context):
-        """Submits a new trading order for a specific contract.
-        """
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PlaceComboOrder(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UpdateOrder(self, request, context):
-        """Modifies the price or quantity of an existing active order.
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def CancelOrder(self, request, context):
-        """Requests the cancellation of an existing active order.
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ListTrades(self, request, context):
-        """Lists all active trades and their statuses.
-        """
+    def CancelComboOrder(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UpdateStatus(self, request, context):
-        """Forces an update of order and trade statuses for the current session.
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetTicks(self, request, context):
-        """Retrieves historical tick data for a contract.
-        """
+    def UpdateComboStatus(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetKbars(self, request, context):
-        """Retrieves historical candlestick (K-bar) data for a contract.
-        """
+    def ListTrades(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListComboTrades(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetOrderDealRecords(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListPositions(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListPositionDetail(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListProfitLoss(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListProfitLossDetail(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListProfitLossSummary(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetSettlements(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListSettlements(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetMargin(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetTradingLimits(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetStockReserveSummary(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetStockReserveDetail(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ReserveStock(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetEarmarkingDetail(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ReserveEarmarking(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetSnapshots(self, request, context):
-        """Retrieves current market snapshots for one or more contracts.
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SubscribeQuote(self, request, context):
-        """Subscribes to real-time market data (ticks or quotes) for a contract.
-        """
+    def GetTicks(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def UnsubscribeQuote(self, request, context):
-        """Unsubscribes from real-time market data updates for a contract.
-        """
+    def GetKbars(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetDailyQuotes(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreditEnquires(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetShortStockSources(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetScanners(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetPunish(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetNotice(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def FetchContracts(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ActivateCA(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetCAExpireTime(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SubscribeTrade(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UnsubscribeTrade(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -243,6 +526,16 @@ def add_ShioajiProviderServicer_to_server(servicer, server):
                     request_deserializer=provider__pb2.LoginRequest.FromString,
                     response_serializer=provider__pb2.LoginResponse.SerializeToString,
             ),
+            'Logout': grpc.unary_unary_rpc_method_handler(
+                    servicer.Logout,
+                    request_deserializer=provider__pb2.Empty.FromString,
+                    response_serializer=provider__pb2.LogoutResponse.SerializeToString,
+            ),
+            'GetUsage': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetUsage,
+                    request_deserializer=provider__pb2.Empty.FromString,
+                    response_serializer=provider__pb2.UsageStatus.SerializeToString,
+            ),
             'ListAccounts': grpc.unary_unary_rpc_method_handler(
                     servicer.ListAccounts,
                     request_deserializer=provider__pb2.Empty.FromString,
@@ -251,72 +544,197 @@ def add_ShioajiProviderServicer_to_server(servicer, server):
             'GetAccountBalance': grpc.unary_unary_rpc_method_handler(
                     servicer.GetAccountBalance,
                     request_deserializer=provider__pb2.Empty.FromString,
-                    response_serializer=provider__pb2.AccountBalanceResponse.SerializeToString,
-            ),
-            'ListSettlements': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListSettlements,
-                    request_deserializer=provider__pb2.Empty.FromString,
-                    response_serializer=provider__pb2.ListSettlementsResponse.SerializeToString,
-            ),
-            'ListProfitLoss': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListProfitLoss,
-                    request_deserializer=provider__pb2.ListProfitLossRequest.FromString,
-                    response_serializer=provider__pb2.ListProfitLossResponse.SerializeToString,
-            ),
-            'ListPositions': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListPositions,
-                    request_deserializer=provider__pb2.Empty.FromString,
-                    response_serializer=provider__pb2.ListPositionsResponse.SerializeToString,
+                    response_serializer=provider__pb2.AccountBalance.SerializeToString,
             ),
             'PlaceOrder': grpc.unary_unary_rpc_method_handler(
                     servicer.PlaceOrder,
                     request_deserializer=provider__pb2.PlaceOrderRequest.FromString,
-                    response_serializer=provider__pb2.TradeResponse.SerializeToString,
+                    response_serializer=provider__pb2.Trade.SerializeToString,
+            ),
+            'PlaceComboOrder': grpc.unary_unary_rpc_method_handler(
+                    servicer.PlaceComboOrder,
+                    request_deserializer=provider__pb2.PlaceComboOrderRequest.FromString,
+                    response_serializer=provider__pb2.ComboTrade.SerializeToString,
             ),
             'UpdateOrder': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateOrder,
                     request_deserializer=provider__pb2.UpdateOrderRequest.FromString,
-                    response_serializer=provider__pb2.TradeResponse.SerializeToString,
+                    response_serializer=provider__pb2.Trade.SerializeToString,
             ),
             'CancelOrder': grpc.unary_unary_rpc_method_handler(
                     servicer.CancelOrder,
                     request_deserializer=provider__pb2.CancelOrderRequest.FromString,
-                    response_serializer=provider__pb2.TradeResponse.SerializeToString,
+                    response_serializer=provider__pb2.Trade.SerializeToString,
+            ),
+            'CancelComboOrder': grpc.unary_unary_rpc_method_handler(
+                    servicer.CancelComboOrder,
+                    request_deserializer=provider__pb2.CancelComboOrderRequest.FromString,
+                    response_serializer=provider__pb2.ComboTrade.SerializeToString,
+            ),
+            'UpdateStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateStatus,
+                    request_deserializer=provider__pb2.UpdateStatusRequest.FromString,
+                    response_serializer=provider__pb2.Empty.SerializeToString,
+            ),
+            'UpdateComboStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateComboStatus,
+                    request_deserializer=provider__pb2.UpdateStatusRequest.FromString,
+                    response_serializer=provider__pb2.Empty.SerializeToString,
             ),
             'ListTrades': grpc.unary_unary_rpc_method_handler(
                     servicer.ListTrades,
                     request_deserializer=provider__pb2.Empty.FromString,
                     response_serializer=provider__pb2.ListTradesResponse.SerializeToString,
             ),
-            'UpdateStatus': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateStatus,
+            'ListComboTrades': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListComboTrades,
                     request_deserializer=provider__pb2.Empty.FromString,
-                    response_serializer=provider__pb2.Empty.SerializeToString,
+                    response_serializer=provider__pb2.ListComboTradesResponse.SerializeToString,
             ),
-            'GetTicks': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTicks,
-                    request_deserializer=provider__pb2.GetTicksRequest.FromString,
-                    response_serializer=provider__pb2.GetTicksResponse.SerializeToString,
+            'GetOrderDealRecords': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetOrderDealRecords,
+                    request_deserializer=provider__pb2.GetOrderDealRecordsRequest.FromString,
+                    response_serializer=provider__pb2.GetOrderDealRecordsResponse.SerializeToString,
             ),
-            'GetKbars': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetKbars,
-                    request_deserializer=provider__pb2.GetKbarsRequest.FromString,
-                    response_serializer=provider__pb2.GetKbarsResponse.SerializeToString,
+            'ListPositions': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListPositions,
+                    request_deserializer=provider__pb2.ListPositionsRequest.FromString,
+                    response_serializer=provider__pb2.ListPositionsResponse.SerializeToString,
+            ),
+            'ListPositionDetail': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListPositionDetail,
+                    request_deserializer=provider__pb2.ListPositionDetailRequest.FromString,
+                    response_serializer=provider__pb2.ListPositionDetailResponse.SerializeToString,
+            ),
+            'ListProfitLoss': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListProfitLoss,
+                    request_deserializer=provider__pb2.ListProfitLossRequest.FromString,
+                    response_serializer=provider__pb2.ListProfitLossResponse.SerializeToString,
+            ),
+            'ListProfitLossDetail': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListProfitLossDetail,
+                    request_deserializer=provider__pb2.ListProfitLossDetailRequest.FromString,
+                    response_serializer=provider__pb2.ListProfitLossDetailResponse.SerializeToString,
+            ),
+            'ListProfitLossSummary': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListProfitLossSummary,
+                    request_deserializer=provider__pb2.ListProfitLossSummaryRequest.FromString,
+                    response_serializer=provider__pb2.ListProfitLossSummaryResponse.SerializeToString,
+            ),
+            'GetSettlements': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetSettlements,
+                    request_deserializer=provider__pb2.GetSettlementsRequest.FromString,
+                    response_serializer=provider__pb2.GetSettlementsResponse.SerializeToString,
+            ),
+            'ListSettlements': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListSettlements,
+                    request_deserializer=provider__pb2.GetSettlementsRequest.FromString,
+                    response_serializer=provider__pb2.GetSettlementsResponse.SerializeToString,
+            ),
+            'GetMargin': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetMargin,
+                    request_deserializer=provider__pb2.GetMarginRequest.FromString,
+                    response_serializer=provider__pb2.Margin.SerializeToString,
+            ),
+            'GetTradingLimits': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTradingLimits,
+                    request_deserializer=provider__pb2.GetTradingLimitsRequest.FromString,
+                    response_serializer=provider__pb2.TradingLimits.SerializeToString,
+            ),
+            'GetStockReserveSummary': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetStockReserveSummary,
+                    request_deserializer=provider__pb2.GetStockReserveSummaryRequest.FromString,
+                    response_serializer=provider__pb2.ReserveStocksSummaryResponse.SerializeToString,
+            ),
+            'GetStockReserveDetail': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetStockReserveDetail,
+                    request_deserializer=provider__pb2.GetStockReserveDetailRequest.FromString,
+                    response_serializer=provider__pb2.ReserveStocksDetailResponse.SerializeToString,
+            ),
+            'ReserveStock': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReserveStock,
+                    request_deserializer=provider__pb2.ReserveStockRequest.FromString,
+                    response_serializer=provider__pb2.ReserveStockResponse.SerializeToString,
+            ),
+            'GetEarmarkingDetail': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetEarmarkingDetail,
+                    request_deserializer=provider__pb2.GetEarmarkingDetailRequest.FromString,
+                    response_serializer=provider__pb2.EarmarkStocksDetailResponse.SerializeToString,
+            ),
+            'ReserveEarmarking': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReserveEarmarking,
+                    request_deserializer=provider__pb2.ReserveEarmarkingRequest.FromString,
+                    response_serializer=provider__pb2.ReserveEarmarkingResponse.SerializeToString,
             ),
             'GetSnapshots': grpc.unary_unary_rpc_method_handler(
                     servicer.GetSnapshots,
                     request_deserializer=provider__pb2.GetSnapshotsRequest.FromString,
                     response_serializer=provider__pb2.GetSnapshotsResponse.SerializeToString,
             ),
-            'SubscribeQuote': grpc.unary_unary_rpc_method_handler(
-                    servicer.SubscribeQuote,
-                    request_deserializer=provider__pb2.SubscribeQuoteRequest.FromString,
+            'GetTicks': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTicks,
+                    request_deserializer=provider__pb2.GetTicksRequest.FromString,
+                    response_serializer=provider__pb2.Ticks.SerializeToString,
+            ),
+            'GetKbars': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetKbars,
+                    request_deserializer=provider__pb2.GetKbarsRequest.FromString,
+                    response_serializer=provider__pb2.Kbars.SerializeToString,
+            ),
+            'GetDailyQuotes': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetDailyQuotes,
+                    request_deserializer=provider__pb2.GetDailyQuotesRequest.FromString,
+                    response_serializer=provider__pb2.DailyQuotes.SerializeToString,
+            ),
+            'CreditEnquires': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreditEnquires,
+                    request_deserializer=provider__pb2.CreditEnquiresRequest.FromString,
+                    response_serializer=provider__pb2.CreditEnquiresResponse.SerializeToString,
+            ),
+            'GetShortStockSources': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetShortStockSources,
+                    request_deserializer=provider__pb2.GetShortStockSourcesRequest.FromString,
+                    response_serializer=provider__pb2.GetShortStockSourcesResponse.SerializeToString,
+            ),
+            'GetScanners': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetScanners,
+                    request_deserializer=provider__pb2.GetScannersRequest.FromString,
+                    response_serializer=provider__pb2.GetScannersResponse.SerializeToString,
+            ),
+            'GetPunish': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetPunish,
+                    request_deserializer=provider__pb2.Empty.FromString,
+                    response_serializer=provider__pb2.Punish.SerializeToString,
+            ),
+            'GetNotice': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetNotice,
+                    request_deserializer=provider__pb2.Empty.FromString,
+                    response_serializer=provider__pb2.Notice.SerializeToString,
+            ),
+            'FetchContracts': grpc.unary_unary_rpc_method_handler(
+                    servicer.FetchContracts,
+                    request_deserializer=provider__pb2.FetchContractsRequest.FromString,
                     response_serializer=provider__pb2.Empty.SerializeToString,
             ),
-            'UnsubscribeQuote': grpc.unary_unary_rpc_method_handler(
-                    servicer.UnsubscribeQuote,
-                    request_deserializer=provider__pb2.UnsubscribeQuoteRequest.FromString,
-                    response_serializer=provider__pb2.Empty.SerializeToString,
+            'ActivateCA': grpc.unary_unary_rpc_method_handler(
+                    servicer.ActivateCA,
+                    request_deserializer=provider__pb2.ActivateCARequest.FromString,
+                    response_serializer=provider__pb2.ActivateCAResponse.SerializeToString,
+            ),
+            'GetCAExpireTime': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetCAExpireTime,
+                    request_deserializer=provider__pb2.GetCAExpireTimeRequest.FromString,
+                    response_serializer=provider__pb2.GetCAExpireTimeResponse.SerializeToString,
+            ),
+            'SubscribeTrade': grpc.unary_unary_rpc_method_handler(
+                    servicer.SubscribeTrade,
+                    request_deserializer=provider__pb2.SubscribeTradeRequest.FromString,
+                    response_serializer=provider__pb2.SubscribeTradeResponse.SerializeToString,
+            ),
+            'UnsubscribeTrade': grpc.unary_unary_rpc_method_handler(
+                    servicer.UnsubscribeTrade,
+                    request_deserializer=provider__pb2.UnsubscribeTradeRequest.FromString,
+                    response_serializer=provider__pb2.UnsubscribeTradeResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -348,6 +766,60 @@ class ShioajiProvider(object):
             '/v1.ShioajiProvider/Login',
             provider__pb2.LoginRequest.SerializeToString,
             provider__pb2.LoginResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Logout(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/Logout',
+            provider__pb2.Empty.SerializeToString,
+            provider__pb2.LogoutResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetUsage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/GetUsage',
+            provider__pb2.Empty.SerializeToString,
+            provider__pb2.UsageStatus.FromString,
             options,
             channel_credentials,
             insecure,
@@ -401,88 +873,7 @@ class ShioajiProvider(object):
             target,
             '/v1.ShioajiProvider/GetAccountBalance',
             provider__pb2.Empty.SerializeToString,
-            provider__pb2.AccountBalanceResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def ListSettlements(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/v1.ShioajiProvider/ListSettlements',
-            provider__pb2.Empty.SerializeToString,
-            provider__pb2.ListSettlementsResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def ListProfitLoss(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/v1.ShioajiProvider/ListProfitLoss',
-            provider__pb2.ListProfitLossRequest.SerializeToString,
-            provider__pb2.ListProfitLossResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def ListPositions(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/v1.ShioajiProvider/ListPositions',
-            provider__pb2.Empty.SerializeToString,
-            provider__pb2.ListPositionsResponse.FromString,
+            provider__pb2.AccountBalance.FromString,
             options,
             channel_credentials,
             insecure,
@@ -509,7 +900,34 @@ class ShioajiProvider(object):
             target,
             '/v1.ShioajiProvider/PlaceOrder',
             provider__pb2.PlaceOrderRequest.SerializeToString,
-            provider__pb2.TradeResponse.FromString,
+            provider__pb2.Trade.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PlaceComboOrder(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/PlaceComboOrder',
+            provider__pb2.PlaceComboOrderRequest.SerializeToString,
+            provider__pb2.ComboTrade.FromString,
             options,
             channel_credentials,
             insecure,
@@ -536,7 +954,7 @@ class ShioajiProvider(object):
             target,
             '/v1.ShioajiProvider/UpdateOrder',
             provider__pb2.UpdateOrderRequest.SerializeToString,
-            provider__pb2.TradeResponse.FromString,
+            provider__pb2.Trade.FromString,
             options,
             channel_credentials,
             insecure,
@@ -563,7 +981,88 @@ class ShioajiProvider(object):
             target,
             '/v1.ShioajiProvider/CancelOrder',
             provider__pb2.CancelOrderRequest.SerializeToString,
-            provider__pb2.TradeResponse.FromString,
+            provider__pb2.Trade.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CancelComboOrder(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/CancelComboOrder',
+            provider__pb2.CancelComboOrderRequest.SerializeToString,
+            provider__pb2.ComboTrade.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/UpdateStatus',
+            provider__pb2.UpdateStatusRequest.SerializeToString,
+            provider__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateComboStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/UpdateComboStatus',
+            provider__pb2.UpdateStatusRequest.SerializeToString,
+            provider__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,
@@ -602,7 +1101,7 @@ class ShioajiProvider(object):
             _registered_method=True)
 
     @staticmethod
-    def UpdateStatus(request,
+    def ListComboTrades(request,
             target,
             options=(),
             channel_credentials=None,
@@ -615,9 +1114,9 @@ class ShioajiProvider(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/v1.ShioajiProvider/UpdateStatus',
+            '/v1.ShioajiProvider/ListComboTrades',
             provider__pb2.Empty.SerializeToString,
-            provider__pb2.Empty.FromString,
+            provider__pb2.ListComboTradesResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -629,7 +1128,7 @@ class ShioajiProvider(object):
             _registered_method=True)
 
     @staticmethod
-    def GetTicks(request,
+    def GetOrderDealRecords(request,
             target,
             options=(),
             channel_credentials=None,
@@ -642,9 +1141,9 @@ class ShioajiProvider(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/v1.ShioajiProvider/GetTicks',
-            provider__pb2.GetTicksRequest.SerializeToString,
-            provider__pb2.GetTicksResponse.FromString,
+            '/v1.ShioajiProvider/GetOrderDealRecords',
+            provider__pb2.GetOrderDealRecordsRequest.SerializeToString,
+            provider__pb2.GetOrderDealRecordsResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -656,7 +1155,7 @@ class ShioajiProvider(object):
             _registered_method=True)
 
     @staticmethod
-    def GetKbars(request,
+    def ListPositions(request,
             target,
             options=(),
             channel_credentials=None,
@@ -669,9 +1168,360 @@ class ShioajiProvider(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/v1.ShioajiProvider/GetKbars',
-            provider__pb2.GetKbarsRequest.SerializeToString,
-            provider__pb2.GetKbarsResponse.FromString,
+            '/v1.ShioajiProvider/ListPositions',
+            provider__pb2.ListPositionsRequest.SerializeToString,
+            provider__pb2.ListPositionsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListPositionDetail(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/ListPositionDetail',
+            provider__pb2.ListPositionDetailRequest.SerializeToString,
+            provider__pb2.ListPositionDetailResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListProfitLoss(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/ListProfitLoss',
+            provider__pb2.ListProfitLossRequest.SerializeToString,
+            provider__pb2.ListProfitLossResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListProfitLossDetail(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/ListProfitLossDetail',
+            provider__pb2.ListProfitLossDetailRequest.SerializeToString,
+            provider__pb2.ListProfitLossDetailResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListProfitLossSummary(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/ListProfitLossSummary',
+            provider__pb2.ListProfitLossSummaryRequest.SerializeToString,
+            provider__pb2.ListProfitLossSummaryResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetSettlements(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/GetSettlements',
+            provider__pb2.GetSettlementsRequest.SerializeToString,
+            provider__pb2.GetSettlementsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListSettlements(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/ListSettlements',
+            provider__pb2.GetSettlementsRequest.SerializeToString,
+            provider__pb2.GetSettlementsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetMargin(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/GetMargin',
+            provider__pb2.GetMarginRequest.SerializeToString,
+            provider__pb2.Margin.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetTradingLimits(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/GetTradingLimits',
+            provider__pb2.GetTradingLimitsRequest.SerializeToString,
+            provider__pb2.TradingLimits.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetStockReserveSummary(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/GetStockReserveSummary',
+            provider__pb2.GetStockReserveSummaryRequest.SerializeToString,
+            provider__pb2.ReserveStocksSummaryResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetStockReserveDetail(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/GetStockReserveDetail',
+            provider__pb2.GetStockReserveDetailRequest.SerializeToString,
+            provider__pb2.ReserveStocksDetailResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ReserveStock(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/ReserveStock',
+            provider__pb2.ReserveStockRequest.SerializeToString,
+            provider__pb2.ReserveStockResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetEarmarkingDetail(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/GetEarmarkingDetail',
+            provider__pb2.GetEarmarkingDetailRequest.SerializeToString,
+            provider__pb2.EarmarkStocksDetailResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ReserveEarmarking(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/ReserveEarmarking',
+            provider__pb2.ReserveEarmarkingRequest.SerializeToString,
+            provider__pb2.ReserveEarmarkingResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -710,7 +1560,7 @@ class ShioajiProvider(object):
             _registered_method=True)
 
     @staticmethod
-    def SubscribeQuote(request,
+    def GetTicks(request,
             target,
             options=(),
             channel_credentials=None,
@@ -723,8 +1573,224 @@ class ShioajiProvider(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/v1.ShioajiProvider/SubscribeQuote',
-            provider__pb2.SubscribeQuoteRequest.SerializeToString,
+            '/v1.ShioajiProvider/GetTicks',
+            provider__pb2.GetTicksRequest.SerializeToString,
+            provider__pb2.Ticks.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetKbars(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/GetKbars',
+            provider__pb2.GetKbarsRequest.SerializeToString,
+            provider__pb2.Kbars.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetDailyQuotes(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/GetDailyQuotes',
+            provider__pb2.GetDailyQuotesRequest.SerializeToString,
+            provider__pb2.DailyQuotes.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreditEnquires(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/CreditEnquires',
+            provider__pb2.CreditEnquiresRequest.SerializeToString,
+            provider__pb2.CreditEnquiresResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetShortStockSources(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/GetShortStockSources',
+            provider__pb2.GetShortStockSourcesRequest.SerializeToString,
+            provider__pb2.GetShortStockSourcesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetScanners(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/GetScanners',
+            provider__pb2.GetScannersRequest.SerializeToString,
+            provider__pb2.GetScannersResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetPunish(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/GetPunish',
+            provider__pb2.Empty.SerializeToString,
+            provider__pb2.Punish.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetNotice(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/GetNotice',
+            provider__pb2.Empty.SerializeToString,
+            provider__pb2.Notice.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def FetchContracts(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/FetchContracts',
+            provider__pb2.FetchContractsRequest.SerializeToString,
             provider__pb2.Empty.FromString,
             options,
             channel_credentials,
@@ -737,7 +1803,7 @@ class ShioajiProvider(object):
             _registered_method=True)
 
     @staticmethod
-    def UnsubscribeQuote(request,
+    def ActivateCA(request,
             target,
             options=(),
             channel_credentials=None,
@@ -750,9 +1816,90 @@ class ShioajiProvider(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/v1.ShioajiProvider/UnsubscribeQuote',
-            provider__pb2.UnsubscribeQuoteRequest.SerializeToString,
-            provider__pb2.Empty.FromString,
+            '/v1.ShioajiProvider/ActivateCA',
+            provider__pb2.ActivateCARequest.SerializeToString,
+            provider__pb2.ActivateCAResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetCAExpireTime(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/GetCAExpireTime',
+            provider__pb2.GetCAExpireTimeRequest.SerializeToString,
+            provider__pb2.GetCAExpireTimeResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SubscribeTrade(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/SubscribeTrade',
+            provider__pb2.SubscribeTradeRequest.SerializeToString,
+            provider__pb2.SubscribeTradeResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UnsubscribeTrade(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/v1.ShioajiProvider/UnsubscribeTrade',
+            provider__pb2.UnsubscribeTradeRequest.SerializeToString,
+            provider__pb2.UnsubscribeTradeResponse.FromString,
             options,
             channel_credentials,
             insecure,

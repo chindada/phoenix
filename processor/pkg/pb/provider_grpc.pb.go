@@ -19,22 +19,49 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ShioajiProvider_Login_FullMethodName             = "/v1.ShioajiProvider/Login"
-	ShioajiProvider_ListAccounts_FullMethodName      = "/v1.ShioajiProvider/ListAccounts"
-	ShioajiProvider_GetAccountBalance_FullMethodName = "/v1.ShioajiProvider/GetAccountBalance"
-	ShioajiProvider_ListSettlements_FullMethodName   = "/v1.ShioajiProvider/ListSettlements"
-	ShioajiProvider_ListProfitLoss_FullMethodName    = "/v1.ShioajiProvider/ListProfitLoss"
-	ShioajiProvider_ListPositions_FullMethodName     = "/v1.ShioajiProvider/ListPositions"
-	ShioajiProvider_PlaceOrder_FullMethodName        = "/v1.ShioajiProvider/PlaceOrder"
-	ShioajiProvider_UpdateOrder_FullMethodName       = "/v1.ShioajiProvider/UpdateOrder"
-	ShioajiProvider_CancelOrder_FullMethodName       = "/v1.ShioajiProvider/CancelOrder"
-	ShioajiProvider_ListTrades_FullMethodName        = "/v1.ShioajiProvider/ListTrades"
-	ShioajiProvider_UpdateStatus_FullMethodName      = "/v1.ShioajiProvider/UpdateStatus"
-	ShioajiProvider_GetTicks_FullMethodName          = "/v1.ShioajiProvider/GetTicks"
-	ShioajiProvider_GetKbars_FullMethodName          = "/v1.ShioajiProvider/GetKbars"
-	ShioajiProvider_GetSnapshots_FullMethodName      = "/v1.ShioajiProvider/GetSnapshots"
-	ShioajiProvider_SubscribeQuote_FullMethodName    = "/v1.ShioajiProvider/SubscribeQuote"
-	ShioajiProvider_UnsubscribeQuote_FullMethodName  = "/v1.ShioajiProvider/UnsubscribeQuote"
+	ShioajiProvider_Login_FullMethodName                  = "/v1.ShioajiProvider/Login"
+	ShioajiProvider_Logout_FullMethodName                 = "/v1.ShioajiProvider/Logout"
+	ShioajiProvider_GetUsage_FullMethodName               = "/v1.ShioajiProvider/GetUsage"
+	ShioajiProvider_ListAccounts_FullMethodName           = "/v1.ShioajiProvider/ListAccounts"
+	ShioajiProvider_GetAccountBalance_FullMethodName      = "/v1.ShioajiProvider/GetAccountBalance"
+	ShioajiProvider_PlaceOrder_FullMethodName             = "/v1.ShioajiProvider/PlaceOrder"
+	ShioajiProvider_PlaceComboOrder_FullMethodName        = "/v1.ShioajiProvider/PlaceComboOrder"
+	ShioajiProvider_UpdateOrder_FullMethodName            = "/v1.ShioajiProvider/UpdateOrder"
+	ShioajiProvider_CancelOrder_FullMethodName            = "/v1.ShioajiProvider/CancelOrder"
+	ShioajiProvider_CancelComboOrder_FullMethodName       = "/v1.ShioajiProvider/CancelComboOrder"
+	ShioajiProvider_UpdateStatus_FullMethodName           = "/v1.ShioajiProvider/UpdateStatus"
+	ShioajiProvider_UpdateComboStatus_FullMethodName      = "/v1.ShioajiProvider/UpdateComboStatus"
+	ShioajiProvider_ListTrades_FullMethodName             = "/v1.ShioajiProvider/ListTrades"
+	ShioajiProvider_ListComboTrades_FullMethodName        = "/v1.ShioajiProvider/ListComboTrades"
+	ShioajiProvider_GetOrderDealRecords_FullMethodName    = "/v1.ShioajiProvider/GetOrderDealRecords"
+	ShioajiProvider_ListPositions_FullMethodName          = "/v1.ShioajiProvider/ListPositions"
+	ShioajiProvider_ListPositionDetail_FullMethodName     = "/v1.ShioajiProvider/ListPositionDetail"
+	ShioajiProvider_ListProfitLoss_FullMethodName         = "/v1.ShioajiProvider/ListProfitLoss"
+	ShioajiProvider_ListProfitLossDetail_FullMethodName   = "/v1.ShioajiProvider/ListProfitLossDetail"
+	ShioajiProvider_ListProfitLossSummary_FullMethodName  = "/v1.ShioajiProvider/ListProfitLossSummary"
+	ShioajiProvider_GetSettlements_FullMethodName         = "/v1.ShioajiProvider/GetSettlements"
+	ShioajiProvider_ListSettlements_FullMethodName        = "/v1.ShioajiProvider/ListSettlements"
+	ShioajiProvider_GetMargin_FullMethodName              = "/v1.ShioajiProvider/GetMargin"
+	ShioajiProvider_GetTradingLimits_FullMethodName       = "/v1.ShioajiProvider/GetTradingLimits"
+	ShioajiProvider_GetStockReserveSummary_FullMethodName = "/v1.ShioajiProvider/GetStockReserveSummary"
+	ShioajiProvider_GetStockReserveDetail_FullMethodName  = "/v1.ShioajiProvider/GetStockReserveDetail"
+	ShioajiProvider_ReserveStock_FullMethodName           = "/v1.ShioajiProvider/ReserveStock"
+	ShioajiProvider_GetEarmarkingDetail_FullMethodName    = "/v1.ShioajiProvider/GetEarmarkingDetail"
+	ShioajiProvider_ReserveEarmarking_FullMethodName      = "/v1.ShioajiProvider/ReserveEarmarking"
+	ShioajiProvider_GetSnapshots_FullMethodName           = "/v1.ShioajiProvider/GetSnapshots"
+	ShioajiProvider_GetTicks_FullMethodName               = "/v1.ShioajiProvider/GetTicks"
+	ShioajiProvider_GetKbars_FullMethodName               = "/v1.ShioajiProvider/GetKbars"
+	ShioajiProvider_GetDailyQuotes_FullMethodName         = "/v1.ShioajiProvider/GetDailyQuotes"
+	ShioajiProvider_CreditEnquires_FullMethodName         = "/v1.ShioajiProvider/CreditEnquires"
+	ShioajiProvider_GetShortStockSources_FullMethodName   = "/v1.ShioajiProvider/GetShortStockSources"
+	ShioajiProvider_GetScanners_FullMethodName            = "/v1.ShioajiProvider/GetScanners"
+	ShioajiProvider_GetPunish_FullMethodName              = "/v1.ShioajiProvider/GetPunish"
+	ShioajiProvider_GetNotice_FullMethodName              = "/v1.ShioajiProvider/GetNotice"
+	ShioajiProvider_FetchContracts_FullMethodName         = "/v1.ShioajiProvider/FetchContracts"
+	ShioajiProvider_ActivateCA_FullMethodName             = "/v1.ShioajiProvider/ActivateCA"
+	ShioajiProvider_GetCAExpireTime_FullMethodName        = "/v1.ShioajiProvider/GetCAExpireTime"
+	ShioajiProvider_SubscribeTrade_FullMethodName         = "/v1.ShioajiProvider/SubscribeTrade"
+	ShioajiProvider_UnsubscribeTrade_FullMethodName       = "/v1.ShioajiProvider/UnsubscribeTrade"
 )
 
 // ShioajiProviderClient is the client API for ShioajiProvider service.
@@ -44,38 +71,51 @@ const (
 // Service Definition
 // ShioajiProvider service provides an interface for trading and market data access.
 type ShioajiProviderClient interface {
-	// Authenticates the user and establishes a connection with the Shioaji API.
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
-	// Retrieves all available trading accounts for the logged-in user.
+	Logout(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*LogoutResponse, error)
+	GetUsage(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UsageStatus, error)
 	ListAccounts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListAccountsResponse, error)
-	// Queries the current balance for the default stock account.
-	GetAccountBalance(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AccountBalanceResponse, error)
-	// Retrieves stock account settlement details.
-	ListSettlements(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListSettlementsResponse, error)
-	// Queries realized profit and loss for a specified date range.
-	ListProfitLoss(ctx context.Context, in *ListProfitLossRequest, opts ...grpc.CallOption) (*ListProfitLossResponse, error)
-	// Retrieves current unrealized positions and their profit/loss.
-	ListPositions(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListPositionsResponse, error)
-	// Submits a new trading order for a specific contract.
-	PlaceOrder(ctx context.Context, in *PlaceOrderRequest, opts ...grpc.CallOption) (*TradeResponse, error)
-	// Modifies the price or quantity of an existing active order.
-	UpdateOrder(ctx context.Context, in *UpdateOrderRequest, opts ...grpc.CallOption) (*TradeResponse, error)
-	// Requests the cancellation of an existing active order.
-	CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*TradeResponse, error)
-	// Lists all active trades and their statuses.
+	// SetDefaultAccount is client-side only in Python, but we might need it if the server maintains state per connection
+	// skipping for now or can add later if needed.
+	GetAccountBalance(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AccountBalance, error)
+	PlaceOrder(ctx context.Context, in *PlaceOrderRequest, opts ...grpc.CallOption) (*Trade, error)
+	PlaceComboOrder(ctx context.Context, in *PlaceComboOrderRequest, opts ...grpc.CallOption) (*ComboTrade, error)
+	UpdateOrder(ctx context.Context, in *UpdateOrderRequest, opts ...grpc.CallOption) (*Trade, error)
+	CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*Trade, error)
+	CancelComboOrder(ctx context.Context, in *CancelComboOrderRequest, opts ...grpc.CallOption) (*ComboTrade, error)
+	UpdateStatus(ctx context.Context, in *UpdateStatusRequest, opts ...grpc.CallOption) (*Empty, error)
+	UpdateComboStatus(ctx context.Context, in *UpdateStatusRequest, opts ...grpc.CallOption) (*Empty, error)
 	ListTrades(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListTradesResponse, error)
-	// Forces an update of order and trade statuses for the current session.
-	UpdateStatus(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
-	// Retrieves historical tick data for a contract.
-	GetTicks(ctx context.Context, in *GetTicksRequest, opts ...grpc.CallOption) (*GetTicksResponse, error)
-	// Retrieves historical candlestick (K-bar) data for a contract.
-	GetKbars(ctx context.Context, in *GetKbarsRequest, opts ...grpc.CallOption) (*GetKbarsResponse, error)
-	// Retrieves current market snapshots for one or more contracts.
+	ListComboTrades(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListComboTradesResponse, error)
+	GetOrderDealRecords(ctx context.Context, in *GetOrderDealRecordsRequest, opts ...grpc.CallOption) (*GetOrderDealRecordsResponse, error)
+	ListPositions(ctx context.Context, in *ListPositionsRequest, opts ...grpc.CallOption) (*ListPositionsResponse, error)
+	ListPositionDetail(ctx context.Context, in *ListPositionDetailRequest, opts ...grpc.CallOption) (*ListPositionDetailResponse, error)
+	ListProfitLoss(ctx context.Context, in *ListProfitLossRequest, opts ...grpc.CallOption) (*ListProfitLossResponse, error)
+	ListProfitLossDetail(ctx context.Context, in *ListProfitLossDetailRequest, opts ...grpc.CallOption) (*ListProfitLossDetailResponse, error)
+	ListProfitLossSummary(ctx context.Context, in *ListProfitLossSummaryRequest, opts ...grpc.CallOption) (*ListProfitLossSummaryResponse, error)
+	GetSettlements(ctx context.Context, in *GetSettlementsRequest, opts ...grpc.CallOption) (*GetSettlementsResponse, error)
+	ListSettlements(ctx context.Context, in *GetSettlementsRequest, opts ...grpc.CallOption) (*GetSettlementsResponse, error)
+	GetMargin(ctx context.Context, in *GetMarginRequest, opts ...grpc.CallOption) (*Margin, error)
+	GetTradingLimits(ctx context.Context, in *GetTradingLimitsRequest, opts ...grpc.CallOption) (*TradingLimits, error)
+	GetStockReserveSummary(ctx context.Context, in *GetStockReserveSummaryRequest, opts ...grpc.CallOption) (*ReserveStocksSummaryResponse, error)
+	GetStockReserveDetail(ctx context.Context, in *GetStockReserveDetailRequest, opts ...grpc.CallOption) (*ReserveStocksDetailResponse, error)
+	ReserveStock(ctx context.Context, in *ReserveStockRequest, opts ...grpc.CallOption) (*ReserveStockResponse, error)
+	GetEarmarkingDetail(ctx context.Context, in *GetEarmarkingDetailRequest, opts ...grpc.CallOption) (*EarmarkStocksDetailResponse, error)
+	ReserveEarmarking(ctx context.Context, in *ReserveEarmarkingRequest, opts ...grpc.CallOption) (*ReserveEarmarkingResponse, error)
 	GetSnapshots(ctx context.Context, in *GetSnapshotsRequest, opts ...grpc.CallOption) (*GetSnapshotsResponse, error)
-	// Subscribes to real-time market data (ticks or quotes) for a contract.
-	SubscribeQuote(ctx context.Context, in *SubscribeQuoteRequest, opts ...grpc.CallOption) (*Empty, error)
-	// Unsubscribes from real-time market data updates for a contract.
-	UnsubscribeQuote(ctx context.Context, in *UnsubscribeQuoteRequest, opts ...grpc.CallOption) (*Empty, error)
+	GetTicks(ctx context.Context, in *GetTicksRequest, opts ...grpc.CallOption) (*Ticks, error)
+	GetKbars(ctx context.Context, in *GetKbarsRequest, opts ...grpc.CallOption) (*Kbars, error)
+	GetDailyQuotes(ctx context.Context, in *GetDailyQuotesRequest, opts ...grpc.CallOption) (*DailyQuotes, error)
+	CreditEnquires(ctx context.Context, in *CreditEnquiresRequest, opts ...grpc.CallOption) (*CreditEnquiresResponse, error)
+	GetShortStockSources(ctx context.Context, in *GetShortStockSourcesRequest, opts ...grpc.CallOption) (*GetShortStockSourcesResponse, error)
+	GetScanners(ctx context.Context, in *GetScannersRequest, opts ...grpc.CallOption) (*GetScannersResponse, error)
+	GetPunish(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Punish, error)
+	GetNotice(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Notice, error)
+	FetchContracts(ctx context.Context, in *FetchContractsRequest, opts ...grpc.CallOption) (*Empty, error)
+	ActivateCA(ctx context.Context, in *ActivateCARequest, opts ...grpc.CallOption) (*ActivateCAResponse, error)
+	GetCAExpireTime(ctx context.Context, in *GetCAExpireTimeRequest, opts ...grpc.CallOption) (*GetCAExpireTimeResponse, error)
+	SubscribeTrade(ctx context.Context, in *SubscribeTradeRequest, opts ...grpc.CallOption) (*SubscribeTradeResponse, error)
+	UnsubscribeTrade(ctx context.Context, in *UnsubscribeTradeRequest, opts ...grpc.CallOption) (*UnsubscribeTradeResponse, error)
 }
 
 type shioajiProviderClient struct {
@@ -96,6 +136,26 @@ func (c *shioajiProviderClient) Login(ctx context.Context, in *LoginRequest, opt
 	return out, nil
 }
 
+func (c *shioajiProviderClient) Logout(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*LogoutResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LogoutResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_Logout_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) GetUsage(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UsageStatus, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UsageStatus)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetUsage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *shioajiProviderClient) ListAccounts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListAccountsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListAccountsResponse)
@@ -106,9 +166,9 @@ func (c *shioajiProviderClient) ListAccounts(ctx context.Context, in *Empty, opt
 	return out, nil
 }
 
-func (c *shioajiProviderClient) GetAccountBalance(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AccountBalanceResponse, error) {
+func (c *shioajiProviderClient) GetAccountBalance(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AccountBalance, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(AccountBalanceResponse)
+	out := new(AccountBalance)
 	err := c.cc.Invoke(ctx, ShioajiProvider_GetAccountBalance_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -116,39 +176,9 @@ func (c *shioajiProviderClient) GetAccountBalance(ctx context.Context, in *Empty
 	return out, nil
 }
 
-func (c *shioajiProviderClient) ListSettlements(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListSettlementsResponse, error) {
+func (c *shioajiProviderClient) PlaceOrder(ctx context.Context, in *PlaceOrderRequest, opts ...grpc.CallOption) (*Trade, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListSettlementsResponse)
-	err := c.cc.Invoke(ctx, ShioajiProvider_ListSettlements_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *shioajiProviderClient) ListProfitLoss(ctx context.Context, in *ListProfitLossRequest, opts ...grpc.CallOption) (*ListProfitLossResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListProfitLossResponse)
-	err := c.cc.Invoke(ctx, ShioajiProvider_ListProfitLoss_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *shioajiProviderClient) ListPositions(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListPositionsResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListPositionsResponse)
-	err := c.cc.Invoke(ctx, ShioajiProvider_ListPositions_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *shioajiProviderClient) PlaceOrder(ctx context.Context, in *PlaceOrderRequest, opts ...grpc.CallOption) (*TradeResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(TradeResponse)
+	out := new(Trade)
 	err := c.cc.Invoke(ctx, ShioajiProvider_PlaceOrder_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -156,9 +186,19 @@ func (c *shioajiProviderClient) PlaceOrder(ctx context.Context, in *PlaceOrderRe
 	return out, nil
 }
 
-func (c *shioajiProviderClient) UpdateOrder(ctx context.Context, in *UpdateOrderRequest, opts ...grpc.CallOption) (*TradeResponse, error) {
+func (c *shioajiProviderClient) PlaceComboOrder(ctx context.Context, in *PlaceComboOrderRequest, opts ...grpc.CallOption) (*ComboTrade, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(TradeResponse)
+	out := new(ComboTrade)
+	err := c.cc.Invoke(ctx, ShioajiProvider_PlaceComboOrder_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) UpdateOrder(ctx context.Context, in *UpdateOrderRequest, opts ...grpc.CallOption) (*Trade, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Trade)
 	err := c.cc.Invoke(ctx, ShioajiProvider_UpdateOrder_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -166,10 +206,40 @@ func (c *shioajiProviderClient) UpdateOrder(ctx context.Context, in *UpdateOrder
 	return out, nil
 }
 
-func (c *shioajiProviderClient) CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*TradeResponse, error) {
+func (c *shioajiProviderClient) CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*Trade, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(TradeResponse)
+	out := new(Trade)
 	err := c.cc.Invoke(ctx, ShioajiProvider_CancelOrder_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) CancelComboOrder(ctx context.Context, in *CancelComboOrderRequest, opts ...grpc.CallOption) (*ComboTrade, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ComboTrade)
+	err := c.cc.Invoke(ctx, ShioajiProvider_CancelComboOrder_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) UpdateStatus(ctx context.Context, in *UpdateStatusRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, ShioajiProvider_UpdateStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) UpdateComboStatus(ctx context.Context, in *UpdateStatusRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, ShioajiProvider_UpdateComboStatus_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -186,30 +256,160 @@ func (c *shioajiProviderClient) ListTrades(ctx context.Context, in *Empty, opts 
 	return out, nil
 }
 
-func (c *shioajiProviderClient) UpdateStatus(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error) {
+func (c *shioajiProviderClient) ListComboTrades(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListComboTradesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, ShioajiProvider_UpdateStatus_FullMethodName, in, out, cOpts...)
+	out := new(ListComboTradesResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_ListComboTrades_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *shioajiProviderClient) GetTicks(ctx context.Context, in *GetTicksRequest, opts ...grpc.CallOption) (*GetTicksResponse, error) {
+func (c *shioajiProviderClient) GetOrderDealRecords(ctx context.Context, in *GetOrderDealRecordsRequest, opts ...grpc.CallOption) (*GetOrderDealRecordsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetTicksResponse)
-	err := c.cc.Invoke(ctx, ShioajiProvider_GetTicks_FullMethodName, in, out, cOpts...)
+	out := new(GetOrderDealRecordsResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetOrderDealRecords_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *shioajiProviderClient) GetKbars(ctx context.Context, in *GetKbarsRequest, opts ...grpc.CallOption) (*GetKbarsResponse, error) {
+func (c *shioajiProviderClient) ListPositions(ctx context.Context, in *ListPositionsRequest, opts ...grpc.CallOption) (*ListPositionsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetKbarsResponse)
-	err := c.cc.Invoke(ctx, ShioajiProvider_GetKbars_FullMethodName, in, out, cOpts...)
+	out := new(ListPositionsResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_ListPositions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) ListPositionDetail(ctx context.Context, in *ListPositionDetailRequest, opts ...grpc.CallOption) (*ListPositionDetailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListPositionDetailResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_ListPositionDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) ListProfitLoss(ctx context.Context, in *ListProfitLossRequest, opts ...grpc.CallOption) (*ListProfitLossResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListProfitLossResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_ListProfitLoss_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) ListProfitLossDetail(ctx context.Context, in *ListProfitLossDetailRequest, opts ...grpc.CallOption) (*ListProfitLossDetailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListProfitLossDetailResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_ListProfitLossDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) ListProfitLossSummary(ctx context.Context, in *ListProfitLossSummaryRequest, opts ...grpc.CallOption) (*ListProfitLossSummaryResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListProfitLossSummaryResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_ListProfitLossSummary_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) GetSettlements(ctx context.Context, in *GetSettlementsRequest, opts ...grpc.CallOption) (*GetSettlementsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSettlementsResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetSettlements_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) ListSettlements(ctx context.Context, in *GetSettlementsRequest, opts ...grpc.CallOption) (*GetSettlementsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSettlementsResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_ListSettlements_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) GetMargin(ctx context.Context, in *GetMarginRequest, opts ...grpc.CallOption) (*Margin, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Margin)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetMargin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) GetTradingLimits(ctx context.Context, in *GetTradingLimitsRequest, opts ...grpc.CallOption) (*TradingLimits, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TradingLimits)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetTradingLimits_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) GetStockReserveSummary(ctx context.Context, in *GetStockReserveSummaryRequest, opts ...grpc.CallOption) (*ReserveStocksSummaryResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReserveStocksSummaryResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetStockReserveSummary_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) GetStockReserveDetail(ctx context.Context, in *GetStockReserveDetailRequest, opts ...grpc.CallOption) (*ReserveStocksDetailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReserveStocksDetailResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetStockReserveDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) ReserveStock(ctx context.Context, in *ReserveStockRequest, opts ...grpc.CallOption) (*ReserveStockResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReserveStockResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_ReserveStock_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) GetEarmarkingDetail(ctx context.Context, in *GetEarmarkingDetailRequest, opts ...grpc.CallOption) (*EarmarkStocksDetailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EarmarkStocksDetailResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetEarmarkingDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) ReserveEarmarking(ctx context.Context, in *ReserveEarmarkingRequest, opts ...grpc.CallOption) (*ReserveEarmarkingResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReserveEarmarkingResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_ReserveEarmarking_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -226,20 +426,130 @@ func (c *shioajiProviderClient) GetSnapshots(ctx context.Context, in *GetSnapsho
 	return out, nil
 }
 
-func (c *shioajiProviderClient) SubscribeQuote(ctx context.Context, in *SubscribeQuoteRequest, opts ...grpc.CallOption) (*Empty, error) {
+func (c *shioajiProviderClient) GetTicks(ctx context.Context, in *GetTicksRequest, opts ...grpc.CallOption) (*Ticks, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, ShioajiProvider_SubscribeQuote_FullMethodName, in, out, cOpts...)
+	out := new(Ticks)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetTicks_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *shioajiProviderClient) UnsubscribeQuote(ctx context.Context, in *UnsubscribeQuoteRequest, opts ...grpc.CallOption) (*Empty, error) {
+func (c *shioajiProviderClient) GetKbars(ctx context.Context, in *GetKbarsRequest, opts ...grpc.CallOption) (*Kbars, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Kbars)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetKbars_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) GetDailyQuotes(ctx context.Context, in *GetDailyQuotesRequest, opts ...grpc.CallOption) (*DailyQuotes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DailyQuotes)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetDailyQuotes_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) CreditEnquires(ctx context.Context, in *CreditEnquiresRequest, opts ...grpc.CallOption) (*CreditEnquiresResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreditEnquiresResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_CreditEnquires_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) GetShortStockSources(ctx context.Context, in *GetShortStockSourcesRequest, opts ...grpc.CallOption) (*GetShortStockSourcesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetShortStockSourcesResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetShortStockSources_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) GetScanners(ctx context.Context, in *GetScannersRequest, opts ...grpc.CallOption) (*GetScannersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetScannersResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetScanners_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) GetPunish(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Punish, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Punish)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetPunish_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) GetNotice(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Notice, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Notice)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetNotice_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) FetchContracts(ctx context.Context, in *FetchContractsRequest, opts ...grpc.CallOption) (*Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, ShioajiProvider_UnsubscribeQuote_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, ShioajiProvider_FetchContracts_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) ActivateCA(ctx context.Context, in *ActivateCARequest, opts ...grpc.CallOption) (*ActivateCAResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ActivateCAResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_ActivateCA_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) GetCAExpireTime(ctx context.Context, in *GetCAExpireTimeRequest, opts ...grpc.CallOption) (*GetCAExpireTimeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetCAExpireTimeResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_GetCAExpireTime_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) SubscribeTrade(ctx context.Context, in *SubscribeTradeRequest, opts ...grpc.CallOption) (*SubscribeTradeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SubscribeTradeResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_SubscribeTrade_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shioajiProviderClient) UnsubscribeTrade(ctx context.Context, in *UnsubscribeTradeRequest, opts ...grpc.CallOption) (*UnsubscribeTradeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UnsubscribeTradeResponse)
+	err := c.cc.Invoke(ctx, ShioajiProvider_UnsubscribeTrade_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -253,38 +563,51 @@ func (c *shioajiProviderClient) UnsubscribeQuote(ctx context.Context, in *Unsubs
 // Service Definition
 // ShioajiProvider service provides an interface for trading and market data access.
 type ShioajiProviderServer interface {
-	// Authenticates the user and establishes a connection with the Shioaji API.
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
-	// Retrieves all available trading accounts for the logged-in user.
+	Logout(context.Context, *Empty) (*LogoutResponse, error)
+	GetUsage(context.Context, *Empty) (*UsageStatus, error)
 	ListAccounts(context.Context, *Empty) (*ListAccountsResponse, error)
-	// Queries the current balance for the default stock account.
-	GetAccountBalance(context.Context, *Empty) (*AccountBalanceResponse, error)
-	// Retrieves stock account settlement details.
-	ListSettlements(context.Context, *Empty) (*ListSettlementsResponse, error)
-	// Queries realized profit and loss for a specified date range.
-	ListProfitLoss(context.Context, *ListProfitLossRequest) (*ListProfitLossResponse, error)
-	// Retrieves current unrealized positions and their profit/loss.
-	ListPositions(context.Context, *Empty) (*ListPositionsResponse, error)
-	// Submits a new trading order for a specific contract.
-	PlaceOrder(context.Context, *PlaceOrderRequest) (*TradeResponse, error)
-	// Modifies the price or quantity of an existing active order.
-	UpdateOrder(context.Context, *UpdateOrderRequest) (*TradeResponse, error)
-	// Requests the cancellation of an existing active order.
-	CancelOrder(context.Context, *CancelOrderRequest) (*TradeResponse, error)
-	// Lists all active trades and their statuses.
+	// SetDefaultAccount is client-side only in Python, but we might need it if the server maintains state per connection
+	// skipping for now or can add later if needed.
+	GetAccountBalance(context.Context, *Empty) (*AccountBalance, error)
+	PlaceOrder(context.Context, *PlaceOrderRequest) (*Trade, error)
+	PlaceComboOrder(context.Context, *PlaceComboOrderRequest) (*ComboTrade, error)
+	UpdateOrder(context.Context, *UpdateOrderRequest) (*Trade, error)
+	CancelOrder(context.Context, *CancelOrderRequest) (*Trade, error)
+	CancelComboOrder(context.Context, *CancelComboOrderRequest) (*ComboTrade, error)
+	UpdateStatus(context.Context, *UpdateStatusRequest) (*Empty, error)
+	UpdateComboStatus(context.Context, *UpdateStatusRequest) (*Empty, error)
 	ListTrades(context.Context, *Empty) (*ListTradesResponse, error)
-	// Forces an update of order and trade statuses for the current session.
-	UpdateStatus(context.Context, *Empty) (*Empty, error)
-	// Retrieves historical tick data for a contract.
-	GetTicks(context.Context, *GetTicksRequest) (*GetTicksResponse, error)
-	// Retrieves historical candlestick (K-bar) data for a contract.
-	GetKbars(context.Context, *GetKbarsRequest) (*GetKbarsResponse, error)
-	// Retrieves current market snapshots for one or more contracts.
+	ListComboTrades(context.Context, *Empty) (*ListComboTradesResponse, error)
+	GetOrderDealRecords(context.Context, *GetOrderDealRecordsRequest) (*GetOrderDealRecordsResponse, error)
+	ListPositions(context.Context, *ListPositionsRequest) (*ListPositionsResponse, error)
+	ListPositionDetail(context.Context, *ListPositionDetailRequest) (*ListPositionDetailResponse, error)
+	ListProfitLoss(context.Context, *ListProfitLossRequest) (*ListProfitLossResponse, error)
+	ListProfitLossDetail(context.Context, *ListProfitLossDetailRequest) (*ListProfitLossDetailResponse, error)
+	ListProfitLossSummary(context.Context, *ListProfitLossSummaryRequest) (*ListProfitLossSummaryResponse, error)
+	GetSettlements(context.Context, *GetSettlementsRequest) (*GetSettlementsResponse, error)
+	ListSettlements(context.Context, *GetSettlementsRequest) (*GetSettlementsResponse, error)
+	GetMargin(context.Context, *GetMarginRequest) (*Margin, error)
+	GetTradingLimits(context.Context, *GetTradingLimitsRequest) (*TradingLimits, error)
+	GetStockReserveSummary(context.Context, *GetStockReserveSummaryRequest) (*ReserveStocksSummaryResponse, error)
+	GetStockReserveDetail(context.Context, *GetStockReserveDetailRequest) (*ReserveStocksDetailResponse, error)
+	ReserveStock(context.Context, *ReserveStockRequest) (*ReserveStockResponse, error)
+	GetEarmarkingDetail(context.Context, *GetEarmarkingDetailRequest) (*EarmarkStocksDetailResponse, error)
+	ReserveEarmarking(context.Context, *ReserveEarmarkingRequest) (*ReserveEarmarkingResponse, error)
 	GetSnapshots(context.Context, *GetSnapshotsRequest) (*GetSnapshotsResponse, error)
-	// Subscribes to real-time market data (ticks or quotes) for a contract.
-	SubscribeQuote(context.Context, *SubscribeQuoteRequest) (*Empty, error)
-	// Unsubscribes from real-time market data updates for a contract.
-	UnsubscribeQuote(context.Context, *UnsubscribeQuoteRequest) (*Empty, error)
+	GetTicks(context.Context, *GetTicksRequest) (*Ticks, error)
+	GetKbars(context.Context, *GetKbarsRequest) (*Kbars, error)
+	GetDailyQuotes(context.Context, *GetDailyQuotesRequest) (*DailyQuotes, error)
+	CreditEnquires(context.Context, *CreditEnquiresRequest) (*CreditEnquiresResponse, error)
+	GetShortStockSources(context.Context, *GetShortStockSourcesRequest) (*GetShortStockSourcesResponse, error)
+	GetScanners(context.Context, *GetScannersRequest) (*GetScannersResponse, error)
+	GetPunish(context.Context, *Empty) (*Punish, error)
+	GetNotice(context.Context, *Empty) (*Notice, error)
+	FetchContracts(context.Context, *FetchContractsRequest) (*Empty, error)
+	ActivateCA(context.Context, *ActivateCARequest) (*ActivateCAResponse, error)
+	GetCAExpireTime(context.Context, *GetCAExpireTimeRequest) (*GetCAExpireTimeResponse, error)
+	SubscribeTrade(context.Context, *SubscribeTradeRequest) (*SubscribeTradeResponse, error)
+	UnsubscribeTrade(context.Context, *UnsubscribeTradeRequest) (*UnsubscribeTradeResponse, error)
 	mustEmbedUnimplementedShioajiProviderServer()
 }
 
@@ -298,50 +621,131 @@ type UnimplementedShioajiProviderServer struct{}
 func (UnimplementedShioajiProviderServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Login not implemented")
 }
+func (UnimplementedShioajiProviderServer) Logout(context.Context, *Empty) (*LogoutResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Logout not implemented")
+}
+func (UnimplementedShioajiProviderServer) GetUsage(context.Context, *Empty) (*UsageStatus, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetUsage not implemented")
+}
 func (UnimplementedShioajiProviderServer) ListAccounts(context.Context, *Empty) (*ListAccountsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListAccounts not implemented")
 }
-func (UnimplementedShioajiProviderServer) GetAccountBalance(context.Context, *Empty) (*AccountBalanceResponse, error) {
+func (UnimplementedShioajiProviderServer) GetAccountBalance(context.Context, *Empty) (*AccountBalance, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetAccountBalance not implemented")
 }
-func (UnimplementedShioajiProviderServer) ListSettlements(context.Context, *Empty) (*ListSettlementsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListSettlements not implemented")
-}
-func (UnimplementedShioajiProviderServer) ListProfitLoss(context.Context, *ListProfitLossRequest) (*ListProfitLossResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListProfitLoss not implemented")
-}
-func (UnimplementedShioajiProviderServer) ListPositions(context.Context, *Empty) (*ListPositionsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListPositions not implemented")
-}
-func (UnimplementedShioajiProviderServer) PlaceOrder(context.Context, *PlaceOrderRequest) (*TradeResponse, error) {
+func (UnimplementedShioajiProviderServer) PlaceOrder(context.Context, *PlaceOrderRequest) (*Trade, error) {
 	return nil, status.Error(codes.Unimplemented, "method PlaceOrder not implemented")
 }
-func (UnimplementedShioajiProviderServer) UpdateOrder(context.Context, *UpdateOrderRequest) (*TradeResponse, error) {
+func (UnimplementedShioajiProviderServer) PlaceComboOrder(context.Context, *PlaceComboOrderRequest) (*ComboTrade, error) {
+	return nil, status.Error(codes.Unimplemented, "method PlaceComboOrder not implemented")
+}
+func (UnimplementedShioajiProviderServer) UpdateOrder(context.Context, *UpdateOrderRequest) (*Trade, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateOrder not implemented")
 }
-func (UnimplementedShioajiProviderServer) CancelOrder(context.Context, *CancelOrderRequest) (*TradeResponse, error) {
+func (UnimplementedShioajiProviderServer) CancelOrder(context.Context, *CancelOrderRequest) (*Trade, error) {
 	return nil, status.Error(codes.Unimplemented, "method CancelOrder not implemented")
+}
+func (UnimplementedShioajiProviderServer) CancelComboOrder(context.Context, *CancelComboOrderRequest) (*ComboTrade, error) {
+	return nil, status.Error(codes.Unimplemented, "method CancelComboOrder not implemented")
+}
+func (UnimplementedShioajiProviderServer) UpdateStatus(context.Context, *UpdateStatusRequest) (*Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateStatus not implemented")
+}
+func (UnimplementedShioajiProviderServer) UpdateComboStatus(context.Context, *UpdateStatusRequest) (*Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateComboStatus not implemented")
 }
 func (UnimplementedShioajiProviderServer) ListTrades(context.Context, *Empty) (*ListTradesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListTrades not implemented")
 }
-func (UnimplementedShioajiProviderServer) UpdateStatus(context.Context, *Empty) (*Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdateStatus not implemented")
+func (UnimplementedShioajiProviderServer) ListComboTrades(context.Context, *Empty) (*ListComboTradesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListComboTrades not implemented")
 }
-func (UnimplementedShioajiProviderServer) GetTicks(context.Context, *GetTicksRequest) (*GetTicksResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetTicks not implemented")
+func (UnimplementedShioajiProviderServer) GetOrderDealRecords(context.Context, *GetOrderDealRecordsRequest) (*GetOrderDealRecordsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetOrderDealRecords not implemented")
 }
-func (UnimplementedShioajiProviderServer) GetKbars(context.Context, *GetKbarsRequest) (*GetKbarsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetKbars not implemented")
+func (UnimplementedShioajiProviderServer) ListPositions(context.Context, *ListPositionsRequest) (*ListPositionsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListPositions not implemented")
+}
+func (UnimplementedShioajiProviderServer) ListPositionDetail(context.Context, *ListPositionDetailRequest) (*ListPositionDetailResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListPositionDetail not implemented")
+}
+func (UnimplementedShioajiProviderServer) ListProfitLoss(context.Context, *ListProfitLossRequest) (*ListProfitLossResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListProfitLoss not implemented")
+}
+func (UnimplementedShioajiProviderServer) ListProfitLossDetail(context.Context, *ListProfitLossDetailRequest) (*ListProfitLossDetailResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListProfitLossDetail not implemented")
+}
+func (UnimplementedShioajiProviderServer) ListProfitLossSummary(context.Context, *ListProfitLossSummaryRequest) (*ListProfitLossSummaryResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListProfitLossSummary not implemented")
+}
+func (UnimplementedShioajiProviderServer) GetSettlements(context.Context, *GetSettlementsRequest) (*GetSettlementsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetSettlements not implemented")
+}
+func (UnimplementedShioajiProviderServer) ListSettlements(context.Context, *GetSettlementsRequest) (*GetSettlementsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListSettlements not implemented")
+}
+func (UnimplementedShioajiProviderServer) GetMargin(context.Context, *GetMarginRequest) (*Margin, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetMargin not implemented")
+}
+func (UnimplementedShioajiProviderServer) GetTradingLimits(context.Context, *GetTradingLimitsRequest) (*TradingLimits, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTradingLimits not implemented")
+}
+func (UnimplementedShioajiProviderServer) GetStockReserveSummary(context.Context, *GetStockReserveSummaryRequest) (*ReserveStocksSummaryResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetStockReserveSummary not implemented")
+}
+func (UnimplementedShioajiProviderServer) GetStockReserveDetail(context.Context, *GetStockReserveDetailRequest) (*ReserveStocksDetailResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetStockReserveDetail not implemented")
+}
+func (UnimplementedShioajiProviderServer) ReserveStock(context.Context, *ReserveStockRequest) (*ReserveStockResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ReserveStock not implemented")
+}
+func (UnimplementedShioajiProviderServer) GetEarmarkingDetail(context.Context, *GetEarmarkingDetailRequest) (*EarmarkStocksDetailResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetEarmarkingDetail not implemented")
+}
+func (UnimplementedShioajiProviderServer) ReserveEarmarking(context.Context, *ReserveEarmarkingRequest) (*ReserveEarmarkingResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ReserveEarmarking not implemented")
 }
 func (UnimplementedShioajiProviderServer) GetSnapshots(context.Context, *GetSnapshotsRequest) (*GetSnapshotsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetSnapshots not implemented")
 }
-func (UnimplementedShioajiProviderServer) SubscribeQuote(context.Context, *SubscribeQuoteRequest) (*Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method SubscribeQuote not implemented")
+func (UnimplementedShioajiProviderServer) GetTicks(context.Context, *GetTicksRequest) (*Ticks, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTicks not implemented")
 }
-func (UnimplementedShioajiProviderServer) UnsubscribeQuote(context.Context, *UnsubscribeQuoteRequest) (*Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method UnsubscribeQuote not implemented")
+func (UnimplementedShioajiProviderServer) GetKbars(context.Context, *GetKbarsRequest) (*Kbars, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetKbars not implemented")
+}
+func (UnimplementedShioajiProviderServer) GetDailyQuotes(context.Context, *GetDailyQuotesRequest) (*DailyQuotes, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetDailyQuotes not implemented")
+}
+func (UnimplementedShioajiProviderServer) CreditEnquires(context.Context, *CreditEnquiresRequest) (*CreditEnquiresResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreditEnquires not implemented")
+}
+func (UnimplementedShioajiProviderServer) GetShortStockSources(context.Context, *GetShortStockSourcesRequest) (*GetShortStockSourcesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetShortStockSources not implemented")
+}
+func (UnimplementedShioajiProviderServer) GetScanners(context.Context, *GetScannersRequest) (*GetScannersResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetScanners not implemented")
+}
+func (UnimplementedShioajiProviderServer) GetPunish(context.Context, *Empty) (*Punish, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetPunish not implemented")
+}
+func (UnimplementedShioajiProviderServer) GetNotice(context.Context, *Empty) (*Notice, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetNotice not implemented")
+}
+func (UnimplementedShioajiProviderServer) FetchContracts(context.Context, *FetchContractsRequest) (*Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method FetchContracts not implemented")
+}
+func (UnimplementedShioajiProviderServer) ActivateCA(context.Context, *ActivateCARequest) (*ActivateCAResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ActivateCA not implemented")
+}
+func (UnimplementedShioajiProviderServer) GetCAExpireTime(context.Context, *GetCAExpireTimeRequest) (*GetCAExpireTimeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetCAExpireTime not implemented")
+}
+func (UnimplementedShioajiProviderServer) SubscribeTrade(context.Context, *SubscribeTradeRequest) (*SubscribeTradeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SubscribeTrade not implemented")
+}
+func (UnimplementedShioajiProviderServer) UnsubscribeTrade(context.Context, *UnsubscribeTradeRequest) (*UnsubscribeTradeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UnsubscribeTrade not implemented")
 }
 func (UnimplementedShioajiProviderServer) mustEmbedUnimplementedShioajiProviderServer() {}
 func (UnimplementedShioajiProviderServer) testEmbeddedByValue()                         {}
@@ -382,6 +786,42 @@ func _ShioajiProvider_Login_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ShioajiProvider_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).Logout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_Logout_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).Logout(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_GetUsage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).GetUsage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_GetUsage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).GetUsage(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ShioajiProvider_ListAccounts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
@@ -418,60 +858,6 @@ func _ShioajiProvider_GetAccountBalance_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ShioajiProvider_ListSettlements_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ShioajiProviderServer).ListSettlements(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ShioajiProvider_ListSettlements_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShioajiProviderServer).ListSettlements(ctx, req.(*Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ShioajiProvider_ListProfitLoss_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListProfitLossRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ShioajiProviderServer).ListProfitLoss(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ShioajiProvider_ListProfitLoss_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShioajiProviderServer).ListProfitLoss(ctx, req.(*ListProfitLossRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ShioajiProvider_ListPositions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ShioajiProviderServer).ListPositions(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ShioajiProvider_ListPositions_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShioajiProviderServer).ListPositions(ctx, req.(*Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _ShioajiProvider_PlaceOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PlaceOrderRequest)
 	if err := dec(in); err != nil {
@@ -486,6 +872,24 @@ func _ShioajiProvider_PlaceOrder_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ShioajiProviderServer).PlaceOrder(ctx, req.(*PlaceOrderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_PlaceComboOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PlaceComboOrderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).PlaceComboOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_PlaceComboOrder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).PlaceComboOrder(ctx, req.(*PlaceComboOrderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -526,6 +930,60 @@ func _ShioajiProvider_CancelOrder_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ShioajiProvider_CancelComboOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelComboOrderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).CancelComboOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_CancelComboOrder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).CancelComboOrder(ctx, req.(*CancelComboOrderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_UpdateStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).UpdateStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_UpdateStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).UpdateStatus(ctx, req.(*UpdateStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_UpdateComboStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).UpdateComboStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_UpdateComboStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).UpdateComboStatus(ctx, req.(*UpdateStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ShioajiProvider_ListTrades_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
@@ -544,20 +1002,308 @@ func _ShioajiProvider_ListTrades_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ShioajiProvider_UpdateStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ShioajiProvider_ListComboTrades_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ShioajiProviderServer).UpdateStatus(ctx, in)
+		return srv.(ShioajiProviderServer).ListComboTrades(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ShioajiProvider_UpdateStatus_FullMethodName,
+		FullMethod: ShioajiProvider_ListComboTrades_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShioajiProviderServer).UpdateStatus(ctx, req.(*Empty))
+		return srv.(ShioajiProviderServer).ListComboTrades(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_GetOrderDealRecords_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrderDealRecordsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).GetOrderDealRecords(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_GetOrderDealRecords_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).GetOrderDealRecords(ctx, req.(*GetOrderDealRecordsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_ListPositions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPositionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).ListPositions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_ListPositions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).ListPositions(ctx, req.(*ListPositionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_ListPositionDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPositionDetailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).ListPositionDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_ListPositionDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).ListPositionDetail(ctx, req.(*ListPositionDetailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_ListProfitLoss_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProfitLossRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).ListProfitLoss(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_ListProfitLoss_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).ListProfitLoss(ctx, req.(*ListProfitLossRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_ListProfitLossDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProfitLossDetailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).ListProfitLossDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_ListProfitLossDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).ListProfitLossDetail(ctx, req.(*ListProfitLossDetailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_ListProfitLossSummary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProfitLossSummaryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).ListProfitLossSummary(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_ListProfitLossSummary_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).ListProfitLossSummary(ctx, req.(*ListProfitLossSummaryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_GetSettlements_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSettlementsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).GetSettlements(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_GetSettlements_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).GetSettlements(ctx, req.(*GetSettlementsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_ListSettlements_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSettlementsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).ListSettlements(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_ListSettlements_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).ListSettlements(ctx, req.(*GetSettlementsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_GetMargin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMarginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).GetMargin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_GetMargin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).GetMargin(ctx, req.(*GetMarginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_GetTradingLimits_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTradingLimitsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).GetTradingLimits(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_GetTradingLimits_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).GetTradingLimits(ctx, req.(*GetTradingLimitsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_GetStockReserveSummary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetStockReserveSummaryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).GetStockReserveSummary(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_GetStockReserveSummary_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).GetStockReserveSummary(ctx, req.(*GetStockReserveSummaryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_GetStockReserveDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetStockReserveDetailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).GetStockReserveDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_GetStockReserveDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).GetStockReserveDetail(ctx, req.(*GetStockReserveDetailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_ReserveStock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReserveStockRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).ReserveStock(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_ReserveStock_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).ReserveStock(ctx, req.(*ReserveStockRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_GetEarmarkingDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEarmarkingDetailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).GetEarmarkingDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_GetEarmarkingDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).GetEarmarkingDetail(ctx, req.(*GetEarmarkingDetailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_ReserveEarmarking_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReserveEarmarkingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).ReserveEarmarking(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_ReserveEarmarking_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).ReserveEarmarking(ctx, req.(*ReserveEarmarkingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_GetSnapshots_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSnapshotsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).GetSnapshots(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_GetSnapshots_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).GetSnapshots(ctx, req.(*GetSnapshotsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -598,56 +1344,200 @@ func _ShioajiProvider_GetKbars_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ShioajiProvider_GetSnapshots_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetSnapshotsRequest)
+func _ShioajiProvider_GetDailyQuotes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDailyQuotesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ShioajiProviderServer).GetSnapshots(ctx, in)
+		return srv.(ShioajiProviderServer).GetDailyQuotes(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ShioajiProvider_GetSnapshots_FullMethodName,
+		FullMethod: ShioajiProvider_GetDailyQuotes_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShioajiProviderServer).GetSnapshots(ctx, req.(*GetSnapshotsRequest))
+		return srv.(ShioajiProviderServer).GetDailyQuotes(ctx, req.(*GetDailyQuotesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ShioajiProvider_SubscribeQuote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SubscribeQuoteRequest)
+func _ShioajiProvider_CreditEnquires_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreditEnquiresRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ShioajiProviderServer).SubscribeQuote(ctx, in)
+		return srv.(ShioajiProviderServer).CreditEnquires(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ShioajiProvider_SubscribeQuote_FullMethodName,
+		FullMethod: ShioajiProvider_CreditEnquires_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShioajiProviderServer).SubscribeQuote(ctx, req.(*SubscribeQuoteRequest))
+		return srv.(ShioajiProviderServer).CreditEnquires(ctx, req.(*CreditEnquiresRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ShioajiProvider_UnsubscribeQuote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UnsubscribeQuoteRequest)
+func _ShioajiProvider_GetShortStockSources_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetShortStockSourcesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ShioajiProviderServer).UnsubscribeQuote(ctx, in)
+		return srv.(ShioajiProviderServer).GetShortStockSources(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ShioajiProvider_UnsubscribeQuote_FullMethodName,
+		FullMethod: ShioajiProvider_GetShortStockSources_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShioajiProviderServer).UnsubscribeQuote(ctx, req.(*UnsubscribeQuoteRequest))
+		return srv.(ShioajiProviderServer).GetShortStockSources(ctx, req.(*GetShortStockSourcesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_GetScanners_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetScannersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).GetScanners(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_GetScanners_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).GetScanners(ctx, req.(*GetScannersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_GetPunish_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).GetPunish(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_GetPunish_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).GetPunish(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_GetNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).GetNotice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_GetNotice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).GetNotice(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_FetchContracts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchContractsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).FetchContracts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_FetchContracts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).FetchContracts(ctx, req.(*FetchContractsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_ActivateCA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActivateCARequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).ActivateCA(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_ActivateCA_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).ActivateCA(ctx, req.(*ActivateCARequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_GetCAExpireTime_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCAExpireTimeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).GetCAExpireTime(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_GetCAExpireTime_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).GetCAExpireTime(ctx, req.(*GetCAExpireTimeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_SubscribeTrade_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubscribeTradeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).SubscribeTrade(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_SubscribeTrade_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).SubscribeTrade(ctx, req.(*SubscribeTradeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShioajiProvider_UnsubscribeTrade_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnsubscribeTradeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShioajiProviderServer).UnsubscribeTrade(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShioajiProvider_UnsubscribeTrade_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShioajiProviderServer).UnsubscribeTrade(ctx, req.(*UnsubscribeTradeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -664,6 +1554,14 @@ var ShioajiProvider_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ShioajiProvider_Login_Handler,
 		},
 		{
+			MethodName: "Logout",
+			Handler:    _ShioajiProvider_Logout_Handler,
+		},
+		{
+			MethodName: "GetUsage",
+			Handler:    _ShioajiProvider_GetUsage_Handler,
+		},
+		{
 			MethodName: "ListAccounts",
 			Handler:    _ShioajiProvider_ListAccounts_Handler,
 		},
@@ -672,20 +1570,12 @@ var ShioajiProvider_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ShioajiProvider_GetAccountBalance_Handler,
 		},
 		{
-			MethodName: "ListSettlements",
-			Handler:    _ShioajiProvider_ListSettlements_Handler,
-		},
-		{
-			MethodName: "ListProfitLoss",
-			Handler:    _ShioajiProvider_ListProfitLoss_Handler,
-		},
-		{
-			MethodName: "ListPositions",
-			Handler:    _ShioajiProvider_ListPositions_Handler,
-		},
-		{
 			MethodName: "PlaceOrder",
 			Handler:    _ShioajiProvider_PlaceOrder_Handler,
+		},
+		{
+			MethodName: "PlaceComboOrder",
+			Handler:    _ShioajiProvider_PlaceComboOrder_Handler,
 		},
 		{
 			MethodName: "UpdateOrder",
@@ -696,12 +1586,88 @@ var ShioajiProvider_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ShioajiProvider_CancelOrder_Handler,
 		},
 		{
-			MethodName: "ListTrades",
-			Handler:    _ShioajiProvider_ListTrades_Handler,
+			MethodName: "CancelComboOrder",
+			Handler:    _ShioajiProvider_CancelComboOrder_Handler,
 		},
 		{
 			MethodName: "UpdateStatus",
 			Handler:    _ShioajiProvider_UpdateStatus_Handler,
+		},
+		{
+			MethodName: "UpdateComboStatus",
+			Handler:    _ShioajiProvider_UpdateComboStatus_Handler,
+		},
+		{
+			MethodName: "ListTrades",
+			Handler:    _ShioajiProvider_ListTrades_Handler,
+		},
+		{
+			MethodName: "ListComboTrades",
+			Handler:    _ShioajiProvider_ListComboTrades_Handler,
+		},
+		{
+			MethodName: "GetOrderDealRecords",
+			Handler:    _ShioajiProvider_GetOrderDealRecords_Handler,
+		},
+		{
+			MethodName: "ListPositions",
+			Handler:    _ShioajiProvider_ListPositions_Handler,
+		},
+		{
+			MethodName: "ListPositionDetail",
+			Handler:    _ShioajiProvider_ListPositionDetail_Handler,
+		},
+		{
+			MethodName: "ListProfitLoss",
+			Handler:    _ShioajiProvider_ListProfitLoss_Handler,
+		},
+		{
+			MethodName: "ListProfitLossDetail",
+			Handler:    _ShioajiProvider_ListProfitLossDetail_Handler,
+		},
+		{
+			MethodName: "ListProfitLossSummary",
+			Handler:    _ShioajiProvider_ListProfitLossSummary_Handler,
+		},
+		{
+			MethodName: "GetSettlements",
+			Handler:    _ShioajiProvider_GetSettlements_Handler,
+		},
+		{
+			MethodName: "ListSettlements",
+			Handler:    _ShioajiProvider_ListSettlements_Handler,
+		},
+		{
+			MethodName: "GetMargin",
+			Handler:    _ShioajiProvider_GetMargin_Handler,
+		},
+		{
+			MethodName: "GetTradingLimits",
+			Handler:    _ShioajiProvider_GetTradingLimits_Handler,
+		},
+		{
+			MethodName: "GetStockReserveSummary",
+			Handler:    _ShioajiProvider_GetStockReserveSummary_Handler,
+		},
+		{
+			MethodName: "GetStockReserveDetail",
+			Handler:    _ShioajiProvider_GetStockReserveDetail_Handler,
+		},
+		{
+			MethodName: "ReserveStock",
+			Handler:    _ShioajiProvider_ReserveStock_Handler,
+		},
+		{
+			MethodName: "GetEarmarkingDetail",
+			Handler:    _ShioajiProvider_GetEarmarkingDetail_Handler,
+		},
+		{
+			MethodName: "ReserveEarmarking",
+			Handler:    _ShioajiProvider_ReserveEarmarking_Handler,
+		},
+		{
+			MethodName: "GetSnapshots",
+			Handler:    _ShioajiProvider_GetSnapshots_Handler,
 		},
 		{
 			MethodName: "GetTicks",
@@ -712,16 +1678,48 @@ var ShioajiProvider_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ShioajiProvider_GetKbars_Handler,
 		},
 		{
-			MethodName: "GetSnapshots",
-			Handler:    _ShioajiProvider_GetSnapshots_Handler,
+			MethodName: "GetDailyQuotes",
+			Handler:    _ShioajiProvider_GetDailyQuotes_Handler,
 		},
 		{
-			MethodName: "SubscribeQuote",
-			Handler:    _ShioajiProvider_SubscribeQuote_Handler,
+			MethodName: "CreditEnquires",
+			Handler:    _ShioajiProvider_CreditEnquires_Handler,
 		},
 		{
-			MethodName: "UnsubscribeQuote",
-			Handler:    _ShioajiProvider_UnsubscribeQuote_Handler,
+			MethodName: "GetShortStockSources",
+			Handler:    _ShioajiProvider_GetShortStockSources_Handler,
+		},
+		{
+			MethodName: "GetScanners",
+			Handler:    _ShioajiProvider_GetScanners_Handler,
+		},
+		{
+			MethodName: "GetPunish",
+			Handler:    _ShioajiProvider_GetPunish_Handler,
+		},
+		{
+			MethodName: "GetNotice",
+			Handler:    _ShioajiProvider_GetNotice_Handler,
+		},
+		{
+			MethodName: "FetchContracts",
+			Handler:    _ShioajiProvider_FetchContracts_Handler,
+		},
+		{
+			MethodName: "ActivateCA",
+			Handler:    _ShioajiProvider_ActivateCA_Handler,
+		},
+		{
+			MethodName: "GetCAExpireTime",
+			Handler:    _ShioajiProvider_GetCAExpireTime_Handler,
+		},
+		{
+			MethodName: "SubscribeTrade",
+			Handler:    _ShioajiProvider_SubscribeTrade_Handler,
+		},
+		{
+			MethodName: "UnsubscribeTrade",
+			Handler:    _ShioajiProvider_UnsubscribeTrade_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

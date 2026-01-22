@@ -2,337 +2,654 @@ syntax = "proto3";
 package v1;
 option go_package = "phoenix/processor/pkg/pb";
 
-// Trading account information including account type, person ID, broker ID, account ID, and signed status.
-message Account {
-  string account_type = 1;
-  string person_id    = 2;
-  string broker_id    = 3;
-  string account_id   = 4;
-  bool   signed       = 5;
-  string username     = 6;
-}
-
-// Detailed contract information for various instruments like stocks, futures, options, and indices.
-message Contract {
-  string security_type = 1;
-  string code          = 2;
-  string symbol        = 3;
-  string exchange      = 4;
-  string name          = 5;
-  string currency      = 6;
-  double limit_up      = 7;
-  double limit_down    = 8;
-  double reference     = 9;
-  string update_date   = 10;
-  string day_trade     = 11;
-}
-
-// Trading order details including action, price, quantity, and order type.
-message Order {
-  string  action       = 1;
-  double  price        = 2;
-  int64   quantity     = 3;
-  string  price_type   = 4;
-  string  order_type   = 5;
-  string  order_lot    = 6;
-  string  order_cond   = 7;
-  string  id           = 8;
-  string  seqno        = 9;
-  string  ordno        = 10;
-  Account account      = 11;
-  string  custom_field = 12;
-}
-
-// Information about placed trading orders and their execution status.
-message Trade {
-  string   id                 = 1; // Order ID
-  string   status             = 2; // e.g., PendingSubmit, Filled
-  string   status_code        = 3;
-  int64    order_ts           = 4;
-  string   msg                = 5;
-  double   price              = 6;
-  int64    quantity           = 7;
-  int64    filled_quantity    = 8;
-  int64    cancelled_quantity = 9;
-  string   ordno              = 10;
-  Contract contract           = 11;
-  Order    order              = 12;
-}
-
-
-
-// Real-time or historical tick data for a contract, including price and volume.
-message Tick {
-  string code               = 1;
-  string datetime           = 2;
-  double open               = 3;
-  double avg_price          = 4;
-  double close              = 5;
-  double high               = 6;
-  double low                = 7;
-  double amount             = 8;
-  double total_amount       = 9;
-  int64  volume             = 10;
-  int64  total_volume       = 11;
-  int32  tick_type          = 12;
-  int32  chg_type           = 13;
-  double price_chg          = 14;
-  double pct_chg            = 15;
-  int64  bid_side_total_vol = 16;
-  int64  ask_side_total_vol = 17;
-  bool   simtrade           = 18;
-}
-
-// Historical candlestick (K-bar) data including open, high, low, close prices, and volume.
-message Kbar {
-  int64  ts     = 1;
-  double open   = 2;
-  double high   = 3;
-  double low    = 4;
-  double close  = 5;
-  int64  volume = 6;
-  double amount = 7;
-}
-
-// Real-time market snapshot for a contract, providing a summary of current market conditions.
-message Snapshot {
-  int64  ts                   = 1;
-  string code                 = 2;
-  string exchange             = 3;
-  double open                 = 4;
-  double high                 = 5;
-  double low                  = 6;
-  double close                = 7;
-  double average_price        = 8;
-  int64  volume               = 9;
-  int64  total_volume         = 10;
-  double amount               = 11;
-  double total_amount         = 12;
-  double price_change         = 13;
-  double price_change_percent = 14;
-  double buy_price            = 15;
-  int64  buy_volume           = 16;
-  double sell_price           = 17;
-  int64  sell_volume          = 18;
-}
-
-// Realized profit and loss for a specific trade or period.
-message ProfitLoss {
-  int64  id       = 1;
-  string code     = 2;
-  string seqno    = 3;
-  string dseq     = 4;
-  int64  quantity = 5;
-  double price    = 6;
-  double pnl      = 7;
-  double pr_ratio = 8;
-  string cond     = 9;
-  string date     = 10;
-}
-
-// Stock account settlement details, including date and amount.
-message Settlement {
-  string date   = 1;
-  double amount = 2;
-  string t_time = 3; // "T" or "T+1" etc, renamed to avoid conflict
-}
-
-// Unrealized gain or loss for currently held positions.
-message Position {
-  int64  id         = 1;
-  string code       = 2;
-  string direction  = 3;
-  int64  quantity   = 4;
-  double price      = 5;
-  double last_price = 6;
-  double pnl        = 7;
-  string cond       = 8;
-  string order_type = 9; // e.g., ROD
-  string price_type = 10; // e.g., LMT
-}
-
 // Service Definition
 // ShioajiProvider service provides an interface for trading and market data access.
 service ShioajiProvider {
-  // Authenticates the user and establishes a connection with the Shioaji API.
   rpc Login (LoginRequest) returns (LoginResponse) {}
-
-  // Retrieves all available trading accounts for the logged-in user.
+  rpc Logout (Empty) returns (LogoutResponse) {}
+  rpc GetUsage (Empty) returns (UsageStatus) {}
   rpc ListAccounts (Empty) returns (ListAccountsResponse) {}
-
-  // Queries the current balance for the default stock account.
-  rpc GetAccountBalance (Empty) returns (AccountBalanceResponse) {}
-
-  // Retrieves stock account settlement details.
-  rpc ListSettlements (Empty) returns (ListSettlementsResponse) {}
-
-  // Queries realized profit and loss for a specified date range.
-  rpc ListProfitLoss (ListProfitLossRequest) returns (ListProfitLossResponse) {}
-
-  // Retrieves current unrealized positions and their profit/loss.
-  rpc ListPositions (Empty) returns (ListPositionsResponse) {}
-
-  // Submits a new trading order for a specific contract.
-  rpc PlaceOrder (PlaceOrderRequest) returns (TradeResponse) {}
-
-  // Modifies the price or quantity of an existing active order.
-  rpc UpdateOrder (UpdateOrderRequest) returns (TradeResponse) {}
-
-  // Requests the cancellation of an existing active order.
-  rpc CancelOrder (CancelOrderRequest) returns (TradeResponse) {}
-
-  // Lists all active trades and their statuses.
+  // SetDefaultAccount is client-side only in Python, but we might need it if the server maintains state per connection
+  // skipping for now or can add later if needed.
+  rpc GetAccountBalance (Empty) returns (AccountBalance) {}
+  rpc PlaceOrder (PlaceOrderRequest) returns (Trade) {}
+  rpc PlaceComboOrder (PlaceComboOrderRequest) returns (ComboTrade) {}
+  rpc UpdateOrder (UpdateOrderRequest) returns (Trade) {}
+  rpc CancelOrder (CancelOrderRequest) returns (Trade) {}
+  rpc CancelComboOrder (CancelComboOrderRequest) returns (ComboTrade) {}
+  rpc UpdateStatus (UpdateStatusRequest) returns (Empty) {}
+  rpc UpdateComboStatus (UpdateStatusRequest) returns (Empty) {}
   rpc ListTrades (Empty) returns (ListTradesResponse) {}
-
-  // Forces an update of order and trade statuses for the current session.
-  rpc UpdateStatus (Empty) returns (Empty) {}
-
-  // Retrieves historical tick data for a contract.
-  rpc GetTicks (GetTicksRequest) returns (GetTicksResponse) {}
-
-  // Retrieves historical candlestick (K-bar) data for a contract.
-  rpc GetKbars (GetKbarsRequest) returns (GetKbarsResponse) {}
-
-  // Retrieves current market snapshots for one or more contracts.
+  rpc ListComboTrades (Empty) returns (ListComboTradesResponse) {}
+  rpc GetOrderDealRecords (GetOrderDealRecordsRequest) returns (GetOrderDealRecordsResponse) {}
+  rpc ListPositions (ListPositionsRequest) returns (ListPositionsResponse) {}
+  rpc ListPositionDetail (ListPositionDetailRequest) returns (ListPositionDetailResponse) {}
+  rpc ListProfitLoss (ListProfitLossRequest) returns (ListProfitLossResponse) {}
+  rpc ListProfitLossDetail (ListProfitLossDetailRequest) returns (ListProfitLossDetailResponse) {}
+  rpc ListProfitLossSummary (ListProfitLossSummaryRequest) returns (ListProfitLossSummaryResponse) {}
+  rpc GetSettlements (GetSettlementsRequest) returns (GetSettlementsResponse) {}
+  rpc ListSettlements (GetSettlementsRequest) returns (GetSettlementsResponse) {} // Alias
+  rpc GetMargin (GetMarginRequest) returns (Margin) {}
+  rpc GetTradingLimits (GetTradingLimitsRequest) returns (TradingLimits) {}
+  rpc GetStockReserveSummary (GetStockReserveSummaryRequest) returns (ReserveStocksSummaryResponse) {}
+  rpc GetStockReserveDetail (GetStockReserveDetailRequest) returns (ReserveStocksDetailResponse) {}
+  rpc ReserveStock (ReserveStockRequest) returns (ReserveStockResponse) {}
+  rpc GetEarmarkingDetail (GetEarmarkingDetailRequest) returns (EarmarkStocksDetailResponse) {}
+  rpc ReserveEarmarking (ReserveEarmarkingRequest) returns (ReserveEarmarkingResponse) {}
   rpc GetSnapshots (GetSnapshotsRequest) returns (GetSnapshotsResponse) {}
-
-  // Subscribes to real-time market data (ticks or quotes) for a contract.
-  rpc SubscribeQuote (SubscribeQuoteRequest) returns (Empty) {}
-
-  // Unsubscribes from real-time market data updates for a contract.
-  rpc UnsubscribeQuote (UnsubscribeQuoteRequest) returns (Empty) {}
+  rpc GetTicks (GetTicksRequest) returns (Ticks) {}
+  rpc GetKbars (GetKbarsRequest) returns (Kbars) {}
+  rpc GetDailyQuotes (GetDailyQuotesRequest) returns (DailyQuotes) {}
+  rpc CreditEnquires (CreditEnquiresRequest) returns (CreditEnquiresResponse) {}
+  rpc GetShortStockSources (GetShortStockSourcesRequest) returns (GetShortStockSourcesResponse) {}
+  rpc GetScanners (GetScannersRequest) returns (GetScannersResponse) {}
+  rpc GetPunish (Empty) returns (Punish) {}
+  rpc GetNotice (Empty) returns (Notice) {}
+  rpc FetchContracts (FetchContractsRequest) returns (Empty) {}
+  rpc ActivateCA (ActivateCARequest) returns (ActivateCAResponse) {}
+  rpc GetCAExpireTime (GetCAExpireTimeRequest) returns (GetCAExpireTimeResponse) {}
+  rpc SubscribeTrade (SubscribeTradeRequest) returns (SubscribeTradeResponse) {}
+  rpc UnsubscribeTrade (UnsubscribeTradeRequest) returns (UnsubscribeTradeResponse) {}
 }
-
-// Request/Response Messages
 
 message Empty {}
 
-// Request message for Login method.
 message LoginRequest {
-  string person_id  = 1;
-  string passwd     = 2;
-  string api_key    = 3;
-  string secret_key = 4;
+  string api_key = 1;
+  string secret_key = 2;
 }
 
-// Response message for Login method.
 message LoginResponse {
-  bool   success = 1;
-  string message = 2;
+  repeated Account accounts = 1;
 }
 
-// Response message for ListAccounts method.
+message LogoutResponse {
+  bool success = 1;
+}
+
+message Account {
+  string account_type = 1;
+  string person_id = 2;
+  string broker_id = 3;
+  string account_id = 4;
+  bool signed = 5;
+  string username = 6;
+}
+
+message UsageStatus {
+  int64 connections = 1;
+  int64 bytes = 2;
+  int64 limit_bytes = 3;
+  int64 remaining_bytes = 4;
+}
+
 message ListAccountsResponse {
   repeated Account accounts = 1;
 }
 
-// Response message for GetAccountBalance method.
-message AccountBalanceResponse {
-  double balance  = 1;
-  string currency = 2;
+message AccountBalance {
+  double acc_balance = 1;
+  string date = 2;
+  string errmsg = 3;
+  string currency = 4; // inferred, usually present
 }
 
-// Response message for ListSettlements method.
-message ListSettlementsResponse {
-  repeated Settlement settlements = 1;
+// Simplified Contract message
+message Contract {
+  string security_type = 1;
+  string exchange = 2;
+  string code = 3;
+  string symbol = 4;
+  string name = 5;
+  string currency = 6;
 }
 
-// Request message for ListProfitLoss method.
-message ListProfitLossRequest {
-  string begin_date = 1;
-  string end_date   = 2;
+message ComboContract {
+    // Simplified
+    string code = 1;
 }
 
-// Response message for ListProfitLoss method.
-message ListProfitLossResponse {
-  repeated ProfitLoss profit_loss = 1;
+message Order {
+  string action = 1;
+  double price = 2;
+  int64 quantity = 3;
+  string id = 4;
+  string seqno = 5;
+  string ordno = 6;
+  Account account = 7;
+  string price_type = 8;
+  string order_type = 9;
 }
 
-// Response message for ListPositions method.
-message ListPositionsResponse {
-  repeated Position positions = 1;
+message ComboOrder {
+    string action = 1;
+    double price = 2;
+    int64 quantity = 3;
+    string id = 4;
+    string seqno = 5;
+    string ordno = 6;
+    Account account = 7;
+    string price_type = 8;
+    string order_type = 9;
 }
 
-// Request message for PlaceOrder method.
+message OrderStatus {
+    string id = 1;
+    string status = 2;
+    string status_code = 3;
+    string order_datetime = 4; // datetime
+    int64 deal_quantity = 5;
+    int64 cancel_quantity = 6;
+    // deals list omitted for brevity for now
+}
+
+message Trade {
+  Contract contract = 1;
+  Order order = 2;
+  OrderStatus status = 3;
+}
+
+message ComboTrade {
+    ComboContract contract = 1;
+    ComboOrder order = 2;
+    // Status might be slightly different or same
+    OrderStatus status = 3;
+}
+
 message PlaceOrderRequest {
-  string contract_code          = 1;
-  string contract_security_type = 2; // e.g., "STK", "FUT"
-  string action                 = 3; // "Buy", "Sell"
-  double price                  = 4;
-  int64  quantity               = 5;
-  string price_type             = 6; // "LMT", "MKT"
-  string order_type             = 7; // "ROD", "IOC", "FOK"
-  string order_lot              = 8; // "Common", "IntradayOdd"
-  string account_id             = 9; // Optional, to specify account
+  Contract contract = 1;
+  Order order = 2;
 }
 
-// Request message for UpdateOrder method.
+message PlaceComboOrderRequest {
+    ComboContract combo_contract = 1;
+    ComboOrder order = 2;
+}
+
 message UpdateOrderRequest {
-  string trade_id = 1;
-  double price    = 2;
-  int64  quantity = 3;
+  Trade trade = 1; // Needs ID/Seqno/Ordno identification usually
+  double price = 2;
+  int64 quantity = 3;
 }
 
-// Request message for CancelOrder method.
 message CancelOrderRequest {
-  string trade_id = 1;
-}
-
-// Response message for PlaceOrder, UpdateOrder, and CancelOrder methods.
-message TradeResponse {
   Trade trade = 1;
 }
 
-// Response message for ListTrades method.
+message CancelComboOrderRequest {
+    ComboTrade combotrade = 1;
+}
+
+message UpdateStatusRequest {
+    Account account = 1;
+}
+
 message ListTradesResponse {
   repeated Trade trades = 1;
 }
 
-// Request message for GetTicks method.
-message GetTicksRequest {
-  string contract_code          = 1;
-  string contract_security_type = 2;
-  string date                   = 3;
+message ListComboTradesResponse {
+    repeated ComboTrade combo_trades = 1;
 }
 
-// Response message for GetTicks method.
-message GetTicksResponse {
-  repeated Tick ticks = 1;
+message GetOrderDealRecordsRequest {
+    Account account = 1;
 }
 
-// Request message for GetKbars method.
-message GetKbarsRequest {
-  string contract_code          = 1;
-  string contract_security_type = 2;
-  string start_date             = 3;
-  string end_date               = 4;
+message GetOrderDealRecordsResponse {
+    // simplified representation
+    repeated OrderDealRecord records = 1;
 }
 
-// Response message for GetKbars method.
-message GetKbarsResponse {
-  repeated Kbar kbars = 1;
+message OrderDealRecord {
+    string code = 1;
+    string action = 2;
+    double price = 3;
+    int64 quantity = 4;
+    string ts = 5;
 }
 
-// Request message for GetSnapshots method.
+message ListPositionsRequest {
+    Account account = 1;
+    string unit = 2; // "Common", "Share" etc
+}
+
+message StockPosition {
+    int64 id = 1;
+    string code = 2;
+    string direction = 3;
+    int64 quantity = 4;
+    double price = 5;
+    double last_price = 6;
+    double pnl = 7;
+    int64 yd_quantity = 8;
+    string cond = 9;
+    int64 margin_purchase_amount = 10;
+    int64 collateral = 11;
+    int64 short_sale_margin = 12;
+    int64 interest = 13;
+}
+
+message FuturePosition {
+    int64 id = 1;
+    string code = 2;
+    string direction = 3;
+    int64 quantity = 4;
+    double price = 5;
+    double last_price = 6;
+    double pnl = 7;
+}
+
+message Position {
+    oneof position {
+        StockPosition stock_position = 1;
+        FuturePosition future_position = 2;
+    }
+}
+
+message ListPositionsResponse {
+    repeated Position positions = 1;
+}
+
+message ListPositionDetailRequest {
+    Account account = 1;
+    int64 detail_id = 2;
+}
+
+message StockPositionDetail {
+    // simplified
+    string date = 1;
+    string code = 2;
+    int64 quantity = 3;
+    double price = 4;
+    double last_price = 5;
+    double pnl = 6;
+}
+
+message FuturePositionDetail {
+    // simplified
+    string date = 1;
+    string code = 2;
+    int64 quantity = 3;
+    double price = 4;
+    double last_price = 5;
+    double pnl = 6;
+    int64 entry_quantity = 7;
+}
+
+message PositionDetail {
+    oneof detail {
+        StockPositionDetail stock_detail = 1;
+        FuturePositionDetail future_detail = 2;
+    }
+}
+
+message ListPositionDetailResponse {
+    repeated PositionDetail details = 1;
+}
+
+message ListProfitLossRequest {
+    Account account = 1;
+    string begin_date = 2;
+    string end_date = 3;
+}
+
+message StockProfitLoss {
+    string dseq = 1;
+    string code = 2;
+    int64 quantity = 3;
+    double price = 4;
+    double pnl = 5;
+    double pr_ratio = 6;
+    string cond = 7;
+    string date = 8;
+    string seqno = 9;
+}
+
+message FutureProfitLoss {
+    string date = 1;
+    string code = 2;
+    int64 quantity = 3;
+    double entry_price = 4;
+    double cover_price = 5;
+    string direction = 6;
+    double pnl = 7;
+    int64 tax = 8;
+    int64 fee = 9;
+}
+
+message ProfitLoss {
+    oneof item {
+        StockProfitLoss stock_pnl = 1;
+        FutureProfitLoss future_pnl = 2;
+    }
+}
+
+message ListProfitLossResponse {
+    repeated ProfitLoss profit_losses = 1;
+}
+
+message ListProfitLossDetailRequest {
+    Account account = 1;
+    int64 detail_id = 2;
+}
+
+message StockProfitDetail {
+    double price = 1;
+    int64 cost = 2;
+    int64 interest = 3;
+    // ...
+}
+
+message FutureProfitDetail {
+    string direction = 1;
+    string entry_date = 2;
+    double entry_price = 3;
+    double cover_price = 4;
+    int64 pnl = 5;
+}
+
+message ProfitDetail {
+    oneof detail {
+        StockProfitDetail stock_detail = 1;
+        FutureProfitDetail future_detail = 2;
+    }
+}
+
+message ListProfitLossDetailResponse {
+    repeated ProfitDetail details = 1;
+}
+
+message ListProfitLossSummaryRequest {
+    Account account = 1;
+}
+
+message StockProfitLossSummary {
+    int64 entry_cost = 1;
+    int64 cover_cost = 2;
+    // ...
+}
+
+message FutureProfitLossSummary {
+    string direction = 1;
+    int64 tax = 2;
+    int64 fee = 3;
+    // ...
+}
+
+message ProfitLossSummary {
+    oneof summary {
+        StockProfitLossSummary stock_summary = 1;
+        FutureProfitLossSummary future_summary = 2;
+    }
+}
+
+message ListProfitLossSummaryResponse {
+    repeated ProfitLossSummary summaries = 1;
+}
+
+message GetSettlementsRequest {
+    Account account = 1;
+}
+
+message Settlement {
+    string date = 1;
+    double amount = 2;
+    double t_money = 3;
+    string t_day = 4;
+    double t1_money = 5;
+    string t1_day = 6;
+    double t2_money = 7;
+    string t2_day = 8;
+}
+
+message GetSettlementsResponse {
+    repeated Settlement settlements = 1;
+}
+
+message GetMarginRequest {
+    Account account = 1;
+}
+
+message Margin {
+    double equity = 1;
+    double available_margin = 2;
+    double initial_margin = 3;
+    double maintenance_margin = 4;
+    // ... many fields
+}
+
+message GetTradingLimitsRequest {
+    Account account = 1;
+}
+
+message TradingLimits {
+    int64 trading_limit = 1;
+    int64 trading_used = 2;
+    int64 trading_available = 3;
+    int64 margin_limit = 4;
+    int64 margin_used = 5;
+    int64 margin_available = 6;
+    int64 short_limit = 7;
+    int64 short_used = 8;
+    int64 short_available = 9;
+}
+
+message GetStockReserveSummaryRequest {
+    Account account = 1;
+}
+
+message ReserveStocksSummaryResponse {
+    // JSON string or structured fields for ReserveStocksSummary
+    // Using simple string for complex nested response for now or define minimal structure
+    string response_json = 1;
+}
+
+message GetStockReserveDetailRequest {
+    Account account = 1;
+}
+
+message ReserveStocksDetailResponse {
+    string response_json = 1;
+}
+
+message ReserveStockRequest {
+    Account account = 1;
+    Contract contract = 2;
+    int64 share = 3;
+}
+
+message ReserveStockResponse {
+    string response_json = 1;
+}
+
+message GetEarmarkingDetailRequest {
+    Account account = 1;
+}
+
+message EarmarkStocksDetailResponse {
+    string response_json = 1;
+}
+
+message ReserveEarmarkingRequest {
+    Account account = 1;
+    Contract contract = 2;
+    int64 share = 3;
+    double price = 4;
+}
+
+message ReserveEarmarkingResponse {
+    string response_json = 1;
+}
+
 message GetSnapshotsRequest {
-  repeated string contract_codes = 1;
+    // simplified contract identification
+    repeated string contract_codes = 1; 
 }
 
-// Response message for GetSnapshots method.
 message GetSnapshotsResponse {
-  repeated Snapshot snapshots = 1;
+    repeated Snapshot snapshots = 1;
 }
 
-// Request message for SubscribeQuote method.
-message SubscribeQuoteRequest {
-  string contract_code          = 1;
-  string contract_security_type = 2;
-  string quote_type             = 3; // "tick", "bidask"
+message Snapshot {
+    int64 ts = 1;
+    string code = 2;
+    string exchange = 3;
+    double open = 4;
+    double high = 5;
+    double low = 6;
+    double close = 7;
+    double change_price = 8;
+    double change_rate = 9;
+    double average_price = 10;
+    int64 volume = 11;
+    int64 total_volume = 12;
+    int64 amount = 13;
+    int64 total_amount = 14;
+    double buy_price = 15;
+    int64 buy_volume = 16;
+    double sell_price = 17;
+    int64 sell_volume = 18;
 }
 
-// Request message for UnsubscribeQuote method.
-message UnsubscribeQuoteRequest {
-  string contract_code          = 1;
-  string contract_security_type = 2;
-  string quote_type             = 3;
+message GetTicksRequest {
+    string contract_code = 1;
+    string date = 2;
+}
+
+message Ticks {
+    repeated int64 ts = 1;
+    repeated double close = 2;
+    repeated int64 volume = 3;
+    repeated double bid_price = 4;
+    repeated int64 bid_volume = 5;
+    repeated double ask_price = 6;
+    repeated int64 ask_volume = 7;
+    repeated int32 tick_type = 8;
+}
+
+message GetKbarsRequest {
+    string contract_code = 1;
+    string start_date = 2;
+    string end_date = 3;
+}
+
+message Kbars {
+    repeated int64 ts = 1;
+    repeated double open = 2;
+    repeated double high = 3;
+    repeated double low = 4;
+    repeated double close = 5;
+    repeated int64 volume = 6;
+    repeated double amount = 7;
+}
+
+message GetDailyQuotesRequest {
+    string date = 1;
+}
+
+message DailyQuotes {
+    repeated string code = 1;
+    repeated double open = 2;
+    repeated double high = 3;
+    repeated double low = 4;
+    repeated double close = 5;
+    repeated int64 volume = 6;
+}
+
+message CreditEnquiresRequest {
+    repeated string contract_codes = 1;
+}
+
+message CreditEnquiresResponse {
+    repeated CreditEnquire credit_enquires = 1;
+}
+
+message CreditEnquire {
+    string stock_id = 1;
+    int64 margin_unit = 2;
+    int64 short_unit = 3;
+}
+
+message GetShortStockSourcesRequest {
+    repeated string contract_codes = 1;
+}
+
+message GetShortStockSourcesResponse {
+    repeated ShortStockSource sources = 1;
+}
+
+message ShortStockSource {
+    string code = 1;
+    int64 short_stock_source = 2;
+    int64 ts = 3;
+}
+
+message GetScannersRequest {
+    string scanner_type = 1;
+    bool ascending = 2;
+    string date = 3;
+    int32 count = 4;
+}
+
+message GetScannersResponse {
+    repeated ScannerItem scanners = 1;
+}
+
+message ScannerItem {
+    string code = 1;
+    string name = 2;
+    double close = 3;
+    double change_price = 4;
+    int64 total_volume = 5;
+}
+
+message Punish {
+    repeated string code = 1;
+    repeated string start_date = 2;
+    repeated string end_date = 3;
+    repeated string interval = 4;
+}
+
+message Notice {
+    repeated string code = 1;
+    repeated string reason = 2;
+}
+
+message FetchContractsRequest {
+    bool contract_download = 1;
+}
+
+message ActivateCARequest {
+    string ca_path = 1;
+    string ca_passwd = 2;
+    string person_id = 3;
+}
+
+message ActivateCAResponse {
+    bool success = 1;
+}
+
+message GetCAExpireTimeRequest {
+    string person_id = 1;
+}
+
+message GetCAExpireTimeResponse {
+    string expire_time = 1;
+}
+
+message SubscribeTradeRequest {
+    Account account = 1;
+}
+
+message SubscribeTradeResponse {
+    bool success = 1;
+}
+
+message UnsubscribeTradeRequest {
+    Account account = 1;
+}
+
+message UnsubscribeTradeResponse {
+    bool success = 1;
 }
