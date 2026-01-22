@@ -67,6 +67,7 @@ class ShioajiClient:
     def login(self, api_key: str, secret_key: str) -> List[Account]:
         """
         Login to the Shioaji API.
+        登入
 
         Args:
             api_key (str): Your API key.
@@ -80,6 +81,7 @@ class ShioajiClient:
     def logout(self) -> bool:
         """
         Logout from the Shioaji API.
+        登出
 
         Returns:
             bool: True if logout was successful.
@@ -89,6 +91,7 @@ class ShioajiClient:
     def usage(self) -> UsageStatus:
         """
         Retrieve usage information.
+        使用量
 
         Returns:
             UsageStatus: Object containing usage statistics.
@@ -98,6 +101,7 @@ class ShioajiClient:
     def list_accounts(self) -> List[Account]:
         """
         List all available trading accounts.
+        帳號列表
 
         Returns:
             List[Account]: A list of trading accounts.
@@ -107,6 +111,7 @@ class ShioajiClient:
     def set_default_account(self, account: Account):
         """
         Set the default account for trading.
+        設定預設帳號
 
         Args:
             account (Account): The account to set as default.
@@ -116,6 +121,7 @@ class ShioajiClient:
     def account_balance(self) -> AccountBalance:
         """
         Get the account balance.
+        帳戶餘額
 
         Returns:
             AccountBalance: The account balance object.
@@ -125,6 +131,7 @@ class ShioajiClient:
     def place_order(self, contract: Contract, order: Order) -> Trade:
         """
         Place a new order.
+        下單
 
         Args:
             contract (Contract): The contract to trade.
@@ -140,6 +147,7 @@ class ShioajiClient:
     ) -> ComboTrade:
         """
         Place a combination order.
+        組合單下單
 
         Args:
             combo_contract (ComboContract): The combination contract to trade.
@@ -153,6 +161,7 @@ class ShioajiClient:
     def update_order(self, trade: Trade, price: float, qty: int) -> Trade:
         """
         Update an existing order.
+        修改委託單
 
         Args:
             trade (Trade): The trade to update.
@@ -167,6 +176,7 @@ class ShioajiClient:
     def cancel_order(self, trade: Trade) -> Trade:
         """
         Cancel an existing order.
+        撤銷委託單
 
         Args:
             trade (Trade): The trade to cancel.
@@ -179,6 +189,7 @@ class ShioajiClient:
     def cancel_comboorder(self, combotrade: ComboTrade) -> ComboTrade:
         """
         Cancel a combination order.
+        撤銷組合單委託
 
         Args:
             combotrade (ComboTrade): The combination trade to cancel.
@@ -191,6 +202,7 @@ class ShioajiClient:
     def update_status(self, account: Account):
         """
         Update the status of orders and trades for an account.
+        更新委託單狀態
 
         Args:
             account (Account): The account to update status for.
@@ -200,6 +212,7 @@ class ShioajiClient:
     def update_combostatus(self, account: Account):
         """
         Update the status of combination orders for an account.
+        更新組合單狀態
 
         Args:
             account (Account): The account to update status for.
@@ -209,6 +222,7 @@ class ShioajiClient:
     def list_trades(self) -> List[Trade]:
         """
         List all trades.
+        委託列表
 
         Returns:
             List[Trade]: A list of all trades.
@@ -218,6 +232,7 @@ class ShioajiClient:
     def list_combotrades(self) -> List[ComboTrade]:
         """
         List all combination trades.
+        組合單委託列表
 
         Returns:
             List[ComboTrade]: A list of all combination trades.
@@ -227,6 +242,7 @@ class ShioajiClient:
     def order_deal_records(self, account: Account) -> List[OrderDealRecords]:
         """
         Get order deal records.
+        委託成交紀錄
 
         Args:
             account (Account): The account to query.
@@ -241,6 +257,7 @@ class ShioajiClient:
     ) -> List[Union[StockPosition, FuturePosition]]:
         """
         List current positions for an account.
+        查詢部位
 
         Args:
             account (Account): The account to query.
@@ -255,6 +272,7 @@ class ShioajiClient:
     ) -> List[Union[StockPositionDetail, FuturePositionDetail]]:
         """
         Get detailed information for a specific position.
+        查詢部位詳細資訊
 
         Args:
             account (Account): The account to query.
@@ -270,6 +288,7 @@ class ShioajiClient:
     ) -> List[Union[StockProfitLoss, FutureProfitLoss]]:
         """
         List realized profit and loss.
+        查詢損益
 
         Args:
             account (Account): The account to query.
@@ -284,6 +303,7 @@ class ShioajiClient:
     ) -> List[Union[StockProfitDetail, FutureProfitDetail]]:
         """
         Get detailed realized profit and loss for a specific entry.
+        查詢損益詳細資訊
 
         Args:
             account (Account): The account to query.
@@ -299,6 +319,7 @@ class ShioajiClient:
     ) -> List[Union[StockProfitLossSummary, FutureProfitLossSummary]]:
         """
         Get a summary of profit and loss.
+        查詢損益匯總
 
         Args:
             account (Account): The account to query.
@@ -311,6 +332,7 @@ class ShioajiClient:
     def settlements(self, account: Account) -> List[Settlement]:
         """
         Get settlement information.
+        查詢結算資訊
 
         Args:
             account (Account): The account to query.
@@ -323,6 +345,7 @@ class ShioajiClient:
     def list_settlements(self, account: Account) -> List[Settlement]:
         """
         List settlement information.
+        結算清單
 
         Args:
             account (Account): The account to query.
@@ -335,6 +358,7 @@ class ShioajiClient:
     def margin(self, account: Account) -> Margin:
         """
         Get margin information for a futures account.
+        查詢保證金
 
         Args:
             account (Account): The account to query.
@@ -347,6 +371,7 @@ class ShioajiClient:
     def trading_limits(self, account: Account) -> TradingLimits:
         """
         Get trading limits for a stock account.
+        交易限額
 
         Args:
             account (Account): The account to query.
@@ -359,6 +384,7 @@ class ShioajiClient:
     def stock_reserve_summary(self, account: Account) -> ReserveStocksSummaryResponse:
         """
         Get stock reserve summary.
+        股票券源彙總
 
         Args:
             account (Account): The account to query.
@@ -371,6 +397,7 @@ class ShioajiClient:
     def stock_reserve_detail(self, account: Account) -> ReserveStocksDetailResponse:
         """
         Get stock reserve details.
+        股票券源明細
 
         Args:
             account (Account): The account to query.
@@ -385,6 +412,7 @@ class ShioajiClient:
     ) -> ReserveStockResponse:
         """
         Reserve stock for borrowing.
+        預約借券
 
         Args:
             account (Account): The account to use.
@@ -399,6 +427,7 @@ class ShioajiClient:
     def earmarking_detail(self, account: Account) -> EarmarkStocksDetailResponse:
         """
         Get earmarking details.
+        圈存明細
 
         Args:
             account (Account): The account to query.
@@ -413,6 +442,7 @@ class ShioajiClient:
     ) -> ReserveEarmarkingResponse:
         """
         Apply for earmarking.
+        預約圈存
 
         Args:
             account (Account): The account to use.
@@ -430,6 +460,7 @@ class ShioajiClient:
     ) -> List[Snapshot]:
         """
         Get market snapshots for a list of contracts.
+        行情快照
 
         Args:
             contracts (List[Union[Option, Future, Stock, Index]]): List of contracts to query.
@@ -442,6 +473,7 @@ class ShioajiClient:
     def ticks(self, contract: BaseContract, date: str) -> Ticks:
         """
         Get tick data for a specific contract and date.
+        獲取逐筆報價
 
         Args:
             contract (BaseContract): The contract to query.
@@ -455,6 +487,7 @@ class ShioajiClient:
     def kbars(self, contract: BaseContract, start: str, end: str) -> Kbars:
         """
         Get K-bar (candlestick) data for a specific contract and date range.
+        獲取K線資料
 
         Args:
             contract (BaseContract): The contract to query.
@@ -469,6 +502,7 @@ class ShioajiClient:
     def daily_quotes(self, date_query: dt_date) -> DailyQuotes:
         """
         Get daily quotes.
+        每日報價
 
         Args:
             date_query (dt_date): The date to query.
@@ -481,6 +515,7 @@ class ShioajiClient:
     def credit_enquires(self, contracts: List[Stock]) -> List[CreditEnquire]:
         """
         Enquire about credit for a list of contracts.
+        信用交易查詢
 
         Args:
             contracts (List[Stock]): List of contracts to query.
@@ -493,6 +528,7 @@ class ShioajiClient:
     def short_stock_sources(self, contracts: List[Stock]) -> List[ShortStockSource]:
         """
         Get short stock sources for a list of contracts.
+        借券水源
 
         Args:
             contracts (List[Stock]): List of contracts to query.
@@ -507,6 +543,7 @@ class ShioajiClient:
     ) -> List[ScannerItem]:
         """
         Get scanner results (ranked stocks).
+        選股器
 
         Args:
             scanner_type (ScannerType): The type of scanner to run.
@@ -524,6 +561,7 @@ class ShioajiClient:
     def punish(self) -> Punish:
         """
         Get punishment information (disposition stocks).
+        處置股
 
         Returns:
             Punish: The punish information object.
@@ -533,6 +571,7 @@ class ShioajiClient:
     def notice(self) -> Notice:
         """
         Get notice information (attention stocks).
+        注意股
 
         Returns:
             Notice: The notice information object.
@@ -542,6 +581,7 @@ class ShioajiClient:
     def fetch_contracts(self, contract_download: bool):
         """
         Manually fetch contracts.
+        下載商品檔
 
         Args:
             contract_download (bool): Whether to download contracts.
@@ -551,6 +591,7 @@ class ShioajiClient:
     def set_context(self, context: Any):
         """
         Set the context for the API.
+        設定上下文
 
         Args:
             context (Any): The context object.
@@ -560,6 +601,7 @@ class ShioajiClient:
     def activate_ca(self, ca_path: str, ca_passwd: str, person_id: str) -> bool:
         """
         Activate the Certificate Authority (CA).
+        憑證開通
 
         Args:
             ca_path (str): Path to the CA file.
@@ -574,6 +616,7 @@ class ShioajiClient:
     def get_ca_expiretime(self, person_id: str) -> datetime:
         """
         Get the CA expiration time.
+        憑證過期時間
 
         Args:
             person_id (str): Person ID to check.
@@ -586,6 +629,7 @@ class ShioajiClient:
     def subscribe_trade(self, account: Account) -> bool:
         """
         Subscribe to trade updates for an account.
+        訂閱交易回報
 
         Args:
             account (Account): The account to subscribe to.
@@ -598,6 +642,7 @@ class ShioajiClient:
     def unsubscribe_trade(self, account: Account) -> bool:
         """
         Unsubscribe from trade updates for an account.
+        取消訂閱交易回報
 
         Args:
             account (Account): The account to unsubscribe from.
@@ -611,6 +656,7 @@ class ShioajiClient:
     def on_event(self, func: Callable) -> Callable:
         """
         Decorator to register a callback for events.
+        事件回報
 
         Args:
             func (Callable): The callback function.
@@ -623,6 +669,7 @@ class ShioajiClient:
     def on_quote(self, func: Callable) -> Callable:
         """
         Decorator to register a callback for quotes.
+        行情回報
 
         Args:
             func (Callable): The callback function.
@@ -635,6 +682,7 @@ class ShioajiClient:
     def on_session_down(self, func: Callable) -> Callable:
         """
         Decorator to register a callback for session down events.
+        連線中斷
 
         Args:
             func (Callable): The callback function.
@@ -647,6 +695,7 @@ class ShioajiClient:
     def set_order_callback(self, func: Callable):
         """
         Set a callback for order updates.
+        設定委託回報回呼
 
         Args:
             func (Callable): The callback function.
@@ -656,6 +705,7 @@ class ShioajiClient:
     def set_session_down_callback(self, func: Callable):
         """
         Set a callback for session down events.
+        設定連線中斷回呼
 
         Args:
             func (Callable): The callback function.
@@ -665,6 +715,7 @@ class ShioajiClient:
     def on_bidask_fop_v1(self, bind: bool = False) -> Callable:
         """
         Decorator for FOP v1 bid/ask updates.
+        期權五檔報價
 
         Args:
             bind (bool): Whether to bind the callback.
@@ -677,6 +728,7 @@ class ShioajiClient:
     def on_bidask_stk_v1(self, bind: bool = False) -> Callable:
         """
         Decorator for stock v1 bid/ask updates.
+        股票五檔報價
 
         Args:
             bind (bool): Whether to bind the callback.
@@ -689,6 +741,7 @@ class ShioajiClient:
     def on_quote_fop_v1(self, bind: bool = False) -> Callable:
         """
         Decorator for FOP v1 quote updates.
+        期權行情報價
 
         Args:
             bind (bool): Whether to bind the callback.
@@ -701,6 +754,7 @@ class ShioajiClient:
     def on_quote_stk_v1(self, bind: bool = False) -> Callable:
         """
         Decorator for stock v1 quote updates.
+        股票行情報價
 
         Args:
             bind (bool): Whether to bind the callback.
@@ -713,6 +767,7 @@ class ShioajiClient:
     def on_tick_fop_v1(self, bind: bool = False) -> Callable:
         """
         Decorator for FOP v1 tick updates.
+        期權逐筆報價
 
         Args:
             bind (bool): Whether to bind the callback.
@@ -725,6 +780,7 @@ class ShioajiClient:
     def on_tick_stk_v1(self, bind: bool = False) -> Callable:
         """
         Decorator for stock v1 tick updates.
+        股票逐筆報價
 
         Args:
             bind (bool): Whether to bind the callback.
