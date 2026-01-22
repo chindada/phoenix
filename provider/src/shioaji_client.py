@@ -2,13 +2,22 @@
 provider.src.shioaji_client -.
 """
 
-from datetime import date, datetime
+from datetime import date as dt_date
+from datetime import datetime
 from typing import Any, Callable, List, Union
 
 import shioaji as sj
 from shioaji.account import Account
 from shioaji.constant import ScannerType
-from shioaji.contracts import BaseContract, ComboContract, Contract, Stock
+from shioaji.contracts import (
+    BaseContract,
+    ComboContract,
+    Contract,
+    Future,
+    Index,
+    Option,
+    Stock,
+)
 from shioaji.data import (
     CreditEnquire,
     DailyQuotes,
@@ -126,7 +135,9 @@ class ShioajiClient:
         """
         return self.api.place_order(contract, order)
 
-    def place_comboorder(self, combo_contract: ComboContract, order: ComboOrder) -> ComboTrade:
+    def place_comboorder(
+        self, combo_contract: ComboContract, order: ComboOrder
+    ) -> ComboTrade:
         """
         Place a combination order.
 
@@ -414,12 +425,14 @@ class ShioajiClient:
         """
         return self.api.reserve_earmarking(account, contract, share, price)
 
-    def snapshots(self, contracts: List[BaseContract]) -> List[Snapshot]:
+    def snapshots(
+        self, contracts: List[Union[Option, Future, Stock, Index]]
+    ) -> List[Snapshot]:
         """
         Get market snapshots for a list of contracts.
 
         Args:
-            contracts (List[BaseContract]): List of contracts to query.
+            contracts (List[Union[Option, Future, Stock, Index]]): List of contracts to query.
 
         Returns:
             List[Snapshot]: A list of snapshot objects.
@@ -453,12 +466,12 @@ class ShioajiClient:
         """
         return self.api.kbars(contract, start, end)
 
-    def daily_quotes(self, date_query: date) -> DailyQuotes:
+    def daily_quotes(self, date_query: dt_date) -> DailyQuotes:
         """
         Get daily quotes.
 
         Args:
-            date_query (date): The date to query.
+            date_query (dt_date): The date to query.
 
         Returns:
             DailyQuotes: The daily quotes object.
