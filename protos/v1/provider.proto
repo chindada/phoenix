@@ -5,68 +5,116 @@ option go_package = "phoenix/processor/pkg/pb";
 // Service Definition
 // ShioajiProvider service provides an interface for trading and market data access.
 service ShioajiProvider {
+  // Login to the Shioaji API.
   rpc Login (LoginRequest) returns (LoginResponse) {}
+  // Logout from the Shioaji API.
   rpc Logout (Empty) returns (LogoutResponse) {}
+  // Retrieve usage information.
   rpc GetUsage (Empty) returns (UsageStatus) {}
+  // List all available trading accounts.
   rpc ListAccounts (Empty) returns (ListAccountsResponse) {}
+  // Get the account balance.
   // SetDefaultAccount is client-side only in Python, but we might need it if the server maintains state per connection
   // skipping for now or can add later if needed.
   rpc GetAccountBalance (Empty) returns (AccountBalance) {}
+  // Place a new order.
   rpc PlaceOrder (PlaceOrderRequest) returns (Trade) {}
+  // Place a combination order.
   rpc PlaceComboOrder (PlaceComboOrderRequest) returns (ComboTrade) {}
+  // Update an existing order.
   rpc UpdateOrder (UpdateOrderRequest) returns (Trade) {}
+  // Cancel an existing order.
   rpc CancelOrder (CancelOrderRequest) returns (Trade) {}
+  // Cancel a combination order.
   rpc CancelComboOrder (CancelComboOrderRequest) returns (ComboTrade) {}
+  // Update the status of orders and trades for an account.
   rpc UpdateStatus (UpdateStatusRequest) returns (Empty) {}
+  // Update the status of combination orders for an account.
   rpc UpdateComboStatus (UpdateStatusRequest) returns (Empty) {}
+  // List all trades.
   rpc ListTrades (Empty) returns (ListTradesResponse) {}
+  // List all combination trades.
   rpc ListComboTrades (Empty) returns (ListComboTradesResponse) {}
+  // Get order deal records.
   rpc GetOrderDealRecords (GetOrderDealRecordsRequest) returns (GetOrderDealRecordsResponse) {}
+  // List current positions for an account.
   rpc ListPositions (ListPositionsRequest) returns (ListPositionsResponse) {}
+  // Get detailed information for a specific position.
   rpc ListPositionDetail (ListPositionDetailRequest) returns (ListPositionDetailResponse) {}
+  // List realized profit and loss.
   rpc ListProfitLoss (ListProfitLossRequest) returns (ListProfitLossResponse) {}
+  // Get detailed realized profit and loss for a specific entry.
   rpc ListProfitLossDetail (ListProfitLossDetailRequest) returns (ListProfitLossDetailResponse) {}
+  // Get a summary of profit and loss.
   rpc ListProfitLossSummary (ListProfitLossSummaryRequest) returns (ListProfitLossSummaryResponse) {}
+  // Get settlement information.
   rpc GetSettlements (GetSettlementsRequest) returns (GetSettlementsResponse) {}
-  rpc ListSettlements (GetSettlementsRequest) returns (GetSettlementsResponse) {} // Alias
+  // List settlement information (Alias).
+  rpc ListSettlements (GetSettlementsRequest) returns (GetSettlementsResponse) {} 
+  // Get margin information for a futures account.
   rpc GetMargin (GetMarginRequest) returns (Margin) {}
+  // Get trading limits for a stock account.
   rpc GetTradingLimits (GetTradingLimitsRequest) returns (TradingLimits) {}
+  // Get stock reserve summary.
   rpc GetStockReserveSummary (GetStockReserveSummaryRequest) returns (ReserveStocksSummaryResponse) {}
+  // Get stock reserve details.
   rpc GetStockReserveDetail (GetStockReserveDetailRequest) returns (ReserveStocksDetailResponse) {}
+  // Reserve stock for borrowing.
   rpc ReserveStock (ReserveStockRequest) returns (ReserveStockResponse) {}
+  // Get earmarking details.
   rpc GetEarmarkingDetail (GetEarmarkingDetailRequest) returns (EarmarkStocksDetailResponse) {}
+  // Apply for earmarking.
   rpc ReserveEarmarking (ReserveEarmarkingRequest) returns (ReserveEarmarkingResponse) {}
+  // Get market snapshots for a list of contracts.
   rpc GetSnapshots (GetSnapshotsRequest) returns (GetSnapshotsResponse) {}
+  // Get tick data for a specific contract and date.
   rpc GetTicks (GetTicksRequest) returns (Ticks) {}
+  // Get K-bar (candlestick) data for a specific contract and date range.
   rpc GetKbars (GetKbarsRequest) returns (Kbars) {}
+  // Get daily quotes.
   rpc GetDailyQuotes (GetDailyQuotesRequest) returns (DailyQuotes) {}
+  // Enquire about credit for a list of contracts.
   rpc CreditEnquires (CreditEnquiresRequest) returns (CreditEnquiresResponse) {}
+  // Get short stock sources for a list of contracts.
   rpc GetShortStockSources (GetShortStockSourcesRequest) returns (GetShortStockSourcesResponse) {}
+  // Get scanner results (ranked stocks).
   rpc GetScanners (GetScannersRequest) returns (GetScannersResponse) {}
+  // Get punishment information (disposition stocks).
   rpc GetPunish (Empty) returns (Punish) {}
+  // Get notice information (attention stocks).
   rpc GetNotice (Empty) returns (Notice) {}
+  // Manually fetch contracts.
   rpc FetchContracts (FetchContractsRequest) returns (Empty) {}
+  // Activate the Certificate Authority (CA).
   rpc ActivateCA (ActivateCARequest) returns (ActivateCAResponse) {}
+  // Get the CA expiration time.
   rpc GetCAExpireTime (GetCAExpireTimeRequest) returns (GetCAExpireTimeResponse) {}
+  // Subscribe to trade updates for an account.
   rpc SubscribeTrade (SubscribeTradeRequest) returns (SubscribeTradeResponse) {}
+  // Unsubscribe from trade updates for an account.
   rpc UnsubscribeTrade (UnsubscribeTradeRequest) returns (UnsubscribeTradeResponse) {}
 }
 
+// Represents an empty message.
 message Empty {}
 
+// Request message for Login.
 message LoginRequest {
   string api_key = 1;
   string secret_key = 2;
 }
 
+// Response message for Login.
 message LoginResponse {
   repeated Account accounts = 1;
 }
 
+// Response message for Logout.
 message LogoutResponse {
   bool success = 1;
 }
 
+// Represents a trading account.
 message Account {
   string account_type = 1;
   string person_id = 2;
@@ -76,6 +124,7 @@ message Account {
   string username = 6;
 }
 
+// Represents usage statistics.
 message UsageStatus {
   int64 connections = 1;
   int64 bytes = 2;
@@ -83,10 +132,12 @@ message UsageStatus {
   int64 remaining_bytes = 4;
 }
 
+// Response message for ListAccounts.
 message ListAccountsResponse {
   repeated Account accounts = 1;
 }
 
+// Represents account balance information.
 message AccountBalance {
   double acc_balance = 1;
   string date = 2;
@@ -94,7 +145,7 @@ message AccountBalance {
   string currency = 4; // inferred, usually present
 }
 
-// Simplified Contract message
+// Simplified Contract message.
 message Contract {
   string security_type = 1;
   string exchange = 2;
@@ -104,11 +155,13 @@ message Contract {
   string currency = 6;
 }
 
+// Simplified Combo Contract message.
 message ComboContract {
     // Simplified
     string code = 1;
 }
 
+// Represents a trading order.
 message Order {
   string action = 1;
   double price = 2;
@@ -121,6 +174,7 @@ message Order {
   string order_type = 9;
 }
 
+// Represents a combination trading order.
 message ComboOrder {
     string action = 1;
     double price = 2;
@@ -133,6 +187,7 @@ message ComboOrder {
     string order_type = 9;
 }
 
+// Represents the status of an order.
 message OrderStatus {
     string id = 1;
     string status = 2;
@@ -143,12 +198,14 @@ message OrderStatus {
     // deals list omitted for brevity for now
 }
 
+// Represents a trade (order execution).
 message Trade {
   Contract contract = 1;
   Order order = 2;
   OrderStatus status = 3;
 }
 
+// Represents a combination trade.
 message ComboTrade {
     ComboContract contract = 1;
     ComboOrder order = 2;
@@ -156,51 +213,62 @@ message ComboTrade {
     OrderStatus status = 3;
 }
 
+// Request message for PlaceOrder.
 message PlaceOrderRequest {
   Contract contract = 1;
   Order order = 2;
 }
 
+// Request message for PlaceComboOrder.
 message PlaceComboOrderRequest {
     ComboContract combo_contract = 1;
     ComboOrder order = 2;
 }
 
+// Request message for UpdateOrder.
 message UpdateOrderRequest {
   Trade trade = 1; // Needs ID/Seqno/Ordno identification usually
   double price = 2;
   int64 quantity = 3;
 }
 
+// Request message for CancelOrder.
 message CancelOrderRequest {
   Trade trade = 1;
 }
 
+// Request message for CancelComboOrder.
 message CancelComboOrderRequest {
     ComboTrade combotrade = 1;
 }
 
+// Request message for UpdateStatus.
 message UpdateStatusRequest {
     Account account = 1;
 }
 
+// Response message for ListTrades.
 message ListTradesResponse {
   repeated Trade trades = 1;
 }
 
+// Response message for ListComboTrades.
 message ListComboTradesResponse {
     repeated ComboTrade combo_trades = 1;
 }
 
+// Request message for GetOrderDealRecords.
 message GetOrderDealRecordsRequest {
     Account account = 1;
 }
 
+// Response message for GetOrderDealRecords.
 message GetOrderDealRecordsResponse {
     // simplified representation
     repeated OrderDealRecord records = 1;
 }
 
+// Represents a record of an order deal.
 message OrderDealRecord {
     string code = 1;
     string action = 2;
@@ -209,11 +277,13 @@ message OrderDealRecord {
     string ts = 5;
 }
 
+// Request message for ListPositions.
 message ListPositionsRequest {
     Account account = 1;
     string unit = 2; // "Common", "Share" etc
 }
 
+// Represents a stock position.
 message StockPosition {
     int64 id = 1;
     string code = 2;
@@ -230,6 +300,7 @@ message StockPosition {
     int64 interest = 13;
 }
 
+// Represents a futures position.
 message FuturePosition {
     int64 id = 1;
     string code = 2;
@@ -240,6 +311,7 @@ message FuturePosition {
     double pnl = 7;
 }
 
+// Represents a generic position (stock or future).
 message Position {
     oneof position {
         StockPosition stock_position = 1;
@@ -247,15 +319,18 @@ message Position {
     }
 }
 
+// Response message for ListPositions.
 message ListPositionsResponse {
     repeated Position positions = 1;
 }
 
+// Request message for ListPositionDetail.
 message ListPositionDetailRequest {
     Account account = 1;
     int64 detail_id = 2;
 }
 
+// Represents detailed information for a stock position.
 message StockPositionDetail {
     // simplified
     string date = 1;
@@ -266,6 +341,7 @@ message StockPositionDetail {
     double pnl = 6;
 }
 
+// Represents detailed information for a futures position.
 message FuturePositionDetail {
     // simplified
     string date = 1;
@@ -277,6 +353,7 @@ message FuturePositionDetail {
     int64 entry_quantity = 7;
 }
 
+// Represents a generic position detail.
 message PositionDetail {
     oneof detail {
         StockPositionDetail stock_detail = 1;
@@ -284,16 +361,19 @@ message PositionDetail {
     }
 }
 
+// Response message for ListPositionDetail.
 message ListPositionDetailResponse {
     repeated PositionDetail details = 1;
 }
 
+// Request message for ListProfitLoss.
 message ListProfitLossRequest {
     Account account = 1;
     string begin_date = 2;
     string end_date = 3;
 }
 
+// Represents profit and loss for a stock trade.
 message StockProfitLoss {
     string dseq = 1;
     string code = 2;
@@ -306,6 +386,7 @@ message StockProfitLoss {
     string seqno = 9;
 }
 
+// Represents profit and loss for a futures trade.
 message FutureProfitLoss {
     string date = 1;
     string code = 2;
@@ -318,6 +399,7 @@ message FutureProfitLoss {
     int64 fee = 9;
 }
 
+// Represents a generic profit and loss entry.
 message ProfitLoss {
     oneof item {
         StockProfitLoss stock_pnl = 1;
@@ -325,15 +407,18 @@ message ProfitLoss {
     }
 }
 
+// Response message for ListProfitLoss.
 message ListProfitLossResponse {
     repeated ProfitLoss profit_losses = 1;
 }
 
+// Request message for ListProfitLossDetail.
 message ListProfitLossDetailRequest {
     Account account = 1;
     int64 detail_id = 2;
 }
 
+// Represents detailed profit and loss for a stock trade.
 message StockProfitDetail {
     double price = 1;
     int64 cost = 2;
@@ -341,6 +426,7 @@ message StockProfitDetail {
     // ...
 }
 
+// Represents detailed profit and loss for a futures trade.
 message FutureProfitDetail {
     string direction = 1;
     string entry_date = 2;
@@ -349,6 +435,7 @@ message FutureProfitDetail {
     int64 pnl = 5;
 }
 
+// Represents a generic detailed profit and loss entry.
 message ProfitDetail {
     oneof detail {
         StockProfitDetail stock_detail = 1;
@@ -356,20 +443,24 @@ message ProfitDetail {
     }
 }
 
+// Response message for ListProfitLossDetail.
 message ListProfitLossDetailResponse {
     repeated ProfitDetail details = 1;
 }
 
+// Request message for ListProfitLossSummary.
 message ListProfitLossSummaryRequest {
     Account account = 1;
 }
 
+// Represents a summary of profit and loss for stocks.
 message StockProfitLossSummary {
     int64 entry_cost = 1;
     int64 cover_cost = 2;
     // ...
 }
 
+// Represents a summary of profit and loss for futures.
 message FutureProfitLossSummary {
     string direction = 1;
     int64 tax = 2;
@@ -377,6 +468,7 @@ message FutureProfitLossSummary {
     // ...
 }
 
+// Represents a generic profit and loss summary.
 message ProfitLossSummary {
     oneof summary {
         StockProfitLossSummary stock_summary = 1;
@@ -384,14 +476,17 @@ message ProfitLossSummary {
     }
 }
 
+// Response message for ListProfitLossSummary.
 message ListProfitLossSummaryResponse {
     repeated ProfitLossSummary summaries = 1;
 }
 
+// Request message for GetSettlements.
 message GetSettlementsRequest {
     Account account = 1;
 }
 
+// Represents a settlement entry.
 message Settlement {
     string date = 1;
     double amount = 2;
@@ -403,14 +498,17 @@ message Settlement {
     string t2_day = 8;
 }
 
+// Response message for GetSettlements.
 message GetSettlementsResponse {
     repeated Settlement settlements = 1;
 }
 
+// Request message for GetMargin.
 message GetMarginRequest {
     Account account = 1;
 }
 
+// Represents margin information.
 message Margin {
     double equity = 1;
     double available_margin = 2;
@@ -419,10 +517,12 @@ message Margin {
     // ... many fields
 }
 
+// Request message for GetTradingLimits.
 message GetTradingLimitsRequest {
     Account account = 1;
 }
 
+// Represents trading limits.
 message TradingLimits {
     int64 trading_limit = 1;
     int64 trading_used = 2;
@@ -435,42 +535,51 @@ message TradingLimits {
     int64 short_available = 9;
 }
 
+// Request message for GetStockReserveSummary.
 message GetStockReserveSummaryRequest {
     Account account = 1;
 }
 
+// Response message for GetStockReserveSummary.
 message ReserveStocksSummaryResponse {
     // JSON string or structured fields for ReserveStocksSummary
     // Using simple string for complex nested response for now or define minimal structure
     string response_json = 1;
 }
 
+// Request message for GetStockReserveDetail.
 message GetStockReserveDetailRequest {
     Account account = 1;
 }
 
+// Response message for GetStockReserveDetail.
 message ReserveStocksDetailResponse {
     string response_json = 1;
 }
 
+// Request message for ReserveStock.
 message ReserveStockRequest {
     Account account = 1;
     Contract contract = 2;
     int64 share = 3;
 }
 
+// Response message for ReserveStock.
 message ReserveStockResponse {
     string response_json = 1;
 }
 
+// Request message for GetEarmarkingDetail.
 message GetEarmarkingDetailRequest {
     Account account = 1;
 }
 
+// Response message for GetEarmarkingDetail.
 message EarmarkStocksDetailResponse {
     string response_json = 1;
 }
 
+// Request message for ReserveEarmarking.
 message ReserveEarmarkingRequest {
     Account account = 1;
     Contract contract = 2;
@@ -478,19 +587,23 @@ message ReserveEarmarkingRequest {
     double price = 4;
 }
 
+// Response message for ReserveEarmarking.
 message ReserveEarmarkingResponse {
     string response_json = 1;
 }
 
+// Request message for GetSnapshots.
 message GetSnapshotsRequest {
     // simplified contract identification
     repeated string contract_codes = 1; 
 }
 
+// Response message for GetSnapshots.
 message GetSnapshotsResponse {
     repeated Snapshot snapshots = 1;
 }
 
+// Represents a market snapshot.
 message Snapshot {
     int64 ts = 1;
     string code = 2;
@@ -512,11 +625,13 @@ message Snapshot {
     int64 sell_volume = 18;
 }
 
+// Request message for GetTicks.
 message GetTicksRequest {
     string contract_code = 1;
     string date = 2;
 }
 
+// Represents tick data.
 message Ticks {
     repeated int64 ts = 1;
     repeated double close = 2;
@@ -528,12 +643,14 @@ message Ticks {
     repeated int32 tick_type = 8;
 }
 
+// Request message for GetKbars.
 message GetKbarsRequest {
     string contract_code = 1;
     string start_date = 2;
     string end_date = 3;
 }
 
+// Represents K-bar (candlestick) data.
 message Kbars {
     repeated int64 ts = 1;
     repeated double open = 2;
@@ -544,10 +661,12 @@ message Kbars {
     repeated double amount = 7;
 }
 
+// Request message for GetDailyQuotes.
 message GetDailyQuotesRequest {
     string date = 1;
 }
 
+// Represents daily quotes.
 message DailyQuotes {
     repeated string code = 1;
     repeated double open = 2;
@@ -557,34 +676,41 @@ message DailyQuotes {
     repeated int64 volume = 6;
 }
 
+// Request message for CreditEnquires.
 message CreditEnquiresRequest {
     repeated string contract_codes = 1;
 }
 
+// Response message for CreditEnquires.
 message CreditEnquiresResponse {
     repeated CreditEnquire credit_enquires = 1;
 }
 
+// Represents a credit enquiry result.
 message CreditEnquire {
     string stock_id = 1;
     int64 margin_unit = 2;
     int64 short_unit = 3;
 }
 
+// Request message for GetShortStockSources.
 message GetShortStockSourcesRequest {
     repeated string contract_codes = 1;
 }
 
+// Response message for GetShortStockSources.
 message GetShortStockSourcesResponse {
     repeated ShortStockSource sources = 1;
 }
 
+// Represents a short stock source.
 message ShortStockSource {
     string code = 1;
     int64 short_stock_source = 2;
     int64 ts = 3;
 }
 
+// Request message for GetScanners.
 message GetScannersRequest {
     string scanner_type = 1;
     bool ascending = 2;
@@ -592,10 +718,12 @@ message GetScannersRequest {
     int32 count = 4;
 }
 
+// Response message for GetScanners.
 message GetScannersResponse {
     repeated ScannerItem scanners = 1;
 }
 
+// Represents a scanner item (ranked stock).
 message ScannerItem {
     string code = 1;
     string name = 2;
@@ -604,6 +732,7 @@ message ScannerItem {
     int64 total_volume = 5;
 }
 
+// Represents punishment information (disposition stocks).
 message Punish {
     repeated string code = 1;
     repeated string start_date = 2;
@@ -611,45 +740,55 @@ message Punish {
     repeated string interval = 4;
 }
 
+// Represents notice information (attention stocks).
 message Notice {
     repeated string code = 1;
     repeated string reason = 2;
 }
 
+// Request message for FetchContracts.
 message FetchContractsRequest {
     bool contract_download = 1;
 }
 
+// Request message for ActivateCA.
 message ActivateCARequest {
     string ca_path = 1;
     string ca_passwd = 2;
     string person_id = 3;
 }
 
+// Response message for ActivateCA.
 message ActivateCAResponse {
     bool success = 1;
 }
 
+// Request message for GetCAExpireTime.
 message GetCAExpireTimeRequest {
     string person_id = 1;
 }
 
+// Response message for GetCAExpireTime.
 message GetCAExpireTimeResponse {
     string expire_time = 1;
 }
 
+// Request message for SubscribeTrade.
 message SubscribeTradeRequest {
     Account account = 1;
 }
 
+// Response message for SubscribeTrade.
 message SubscribeTradeResponse {
     bool success = 1;
 }
 
+// Request message for UnsubscribeTrade.
 message UnsubscribeTradeRequest {
     Account account = 1;
 }
 
+// Response message for UnsubscribeTrade.
 message UnsubscribeTradeResponse {
     bool success = 1;
 }

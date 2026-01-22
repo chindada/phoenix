@@ -71,50 +71,93 @@ const (
 // Service Definition
 // ShioajiProvider service provides an interface for trading and market data access.
 type ShioajiProviderClient interface {
+	// Login to the Shioaji API.
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	// Logout from the Shioaji API.
 	Logout(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*LogoutResponse, error)
+	// Retrieve usage information.
 	GetUsage(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UsageStatus, error)
+	// List all available trading accounts.
 	ListAccounts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListAccountsResponse, error)
+	// Get the account balance.
 	// SetDefaultAccount is client-side only in Python, but we might need it if the server maintains state per connection
 	// skipping for now or can add later if needed.
 	GetAccountBalance(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AccountBalance, error)
+	// Place a new order.
 	PlaceOrder(ctx context.Context, in *PlaceOrderRequest, opts ...grpc.CallOption) (*Trade, error)
+	// Place a combination order.
 	PlaceComboOrder(ctx context.Context, in *PlaceComboOrderRequest, opts ...grpc.CallOption) (*ComboTrade, error)
+	// Update an existing order.
 	UpdateOrder(ctx context.Context, in *UpdateOrderRequest, opts ...grpc.CallOption) (*Trade, error)
+	// Cancel an existing order.
 	CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*Trade, error)
+	// Cancel a combination order.
 	CancelComboOrder(ctx context.Context, in *CancelComboOrderRequest, opts ...grpc.CallOption) (*ComboTrade, error)
+	// Update the status of orders and trades for an account.
 	UpdateStatus(ctx context.Context, in *UpdateStatusRequest, opts ...grpc.CallOption) (*Empty, error)
+	// Update the status of combination orders for an account.
 	UpdateComboStatus(ctx context.Context, in *UpdateStatusRequest, opts ...grpc.CallOption) (*Empty, error)
+	// List all trades.
 	ListTrades(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListTradesResponse, error)
+	// List all combination trades.
 	ListComboTrades(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListComboTradesResponse, error)
+	// Get order deal records.
 	GetOrderDealRecords(ctx context.Context, in *GetOrderDealRecordsRequest, opts ...grpc.CallOption) (*GetOrderDealRecordsResponse, error)
+	// List current positions for an account.
 	ListPositions(ctx context.Context, in *ListPositionsRequest, opts ...grpc.CallOption) (*ListPositionsResponse, error)
+	// Get detailed information for a specific position.
 	ListPositionDetail(ctx context.Context, in *ListPositionDetailRequest, opts ...grpc.CallOption) (*ListPositionDetailResponse, error)
+	// List realized profit and loss.
 	ListProfitLoss(ctx context.Context, in *ListProfitLossRequest, opts ...grpc.CallOption) (*ListProfitLossResponse, error)
+	// Get detailed realized profit and loss for a specific entry.
 	ListProfitLossDetail(ctx context.Context, in *ListProfitLossDetailRequest, opts ...grpc.CallOption) (*ListProfitLossDetailResponse, error)
+	// Get a summary of profit and loss.
 	ListProfitLossSummary(ctx context.Context, in *ListProfitLossSummaryRequest, opts ...grpc.CallOption) (*ListProfitLossSummaryResponse, error)
+	// Get settlement information.
 	GetSettlements(ctx context.Context, in *GetSettlementsRequest, opts ...grpc.CallOption) (*GetSettlementsResponse, error)
+	// List settlement information (Alias).
 	ListSettlements(ctx context.Context, in *GetSettlementsRequest, opts ...grpc.CallOption) (*GetSettlementsResponse, error)
+	// Get margin information for a futures account.
 	GetMargin(ctx context.Context, in *GetMarginRequest, opts ...grpc.CallOption) (*Margin, error)
+	// Get trading limits for a stock account.
 	GetTradingLimits(ctx context.Context, in *GetTradingLimitsRequest, opts ...grpc.CallOption) (*TradingLimits, error)
+	// Get stock reserve summary.
 	GetStockReserveSummary(ctx context.Context, in *GetStockReserveSummaryRequest, opts ...grpc.CallOption) (*ReserveStocksSummaryResponse, error)
+	// Get stock reserve details.
 	GetStockReserveDetail(ctx context.Context, in *GetStockReserveDetailRequest, opts ...grpc.CallOption) (*ReserveStocksDetailResponse, error)
+	// Reserve stock for borrowing.
 	ReserveStock(ctx context.Context, in *ReserveStockRequest, opts ...grpc.CallOption) (*ReserveStockResponse, error)
+	// Get earmarking details.
 	GetEarmarkingDetail(ctx context.Context, in *GetEarmarkingDetailRequest, opts ...grpc.CallOption) (*EarmarkStocksDetailResponse, error)
+	// Apply for earmarking.
 	ReserveEarmarking(ctx context.Context, in *ReserveEarmarkingRequest, opts ...grpc.CallOption) (*ReserveEarmarkingResponse, error)
+	// Get market snapshots for a list of contracts.
 	GetSnapshots(ctx context.Context, in *GetSnapshotsRequest, opts ...grpc.CallOption) (*GetSnapshotsResponse, error)
+	// Get tick data for a specific contract and date.
 	GetTicks(ctx context.Context, in *GetTicksRequest, opts ...grpc.CallOption) (*Ticks, error)
+	// Get K-bar (candlestick) data for a specific contract and date range.
 	GetKbars(ctx context.Context, in *GetKbarsRequest, opts ...grpc.CallOption) (*Kbars, error)
+	// Get daily quotes.
 	GetDailyQuotes(ctx context.Context, in *GetDailyQuotesRequest, opts ...grpc.CallOption) (*DailyQuotes, error)
+	// Enquire about credit for a list of contracts.
 	CreditEnquires(ctx context.Context, in *CreditEnquiresRequest, opts ...grpc.CallOption) (*CreditEnquiresResponse, error)
+	// Get short stock sources for a list of contracts.
 	GetShortStockSources(ctx context.Context, in *GetShortStockSourcesRequest, opts ...grpc.CallOption) (*GetShortStockSourcesResponse, error)
+	// Get scanner results (ranked stocks).
 	GetScanners(ctx context.Context, in *GetScannersRequest, opts ...grpc.CallOption) (*GetScannersResponse, error)
+	// Get punishment information (disposition stocks).
 	GetPunish(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Punish, error)
+	// Get notice information (attention stocks).
 	GetNotice(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Notice, error)
+	// Manually fetch contracts.
 	FetchContracts(ctx context.Context, in *FetchContractsRequest, opts ...grpc.CallOption) (*Empty, error)
+	// Activate the Certificate Authority (CA).
 	ActivateCA(ctx context.Context, in *ActivateCARequest, opts ...grpc.CallOption) (*ActivateCAResponse, error)
+	// Get the CA expiration time.
 	GetCAExpireTime(ctx context.Context, in *GetCAExpireTimeRequest, opts ...grpc.CallOption) (*GetCAExpireTimeResponse, error)
+	// Subscribe to trade updates for an account.
 	SubscribeTrade(ctx context.Context, in *SubscribeTradeRequest, opts ...grpc.CallOption) (*SubscribeTradeResponse, error)
+	// Unsubscribe from trade updates for an account.
 	UnsubscribeTrade(ctx context.Context, in *UnsubscribeTradeRequest, opts ...grpc.CallOption) (*UnsubscribeTradeResponse, error)
 }
 
@@ -563,50 +606,93 @@ func (c *shioajiProviderClient) UnsubscribeTrade(ctx context.Context, in *Unsubs
 // Service Definition
 // ShioajiProvider service provides an interface for trading and market data access.
 type ShioajiProviderServer interface {
+	// Login to the Shioaji API.
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
+	// Logout from the Shioaji API.
 	Logout(context.Context, *Empty) (*LogoutResponse, error)
+	// Retrieve usage information.
 	GetUsage(context.Context, *Empty) (*UsageStatus, error)
+	// List all available trading accounts.
 	ListAccounts(context.Context, *Empty) (*ListAccountsResponse, error)
+	// Get the account balance.
 	// SetDefaultAccount is client-side only in Python, but we might need it if the server maintains state per connection
 	// skipping for now or can add later if needed.
 	GetAccountBalance(context.Context, *Empty) (*AccountBalance, error)
+	// Place a new order.
 	PlaceOrder(context.Context, *PlaceOrderRequest) (*Trade, error)
+	// Place a combination order.
 	PlaceComboOrder(context.Context, *PlaceComboOrderRequest) (*ComboTrade, error)
+	// Update an existing order.
 	UpdateOrder(context.Context, *UpdateOrderRequest) (*Trade, error)
+	// Cancel an existing order.
 	CancelOrder(context.Context, *CancelOrderRequest) (*Trade, error)
+	// Cancel a combination order.
 	CancelComboOrder(context.Context, *CancelComboOrderRequest) (*ComboTrade, error)
+	// Update the status of orders and trades for an account.
 	UpdateStatus(context.Context, *UpdateStatusRequest) (*Empty, error)
+	// Update the status of combination orders for an account.
 	UpdateComboStatus(context.Context, *UpdateStatusRequest) (*Empty, error)
+	// List all trades.
 	ListTrades(context.Context, *Empty) (*ListTradesResponse, error)
+	// List all combination trades.
 	ListComboTrades(context.Context, *Empty) (*ListComboTradesResponse, error)
+	// Get order deal records.
 	GetOrderDealRecords(context.Context, *GetOrderDealRecordsRequest) (*GetOrderDealRecordsResponse, error)
+	// List current positions for an account.
 	ListPositions(context.Context, *ListPositionsRequest) (*ListPositionsResponse, error)
+	// Get detailed information for a specific position.
 	ListPositionDetail(context.Context, *ListPositionDetailRequest) (*ListPositionDetailResponse, error)
+	// List realized profit and loss.
 	ListProfitLoss(context.Context, *ListProfitLossRequest) (*ListProfitLossResponse, error)
+	// Get detailed realized profit and loss for a specific entry.
 	ListProfitLossDetail(context.Context, *ListProfitLossDetailRequest) (*ListProfitLossDetailResponse, error)
+	// Get a summary of profit and loss.
 	ListProfitLossSummary(context.Context, *ListProfitLossSummaryRequest) (*ListProfitLossSummaryResponse, error)
+	// Get settlement information.
 	GetSettlements(context.Context, *GetSettlementsRequest) (*GetSettlementsResponse, error)
+	// List settlement information (Alias).
 	ListSettlements(context.Context, *GetSettlementsRequest) (*GetSettlementsResponse, error)
+	// Get margin information for a futures account.
 	GetMargin(context.Context, *GetMarginRequest) (*Margin, error)
+	// Get trading limits for a stock account.
 	GetTradingLimits(context.Context, *GetTradingLimitsRequest) (*TradingLimits, error)
+	// Get stock reserve summary.
 	GetStockReserveSummary(context.Context, *GetStockReserveSummaryRequest) (*ReserveStocksSummaryResponse, error)
+	// Get stock reserve details.
 	GetStockReserveDetail(context.Context, *GetStockReserveDetailRequest) (*ReserveStocksDetailResponse, error)
+	// Reserve stock for borrowing.
 	ReserveStock(context.Context, *ReserveStockRequest) (*ReserveStockResponse, error)
+	// Get earmarking details.
 	GetEarmarkingDetail(context.Context, *GetEarmarkingDetailRequest) (*EarmarkStocksDetailResponse, error)
+	// Apply for earmarking.
 	ReserveEarmarking(context.Context, *ReserveEarmarkingRequest) (*ReserveEarmarkingResponse, error)
+	// Get market snapshots for a list of contracts.
 	GetSnapshots(context.Context, *GetSnapshotsRequest) (*GetSnapshotsResponse, error)
+	// Get tick data for a specific contract and date.
 	GetTicks(context.Context, *GetTicksRequest) (*Ticks, error)
+	// Get K-bar (candlestick) data for a specific contract and date range.
 	GetKbars(context.Context, *GetKbarsRequest) (*Kbars, error)
+	// Get daily quotes.
 	GetDailyQuotes(context.Context, *GetDailyQuotesRequest) (*DailyQuotes, error)
+	// Enquire about credit for a list of contracts.
 	CreditEnquires(context.Context, *CreditEnquiresRequest) (*CreditEnquiresResponse, error)
+	// Get short stock sources for a list of contracts.
 	GetShortStockSources(context.Context, *GetShortStockSourcesRequest) (*GetShortStockSourcesResponse, error)
+	// Get scanner results (ranked stocks).
 	GetScanners(context.Context, *GetScannersRequest) (*GetScannersResponse, error)
+	// Get punishment information (disposition stocks).
 	GetPunish(context.Context, *Empty) (*Punish, error)
+	// Get notice information (attention stocks).
 	GetNotice(context.Context, *Empty) (*Notice, error)
+	// Manually fetch contracts.
 	FetchContracts(context.Context, *FetchContractsRequest) (*Empty, error)
+	// Activate the Certificate Authority (CA).
 	ActivateCA(context.Context, *ActivateCARequest) (*ActivateCAResponse, error)
+	// Get the CA expiration time.
 	GetCAExpireTime(context.Context, *GetCAExpireTimeRequest) (*GetCAExpireTimeResponse, error)
+	// Subscribe to trade updates for an account.
 	SubscribeTrade(context.Context, *SubscribeTradeRequest) (*SubscribeTradeResponse, error)
+	// Unsubscribe from trade updates for an account.
 	UnsubscribeTrade(context.Context, *UnsubscribeTradeRequest) (*UnsubscribeTradeResponse, error)
 	mustEmbedUnimplementedShioajiProviderServer()
 }

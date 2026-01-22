@@ -21,6 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Represents an empty message.
 type Empty struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -57,6 +58,7 @@ func (*Empty) Descriptor() ([]byte, []int) {
 	return file_provider_proto_rawDescGZIP(), []int{0}
 }
 
+// Request message for Login.
 type LoginRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ApiKey        string                 `protobuf:"bytes,1,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
@@ -109,6 +111,7 @@ func (x *LoginRequest) GetSecretKey() string {
 	return ""
 }
 
+// Response message for Login.
 type LoginResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Accounts      []*Account             `protobuf:"bytes,1,rep,name=accounts,proto3" json:"accounts,omitempty"`
@@ -153,6 +156,7 @@ func (x *LoginResponse) GetAccounts() []*Account {
 	return nil
 }
 
+// Response message for Logout.
 type LogoutResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
@@ -197,6 +201,7 @@ func (x *LogoutResponse) GetSuccess() bool {
 	return false
 }
 
+// Represents a trading account.
 type Account struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	AccountType   string                 `protobuf:"bytes,1,opt,name=account_type,json=accountType,proto3" json:"account_type,omitempty"`
@@ -281,6 +286,7 @@ func (x *Account) GetUsername() string {
 	return ""
 }
 
+// Represents usage statistics.
 type UsageStatus struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Connections    int64                  `protobuf:"varint,1,opt,name=connections,proto3" json:"connections,omitempty"`
@@ -349,6 +355,7 @@ func (x *UsageStatus) GetRemainingBytes() int64 {
 	return 0
 }
 
+// Response message for ListAccounts.
 type ListAccountsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Accounts      []*Account             `protobuf:"bytes,1,rep,name=accounts,proto3" json:"accounts,omitempty"`
@@ -393,6 +400,7 @@ func (x *ListAccountsResponse) GetAccounts() []*Account {
 	return nil
 }
 
+// Represents account balance information.
 type AccountBalance struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	AccBalance    float64                `protobuf:"fixed64,1,opt,name=acc_balance,json=accBalance,proto3" json:"acc_balance,omitempty"`
@@ -461,7 +469,7 @@ func (x *AccountBalance) GetCurrency() string {
 	return ""
 }
 
-// Simplified Contract message
+// Simplified Contract message.
 type Contract struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SecurityType  string                 `protobuf:"bytes,1,opt,name=security_type,json=securityType,proto3" json:"security_type,omitempty"`
@@ -546,6 +554,7 @@ func (x *Contract) GetCurrency() string {
 	return ""
 }
 
+// Simplified Combo Contract message.
 type ComboContract struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Simplified
@@ -591,6 +600,7 @@ func (x *ComboContract) GetCode() string {
 	return ""
 }
 
+// Represents a trading order.
 type Order struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Action        string                 `protobuf:"bytes,1,opt,name=action,proto3" json:"action,omitempty"`
@@ -699,6 +709,7 @@ func (x *Order) GetOrderType() string {
 	return ""
 }
 
+// Represents a combination trading order.
 type ComboOrder struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Action        string                 `protobuf:"bytes,1,opt,name=action,proto3" json:"action,omitempty"`
@@ -807,6 +818,7 @@ func (x *ComboOrder) GetOrderType() string {
 	return ""
 }
 
+// Represents the status of an order.
 type OrderStatus struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Id             string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -891,6 +903,7 @@ func (x *OrderStatus) GetCancelQuantity() int64 {
 	return 0
 }
 
+// Represents a trade (order execution).
 type Trade struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Contract      *Contract              `protobuf:"bytes,1,opt,name=contract,proto3" json:"contract,omitempty"`
@@ -951,6 +964,7 @@ func (x *Trade) GetStatus() *OrderStatus {
 	return nil
 }
 
+// Represents a combination trade.
 type ComboTrade struct {
 	state    protoimpl.MessageState `protogen:"open.v1"`
 	Contract *ComboContract         `protobuf:"bytes,1,opt,name=contract,proto3" json:"contract,omitempty"`
@@ -1012,6 +1026,7 @@ func (x *ComboTrade) GetStatus() *OrderStatus {
 	return nil
 }
 
+// Request message for PlaceOrder.
 type PlaceOrderRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Contract      *Contract              `protobuf:"bytes,1,opt,name=contract,proto3" json:"contract,omitempty"`
@@ -1064,6 +1079,7 @@ func (x *PlaceOrderRequest) GetOrder() *Order {
 	return nil
 }
 
+// Request message for PlaceComboOrder.
 type PlaceComboOrderRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ComboContract *ComboContract         `protobuf:"bytes,1,opt,name=combo_contract,json=comboContract,proto3" json:"combo_contract,omitempty"`
@@ -1116,6 +1132,7 @@ func (x *PlaceComboOrderRequest) GetOrder() *ComboOrder {
 	return nil
 }
 
+// Request message for UpdateOrder.
 type UpdateOrderRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Trade         *Trade                 `protobuf:"bytes,1,opt,name=trade,proto3" json:"trade,omitempty"` // Needs ID/Seqno/Ordno identification usually
@@ -1176,6 +1193,7 @@ func (x *UpdateOrderRequest) GetQuantity() int64 {
 	return 0
 }
 
+// Request message for CancelOrder.
 type CancelOrderRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Trade         *Trade                 `protobuf:"bytes,1,opt,name=trade,proto3" json:"trade,omitempty"`
@@ -1220,6 +1238,7 @@ func (x *CancelOrderRequest) GetTrade() *Trade {
 	return nil
 }
 
+// Request message for CancelComboOrder.
 type CancelComboOrderRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Combotrade    *ComboTrade            `protobuf:"bytes,1,opt,name=combotrade,proto3" json:"combotrade,omitempty"`
@@ -1264,6 +1283,7 @@ func (x *CancelComboOrderRequest) GetCombotrade() *ComboTrade {
 	return nil
 }
 
+// Request message for UpdateStatus.
 type UpdateStatusRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -1308,6 +1328,7 @@ func (x *UpdateStatusRequest) GetAccount() *Account {
 	return nil
 }
 
+// Response message for ListTrades.
 type ListTradesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Trades        []*Trade               `protobuf:"bytes,1,rep,name=trades,proto3" json:"trades,omitempty"`
@@ -1352,6 +1373,7 @@ func (x *ListTradesResponse) GetTrades() []*Trade {
 	return nil
 }
 
+// Response message for ListComboTrades.
 type ListComboTradesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ComboTrades   []*ComboTrade          `protobuf:"bytes,1,rep,name=combo_trades,json=comboTrades,proto3" json:"combo_trades,omitempty"`
@@ -1396,6 +1418,7 @@ func (x *ListComboTradesResponse) GetComboTrades() []*ComboTrade {
 	return nil
 }
 
+// Request message for GetOrderDealRecords.
 type GetOrderDealRecordsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -1440,6 +1463,7 @@ func (x *GetOrderDealRecordsRequest) GetAccount() *Account {
 	return nil
 }
 
+// Response message for GetOrderDealRecords.
 type GetOrderDealRecordsResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// simplified representation
@@ -1485,6 +1509,7 @@ func (x *GetOrderDealRecordsResponse) GetRecords() []*OrderDealRecord {
 	return nil
 }
 
+// Represents a record of an order deal.
 type OrderDealRecord struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
@@ -1561,6 +1586,7 @@ func (x *OrderDealRecord) GetTs() string {
 	return ""
 }
 
+// Request message for ListPositions.
 type ListPositionsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -1613,6 +1639,7 @@ func (x *ListPositionsRequest) GetUnit() string {
 	return ""
 }
 
+// Represents a stock position.
 type StockPosition struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
 	Id                   int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -1753,6 +1780,7 @@ func (x *StockPosition) GetInterest() int64 {
 	return 0
 }
 
+// Represents a futures position.
 type FuturePosition struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -1845,6 +1873,7 @@ func (x *FuturePosition) GetPnl() float64 {
 	return 0
 }
 
+// Represents a generic position (stock or future).
 type Position struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Position:
@@ -1927,6 +1956,7 @@ func (*Position_StockPosition) isPosition_Position() {}
 
 func (*Position_FuturePosition) isPosition_Position() {}
 
+// Response message for ListPositions.
 type ListPositionsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Positions     []*Position            `protobuf:"bytes,1,rep,name=positions,proto3" json:"positions,omitempty"`
@@ -1971,6 +2001,7 @@ func (x *ListPositionsResponse) GetPositions() []*Position {
 	return nil
 }
 
+// Request message for ListPositionDetail.
 type ListPositionDetailRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -2023,6 +2054,7 @@ func (x *ListPositionDetailRequest) GetDetailId() int64 {
 	return 0
 }
 
+// Represents detailed information for a stock position.
 type StockPositionDetail struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// simplified
@@ -2108,6 +2140,7 @@ func (x *StockPositionDetail) GetPnl() float64 {
 	return 0
 }
 
+// Represents detailed information for a futures position.
 type FuturePositionDetail struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// simplified
@@ -2201,6 +2234,7 @@ func (x *FuturePositionDetail) GetEntryQuantity() int64 {
 	return 0
 }
 
+// Represents a generic position detail.
 type PositionDetail struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Detail:
@@ -2283,6 +2317,7 @@ func (*PositionDetail_StockDetail) isPositionDetail_Detail() {}
 
 func (*PositionDetail_FutureDetail) isPositionDetail_Detail() {}
 
+// Response message for ListPositionDetail.
 type ListPositionDetailResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Details       []*PositionDetail      `protobuf:"bytes,1,rep,name=details,proto3" json:"details,omitempty"`
@@ -2327,6 +2362,7 @@ func (x *ListPositionDetailResponse) GetDetails() []*PositionDetail {
 	return nil
 }
 
+// Request message for ListProfitLoss.
 type ListProfitLossRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -2387,6 +2423,7 @@ func (x *ListProfitLossRequest) GetEndDate() string {
 	return ""
 }
 
+// Represents profit and loss for a stock trade.
 type StockProfitLoss struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Dseq          string                 `protobuf:"bytes,1,opt,name=dseq,proto3" json:"dseq,omitempty"`
@@ -2495,6 +2532,7 @@ func (x *StockProfitLoss) GetSeqno() string {
 	return ""
 }
 
+// Represents profit and loss for a futures trade.
 type FutureProfitLoss struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Date          string                 `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
@@ -2603,6 +2641,7 @@ func (x *FutureProfitLoss) GetFee() int64 {
 	return 0
 }
 
+// Represents a generic profit and loss entry.
 type ProfitLoss struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Item:
@@ -2685,6 +2724,7 @@ func (*ProfitLoss_StockPnl) isProfitLoss_Item() {}
 
 func (*ProfitLoss_FuturePnl) isProfitLoss_Item() {}
 
+// Response message for ListProfitLoss.
 type ListProfitLossResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ProfitLosses  []*ProfitLoss          `protobuf:"bytes,1,rep,name=profit_losses,json=profitLosses,proto3" json:"profit_losses,omitempty"`
@@ -2729,6 +2769,7 @@ func (x *ListProfitLossResponse) GetProfitLosses() []*ProfitLoss {
 	return nil
 }
 
+// Request message for ListProfitLossDetail.
 type ListProfitLossDetailRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -2781,6 +2822,7 @@ func (x *ListProfitLossDetailRequest) GetDetailId() int64 {
 	return 0
 }
 
+// Represents detailed profit and loss for a stock trade.
 type StockProfitDetail struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Price         float64                `protobuf:"fixed64,1,opt,name=price,proto3" json:"price,omitempty"`
@@ -2841,6 +2883,7 @@ func (x *StockProfitDetail) GetInterest() int64 {
 	return 0
 }
 
+// Represents detailed profit and loss for a futures trade.
 type FutureProfitDetail struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Direction     string                 `protobuf:"bytes,1,opt,name=direction,proto3" json:"direction,omitempty"`
@@ -2917,6 +2960,7 @@ func (x *FutureProfitDetail) GetPnl() int64 {
 	return 0
 }
 
+// Represents a generic detailed profit and loss entry.
 type ProfitDetail struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Detail:
@@ -2999,6 +3043,7 @@ func (*ProfitDetail_StockDetail) isProfitDetail_Detail() {}
 
 func (*ProfitDetail_FutureDetail) isProfitDetail_Detail() {}
 
+// Response message for ListProfitLossDetail.
 type ListProfitLossDetailResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Details       []*ProfitDetail        `protobuf:"bytes,1,rep,name=details,proto3" json:"details,omitempty"`
@@ -3043,6 +3088,7 @@ func (x *ListProfitLossDetailResponse) GetDetails() []*ProfitDetail {
 	return nil
 }
 
+// Request message for ListProfitLossSummary.
 type ListProfitLossSummaryRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -3087,6 +3133,7 @@ func (x *ListProfitLossSummaryRequest) GetAccount() *Account {
 	return nil
 }
 
+// Represents a summary of profit and loss for stocks.
 type StockProfitLossSummary struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	EntryCost     int64                  `protobuf:"varint,1,opt,name=entry_cost,json=entryCost,proto3" json:"entry_cost,omitempty"`
@@ -3139,6 +3186,7 @@ func (x *StockProfitLossSummary) GetCoverCost() int64 {
 	return 0
 }
 
+// Represents a summary of profit and loss for futures.
 type FutureProfitLossSummary struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Direction     string                 `protobuf:"bytes,1,opt,name=direction,proto3" json:"direction,omitempty"`
@@ -3199,6 +3247,7 @@ func (x *FutureProfitLossSummary) GetFee() int64 {
 	return 0
 }
 
+// Represents a generic profit and loss summary.
 type ProfitLossSummary struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Summary:
@@ -3281,6 +3330,7 @@ func (*ProfitLossSummary_StockSummary) isProfitLossSummary_Summary() {}
 
 func (*ProfitLossSummary_FutureSummary) isProfitLossSummary_Summary() {}
 
+// Response message for ListProfitLossSummary.
 type ListProfitLossSummaryResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Summaries     []*ProfitLossSummary   `protobuf:"bytes,1,rep,name=summaries,proto3" json:"summaries,omitempty"`
@@ -3325,6 +3375,7 @@ func (x *ListProfitLossSummaryResponse) GetSummaries() []*ProfitLossSummary {
 	return nil
 }
 
+// Request message for GetSettlements.
 type GetSettlementsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -3369,6 +3420,7 @@ func (x *GetSettlementsRequest) GetAccount() *Account {
 	return nil
 }
 
+// Represents a settlement entry.
 type Settlement struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Date          string                 `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
@@ -3469,6 +3521,7 @@ func (x *Settlement) GetT2Day() string {
 	return ""
 }
 
+// Response message for GetSettlements.
 type GetSettlementsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Settlements   []*Settlement          `protobuf:"bytes,1,rep,name=settlements,proto3" json:"settlements,omitempty"`
@@ -3513,6 +3566,7 @@ func (x *GetSettlementsResponse) GetSettlements() []*Settlement {
 	return nil
 }
 
+// Request message for GetMargin.
 type GetMarginRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -3557,6 +3611,7 @@ func (x *GetMarginRequest) GetAccount() *Account {
 	return nil
 }
 
+// Represents margin information.
 type Margin struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Equity            float64                `protobuf:"fixed64,1,opt,name=equity,proto3" json:"equity,omitempty"`
@@ -3625,6 +3680,7 @@ func (x *Margin) GetMaintenanceMargin() float64 {
 	return 0
 }
 
+// Request message for GetTradingLimits.
 type GetTradingLimitsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -3669,6 +3725,7 @@ func (x *GetTradingLimitsRequest) GetAccount() *Account {
 	return nil
 }
 
+// Represents trading limits.
 type TradingLimits struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	TradingLimit     int64                  `protobuf:"varint,1,opt,name=trading_limit,json=tradingLimit,proto3" json:"trading_limit,omitempty"`
@@ -3777,6 +3834,7 @@ func (x *TradingLimits) GetShortAvailable() int64 {
 	return 0
 }
 
+// Request message for GetStockReserveSummary.
 type GetStockReserveSummaryRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -3821,6 +3879,7 @@ func (x *GetStockReserveSummaryRequest) GetAccount() *Account {
 	return nil
 }
 
+// Response message for GetStockReserveSummary.
 type ReserveStocksSummaryResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// JSON string or structured fields for ReserveStocksSummary
@@ -3867,6 +3926,7 @@ func (x *ReserveStocksSummaryResponse) GetResponseJson() string {
 	return ""
 }
 
+// Request message for GetStockReserveDetail.
 type GetStockReserveDetailRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -3911,6 +3971,7 @@ func (x *GetStockReserveDetailRequest) GetAccount() *Account {
 	return nil
 }
 
+// Response message for GetStockReserveDetail.
 type ReserveStocksDetailResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ResponseJson  string                 `protobuf:"bytes,1,opt,name=response_json,json=responseJson,proto3" json:"response_json,omitempty"`
@@ -3955,6 +4016,7 @@ func (x *ReserveStocksDetailResponse) GetResponseJson() string {
 	return ""
 }
 
+// Request message for ReserveStock.
 type ReserveStockRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -4015,6 +4077,7 @@ func (x *ReserveStockRequest) GetShare() int64 {
 	return 0
 }
 
+// Response message for ReserveStock.
 type ReserveStockResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ResponseJson  string                 `protobuf:"bytes,1,opt,name=response_json,json=responseJson,proto3" json:"response_json,omitempty"`
@@ -4059,6 +4122,7 @@ func (x *ReserveStockResponse) GetResponseJson() string {
 	return ""
 }
 
+// Request message for GetEarmarkingDetail.
 type GetEarmarkingDetailRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -4103,6 +4167,7 @@ func (x *GetEarmarkingDetailRequest) GetAccount() *Account {
 	return nil
 }
 
+// Response message for GetEarmarkingDetail.
 type EarmarkStocksDetailResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ResponseJson  string                 `protobuf:"bytes,1,opt,name=response_json,json=responseJson,proto3" json:"response_json,omitempty"`
@@ -4147,6 +4212,7 @@ func (x *EarmarkStocksDetailResponse) GetResponseJson() string {
 	return ""
 }
 
+// Request message for ReserveEarmarking.
 type ReserveEarmarkingRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -4215,6 +4281,7 @@ func (x *ReserveEarmarkingRequest) GetPrice() float64 {
 	return 0
 }
 
+// Response message for ReserveEarmarking.
 type ReserveEarmarkingResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ResponseJson  string                 `protobuf:"bytes,1,opt,name=response_json,json=responseJson,proto3" json:"response_json,omitempty"`
@@ -4259,6 +4326,7 @@ func (x *ReserveEarmarkingResponse) GetResponseJson() string {
 	return ""
 }
 
+// Request message for GetSnapshots.
 type GetSnapshotsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// simplified contract identification
@@ -4304,6 +4372,7 @@ func (x *GetSnapshotsRequest) GetContractCodes() []string {
 	return nil
 }
 
+// Response message for GetSnapshots.
 type GetSnapshotsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Snapshots     []*Snapshot            `protobuf:"bytes,1,rep,name=snapshots,proto3" json:"snapshots,omitempty"`
@@ -4348,6 +4417,7 @@ func (x *GetSnapshotsResponse) GetSnapshots() []*Snapshot {
 	return nil
 }
 
+// Represents a market snapshot.
 type Snapshot struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Ts            int64                  `protobuf:"varint,1,opt,name=ts,proto3" json:"ts,omitempty"`
@@ -4528,6 +4598,7 @@ func (x *Snapshot) GetSellVolume() int64 {
 	return 0
 }
 
+// Request message for GetTicks.
 type GetTicksRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ContractCode  string                 `protobuf:"bytes,1,opt,name=contract_code,json=contractCode,proto3" json:"contract_code,omitempty"`
@@ -4580,6 +4651,7 @@ func (x *GetTicksRequest) GetDate() string {
 	return ""
 }
 
+// Represents tick data.
 type Ticks struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Ts            []int64                `protobuf:"varint,1,rep,packed,name=ts,proto3" json:"ts,omitempty"`
@@ -4680,6 +4752,7 @@ func (x *Ticks) GetTickType() []int32 {
 	return nil
 }
 
+// Request message for GetKbars.
 type GetKbarsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ContractCode  string                 `protobuf:"bytes,1,opt,name=contract_code,json=contractCode,proto3" json:"contract_code,omitempty"`
@@ -4740,6 +4813,7 @@ func (x *GetKbarsRequest) GetEndDate() string {
 	return ""
 }
 
+// Represents K-bar (candlestick) data.
 type Kbars struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Ts            []int64                `protobuf:"varint,1,rep,packed,name=ts,proto3" json:"ts,omitempty"`
@@ -4832,6 +4906,7 @@ func (x *Kbars) GetAmount() []float64 {
 	return nil
 }
 
+// Request message for GetDailyQuotes.
 type GetDailyQuotesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Date          string                 `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
@@ -4876,6 +4951,7 @@ func (x *GetDailyQuotesRequest) GetDate() string {
 	return ""
 }
 
+// Represents daily quotes.
 type DailyQuotes struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Code          []string               `protobuf:"bytes,1,rep,name=code,proto3" json:"code,omitempty"`
@@ -4960,6 +5036,7 @@ func (x *DailyQuotes) GetVolume() []int64 {
 	return nil
 }
 
+// Request message for CreditEnquires.
 type CreditEnquiresRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ContractCodes []string               `protobuf:"bytes,1,rep,name=contract_codes,json=contractCodes,proto3" json:"contract_codes,omitempty"`
@@ -5004,6 +5081,7 @@ func (x *CreditEnquiresRequest) GetContractCodes() []string {
 	return nil
 }
 
+// Response message for CreditEnquires.
 type CreditEnquiresResponse struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	CreditEnquires []*CreditEnquire       `protobuf:"bytes,1,rep,name=credit_enquires,json=creditEnquires,proto3" json:"credit_enquires,omitempty"`
@@ -5048,6 +5126,7 @@ func (x *CreditEnquiresResponse) GetCreditEnquires() []*CreditEnquire {
 	return nil
 }
 
+// Represents a credit enquiry result.
 type CreditEnquire struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	StockId       string                 `protobuf:"bytes,1,opt,name=stock_id,json=stockId,proto3" json:"stock_id,omitempty"`
@@ -5108,6 +5187,7 @@ func (x *CreditEnquire) GetShortUnit() int64 {
 	return 0
 }
 
+// Request message for GetShortStockSources.
 type GetShortStockSourcesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ContractCodes []string               `protobuf:"bytes,1,rep,name=contract_codes,json=contractCodes,proto3" json:"contract_codes,omitempty"`
@@ -5152,6 +5232,7 @@ func (x *GetShortStockSourcesRequest) GetContractCodes() []string {
 	return nil
 }
 
+// Response message for GetShortStockSources.
 type GetShortStockSourcesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Sources       []*ShortStockSource    `protobuf:"bytes,1,rep,name=sources,proto3" json:"sources,omitempty"`
@@ -5196,6 +5277,7 @@ func (x *GetShortStockSourcesResponse) GetSources() []*ShortStockSource {
 	return nil
 }
 
+// Represents a short stock source.
 type ShortStockSource struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	Code             string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
@@ -5256,6 +5338,7 @@ func (x *ShortStockSource) GetTs() int64 {
 	return 0
 }
 
+// Request message for GetScanners.
 type GetScannersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ScannerType   string                 `protobuf:"bytes,1,opt,name=scanner_type,json=scannerType,proto3" json:"scanner_type,omitempty"`
@@ -5324,6 +5407,7 @@ func (x *GetScannersRequest) GetCount() int32 {
 	return 0
 }
 
+// Response message for GetScanners.
 type GetScannersResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Scanners      []*ScannerItem         `protobuf:"bytes,1,rep,name=scanners,proto3" json:"scanners,omitempty"`
@@ -5368,6 +5452,7 @@ func (x *GetScannersResponse) GetScanners() []*ScannerItem {
 	return nil
 }
 
+// Represents a scanner item (ranked stock).
 type ScannerItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
@@ -5444,6 +5529,7 @@ func (x *ScannerItem) GetTotalVolume() int64 {
 	return 0
 }
 
+// Represents punishment information (disposition stocks).
 type Punish struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Code          []string               `protobuf:"bytes,1,rep,name=code,proto3" json:"code,omitempty"`
@@ -5512,6 +5598,7 @@ func (x *Punish) GetInterval() []string {
 	return nil
 }
 
+// Represents notice information (attention stocks).
 type Notice struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Code          []string               `protobuf:"bytes,1,rep,name=code,proto3" json:"code,omitempty"`
@@ -5564,6 +5651,7 @@ func (x *Notice) GetReason() []string {
 	return nil
 }
 
+// Request message for FetchContracts.
 type FetchContractsRequest struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	ContractDownload bool                   `protobuf:"varint,1,opt,name=contract_download,json=contractDownload,proto3" json:"contract_download,omitempty"`
@@ -5608,6 +5696,7 @@ func (x *FetchContractsRequest) GetContractDownload() bool {
 	return false
 }
 
+// Request message for ActivateCA.
 type ActivateCARequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CaPath        string                 `protobuf:"bytes,1,opt,name=ca_path,json=caPath,proto3" json:"ca_path,omitempty"`
@@ -5668,6 +5757,7 @@ func (x *ActivateCARequest) GetPersonId() string {
 	return ""
 }
 
+// Response message for ActivateCA.
 type ActivateCAResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
@@ -5712,6 +5802,7 @@ func (x *ActivateCAResponse) GetSuccess() bool {
 	return false
 }
 
+// Request message for GetCAExpireTime.
 type GetCAExpireTimeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PersonId      string                 `protobuf:"bytes,1,opt,name=person_id,json=personId,proto3" json:"person_id,omitempty"`
@@ -5756,6 +5847,7 @@ func (x *GetCAExpireTimeRequest) GetPersonId() string {
 	return ""
 }
 
+// Response message for GetCAExpireTime.
 type GetCAExpireTimeResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ExpireTime    string                 `protobuf:"bytes,1,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
@@ -5800,6 +5892,7 @@ func (x *GetCAExpireTimeResponse) GetExpireTime() string {
 	return ""
 }
 
+// Request message for SubscribeTrade.
 type SubscribeTradeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -5844,6 +5937,7 @@ func (x *SubscribeTradeRequest) GetAccount() *Account {
 	return nil
 }
 
+// Response message for SubscribeTrade.
 type SubscribeTradeResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
@@ -5888,6 +5982,7 @@ func (x *SubscribeTradeResponse) GetSuccess() bool {
 	return false
 }
 
+// Request message for UnsubscribeTrade.
 type UnsubscribeTradeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Account       *Account               `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
@@ -5932,6 +6027,7 @@ func (x *UnsubscribeTradeRequest) GetAccount() *Account {
 	return nil
 }
 
+// Response message for UnsubscribeTrade.
 type UnsubscribeTradeResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`

@@ -259,31 +259,36 @@ class ShioajiProviderServicer(object):
     """
 
     def Login(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Login to the Shioaji API.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def Logout(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Logout from the Shioaji API.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetUsage(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Retrieve usage information.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListAccounts(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """List all available trading accounts.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetAccountBalance(self, request, context):
-        """SetDefaultAccount is client-side only in Python, but we might need it if the server maintains state per connection
+        """Get the account balance.
+        SetDefaultAccount is client-side only in Python, but we might need it if the server maintains state per connection
         skipping for now or can add later if needed.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -291,229 +296,267 @@ class ShioajiProviderServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def PlaceOrder(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Place a new order.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def PlaceComboOrder(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Place a combination order.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UpdateOrder(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Update an existing order.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def CancelOrder(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Cancel an existing order.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def CancelComboOrder(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Cancel a combination order.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UpdateStatus(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Update the status of orders and trades for an account.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UpdateComboStatus(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Update the status of combination orders for an account.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListTrades(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """List all trades.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListComboTrades(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """List all combination trades.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetOrderDealRecords(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get order deal records.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListPositions(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """List current positions for an account.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListPositionDetail(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get detailed information for a specific position.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListProfitLoss(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """List realized profit and loss.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListProfitLossDetail(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get detailed realized profit and loss for a specific entry.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListProfitLossSummary(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get a summary of profit and loss.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetSettlements(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get settlement information.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListSettlements(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """List settlement information (Alias).
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetMargin(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get margin information for a futures account.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetTradingLimits(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get trading limits for a stock account.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetStockReserveSummary(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get stock reserve summary.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetStockReserveDetail(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get stock reserve details.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ReserveStock(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Reserve stock for borrowing.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetEarmarkingDetail(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get earmarking details.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ReserveEarmarking(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Apply for earmarking.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetSnapshots(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get market snapshots for a list of contracts.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetTicks(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get tick data for a specific contract and date.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetKbars(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get K-bar (candlestick) data for a specific contract and date range.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetDailyQuotes(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get daily quotes.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def CreditEnquires(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Enquire about credit for a list of contracts.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetShortStockSources(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get short stock sources for a list of contracts.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetScanners(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get scanner results (ranked stocks).
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetPunish(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get punishment information (disposition stocks).
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetNotice(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get notice information (attention stocks).
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def FetchContracts(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Manually fetch contracts.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ActivateCA(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Activate the Certificate Authority (CA).
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetCAExpireTime(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get the CA expiration time.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def SubscribeTrade(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Subscribe to trade updates for an account.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UnsubscribeTrade(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unsubscribe from trade updates for an account.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
