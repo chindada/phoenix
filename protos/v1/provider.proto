@@ -50,7 +50,7 @@ service ShioajiProvider {
   // Get settlement information.
   rpc GetSettlements (GetSettlementsRequest) returns (GetSettlementsResponse) {}
   // List settlement information (Alias).
-  rpc ListSettlements (GetSettlementsRequest) returns (GetSettlementsResponse) {} 
+  rpc ListSettlements (GetSettlementsRequest) returns (GetSettlementsResponse) {}
   // Get margin information for a futures account.
   rpc GetMargin (GetMarginRequest) returns (Margin) {}
   // Get trading limits for a stock account.
@@ -100,7 +100,7 @@ message Empty {}
 
 // Request message for Login.
 message LoginRequest {
-  string api_key = 1;
+  string api_key    = 1;
   string secret_key = 2;
 }
 
@@ -117,18 +117,18 @@ message LogoutResponse {
 // Represents a trading account.
 message Account {
   string account_type = 1;
-  string person_id = 2;
-  string broker_id = 3;
-  string account_id = 4;
-  bool signed = 5;
-  string username = 6;
+  string person_id    = 2;
+  string broker_id    = 3;
+  string account_id   = 4;
+  bool   signed       = 5;
+  string username     = 6;
 }
 
 // Represents usage statistics.
 message UsageStatus {
-  int64 connections = 1;
-  int64 bytes = 2;
-  int64 limit_bytes = 3;
+  int64 connections     = 1;
+  int64 bytes           = 2;
+  int64 limit_bytes     = 3;
   int64 remaining_bytes = 4;
 }
 
@@ -140,96 +140,96 @@ message ListAccountsResponse {
 // Represents account balance information.
 message AccountBalance {
   double acc_balance = 1;
-  string date = 2;
-  string errmsg = 3;
-  string currency = 4; // inferred, usually present
+  string date        = 2;
+  string errmsg      = 3;
+  string currency    = 4; // inferred, usually present
 }
 
 // Simplified Contract message.
 message Contract {
   string security_type = 1;
-  string exchange = 2;
-  string code = 3;
-  string symbol = 4;
-  string name = 5;
-  string currency = 6;
+  string exchange      = 2;
+  string code          = 3;
+  string symbol        = 4;
+  string name          = 5;
+  string currency      = 6;
 }
 
 // Simplified Combo Contract message.
 message ComboContract {
     // Simplified
-    string code = 1;
+  string code = 1;
 }
 
 // Represents a trading order.
 message Order {
-  string action = 1;
-  double price = 2;
-  int64 quantity = 3;
-  string id = 4;
-  string seqno = 5;
-  string ordno = 6;
-  Account account = 7;
-  string price_type = 8;
-  string order_type = 9;
+  string  action     = 1;
+  double  price      = 2;
+  int64   quantity   = 3;
+  string  id         = 4;
+  string  seqno      = 5;
+  string  ordno      = 6;
+  Account account    = 7;
+  string  price_type = 8;
+  string  order_type = 9;
 }
 
 // Represents a combination trading order.
 message ComboOrder {
-    string action = 1;
-    double price = 2;
-    int64 quantity = 3;
-    string id = 4;
-    string seqno = 5;
-    string ordno = 6;
-    Account account = 7;
-    string price_type = 8;
-    string order_type = 9;
+  string  action     = 1;
+  double  price      = 2;
+  int64   quantity   = 3;
+  string  id         = 4;
+  string  seqno      = 5;
+  string  ordno      = 6;
+  Account account    = 7;
+  string  price_type = 8;
+  string  order_type = 9;
 }
 
 // Represents the status of an order.
 message OrderStatus {
-    string id = 1;
-    string status = 2;
-    string status_code = 3;
-    string order_datetime = 4; // datetime
-    int64 deal_quantity = 5;
-    int64 cancel_quantity = 6;
+  string id              = 1;
+  string status          = 2;
+  string status_code     = 3;
+  string order_datetime  = 4; // datetime
+  int64  deal_quantity   = 5;
+  int64  cancel_quantity = 6;
     // deals list omitted for brevity for now
 }
 
 // Represents a trade (order execution).
 message Trade {
-  Contract contract = 1;
-  Order order = 2;
-  OrderStatus status = 3;
+  Contract    contract = 1;
+  Order       order    = 2;
+  OrderStatus status   = 3;
 }
 
 // Represents a combination trade.
 message ComboTrade {
-    ComboContract contract = 1;
-    ComboOrder order = 2;
+  ComboContract contract = 1;
+  ComboOrder    order    = 2;
     // Status might be slightly different or same
-    OrderStatus status = 3;
+  OrderStatus status = 3;
 }
 
 // Request message for PlaceOrder.
 message PlaceOrderRequest {
   Contract contract = 1;
-  Order order = 2;
+  Order    order    = 2;
 }
 
 // Request message for PlaceComboOrder.
 message PlaceComboOrderRequest {
-    ComboContract combo_contract = 1;
-    ComboOrder order = 2;
+  ComboContract combo_contract = 1;
+  ComboOrder    order          = 2;
 }
 
 // Request message for UpdateOrder.
 message UpdateOrderRequest {
-  Trade trade = 1; // Needs ID/Seqno/Ordno identification usually
-  double price = 2;
-  int64 quantity = 3;
+  Trade  trade    = 1; // Needs ID/Seqno/Ordno identification usually
+  double price    = 2;
+  int64  quantity = 3;
 }
 
 // Request message for CancelOrder.
@@ -239,12 +239,12 @@ message CancelOrderRequest {
 
 // Request message for CancelComboOrder.
 message CancelComboOrderRequest {
-    ComboTrade combotrade = 1;
+  ComboTrade combotrade = 1;
 }
 
 // Request message for UpdateStatus.
 message UpdateStatusRequest {
-    Account account = 1;
+  Account account = 1;
 }
 
 // Response message for ListTrades.
@@ -254,541 +254,541 @@ message ListTradesResponse {
 
 // Response message for ListComboTrades.
 message ListComboTradesResponse {
-    repeated ComboTrade combo_trades = 1;
+  repeated ComboTrade combo_trades = 1;
 }
 
 // Request message for GetOrderDealRecords.
 message GetOrderDealRecordsRequest {
-    Account account = 1;
+  Account account = 1;
 }
 
 // Response message for GetOrderDealRecords.
 message GetOrderDealRecordsResponse {
     // simplified representation
-    repeated OrderDealRecord records = 1;
+  repeated OrderDealRecord records = 1;
 }
 
 // Represents a record of an order deal.
 message OrderDealRecord {
-    string code = 1;
-    string action = 2;
-    double price = 3;
-    int64 quantity = 4;
-    string ts = 5;
+  string code     = 1;
+  string action   = 2;
+  double price    = 3;
+  int64  quantity = 4;
+  string ts       = 5;
 }
 
 // Request message for ListPositions.
 message ListPositionsRequest {
-    Account account = 1;
-    string unit = 2; // "Common", "Share" etc
+  Account account = 1;
+  string  unit    = 2; // "Common", "Share" etc
 }
 
 // Represents a stock position.
 message StockPosition {
-    int64 id = 1;
-    string code = 2;
-    string direction = 3;
-    int64 quantity = 4;
-    double price = 5;
-    double last_price = 6;
-    double pnl = 7;
-    int64 yd_quantity = 8;
-    string cond = 9;
-    int64 margin_purchase_amount = 10;
-    int64 collateral = 11;
-    int64 short_sale_margin = 12;
-    int64 interest = 13;
+  int64  id                     = 1;
+  string code                   = 2;
+  string direction              = 3;
+  int64  quantity               = 4;
+  double price                  = 5;
+  double last_price             = 6;
+  double pnl                    = 7;
+  int64  yd_quantity            = 8;
+  string cond                   = 9;
+  int64  margin_purchase_amount = 10;
+  int64  collateral             = 11;
+  int64  short_sale_margin      = 12;
+  int64  interest               = 13;
 }
 
 // Represents a futures position.
 message FuturePosition {
-    int64 id = 1;
-    string code = 2;
-    string direction = 3;
-    int64 quantity = 4;
-    double price = 5;
-    double last_price = 6;
-    double pnl = 7;
+  int64  id         = 1;
+  string code       = 2;
+  string direction  = 3;
+  int64  quantity   = 4;
+  double price      = 5;
+  double last_price = 6;
+  double pnl        = 7;
 }
 
 // Represents a generic position (stock or future).
 message Position {
-    oneof position {
-        StockPosition stock_position = 1;
-        FuturePosition future_position = 2;
-    }
+  oneof position {
+    StockPosition  stock_position  = 1;
+    FuturePosition future_position = 2;
+  }
 }
 
 // Response message for ListPositions.
 message ListPositionsResponse {
-    repeated Position positions = 1;
+  repeated Position positions = 1;
 }
 
 // Request message for ListPositionDetail.
 message ListPositionDetailRequest {
-    Account account = 1;
-    int64 detail_id = 2;
+  Account account   = 1;
+  int64   detail_id = 2;
 }
 
 // Represents detailed information for a stock position.
 message StockPositionDetail {
     // simplified
-    string date = 1;
-    string code = 2;
-    int64 quantity = 3;
-    double price = 4;
-    double last_price = 5;
-    double pnl = 6;
+  string date       = 1;
+  string code       = 2;
+  int64  quantity   = 3;
+  double price      = 4;
+  double last_price = 5;
+  double pnl        = 6;
 }
 
 // Represents detailed information for a futures position.
 message FuturePositionDetail {
     // simplified
-    string date = 1;
-    string code = 2;
-    int64 quantity = 3;
-    double price = 4;
-    double last_price = 5;
-    double pnl = 6;
-    int64 entry_quantity = 7;
+  string date           = 1;
+  string code           = 2;
+  int64  quantity       = 3;
+  double price          = 4;
+  double last_price     = 5;
+  double pnl            = 6;
+  int64  entry_quantity = 7;
 }
 
 // Represents a generic position detail.
 message PositionDetail {
-    oneof detail {
-        StockPositionDetail stock_detail = 1;
-        FuturePositionDetail future_detail = 2;
-    }
+  oneof detail {
+    StockPositionDetail  stock_detail  = 1;
+    FuturePositionDetail future_detail = 2;
+  }
 }
 
 // Response message for ListPositionDetail.
 message ListPositionDetailResponse {
-    repeated PositionDetail details = 1;
+  repeated PositionDetail details = 1;
 }
 
 // Request message for ListProfitLoss.
 message ListProfitLossRequest {
-    Account account = 1;
-    string begin_date = 2;
-    string end_date = 3;
+  Account account    = 1;
+  string  begin_date = 2;
+  string  end_date   = 3;
 }
 
 // Represents profit and loss for a stock trade.
 message StockProfitLoss {
-    string dseq = 1;
-    string code = 2;
-    int64 quantity = 3;
-    double price = 4;
-    double pnl = 5;
-    double pr_ratio = 6;
-    string cond = 7;
-    string date = 8;
-    string seqno = 9;
+  string dseq     = 1;
+  string code     = 2;
+  int64  quantity = 3;
+  double price    = 4;
+  double pnl      = 5;
+  double pr_ratio = 6;
+  string cond     = 7;
+  string date     = 8;
+  string seqno    = 9;
 }
 
 // Represents profit and loss for a futures trade.
 message FutureProfitLoss {
-    string date = 1;
-    string code = 2;
-    int64 quantity = 3;
-    double entry_price = 4;
-    double cover_price = 5;
-    string direction = 6;
-    double pnl = 7;
-    int64 tax = 8;
-    int64 fee = 9;
+  string date        = 1;
+  string code        = 2;
+  int64  quantity    = 3;
+  double entry_price = 4;
+  double cover_price = 5;
+  string direction   = 6;
+  double pnl         = 7;
+  int64  tax         = 8;
+  int64  fee         = 9;
 }
 
 // Represents a generic profit and loss entry.
 message ProfitLoss {
-    oneof item {
-        StockProfitLoss stock_pnl = 1;
-        FutureProfitLoss future_pnl = 2;
-    }
+  oneof item {
+    StockProfitLoss  stock_pnl  = 1;
+    FutureProfitLoss future_pnl = 2;
+  }
 }
 
 // Response message for ListProfitLoss.
 message ListProfitLossResponse {
-    repeated ProfitLoss profit_losses = 1;
+  repeated ProfitLoss profit_losses = 1;
 }
 
 // Request message for ListProfitLossDetail.
 message ListProfitLossDetailRequest {
-    Account account = 1;
-    int64 detail_id = 2;
+  Account account   = 1;
+  int64   detail_id = 2;
 }
 
 // Represents detailed profit and loss for a stock trade.
 message StockProfitDetail {
-    double price = 1;
-    int64 cost = 2;
-    int64 interest = 3;
+  double price    = 1;
+  int64  cost     = 2;
+  int64  interest = 3;
     // ...
 }
 
 // Represents detailed profit and loss for a futures trade.
 message FutureProfitDetail {
-    string direction = 1;
-    string entry_date = 2;
-    double entry_price = 3;
-    double cover_price = 4;
-    int64 pnl = 5;
+  string direction   = 1;
+  string entry_date  = 2;
+  double entry_price = 3;
+  double cover_price = 4;
+  int64  pnl         = 5;
 }
 
 // Represents a generic detailed profit and loss entry.
 message ProfitDetail {
-    oneof detail {
-        StockProfitDetail stock_detail = 1;
-        FutureProfitDetail future_detail = 2;
-    }
+  oneof detail {
+    StockProfitDetail  stock_detail  = 1;
+    FutureProfitDetail future_detail = 2;
+  }
 }
 
 // Response message for ListProfitLossDetail.
 message ListProfitLossDetailResponse {
-    repeated ProfitDetail details = 1;
+  repeated ProfitDetail details = 1;
 }
 
 // Request message for ListProfitLossSummary.
 message ListProfitLossSummaryRequest {
-    Account account = 1;
+  Account account = 1;
 }
 
 // Represents a summary of profit and loss for stocks.
 message StockProfitLossSummary {
-    int64 entry_cost = 1;
-    int64 cover_cost = 2;
+  int64 entry_cost = 1;
+  int64 cover_cost = 2;
     // ...
 }
 
 // Represents a summary of profit and loss for futures.
 message FutureProfitLossSummary {
-    string direction = 1;
-    int64 tax = 2;
-    int64 fee = 3;
+  string direction = 1;
+  int64  tax       = 2;
+  int64  fee       = 3;
     // ...
 }
 
 // Represents a generic profit and loss summary.
 message ProfitLossSummary {
-    oneof summary {
-        StockProfitLossSummary stock_summary = 1;
-        FutureProfitLossSummary future_summary = 2;
-    }
+  oneof summary {
+    StockProfitLossSummary  stock_summary  = 1;
+    FutureProfitLossSummary future_summary = 2;
+  }
 }
 
 // Response message for ListProfitLossSummary.
 message ListProfitLossSummaryResponse {
-    repeated ProfitLossSummary summaries = 1;
+  repeated ProfitLossSummary summaries = 1;
 }
 
 // Request message for GetSettlements.
 message GetSettlementsRequest {
-    Account account = 1;
+  Account account = 1;
 }
 
 // Represents a settlement entry.
 message Settlement {
-    string date = 1;
-    double amount = 2;
-    double t_money = 3;
-    string t_day = 4;
-    double t1_money = 5;
-    string t1_day = 6;
-    double t2_money = 7;
-    string t2_day = 8;
+  string date     = 1;
+  double amount   = 2;
+  double t_money  = 3;
+  string t_day    = 4;
+  double t1_money = 5;
+  string t1_day   = 6;
+  double t2_money = 7;
+  string t2_day   = 8;
 }
 
 // Response message for GetSettlements.
 message GetSettlementsResponse {
-    repeated Settlement settlements = 1;
+  repeated Settlement settlements = 1;
 }
 
 // Request message for GetMargin.
 message GetMarginRequest {
-    Account account = 1;
+  Account account = 1;
 }
 
 // Represents margin information.
 message Margin {
-    double equity = 1;
-    double available_margin = 2;
-    double initial_margin = 3;
-    double maintenance_margin = 4;
+  double equity             = 1;
+  double available_margin   = 2;
+  double initial_margin     = 3;
+  double maintenance_margin = 4;
     // ... many fields
 }
 
 // Request message for GetTradingLimits.
 message GetTradingLimitsRequest {
-    Account account = 1;
+  Account account = 1;
 }
 
 // Represents trading limits.
 message TradingLimits {
-    int64 trading_limit = 1;
-    int64 trading_used = 2;
-    int64 trading_available = 3;
-    int64 margin_limit = 4;
-    int64 margin_used = 5;
-    int64 margin_available = 6;
-    int64 short_limit = 7;
-    int64 short_used = 8;
-    int64 short_available = 9;
+  int64 trading_limit     = 1;
+  int64 trading_used      = 2;
+  int64 trading_available = 3;
+  int64 margin_limit      = 4;
+  int64 margin_used       = 5;
+  int64 margin_available  = 6;
+  int64 short_limit       = 7;
+  int64 short_used        = 8;
+  int64 short_available   = 9;
 }
 
 // Request message for GetStockReserveSummary.
 message GetStockReserveSummaryRequest {
-    Account account = 1;
+  Account account = 1;
 }
 
 // Response message for GetStockReserveSummary.
 message ReserveStocksSummaryResponse {
     // JSON string or structured fields for ReserveStocksSummary
     // Using simple string for complex nested response for now or define minimal structure
-    string response_json = 1;
+  string response_json = 1;
 }
 
 // Request message for GetStockReserveDetail.
 message GetStockReserveDetailRequest {
-    Account account = 1;
+  Account account = 1;
 }
 
 // Response message for GetStockReserveDetail.
 message ReserveStocksDetailResponse {
-    string response_json = 1;
+  string response_json = 1;
 }
 
 // Request message for ReserveStock.
 message ReserveStockRequest {
-    Account account = 1;
-    Contract contract = 2;
-    int64 share = 3;
+  Account  account  = 1;
+  Contract contract = 2;
+  int64    share    = 3;
 }
 
 // Response message for ReserveStock.
 message ReserveStockResponse {
-    string response_json = 1;
+  string response_json = 1;
 }
 
 // Request message for GetEarmarkingDetail.
 message GetEarmarkingDetailRequest {
-    Account account = 1;
+  Account account = 1;
 }
 
 // Response message for GetEarmarkingDetail.
 message EarmarkStocksDetailResponse {
-    string response_json = 1;
+  string response_json = 1;
 }
 
 // Request message for ReserveEarmarking.
 message ReserveEarmarkingRequest {
-    Account account = 1;
-    Contract contract = 2;
-    int64 share = 3;
-    double price = 4;
+  Account  account  = 1;
+  Contract contract = 2;
+  int64    share    = 3;
+  double   price    = 4;
 }
 
 // Response message for ReserveEarmarking.
 message ReserveEarmarkingResponse {
-    string response_json = 1;
+  string response_json = 1;
 }
 
 // Request message for GetSnapshots.
 message GetSnapshotsRequest {
     // simplified contract identification
-    repeated string contract_codes = 1; 
+  repeated string contract_codes = 1;
 }
 
 // Response message for GetSnapshots.
 message GetSnapshotsResponse {
-    repeated Snapshot snapshots = 1;
+  repeated Snapshot snapshots = 1;
 }
 
 // Represents a market snapshot.
 message Snapshot {
-    int64 ts = 1;
-    string code = 2;
-    string exchange = 3;
-    double open = 4;
-    double high = 5;
-    double low = 6;
-    double close = 7;
-    double change_price = 8;
-    double change_rate = 9;
-    double average_price = 10;
-    int64 volume = 11;
-    int64 total_volume = 12;
-    int64 amount = 13;
-    int64 total_amount = 14;
-    double buy_price = 15;
-    int64 buy_volume = 16;
-    double sell_price = 17;
-    int64 sell_volume = 18;
+  int64  ts            = 1;
+  string code          = 2;
+  string exchange      = 3;
+  double open          = 4;
+  double high          = 5;
+  double low           = 6;
+  double close         = 7;
+  double change_price  = 8;
+  double change_rate   = 9;
+  double average_price = 10;
+  int64  volume        = 11;
+  int64  total_volume  = 12;
+  int64  amount        = 13;
+  int64  total_amount  = 14;
+  double buy_price     = 15;
+  int64  buy_volume    = 16;
+  double sell_price    = 17;
+  int64  sell_volume   = 18;
 }
 
 // Request message for GetTicks.
 message GetTicksRequest {
-    string contract_code = 1;
-    string date = 2;
+  string contract_code = 1;
+  string date          = 2;
 }
 
 // Represents tick data.
 message Ticks {
-    repeated int64 ts = 1;
-    repeated double close = 2;
-    repeated int64 volume = 3;
-    repeated double bid_price = 4;
-    repeated int64 bid_volume = 5;
-    repeated double ask_price = 6;
-    repeated int64 ask_volume = 7;
-    repeated int32 tick_type = 8;
+  repeated int64  ts         = 1;
+  repeated double close      = 2;
+  repeated int64  volume     = 3;
+  repeated double bid_price  = 4;
+  repeated int64  bid_volume = 5;
+  repeated double ask_price  = 6;
+  repeated int64  ask_volume = 7;
+  repeated int32  tick_type  = 8;
 }
 
 // Request message for GetKbars.
 message GetKbarsRequest {
-    string contract_code = 1;
-    string start_date = 2;
-    string end_date = 3;
+  string contract_code = 1;
+  string start_date    = 2;
+  string end_date      = 3;
 }
 
 // Represents K-bar (candlestick) data.
 message Kbars {
-    repeated int64 ts = 1;
-    repeated double open = 2;
-    repeated double high = 3;
-    repeated double low = 4;
-    repeated double close = 5;
-    repeated int64 volume = 6;
-    repeated double amount = 7;
+  repeated int64  ts     = 1;
+  repeated double open   = 2;
+  repeated double high   = 3;
+  repeated double low    = 4;
+  repeated double close  = 5;
+  repeated int64  volume = 6;
+  repeated double amount = 7;
 }
 
 // Request message for GetDailyQuotes.
 message GetDailyQuotesRequest {
-    string date = 1;
+  string date = 1;
 }
 
 // Represents daily quotes.
 message DailyQuotes {
-    repeated string code = 1;
-    repeated double open = 2;
-    repeated double high = 3;
-    repeated double low = 4;
-    repeated double close = 5;
-    repeated int64 volume = 6;
+  repeated string code   = 1;
+  repeated double open   = 2;
+  repeated double high   = 3;
+  repeated double low    = 4;
+  repeated double close  = 5;
+  repeated int64  volume = 6;
 }
 
 // Request message for CreditEnquires.
 message CreditEnquiresRequest {
-    repeated string contract_codes = 1;
+  repeated string contract_codes = 1;
 }
 
 // Response message for CreditEnquires.
 message CreditEnquiresResponse {
-    repeated CreditEnquire credit_enquires = 1;
+  repeated CreditEnquire credit_enquires = 1;
 }
 
 // Represents a credit enquiry result.
 message CreditEnquire {
-    string stock_id = 1;
-    int64 margin_unit = 2;
-    int64 short_unit = 3;
+  string stock_id    = 1;
+  int64  margin_unit = 2;
+  int64  short_unit  = 3;
 }
 
 // Request message for GetShortStockSources.
 message GetShortStockSourcesRequest {
-    repeated string contract_codes = 1;
+  repeated string contract_codes = 1;
 }
 
 // Response message for GetShortStockSources.
 message GetShortStockSourcesResponse {
-    repeated ShortStockSource sources = 1;
+  repeated ShortStockSource sources = 1;
 }
 
 // Represents a short stock source.
 message ShortStockSource {
-    string code = 1;
-    int64 short_stock_source = 2;
-    int64 ts = 3;
+  string code               = 1;
+  int64  short_stock_source = 2;
+  int64  ts                 = 3;
 }
 
 // Request message for GetScanners.
 message GetScannersRequest {
-    string scanner_type = 1;
-    bool ascending = 2;
-    string date = 3;
-    int32 count = 4;
+  string scanner_type = 1;
+  bool   ascending    = 2;
+  string date         = 3;
+  int32  count        = 4;
 }
 
 // Response message for GetScanners.
 message GetScannersResponse {
-    repeated ScannerItem scanners = 1;
+  repeated ScannerItem scanners = 1;
 }
 
 // Represents a scanner item (ranked stock).
 message ScannerItem {
-    string code = 1;
-    string name = 2;
-    double close = 3;
-    double change_price = 4;
-    int64 total_volume = 5;
+  string code         = 1;
+  string name         = 2;
+  double close        = 3;
+  double change_price = 4;
+  int64  total_volume = 5;
 }
 
 // Represents punishment information (disposition stocks).
 message Punish {
-    repeated string code = 1;
-    repeated string start_date = 2;
-    repeated string end_date = 3;
-    repeated string interval = 4;
+  repeated string code       = 1;
+  repeated string start_date = 2;
+  repeated string end_date   = 3;
+  repeated string interval   = 4;
 }
 
 // Represents notice information (attention stocks).
 message Notice {
-    repeated string code = 1;
-    repeated string reason = 2;
+  repeated string code   = 1;
+  repeated string reason = 2;
 }
 
 // Request message for FetchContracts.
 message FetchContractsRequest {
-    bool contract_download = 1;
+  bool contract_download = 1;
 }
 
 // Request message for ActivateCA.
 message ActivateCARequest {
-    string ca_path = 1;
-    string ca_passwd = 2;
-    string person_id = 3;
+  string ca_path   = 1;
+  string ca_passwd = 2;
+  string person_id = 3;
 }
 
 // Response message for ActivateCA.
 message ActivateCAResponse {
-    bool success = 1;
+  bool success = 1;
 }
 
 // Request message for GetCAExpireTime.
 message GetCAExpireTimeRequest {
-    string person_id = 1;
+  string person_id = 1;
 }
 
 // Response message for GetCAExpireTime.
 message GetCAExpireTimeResponse {
-    string expire_time = 1;
+  string expire_time = 1;
 }
 
 // Request message for SubscribeTrade.
 message SubscribeTradeRequest {
-    Account account = 1;
+  Account account = 1;
 }
 
 // Response message for SubscribeTrade.
 message SubscribeTradeResponse {
-    bool success = 1;
+  bool success = 1;
 }
 
 // Request message for UnsubscribeTrade.
 message UnsubscribeTradeRequest {
-    Account account = 1;
+  Account account = 1;
 }
 
 // Response message for UnsubscribeTrade.
 message UnsubscribeTradeResponse {
-    bool success = 1;
+  bool success = 1;
 }

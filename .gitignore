@@ -25,6 +25,7 @@ TEMP.md
 *.pfx
 
 # PROD
+shioaji.log
 logs/*
 !logs/.gitkeep
 data/*
