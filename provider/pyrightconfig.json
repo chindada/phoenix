@@ -8,6 +8,8 @@
     "src/*_pb2_grpc.py",
     "**/__pycache__"
   ],
-  "reportMissingImports": true,
-  "typeCheckingMode": "basic"
+  "reportPropertyTypeMismatch": true,
+  "reportReturnType": true,
+  "reportArgumentType": true,
+  "reportAttributeAccessIssue": true
 }

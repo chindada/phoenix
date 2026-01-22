@@ -2,12 +2,49 @@
 provider.src.shioaji_client -.
 """
 
-from typing import Any, Callable, List
+from datetime import date, datetime
+from typing import Any, Callable, List, Union
 
 import shioaji as sj
 from shioaji.account import Account
-from shioaji.data import CreditEnquire, ShortStockSource, Snapshot, Ticks, UsageStatus
-from shioaji.order import Order, Trade
+from shioaji.constant import ScannerType
+from shioaji.contracts import BaseContract, ComboContract, Contract, Stock
+from shioaji.data import (
+    CreditEnquire,
+    DailyQuotes,
+    Kbars,
+    Notice,
+    Punish,
+    ScannerItem,
+    ShortStockSource,
+    Snapshot,
+    Ticks,
+    UsageStatus,
+)
+from shioaji.order import ComboOrder, ComboTrade, Order, OrderDealRecords, Trade
+from shioaji.position import (
+    AccountBalance,
+    FuturePosition,
+    FuturePositionDetail,
+    FutureProfitDetail,
+    FutureProfitLoss,
+    FutureProfitLossSummary,
+    Margin,
+    Settlement,
+    StockPosition,
+    StockPositionDetail,
+    StockProfitDetail,
+    StockProfitLoss,
+    StockProfitLossSummary,
+    TradingLimits,
+)
+from shioaji.reserve import (
+    EarmarkStocksDetailResponse,
+    ReserveEarmarkingResponse,
+    ReserveStockResponse,
+    ReserveStocksDetailResponse,
+    ReserveStocksSummaryResponse,
+)
 
 
 class ShioajiClient:
@@ -18,15 +55,18 @@ class ShioajiClient:
     def __init__(self, simulation: bool = False):
         self.api = sj.Shioaji(simulation=simulation)
 
-    def login(self, api_key: str, secret_key: str):
+    def login(self, api_key: str, secret_key: str) -> List[Account]:
         """
         Login to the Shioaji API.
 
         Args:
             api_key (str): Your API key.
             secret_key (str): Your secret key.
+
+        Returns:
+            List[Account]: A list of trading accounts.
         """
-        self.api.login(api_key, secret_key)
+        return self.api.login(api_key, secret_key)
 
     def logout(self) -> bool:
         """
@@ -64,21 +104,21 @@ class ShioajiClient:
         """
         return self.api.set_default_account(account)
 
-    def account_balance(self) -> Any:
+    def account_balance(self) -> AccountBalance:
         """
         Get the account balance.
 
         Returns:
-            Any: The account balance object (e.g., AccountBalance).
+            AccountBalance: The account balance object.
         """
         return self.api.account_balance()
 
-    def place_order(self, contract: Any, order: Order) -> Trade:
+    def place_order(self, contract: Contract, order: Order) -> Trade:
         """
         Place a new order.
 
         Args:
-            contract (Any): The contract to trade.
+            contract (Contract): The contract to trade.
             order (Order): The order details.
 
         Returns:
@@ -86,16 +126,16 @@ class ShioajiClient:
         """
         return self.api.place_order(contract, order)
 
-    def place_comboorder(self, combo_contract: Any, order: Any) -> Trade:
+    def place_comboorder(self, combo_contract: ComboContract, order: ComboOrder) -> ComboTrade:
         """
         Place a combination order.
 
         Args:
-            combo_contract (Any): The combination contract to trade.
-            order (Any): The combination order details (ComboOrder).
+            combo_contract (ComboContract): The combination contract to trade.
+            order (ComboOrder): The combination order details.
 
         Returns:
-            Trade: The placed combo trade object.
+            ComboTrade: The placed combo trade object.
         """
         return self.api.place_comboorder(combo_contract, order)
 
@@ -125,15 +165,15 @@ class ShioajiClient:
         """
         return self.api.cancel_order(trade)
 
-    def cancel_comboorder(self, combotrade: Any) -> Any:
+    def cancel_comboorder(self, combotrade: ComboTrade) -> ComboTrade:
         """
         Cancel a combination order.
 
         Args:
-            combotrade (Any): The combination trade to cancel.
+            combotrade (ComboTrade): The combination trade to cancel.
 
         Returns:
-            Any: The canceled combo trade object.
+            ComboTrade: The canceled combo trade object.
         """
         return self.api.cancel_comboorder(combotrade)
 
@@ -164,16 +204,16 @@ class ShioajiClient:
         """
         return self.api.list_trades()
 
-    def list_combotrades(self) -> List[Any]:
+    def list_combotrades(self) -> List[ComboTrade]:
         """
         List all combination trades.
 
         Returns:
-            List[Any]: A list of all combination trades (ComboTrade).
+            List[ComboTrade]: A list of all combination trades.
         """
         return self.api.list_combotrades()
 
-    def order_deal_records(self, account: Account) -> List[Any]:
+    def order_deal_records(self, account: Account) -> List[OrderDealRecords]:
         """
         Get order deal records.
 
@@ -181,11 +221,13 @@ class ShioajiClient:
             account (Account): The account to query.
 
         Returns:
-            List[Any]: A list of order deal records.
+            List[OrderDealRecords]: A list of order deal records.
         """
         return self.api.order_deal_records(account)
 
-    def list_positions(self, account: Account) -> List[Any]:
+    def list_positions(
+        self, account: Account
+    ) -> List[Union[StockPosition, FuturePosition]]:
         """
         List current positions for an account.
 
@@ -193,11 +235,13 @@ class ShioajiClient:
             account (Account): The account to query.
 
         Returns:
-            List[Any]: A list of positions (StockPosition or FuturePosition).
+            List[Union[StockPosition, FuturePosition]]: A list of positions.
         """
         return self.api.list_positions(account)
 
-    def list_position_detail(self, account: Account, detail_id: int) -> List[Any]:
+    def list_position_detail(
+        self, account: Account, detail_id: int
+    ) -> List[Union[StockPositionDetail, FuturePositionDetail]]:
         """
         Get detailed information for a specific position.
 
@@ -206,11 +250,13 @@ class ShioajiClient:
             detail_id (int): The ID of the position.
 
         Returns:
-            List[Any]: A list of position details (StockPositionDetail or FuturePositionDetail).
+            List[Union[StockPositionDetail, FuturePositionDetail]]: A list of position details.
         """
         return self.api.list_position_detail(account, detail_id)
 
-    def list_profit_loss(self, account: Account) -> List[Any]:
+    def list_profit_loss(
+        self, account: Account
+    ) -> List[Union[StockProfitLoss, FutureProfitLoss]]:
         """
         List realized profit and loss.
 
@@ -218,11 +264,13 @@ class ShioajiClient:
             account (Account): The account to query.
 
         Returns:
-            List[Any]: A list of profit and loss entries.
+            List[Union[StockProfitLoss, FutureProfitLoss]]: A list of profit and loss entries.
         """
         return self.api.list_profit_loss(account)
 
-    def list_profit_loss_detail(self, account: Account, detail_id: int) -> List[Any]:
+    def list_profit_loss_detail(
+        self, account: Account, detail_id: int
+    ) -> List[Union[StockProfitDetail, FutureProfitDetail]]:
         """
         Get detailed realized profit and loss for a specific entry.
 
@@ -231,11 +279,13 @@ class ShioajiClient:
             detail_id (int): The ID of the profit/loss entry.
 
         Returns:
-            List[Any]: A list of profit and loss details.
+            List[Union[StockProfitDetail, FutureProfitDetail]]: A list of profit and loss details.
         """
         return self.api.list_profit_loss_detail(account, detail_id)
 
-    def list_profit_loss_summary(self, account: Account) -> List[Any]:
+    def list_profit_loss_summary(
+        self, account: Account
+    ) -> List[Union[StockProfitLossSummary, FutureProfitLossSummary]]:
         """
         Get a summary of profit and loss.
 
@@ -243,11 +293,11 @@ class ShioajiClient:
             account (Account): The account to query.
 
         Returns:
-            List[Any]: A list of profit and loss summaries.
+            List[Union[StockProfitLossSummary, FutureProfitLossSummary]]: A list of profit and loss summaries.
         """
         return self.api.list_profit_loss_summary(account)
 
-    def settlements(self, account: Account) -> List[Any]:
+    def settlements(self, account: Account) -> List[Settlement]:
         """
         Get settlement information.
 
@@ -255,23 +305,23 @@ class ShioajiClient:
             account (Account): The account to query.
 
         Returns:
-            List[Any]: A list of settlement objects (SettlementV1).
+            List[Settlement]: A list of settlement objects.
         """
         return self.api.settlements(account)
 
-    def list_settlements(self, account: Account) -> List[Any]:
+    def list_settlements(self, account: Account) -> List[Settlement]:
         """
-        List settlement information (alias for settlements in some contexts or versions).
+        List settlement information.
 
         Args:
             account (Account): The account to query.
 
         Returns:
-            List[Any]: A list of settlement objects.
+            List[Settlement]: A list of settlement objects.
         """
         return self.api.list_settlements(account)
 
-    def margin(self, account: Account) -> Any:
+    def margin(self, account: Account) -> Margin:
         """
         Get margin information for a futures account.
 
@@ -279,11 +329,11 @@ class ShioajiClient:
             account (Account): The account to query.
 
         Returns:
-            Any: The margin information object (Margin).
+            Margin: The margin information object.
         """
         return self.api.margin(account)
 
-    def trading_limits(self, account: Account) -> Any:
+    def trading_limits(self, account: Account) -> TradingLimits:
         """
         Get trading limits for a stock account.
 
@@ -291,11 +341,11 @@ class ShioajiClient:
             account (Account): The account to query.
 
         Returns:
-            Any: The trading limits object (TradingLimits).
+            TradingLimits: The trading limits object.
         """
         return self.api.trading_limits(account)
 
-    def stock_reserve_summary(self, account: Account) -> Any:
+    def stock_reserve_summary(self, account: Account) -> ReserveStocksSummaryResponse:
         """
         Get stock reserve summary.
 
@@ -303,11 +353,11 @@ class ShioajiClient:
             account (Account): The account to query.
 
         Returns:
-            Any: The stock reserve summary response.
+            ReserveStocksSummaryResponse: The stock reserve summary response.
         """
         return self.api.stock_reserve_summary(account)
 
-    def stock_reserve_detail(self, account: Account) -> Any:
+    def stock_reserve_detail(self, account: Account) -> ReserveStocksDetailResponse:
         """
         Get stock reserve details.
 
@@ -315,25 +365,27 @@ class ShioajiClient:
             account (Account): The account to query.
 
         Returns:
-            Any: The stock reserve detail response.
+            ReserveStocksDetailResponse: The stock reserve detail response.
         """
         return self.api.stock_reserve_detail(account)
 
-    def reserve_stock(self, account: Account, contract: Any, share: int) -> Any:
+    def reserve_stock(
+        self, account: Account, contract: Contract, share: int
+    ) -> ReserveStockResponse:
         """
         Reserve stock for borrowing.
 
         Args:
             account (Account): The account to use.
-            contract (Any): The contract to reserve.
+            contract (Contract): The contract to reserve.
             share (int): The number of shares to reserve.
 
         Returns:
-            Any: The reserve stock response.
+            ReserveStockResponse: The reserve stock response.
         """
         return self.api.reserve_stock(account, contract, share)
 
-    def earmarking_detail(self, account: Account) -> Any:
+    def earmarking_detail(self, account: Account) -> EarmarkStocksDetailResponse:
         """
         Get earmarking details.
 
@@ -341,45 +393,45 @@ class ShioajiClient:
             account (Account): The account to query.
 
         Returns:
-            Any: The earmarking detail response.
+            EarmarkStocksDetailResponse: The earmarking detail response.
         """
         return self.api.earmarking_detail(account)
 
     def reserve_earmarking(
-        self, account: Account, contract: Any, share: int, price: float
-    ) -> Any:
+        self, account: Account, contract: Contract, share: int, price: float
+    ) -> ReserveEarmarkingResponse:
         """
         Apply for earmarking.
 
         Args:
             account (Account): The account to use.
-            contract (Any): The contract involved.
+            contract (Contract): The contract involved.
             share (int): The number of shares.
             price (float): The price per share.
 
         Returns:
-            Any: The reserve earmarking response.
+            ReserveEarmarkingResponse: The reserve earmarking response.
         """
         return self.api.reserve_earmarking(account, contract, share, price)
 
-    def snapshots(self, contracts: List[Any]) -> List[Snapshot]:
+    def snapshots(self, contracts: List[BaseContract]) -> List[Snapshot]:
         """
         Get market snapshots for a list of contracts.
 
         Args:
-            contracts (List[Any]): List of contracts to query.
+            contracts (List[BaseContract]): List of contracts to query.
 
         Returns:
             List[Snapshot]: A list of snapshot objects.
         """
         return self.api.snapshots(contracts)
 
-    def ticks(self, contract: Any, date: str) -> Ticks:
+    def ticks(self, contract: BaseContract, date: str) -> Ticks:
         """
         Get tick data for a specific contract and date.
 
         Args:
-            contract (Any): The contract to query.
+            contract (BaseContract): The contract to query.
             date (str): The date in YYYY-MM-DD format.
 
         Returns:
@@ -387,50 +439,50 @@ class ShioajiClient:
         """
         return self.api.ticks(contract, date)
 
-    def kbars(self, contract: Any, start: str, end: str) -> Any:
+    def kbars(self, contract: BaseContract, start: str, end: str) -> Kbars:
         """
         Get K-bar (candlestick) data for a specific contract and date range.
 
         Args:
-            contract (Any): The contract to query.
+            contract (BaseContract): The contract to query.
             start (str): The start date in YYYY-MM-DD format.
             end (str): The end date in YYYY-MM-DD format.
 
         Returns:
-            Any: The K-bar data object (Kbars).
+            Kbars: The K-bar data object.
         """
         return self.api.kbars(contract, start, end)
 
-    def daily_quotes(self, date: str) -> Any:
+    def daily_quotes(self, date_query: date) -> DailyQuotes:
         """
         Get daily quotes.
 
         Args:
-            date (str): The date to query.
+            date_query (date): The date to query.
 
         Returns:
-            Any: The daily quotes object (DailyQuotes).
+            DailyQuotes: The daily quotes object.
         """
-        return self.api.daily_quotes(date)
+        return self.api.daily_quotes(date_query)
 
-    def credit_enquires(self, contracts: List[Any]) -> List[CreditEnquire]:
+    def credit_enquires(self, contracts: List[Stock]) -> List[CreditEnquire]:
         """
         Enquire about credit for a list of contracts.
 
         Args:
-            contracts (List[Any]): List of contracts to query.
+            contracts (List[Stock]): List of contracts to query.
 
         Returns:
             List[CreditEnquire]: A list of credit enquiry results.
         """
         return self.api.credit_enquires(contracts)
 
-    def short_stock_sources(self, contracts: List[Any]) -> List[ShortStockSource]:
+    def short_stock_sources(self, contracts: List[Stock]) -> List[ShortStockSource]:
         """
         Get short stock sources for a list of contracts.
 
         Args:
-            contracts (List[Any]): List of contracts to query.
+            contracts (List[Stock]): List of contracts to query.
 
         Returns:
             List[ShortStockSource]: A list of short stock sources.
@@ -438,39 +490,39 @@ class ShioajiClient:
         return self.api.short_stock_sources(contracts)
 
     def scanners(
-        self, scanner_type: Any, ascending: bool, date: str, count: int
-    ) -> List[Any]:
+        self, scanner_type: ScannerType, ascending: bool, date_str: str, count: int
+    ) -> List[ScannerItem]:
         """
         Get scanner results (ranked stocks).
 
         Args:
-            scanner_type (Any): The type of scanner to run.
+            scanner_type (ScannerType): The type of scanner to run.
             ascending (bool): Whether to sort in ascending order.
-            date (str): The date for the scan.
+            date_str (str): The date for the scan.
             count (int): The number of results to return.
 
         Returns:
-            List[Any]: A list of scanner items.
+            List[ScannerItem]: A list of scanner items.
         """
         return self.api.scanners(
-            scanner_type, ascending=ascending, date=date, count=count
+            scanner_type, ascending=ascending, date=date_str, count=count
         )
 
-    def punish(self) -> Any:
+    def punish(self) -> Punish:
         """
         Get punishment information (disposition stocks).
 
         Returns:
-            Any: The punish information object (Punish).
+            Punish: The punish information object.
         """
         return self.api.punish()
 
-    def notice(self) -> Any:
+    def notice(self) -> Notice:
         """
         Get notice information (attention stocks).
 
         Returns:
-            Any: The notice information object (Notice).
+            Notice: The notice information object.
         """
         return self.api.notice()
 
@@ -506,7 +558,7 @@ class ShioajiClient:
         """
         return self.api.activate_ca(ca_path, ca_passwd, person_id)
 
-    def get_ca_expiretime(self, person_id: str) -> str:
+    def get_ca_expiretime(self, person_id: str) -> datetime:
         """
         Get the CA expiration time.
 
@@ -514,7 +566,7 @@ class ShioajiClient:
             person_id (str): Person ID to check.
 
         Returns:
-            str: The expiration time string.
+            datetime: The expiration time.
         """
         return self.api.get_ca_expiretime(person_id)
 
