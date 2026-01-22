@@ -70,7 +70,13 @@ class ShioajiClient:
         登入
 
         Original Args:
-            api_key: str, secret_key: str, fetch_contract: bool = True, contracts_timeout: int = 0, contracts_cb: Callable[[], NoneType] = None, subscribe_trade: bool = True, receive_window: int = 30000
+            api_key: str
+            secret_key: str
+            fetch_contract: bool = True
+            contracts_timeout: int = 0
+            contracts_cb: Callable[[], NoneType] = None
+            subscribe_trade: bool = True
+            receive_window: int = 30000
 
         Args:
             api_key (str): Your API key.
@@ -100,7 +106,8 @@ class ShioajiClient:
         使用量
 
         Original Args:
-            timeout: int = 5000, cb: Callable[[shioaji.data.UsageStatus], NoneType] = None
+            timeout: int = 5000
+            cb: Callable[[shioaji.data.UsageStatus], NoneType] = None
 
         Returns:
             UsageStatus: Object containing usage statistics.
@@ -139,7 +146,8 @@ class ShioajiClient:
         帳戶餘額
 
         Original Args:
-            timeout: int = 5000, cb: Callable[[shioaji.position.AccountBalance], NoneType] = None
+            timeout: int = 5000
+            cb: Callable[[shioaji.position.AccountBalance], NoneType] = None
 
         Returns:
             AccountBalance: The account balance object.
@@ -152,7 +160,10 @@ class ShioajiClient:
         下單
 
         Original Args:
-            contract: shioaji.contracts.Contract, order: shioaji.order.Order, timeout: int = 5000, cb: Callable[[shioaji.order.Trade], NoneType] = None
+            contract: shioaji.contracts.Contract
+            order: shioaji.order.Order
+            timeout: int = 5000
+            cb: Callable[[shioaji.order.Trade], NoneType] = None
 
         Args:
             contract (Contract): The contract to trade.
@@ -171,7 +182,10 @@ class ShioajiClient:
         組合單下單
 
         Original Args:
-            combo_contract: shioaji.contracts.ComboContract, order: shioaji.order.ComboOrder, timeout: int = 5000, cb: Callable[[shioaji.order.ComboTrade], NoneType] = None
+            combo_contract: shioaji.contracts.ComboContract
+            order: shioaji.order.ComboOrder
+            timeout: int = 5000
+            cb: Callable[[shioaji.order.ComboTrade], NoneType] = None
 
         Args:
             combo_contract (ComboContract): The combination contract to trade.
@@ -188,7 +202,11 @@ class ShioajiClient:
         修改委託單
 
         Original Args:
-            trade: shioaji.order.Trade, price: float = None, qty: int = None, timeout: int = 5000, cb: Callable[[shioaji.order.Trade], NoneType] = None
+            trade: shioaji.order.Trade
+            price: float = None
+            qty: int = None
+            timeout: int = 5000
+            cb: Callable[[shioaji.order.Trade], NoneType] = None
 
         Args:
             trade (Trade): The trade to update.
@@ -206,7 +224,9 @@ class ShioajiClient:
         撤銷委託單
 
         Original Args:
-            trade: shioaji.order.Trade, timeout: int = 5000, cb: Callable[[shioaji.order.Trade], NoneType] = None
+            trade: shioaji.order.Trade
+            timeout: int = 5000
+            cb: Callable[[shioaji.order.Trade], NoneType] = None
 
         Args:
             trade (Trade): The trade to cancel.
@@ -222,7 +242,9 @@ class ShioajiClient:
         撤銷組合單委託
 
         Original Args:
-            combotrade: shioaji.order.ComboTrade, timeout: int = 5000, cb: Callable[[shioaji.order.ComboTrade], NoneType] = None
+            combotrade: shioaji.order.ComboTrade
+            timeout: int = 5000
+            cb: Callable[[shioaji.order.ComboTrade], NoneType] = None
 
         Args:
             combotrade (ComboTrade): The combination trade to cancel.
@@ -238,7 +260,10 @@ class ShioajiClient:
         更新委託單狀態
 
         Original Args:
-            account: shioaji.account.Account = None, trade: shioaji.order.Trade = None, timeout: int = 5000, cb: Callable[[List[shioaji.order.Trade]], NoneType] = None
+            account: shioaji.account.Account = None
+            trade: shioaji.order.Trade = None
+            timeout: int = 5000
+            cb: Callable[[List[shioaji.order.Trade]], NoneType] = None
 
         Args:
             account (Account): The account to update status for.
@@ -251,7 +276,9 @@ class ShioajiClient:
         更新組合單狀態
 
         Original Args:
-            account: shioaji.account.Account = None, timeout: int = 5000, cb: Callable[[List[shioaji.order.ComboTrade]], NoneType] = None
+            account: shioaji.account.Account = None
+            timeout: int = 5000
+            cb: Callable[[List[shioaji.order.ComboTrade]], NoneType] = None
 
         Args:
             account (Account): The account to update status for.
@@ -290,7 +317,9 @@ class ShioajiClient:
         委託成交紀錄
 
         Original Args:
-            account: shioaji.account.Account = None, timeout: int = 5000, cb: Callable[[shioaji.order.OrderDealRecords], NoneType] = None
+            account: shioaji.account.Account = None
+            timeout: int = 5000
+            cb: Callable[[shioaji.order.OrderDealRecords], NoneType] = None
 
         Args:
             account (Account): The account to query.
@@ -308,7 +337,10 @@ class ShioajiClient:
         查詢部位
 
         Original Args:
-            account: shioaji.account.Account = None, unit: shioaji.constant.Unit = Unit.Common, timeout: int = 5000, cb: Callable[[List[Union[StockPosition, FuturePosition]]], NoneType] = None
+            account: shioaji.account.Account = None
+            unit: shioaji.constant.Unit = Unit.Common
+            timeout: int = 5000
+            cb: Callable[[List[Union[StockPosition, FuturePosition]]], NoneType] = None
 
         Args:
             account (Account): The account to query.
@@ -326,7 +358,10 @@ class ShioajiClient:
         查詢部位詳細資訊
 
         Original Args:
-            account: shioaji.account.Account = None, detail_id: int = 0, timeout: int = 5000, cb: Callable[[List[Union[StockPositionDetail, FuturePositionDetail]]], NoneType] = None
+            account: shioaji.account.Account = None
+            detail_id: int = 0
+            timeout: int = 5000
+            cb: Callable[[List[Union[StockPositionDetail, FuturePositionDetail]]], NoneType] = None
 
         Args:
             account (Account): The account to query.
@@ -345,7 +380,12 @@ class ShioajiClient:
         查詢損益
 
         Original Args:
-            account: shioaji.account.Account = None, begin_date: str = '', end_date: str = '', unit: shioaji.constant.Unit = Unit.Common, timeout: int = 5000, cb: Callable[[List[Union[StockProfitLoss, FutureProfitLoss]]], NoneType] = None
+            account: shioaji.account.Account = None
+            begin_date: str = ''
+            end_date: str = ''
+            unit: shioaji.constant.Unit = Unit.Common
+            timeout: int = 5000
+            cb: Callable[[List[Union[StockProfitLoss, FutureProfitLoss]]], NoneType] = None
 
         Args:
             account (Account): The account to query.
@@ -363,7 +403,11 @@ class ShioajiClient:
         查詢損益詳細資訊
 
         Original Args:
-            account: shioaji.account.Account = None, detail_id: int = 0, unit: shioaji.constant.Unit = Unit.Common, timeout: int = 5000, cb: Callable[[List[Union[StockProfitDetail, FutureProfitDetail]]], NoneType] = None
+            account: shioaji.account.Account = None
+            detail_id: int = 0
+            unit: shioaji.constant.Unit = Unit.Common
+            timeout: int = 5000
+            cb: Callable[[List[Union[StockProfitDetail, FutureProfitDetail]]], NoneType] = None
 
         Args:
             account (Account): The account to query.
@@ -382,7 +426,11 @@ class ShioajiClient:
         查詢損益匯總
 
         Original Args:
-            account: shioaji.account.Account = None, begin_date: str = '', end_date: str = '', timeout: int = 5000, cb: Callable[[List[Union[StockProfitLossSummary, FutureProfitLossSummary]]], NoneType] = None
+            account: shioaji.account.Account = None
+            begin_date: str = ''
+            end_date: str = ''
+            timeout: int = 5000
+            cb: Callable[[List[Union[StockProfitLossSummary, FutureProfitLossSummary]]], NoneType] = None
 
         Args:
             account (Account): The account to query.
@@ -398,7 +446,9 @@ class ShioajiClient:
         查詢結算資訊
 
         Original Args:
-            account: shioaji.account.Account = None, timeout: int = 5000, cb: Callable[[List[shioaji.position.SettlementV1]], NoneType] = None
+            account: shioaji.account.Account = None
+            timeout: int = 5000
+            cb: Callable[[List[shioaji.position.SettlementV1]], NoneType] = None
 
         Args:
             account (Account): The account to query.
@@ -414,7 +464,9 @@ class ShioajiClient:
         結算清單
 
         Original Args:
-            account: shioaji.account.Account = None, timeout: int = 5000, cb: Callable[[List[shioaji.position.Settlement]], NoneType] = None
+            account: shioaji.account.Account = None
+            timeout: int = 5000
+            cb: Callable[[List[shioaji.position.Settlement]], NoneType] = None
 
         Args:
             account (Account): The account to query.
@@ -430,7 +482,9 @@ class ShioajiClient:
         查詢保證金
 
         Original Args:
-            account: shioaji.account.Account = None, timeout: int = 5000, cb: Callable[[shioaji.position.Margin], NoneType] = None
+            account: shioaji.account.Account = None
+            timeout: int = 5000
+            cb: Callable[[shioaji.position.Margin], NoneType] = None
 
         Args:
             account (Account): The account to query.
@@ -446,7 +500,9 @@ class ShioajiClient:
         交易限額
 
         Original Args:
-            account: shioaji.account.Account = None, timeout: int = 5000, cb: Callable[[shioaji.position.TradingLimits], NoneType] = None
+            account: shioaji.account.Account = None
+            timeout: int = 5000
+            cb: Callable[[shioaji.position.TradingLimits], NoneType] = None
 
         Args:
             account (Account): The account to query.
@@ -462,7 +518,9 @@ class ShioajiClient:
         股票券源彙總
 
         Original Args:
-            account: shioaji.account.Account, timeout: int = 5000, cb: Callable[[shioaji.reserve.ReserveStocksSummaryResponse], NoneType] = None
+            account: shioaji.account.Account
+            timeout: int = 5000
+            cb: Callable[[shioaji.reserve.ReserveStocksSummaryResponse], NoneType] = None
 
         Args:
             account (Account): The account to query.
@@ -478,7 +536,9 @@ class ShioajiClient:
         股票券源明細
 
         Original Args:
-            account: shioaji.account.Account, timeout: int = 5000, cb: Callable[[shioaji.reserve.ReserveStocksDetailResponse], NoneType] = None
+            account: shioaji.account.Account
+            timeout: int = 5000
+            cb: Callable[[shioaji.reserve.ReserveStocksDetailResponse], NoneType] = None
 
         Args:
             account (Account): The account to query.
@@ -496,7 +556,11 @@ class ShioajiClient:
         預約借券
 
         Original Args:
-            account: shioaji.account.Account, contract: shioaji.contracts.Contract, share: int, timeout: int = 5000, cb: Callable[[shioaji.reserve.ReserveStockResponse], NoneType] = None
+            account: shioaji.account.Account
+            contract: shioaji.contracts.Contract
+            share: int
+            timeout: int = 5000
+            cb: Callable[[shioaji.reserve.ReserveStockResponse], NoneType] = None
 
         Args:
             account (Account): The account to use.
@@ -514,7 +578,9 @@ class ShioajiClient:
         圈存明細
 
         Original Args:
-            account: shioaji.account.Account, timeout: int = 5000, cb: Callable[[shioaji.reserve.EarmarkStocksDetailResponse], NoneType] = None
+            account: shioaji.account.Account
+            timeout: int = 5000
+            cb: Callable[[shioaji.reserve.EarmarkStocksDetailResponse], NoneType] = None
 
         Args:
             account (Account): The account to query.
@@ -532,7 +598,12 @@ class ShioajiClient:
         預約圈存
 
         Original Args:
-            account: shioaji.account.Account, contract: shioaji.contracts.Contract, share: int, price: float, timeout: int = 5000, cb: Callable[[shioaji.reserve.ReserveEarmarkingResponse], NoneType] = None
+            account: shioaji.account.Account
+            contract: shioaji.contracts.Contract
+            share: int
+            price: float
+            timeout: int = 5000
+            cb: Callable[[shioaji.reserve.ReserveEarmarkingResponse], NoneType] = None
 
         Args:
             account (Account): The account to use.
@@ -553,7 +624,9 @@ class ShioajiClient:
         行情快照
 
         Original Args:
-            contracts: List[Union[Option, Future, Stock, Index]], timeout: int = 30000, cb: Callable[[shioaji.data.Snapshot], NoneType] = None
+            contracts: List[Union[Option, Future, Stock, Index]]
+            timeout: int = 30000
+            cb: Callable[[shioaji.data.Snapshot], NoneType] = None
 
         Args:
             contracts (List[Union[Option, Future, Stock, Index]]): List of contracts to query.
@@ -569,7 +642,14 @@ class ShioajiClient:
         獲取逐筆報價
 
         Original Args:
-            contract: shioaji.contracts.BaseContract, date: str = '2026-01-23', query_type: shioaji.constant.TicksQueryType = TicksQueryType.AllDay, time_start: str | datetime.time = None, time_end: str | datetime.time = None, last_cnt: int = 0, timeout: int = 30000, cb: Callable[[shioaji.data.Ticks], NoneType] = None
+            contract: shioaji.contracts.BaseContract
+            date: str = '2026-01-23'
+            query_type: shioaji.constant.TicksQueryType = TicksQueryType.AllDay
+            time_start: str | datetime.time = None
+            time_end: str | datetime.time = None
+            last_cnt: int = 0
+            timeout: int = 30000
+            cb: Callable[[shioaji.data.Ticks], NoneType] = None
 
         Args:
             contract (BaseContract): The contract to query.
@@ -586,7 +666,11 @@ class ShioajiClient:
         獲取K線資料
 
         Original Args:
-            contract: shioaji.contracts.BaseContract, start: str = '2026-01-22', end: str = '2026-01-23', timeout: int = 30000, cb: Callable[[shioaji.data.Kbars], NoneType] = None
+            contract: shioaji.contracts.BaseContract
+            start: str = '2026-01-22'
+            end: str = '2026-01-23'
+            timeout: int = 30000
+            cb: Callable[[shioaji.data.Kbars], NoneType] = None
 
         Args:
             contract (BaseContract): The contract to query.
@@ -604,7 +688,10 @@ class ShioajiClient:
         每日報價
 
         Original Args:
-            date: datetime.date = datetime.date(2026, 1, 23), exclude: bool = True, timeout: int = 5000, cb: Callable[[shioaji.data.DailyQuotes], NoneType] = None
+            date: datetime.date = datetime.date(2026, 1, 23)
+            exclude: bool = True
+            timeout: int = 5000
+            cb: Callable[[shioaji.data.DailyQuotes], NoneType] = None
 
         Args:
             date_query (dt_date): The date to query.
@@ -620,7 +707,9 @@ class ShioajiClient:
         信用交易查詢
 
         Original Args:
-            contracts: List[shioaji.contracts.Stock], timeout: int = 30000, cb: Callable[[shioaji.data.CreditEnquire], NoneType] = None
+            contracts: List[shioaji.contracts.Stock]
+            timeout: int = 30000
+            cb: Callable[[shioaji.data.CreditEnquire], NoneType] = None
 
         Args:
             contracts (List[Stock]): List of contracts to query.
@@ -636,7 +725,9 @@ class ShioajiClient:
         借券水源
 
         Original Args:
-            contracts: List[shioaji.contracts.Stock], timeout: int = 5000, cb: Callable[[shioaji.data.ShortStockSource], NoneType] = None
+            contracts: List[shioaji.contracts.Stock]
+            timeout: int = 5000
+            cb: Callable[[shioaji.data.ShortStockSource], NoneType] = None
 
         Args:
             contracts (List[Stock]): List of contracts to query.
@@ -654,7 +745,12 @@ class ShioajiClient:
         選股器
 
         Original Args:
-            scanner_type: shioaji.constant.ScannerType, ascending: bool = True, date: str = None, count: int = 100, timeout: int = 30000, cb: Callable[[List[shioaji.data.ScannerItem]], NoneType] = None
+            scanner_type: shioaji.constant.ScannerType
+            ascending: bool = True
+            date: str = None
+            count: int = 100
+            timeout: int = 30000
+            cb: Callable[[List[shioaji.data.ScannerItem]], NoneType] = None
 
         Args:
             scanner_type (ScannerType): The type of scanner to run.
@@ -675,7 +771,8 @@ class ShioajiClient:
         處處置股
 
         Original Args:
-            timeout: int = 5000, cb: Callable[[shioaji.data.Punish], NoneType] = None
+            timeout: int = 5000
+            cb: Callable[[shioaji.data.Punish], NoneType] = None
 
         Returns:
             Punish: The punish information object.
@@ -688,7 +785,8 @@ class ShioajiClient:
         注意股
 
         Original Args:
-            timeout: int = 5000, cb: Callable[[shioaji.data.Notice], NoneType] = None
+            timeout: int = 5000
+            cb: Callable[[shioaji.data.Notice], NoneType] = None
 
         Returns:
             Notice: The notice information object.
@@ -701,7 +799,9 @@ class ShioajiClient:
         下載商品檔
 
         Original Args:
-            contract_download: bool = False, contracts_timeout: int = 0, contracts_cb: Callable[[], NoneType] = None
+            contract_download: bool = False
+            contracts_timeout: int = 0
+            contracts_cb: Callable[[], NoneType] = None
 
         Args:
             contract_download (bool): Whether to download contracts.
@@ -727,7 +827,10 @@ class ShioajiClient:
         憑證開通
 
         Original Args:
-            ca_path: str, ca_passwd: str, person_id: str = '', store: int = 0
+            ca_path: str
+            ca_passwd: str
+            person_id: str = ''
+            store: int = 0
 
         Args:
             ca_path (str): Path to the CA file.
