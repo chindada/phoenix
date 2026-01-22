@@ -32,13 +32,16 @@ codegen-go:
 
 lint: lint-py
 
-lint-py: type-check
+lint-py: type-check type-check-pyright
 	@$(BIN)/ruff format --exclude $(SRC_DIR)/*_pb2.py --exclude $(SRC_DIR)/*_pb2.pyi --exclude $(SRC_DIR)/*_pb2_grpc.py
 	@$(BIN)/ruff check --fix $(PROVIDER_DIR) --exclude $(SRC_DIR)/*_pb2.py --exclude $(SRC_DIR)/*_pb2.pyi --exclude $(SRC_DIR)/*_pb2_grpc.py
 	@$(BIN)/pylint --rcfile=$(PROVIDER_DIR)/.pylintrc $(PROVIDER_DIR)
 
 type-check:
 	@$(BIN)/mypy $(PROVIDER_DIR) --exclude $(SRC_DIR)/*_pb2.py --exclude $(SRC_DIR)/*_pb2.pyi --exclude $(SRC_DIR)/*_pb2_grpc.py --disable-error-code=import-untyped
+
+type-check-pyright:
+	@cd $(PROVIDER_DIR) && $(BIN)/pyright
 
 run-server:
 	@SJ_LOG_PATH=$(shell pwd)/logs/shioaji.log SJ_CONTRACTS_PATH=$(shell pwd)/data $(PYTHON) $(SRC_DIR)/server.py

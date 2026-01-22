@@ -1,0 +1,13 @@
+{
+  "include": ["."],
+  "venvPath": "..",
+  "venv": ".venv",
+  "exclude": [
+    "src/*_pb2.py",
+    "src/*_pb2.pyi",
+    "src/*_pb2_grpc.py",
+    "**/__pycache__"
+  ],
+  "reportMissingImports": true,
+  "typeCheckingMode": "basic"
+}
