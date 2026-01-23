@@ -51,7 +51,7 @@ func New(cfg Config) (*Client, error) {
 		if err != nil {
 			// Clean up already opened connections
 			for j := range i {
-				conns[j].Close()
+				_ = conns[j].Close()
 			}
 			return nil, fmt.Errorf("failed to dial %s: %w", cfg.Target, err)
 		}

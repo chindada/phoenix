@@ -29,7 +29,7 @@ func Render(c *gin.Context, code int, obj proto.Message) {
 	if accept == ContentTypeProtobuf {
 		data, err := proto.Marshal(obj)
 		if err != nil {
-			c.AbortWithError(http.StatusInternalServerError, err)
+			_ = c.AbortWithError(http.StatusInternalServerError, err)
 			return
 		}
 		c.Data(code, ContentTypeProtobuf, data)
