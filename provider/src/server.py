@@ -32,7 +32,6 @@ from shioaji.position import (
     StockProfitLoss,
     StockProfitLossSummary,
 )
-
 from shioaji_client import ShioajiClient
 
 try:
