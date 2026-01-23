@@ -46,7 +46,7 @@ func getEnv(key, fallback string) string {
 
 func setupDB() (launcher.Launcher, pgClient.PGClient, error) {
 	dbLauncher, err := launcher.New(
-		launcher.DBName("mojave"),
+		launcher.DBName("phoenix"),
 		launcher.AddLogger(log.L()),
 	)
 	if err != nil {
@@ -67,7 +67,7 @@ func setupDB() (launcher.Launcher, pgClient.PGClient, error) {
 		return dbLauncher, nil, err
 	}
 
-	pgURL := "postgres://postgres:password@localhost:5432/mojave?sslmode=disable"
+	pgURL := "postgres://postgres:password@localhost:5432/phoenix?sslmode=disable"
 	pg, err := pgClient.New(pgURL, pgClient.AddLogger(log.L()))
 	if err != nil {
 		return dbLauncher, nil, err
