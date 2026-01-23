@@ -19,7 +19,11 @@ func NewRouter(client client.ShioajiClient, secret string) *gin.Engine {
 		protected := v1.Group("/")
 		protected.Use(middleware.Auth(secret))
 		{
-			// Add trade routes later
+			protected.GET("/accounts", h.ListAccounts)
+			protected.POST("/orders", h.PlaceOrder)
+			protected.POST("/orders/cancel", h.CancelOrder)
+			protected.GET("/trades", h.ListTrades)
+			protected.POST("/positions", h.ListPositions)
 		}
 	}
 	return r
