@@ -53,7 +53,7 @@ func (m *migrator) getFullPath() string {
 
 func (m *migrator) getMigrationSource() (source.Driver, error) {
 	switch m.dbName {
-	case dbNameMojave:
+	case dbNamePhoenix:
 		return iofs.New(phoenixMigrate.Asset, ".")
 	default:
 		panic("invalid database name")

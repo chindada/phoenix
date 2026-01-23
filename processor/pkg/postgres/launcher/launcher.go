@@ -59,7 +59,7 @@ func New(opts ...Option) (Launcher, error) {
 	if cfg.DBName == "" {
 		return nil, errors.New("database name is required")
 	}
-	if cfg.DBName != dbNameMojave && cfg.DBName != dbNameVentura {
+	if cfg.DBName != dbNamePhoenix {
 		return nil, errors.New("invalid database name")
 	}
 

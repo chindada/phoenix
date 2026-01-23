@@ -31,4 +31,6 @@ provider/logs/*
 provider/data/*
 !provider/data/.gitkeep
 .worktrees/
+
 processor/data
+processor/db_backup

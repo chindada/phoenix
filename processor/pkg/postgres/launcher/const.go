@@ -2,8 +2,7 @@ package launcher
 
 const (
 	dbNameRoot    = "postgres"
-	dbNameMojave  = "mojave"
-	dbNameVentura = "ventura"
+	dbNamePhoenix = "phoenix"
 )
 
 const (
