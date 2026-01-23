@@ -26,7 +26,7 @@ TEMP.md
 
 # PROD
 shioaji.log
-logs/*
-!logs/.gitkeep
-data/*
-!data/.gitkeep
+provider/logs/*
+!provider/logs/.gitkeep
+provider/data/*
+!provider/data/.gitkeep
