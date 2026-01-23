@@ -21,9 +21,9 @@ The system consists of two main components:
 ## Key Technologies
 
 * **Communication**: gRPC (Protocol Buffers v3)
-* **Provider**: Python 3, `shioaji`, `grpcio`
-* **Processor**: Go 1.25+, `gin-gonic`, `grpc-go`
-* **Tools**: `make`, `protoc`, `ruff`, `mypy`, `golangci-lint`
+* **Provider**: Python 3.10+, `shioaji`, `grpcio`, `pytest`, `mypy`, `pyright`, `ruff`, `pylint`
+* **Processor**: Go 1.25+, `gin-gonic`, `grpc-go`, `golangci-lint-v2`, `gofumpt`
+* **Tools**: `make`, `protoc`
 
 ## Development Workflow
 
@@ -41,11 +41,14 @@ Use the `Makefile` for common tasks:
 * **Code Generation**: `make codegen` (Generates gRPC code for both Python and Go)
   * `make codegen-py`: Python only
   * `make codegen-go`: Go only
-* **Linting**: `make lint` (Runs `ruff` and `golangci-lint`)
-  * `make lint-py`: Python only
-  * `make lint-go`: Go only
-* **Formatting**: `make format` (Formats Python code with `ruff`; Go uses `goimports` via linter)
-* **Type Checking**: `make type-check` (Runs `mypy` on Python code)
+* **Linting**: `make lint` (Runs comprehensive linting for both Python and Go)
+  * `make lint-py`: Python only (ruff, pylint, mypy, pyright)
+  * `make lint-go`: Go only (gofumpt, golangci-lint-v2 for darwin, linux, windows)
+* **Testing**: `make test` (Runs all tests)
+  * `make test-py`: Python tests using `pytest`
+  * `make test-go`: Go tests using `go test`
+* **Formatting**: `make format` (Formats Python code with `ruff`; Go uses `gofumpt` via linter)
+* **Type Checking**: `make type-check` (Runs `mypy` and `pyright` on Python code)
 * **Run Provider**: `make run-server` (Starts the Python gRPC server)
 * **Build Processor**: `make build-go` (Compiles the Go server to `processor/bin/server`)
 
@@ -64,19 +67,27 @@ phoenix/
 │       └── shioaji_client.py
 └── processor/            # Go REST API Gateway
     ├── go.mod
-    ├── cmd/server/       # Go entry point
+    ├── cmd/phoenix/      # Go entry point (main.go)
     ├── internal/         # Internal application logic
     │   ├── client/       # gRPC client wrapper
-    │   └── server/       # REST server implementation (Gin)
-    └── pkg/pb/           # Generated Go gRPC code
+    │   ├── gateway/      # REST server implementation (Gin)
+    │   └── repository/   # Data access layer
+    └── pkg/              # Shared packages
+        ├── eventbus/     # Internal event system
+        ├── log/          # Structured logging
+        ├── pb/           # Generated Go gRPC code
+        └── postgres/     # Embedded Postgres launcher and migrator
+
 ```
 
 ### Conventions
 
 * **Linting**: The project enforces strict linting. Always run `make lint` before committing.
-  * Python: Uses `ruff` for linting and formatting.
-  * Go: Uses `golangci-lint` v2 with strict settings (including `modernize`, `golines`, `goimports`).
+  * Python: Uses `ruff` (formatting/linting), `pylint`, `mypy`, and `pyright`.
+  * Go: Uses `gofumpt` and `golangci-lint-v2` with cross-platform checks.
 * **gRPC**: Changes to the API should be made in `protos/v1/provider.proto` first, followed by `make codegen`.
 * **Env Vars**:
   * `PROVIDER_ADDR`: Address of the gRPC provider (default: `localhost:50051`).
   * `PORT`: Port for the Go REST server (default: `:8080`).
+  * `SJ_LOG_PATH`: Path for Shioaji logs (Python).
+  * `SJ_CONTRACTS_PATH`: Path for Shioaji contracts data (Python).
