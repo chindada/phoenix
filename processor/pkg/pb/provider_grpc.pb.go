@@ -68,96 +68,138 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// Service Definition
-// ShioajiProvider service provides an interface for trading and market data access.
+// ShioajiProvider service provides a gRPC interface for trading and market data access
+// using the Shioaji API (Taiwanese stock and futures trading).
 type ShioajiProviderClient interface {
-	// Login to the Shioaji API.
+	// Login to the Shioaji API using API key and secret key.
+	// This initiates a session and fetches security contracts.
+	// 登入
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
-	// Logout from the Shioaji API.
+	// Logout from the Shioaji API and terminate the current session.
+	// 登出
 	Logout(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*LogoutResponse, error)
-	// Retrieve usage information.
+	// Retrieve usage information, including current connections and data consumption.
+	// 使用量
 	GetUsage(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UsageStatus, error)
-	// List all available trading accounts.
+	// List all trading accounts associated with the logged-in user (e.g., Stock, Future, Option).
+	// 帳號列表
 	ListAccounts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListAccountsResponse, error)
-	// Get the account balance.
-	// SetDefaultAccount is client-side only in Python, but we might need it if the server maintains state per connection
-	// skipping for now or can add later if needed.
+	// Get the account balance, including available balance and date.
+	// 帳戶餘額
 	GetAccountBalance(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AccountBalance, error)
-	// Place a new order.
+	// Place a new order for a single contract.
+	// 下單
 	PlaceOrder(ctx context.Context, in *PlaceOrderRequest, opts ...grpc.CallOption) (*Trade, error)
-	// Place a combination order.
+	// Place a combination order (e.g., multiple legs for futures or options).
+	// 組合單下單
 	PlaceComboOrder(ctx context.Context, in *PlaceComboOrderRequest, opts ...grpc.CallOption) (*ComboTrade, error)
-	// Update an existing order.
+	// Update an existing order (e.g., modify price or quantity).
+	// 修改委託單
 	UpdateOrder(ctx context.Context, in *UpdateOrderRequest, opts ...grpc.CallOption) (*Trade, error)
-	// Cancel an existing order.
+	// Cancel an existing active order.
+	// 撤銷委託單
 	CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*Trade, error)
-	// Cancel a combination order.
+	// Cancel an active combination order.
+	// 撤銷組合單委託
 	CancelComboOrder(ctx context.Context, in *CancelComboOrderRequest, opts ...grpc.CallOption) (*ComboTrade, error)
-	// Update the status of orders and trades for an account.
+	// Manually trigger an update for the status of orders and trades for a specific account.
+	// 更新委託單狀態
 	UpdateStatus(ctx context.Context, in *UpdateStatusRequest, opts ...grpc.CallOption) (*Empty, error)
-	// Update the status of combination orders for an account.
+	// Manually trigger an update for the status of combination orders for a specific account.
+	// 更新組合單狀態
 	UpdateComboStatus(ctx context.Context, in *UpdateStatusRequest, opts ...grpc.CallOption) (*Empty, error)
-	// List all trades.
+	// List all trades (orders and their execution status) for the current session.
+	// 委託列表
 	ListTrades(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListTradesResponse, error)
-	// List all combination trades.
+	// List all combination trades for the current session.
+	// 組合單委託列表
 	ListComboTrades(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListComboTradesResponse, error)
-	// Get order deal records.
+	// Retrieve deal records for orders associated with a specific account.
+	// 委託成交紀錄
 	GetOrderDealRecords(ctx context.Context, in *GetOrderDealRecordsRequest, opts ...grpc.CallOption) (*GetOrderDealRecordsResponse, error)
-	// List current positions for an account.
+	// List current open positions (unrealized profit and loss) for an account.
+	// 查詢部位
 	ListPositions(ctx context.Context, in *ListPositionsRequest, opts ...grpc.CallOption) (*ListPositionsResponse, error)
 	// Get detailed information for a specific position.
+	// 查詢部位詳細資訊
 	ListPositionDetail(ctx context.Context, in *ListPositionDetailRequest, opts ...grpc.CallOption) (*ListPositionDetailResponse, error)
-	// List realized profit and loss.
+	// List realized profit and loss for a specific account within a date range.
+	// 查詢損益
 	ListProfitLoss(ctx context.Context, in *ListProfitLossRequest, opts ...grpc.CallOption) (*ListProfitLossResponse, error)
-	// Get detailed realized profit and loss for a specific entry.
+	// Get detailed realized profit and loss for a specific entry ID.
+	// 查詢損益詳細資訊
 	ListProfitLossDetail(ctx context.Context, in *ListProfitLossDetailRequest, opts ...grpc.CallOption) (*ListProfitLossDetailResponse, error)
-	// Get a summary of profit and loss.
+	// Get a summary of realized profit and loss (buy cost, sell cost, pnl, etc.).
+	// 查詢損益匯總
 	ListProfitLossSummary(ctx context.Context, in *ListProfitLossSummaryRequest, opts ...grpc.CallOption) (*ListProfitLossSummaryResponse, error)
-	// Get settlement information.
+	// Get settlement information for a stock account.
+	// 查詢結算資訊
 	GetSettlements(ctx context.Context, in *GetSettlementsRequest, opts ...grpc.CallOption) (*GetSettlementsResponse, error)
-	// List settlement information (Alias).
+	// Alias for GetSettlements.
+	// 結算清單
 	ListSettlements(ctx context.Context, in *GetSettlementsRequest, opts ...grpc.CallOption) (*GetSettlementsResponse, error)
-	// Get margin information for a futures account.
+	// Get margin information for a futures/options account.
+	// 查詢保證金
 	GetMargin(ctx context.Context, in *GetMarginRequest, opts ...grpc.CallOption) (*Margin, error)
-	// Get trading limits for a stock account.
+	// Get trading limits (e.g., maximum daily volume) for a stock account.
+	// 交易限額
 	GetTradingLimits(ctx context.Context, in *GetTradingLimitsRequest, opts ...grpc.CallOption) (*TradingLimits, error)
-	// Get stock reserve summary.
+	// Get a summary of stock reserve availability for borrowing.
+	// 股票券源彙總
 	GetStockReserveSummary(ctx context.Context, in *GetStockReserveSummaryRequest, opts ...grpc.CallOption) (*ReserveStocksSummaryResponse, error)
-	// Get stock reserve details.
+	// Get detailed information on stock reserve availability.
+	// 股票券源明細
 	GetStockReserveDetail(ctx context.Context, in *GetStockReserveDetailRequest, opts ...grpc.CallOption) (*ReserveStocksDetailResponse, error)
-	// Reserve stock for borrowing.
+	// Request a reservation for borrowing stock shares.
+	// 預約借券
 	ReserveStock(ctx context.Context, in *ReserveStockRequest, opts ...grpc.CallOption) (*ReserveStockResponse, error)
-	// Get earmarking details.
+	// Get details of earmarking (restricted funds for stock purchases).
+	// 圈存明細
 	GetEarmarkingDetail(ctx context.Context, in *GetEarmarkingDetailRequest, opts ...grpc.CallOption) (*EarmarkStocksDetailResponse, error)
-	// Apply for earmarking.
+	// Apply for earmarking shares at a specific price.
+	// 預約圈存
 	ReserveEarmarking(ctx context.Context, in *ReserveEarmarkingRequest, opts ...grpc.CallOption) (*ReserveEarmarkingResponse, error)
-	// Get market snapshots for a list of contracts.
+	// Get market snapshots (last price, volume, high, low) for a list of contract codes.
+	// 行情快照
 	GetSnapshots(ctx context.Context, in *GetSnapshotsRequest, opts ...grpc.CallOption) (*GetSnapshotsResponse, error)
-	// Get tick data for a specific contract and date.
+	// Get historical or real-time tick data for a contract on a specific date.
+	// 獲取逐筆報價
 	GetTicks(ctx context.Context, in *GetTicksRequest, opts ...grpc.CallOption) (*Ticks, error)
-	// Get K-bar (candlestick) data for a specific contract and date range.
+	// Get K-bar (candlestick) data for a contract within a date range.
+	// 獲取K線資料
 	GetKbars(ctx context.Context, in *GetKbarsRequest, opts ...grpc.CallOption) (*Kbars, error)
-	// Get daily quotes.
+	// Get daily trading quotes (summary) for all contracts on a specific date.
+	// 每日報價
 	GetDailyQuotes(ctx context.Context, in *GetDailyQuotesRequest, opts ...grpc.CallOption) (*DailyQuotes, error)
-	// Enquire about credit for a list of contracts.
+	// Enquire about credit availability (margin/short) for a list of contracts.
+	// 信用交易查詢
 	CreditEnquires(ctx context.Context, in *CreditEnquiresRequest, opts ...grpc.CallOption) (*CreditEnquiresResponse, error)
-	// Get short stock sources for a list of contracts.
+	// Get available sources for shorting stock for a list of contracts.
+	// 借券水源
 	GetShortStockSources(ctx context.Context, in *GetShortStockSourcesRequest, opts ...grpc.CallOption) (*GetShortStockSourcesResponse, error)
-	// Get scanner results (ranked stocks).
+	// Run a market scanner to find stocks meeting specific ranking criteria.
+	// 選股器
 	GetScanners(ctx context.Context, in *GetScannersRequest, opts ...grpc.CallOption) (*GetScannersResponse, error)
-	// Get punishment information (disposition stocks).
+	// Get information on disposition stocks (stocks under regulatory punishment).
+	// 處置股
 	GetPunish(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Punish, error)
-	// Get notice information (attention stocks).
+	// Get information on attention stocks (notice stocks).
+	// 注意股
 	GetNotice(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Notice, error)
-	// Manually fetch contracts.
+	// Manually fetch and update security contracts from the server.
+	// 下載商品檔
 	FetchContracts(ctx context.Context, in *FetchContractsRequest, opts ...grpc.CallOption) (*Empty, error)
-	// Activate the Certificate Authority (CA).
+	// Activate the Certificate Authority (CA) for order placement security.
+	// 憑證開通
 	ActivateCA(ctx context.Context, in *ActivateCARequest, opts ...grpc.CallOption) (*ActivateCAResponse, error)
-	// Get the CA expiration time.
+	// Get the expiration timestamp of the currently activated CA.
+	// 憑證過期時間
 	GetCAExpireTime(ctx context.Context, in *GetCAExpireTimeRequest, opts ...grpc.CallOption) (*GetCAExpireTimeResponse, error)
-	// Subscribe to trade updates for an account.
+	// Subscribe to trade updates (execution reports) for an account.
+	// 訂閱交易回報
 	SubscribeTrade(ctx context.Context, in *SubscribeTradeRequest, opts ...grpc.CallOption) (*SubscribeTradeResponse, error)
 	// Unsubscribe from trade updates for an account.
+	// 取消訂閱交易回報
 	UnsubscribeTrade(ctx context.Context, in *UnsubscribeTradeRequest, opts ...grpc.CallOption) (*UnsubscribeTradeResponse, error)
 }
 
@@ -603,96 +645,138 @@ func (c *shioajiProviderClient) UnsubscribeTrade(ctx context.Context, in *Unsubs
 // All implementations must embed UnimplementedShioajiProviderServer
 // for forward compatibility.
 //
-// Service Definition
-// ShioajiProvider service provides an interface for trading and market data access.
+// ShioajiProvider service provides a gRPC interface for trading and market data access
+// using the Shioaji API (Taiwanese stock and futures trading).
 type ShioajiProviderServer interface {
-	// Login to the Shioaji API.
+	// Login to the Shioaji API using API key and secret key.
+	// This initiates a session and fetches security contracts.
+	// 登入
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
-	// Logout from the Shioaji API.
+	// Logout from the Shioaji API and terminate the current session.
+	// 登出
 	Logout(context.Context, *Empty) (*LogoutResponse, error)
-	// Retrieve usage information.
+	// Retrieve usage information, including current connections and data consumption.
+	// 使用量
 	GetUsage(context.Context, *Empty) (*UsageStatus, error)
-	// List all available trading accounts.
+	// List all trading accounts associated with the logged-in user (e.g., Stock, Future, Option).
+	// 帳號列表
 	ListAccounts(context.Context, *Empty) (*ListAccountsResponse, error)
-	// Get the account balance.
-	// SetDefaultAccount is client-side only in Python, but we might need it if the server maintains state per connection
-	// skipping for now or can add later if needed.
+	// Get the account balance, including available balance and date.
+	// 帳戶餘額
 	GetAccountBalance(context.Context, *Empty) (*AccountBalance, error)
-	// Place a new order.
+	// Place a new order for a single contract.
+	// 下單
 	PlaceOrder(context.Context, *PlaceOrderRequest) (*Trade, error)
-	// Place a combination order.
+	// Place a combination order (e.g., multiple legs for futures or options).
+	// 組合單下單
 	PlaceComboOrder(context.Context, *PlaceComboOrderRequest) (*ComboTrade, error)
-	// Update an existing order.
+	// Update an existing order (e.g., modify price or quantity).
+	// 修改委託單
 	UpdateOrder(context.Context, *UpdateOrderRequest) (*Trade, error)
-	// Cancel an existing order.
+	// Cancel an existing active order.
+	// 撤銷委託單
 	CancelOrder(context.Context, *CancelOrderRequest) (*Trade, error)
-	// Cancel a combination order.
+	// Cancel an active combination order.
+	// 撤銷組合單委託
 	CancelComboOrder(context.Context, *CancelComboOrderRequest) (*ComboTrade, error)
-	// Update the status of orders and trades for an account.
+	// Manually trigger an update for the status of orders and trades for a specific account.
+	// 更新委託單狀態
 	UpdateStatus(context.Context, *UpdateStatusRequest) (*Empty, error)
-	// Update the status of combination orders for an account.
+	// Manually trigger an update for the status of combination orders for a specific account.
+	// 更新組合單狀態
 	UpdateComboStatus(context.Context, *UpdateStatusRequest) (*Empty, error)
-	// List all trades.
+	// List all trades (orders and their execution status) for the current session.
+	// 委託列表
 	ListTrades(context.Context, *Empty) (*ListTradesResponse, error)
-	// List all combination trades.
+	// List all combination trades for the current session.
+	// 組合單委託列表
 	ListComboTrades(context.Context, *Empty) (*ListComboTradesResponse, error)
-	// Get order deal records.
+	// Retrieve deal records for orders associated with a specific account.
+	// 委託成交紀錄
 	GetOrderDealRecords(context.Context, *GetOrderDealRecordsRequest) (*GetOrderDealRecordsResponse, error)
-	// List current positions for an account.
+	// List current open positions (unrealized profit and loss) for an account.
+	// 查詢部位
 	ListPositions(context.Context, *ListPositionsRequest) (*ListPositionsResponse, error)
 	// Get detailed information for a specific position.
+	// 查詢部位詳細資訊
 	ListPositionDetail(context.Context, *ListPositionDetailRequest) (*ListPositionDetailResponse, error)
-	// List realized profit and loss.
+	// List realized profit and loss for a specific account within a date range.
+	// 查詢損益
 	ListProfitLoss(context.Context, *ListProfitLossRequest) (*ListProfitLossResponse, error)
-	// Get detailed realized profit and loss for a specific entry.
+	// Get detailed realized profit and loss for a specific entry ID.
+	// 查詢損益詳細資訊
 	ListProfitLossDetail(context.Context, *ListProfitLossDetailRequest) (*ListProfitLossDetailResponse, error)
-	// Get a summary of profit and loss.
+	// Get a summary of realized profit and loss (buy cost, sell cost, pnl, etc.).
+	// 查詢損益匯總
 	ListProfitLossSummary(context.Context, *ListProfitLossSummaryRequest) (*ListProfitLossSummaryResponse, error)
-	// Get settlement information.
+	// Get settlement information for a stock account.
+	// 查詢結算資訊
 	GetSettlements(context.Context, *GetSettlementsRequest) (*GetSettlementsResponse, error)
-	// List settlement information (Alias).
+	// Alias for GetSettlements.
+	// 結算清單
 	ListSettlements(context.Context, *GetSettlementsRequest) (*GetSettlementsResponse, error)
-	// Get margin information for a futures account.
+	// Get margin information for a futures/options account.
+	// 查詢保證金
 	GetMargin(context.Context, *GetMarginRequest) (*Margin, error)
-	// Get trading limits for a stock account.
+	// Get trading limits (e.g., maximum daily volume) for a stock account.
+	// 交易限額
 	GetTradingLimits(context.Context, *GetTradingLimitsRequest) (*TradingLimits, error)
-	// Get stock reserve summary.
+	// Get a summary of stock reserve availability for borrowing.
+	// 股票券源彙總
 	GetStockReserveSummary(context.Context, *GetStockReserveSummaryRequest) (*ReserveStocksSummaryResponse, error)
-	// Get stock reserve details.
+	// Get detailed information on stock reserve availability.
+	// 股票券源明細
 	GetStockReserveDetail(context.Context, *GetStockReserveDetailRequest) (*ReserveStocksDetailResponse, error)
-	// Reserve stock for borrowing.
+	// Request a reservation for borrowing stock shares.
+	// 預約借券
 	ReserveStock(context.Context, *ReserveStockRequest) (*ReserveStockResponse, error)
-	// Get earmarking details.
+	// Get details of earmarking (restricted funds for stock purchases).
+	// 圈存明細
 	GetEarmarkingDetail(context.Context, *GetEarmarkingDetailRequest) (*EarmarkStocksDetailResponse, error)
-	// Apply for earmarking.
+	// Apply for earmarking shares at a specific price.
+	// 預約圈存
 	ReserveEarmarking(context.Context, *ReserveEarmarkingRequest) (*ReserveEarmarkingResponse, error)
-	// Get market snapshots for a list of contracts.
+	// Get market snapshots (last price, volume, high, low) for a list of contract codes.
+	// 行情快照
 	GetSnapshots(context.Context, *GetSnapshotsRequest) (*GetSnapshotsResponse, error)
-	// Get tick data for a specific contract and date.
+	// Get historical or real-time tick data for a contract on a specific date.
+	// 獲取逐筆報價
 	GetTicks(context.Context, *GetTicksRequest) (*Ticks, error)
-	// Get K-bar (candlestick) data for a specific contract and date range.
+	// Get K-bar (candlestick) data for a contract within a date range.
+	// 獲取K線資料
 	GetKbars(context.Context, *GetKbarsRequest) (*Kbars, error)
-	// Get daily quotes.
+	// Get daily trading quotes (summary) for all contracts on a specific date.
+	// 每日報價
 	GetDailyQuotes(context.Context, *GetDailyQuotesRequest) (*DailyQuotes, error)
-	// Enquire about credit for a list of contracts.
+	// Enquire about credit availability (margin/short) for a list of contracts.
+	// 信用交易查詢
 	CreditEnquires(context.Context, *CreditEnquiresRequest) (*CreditEnquiresResponse, error)
-	// Get short stock sources for a list of contracts.
+	// Get available sources for shorting stock for a list of contracts.
+	// 借券水源
 	GetShortStockSources(context.Context, *GetShortStockSourcesRequest) (*GetShortStockSourcesResponse, error)
-	// Get scanner results (ranked stocks).
+	// Run a market scanner to find stocks meeting specific ranking criteria.
+	// 選股器
 	GetScanners(context.Context, *GetScannersRequest) (*GetScannersResponse, error)
-	// Get punishment information (disposition stocks).
+	// Get information on disposition stocks (stocks under regulatory punishment).
+	// 處置股
 	GetPunish(context.Context, *Empty) (*Punish, error)
-	// Get notice information (attention stocks).
+	// Get information on attention stocks (notice stocks).
+	// 注意股
 	GetNotice(context.Context, *Empty) (*Notice, error)
-	// Manually fetch contracts.
+	// Manually fetch and update security contracts from the server.
+	// 下載商品檔
 	FetchContracts(context.Context, *FetchContractsRequest) (*Empty, error)
-	// Activate the Certificate Authority (CA).
+	// Activate the Certificate Authority (CA) for order placement security.
+	// 憑證開通
 	ActivateCA(context.Context, *ActivateCARequest) (*ActivateCAResponse, error)
-	// Get the CA expiration time.
+	// Get the expiration timestamp of the currently activated CA.
+	// 憑證過期時間
 	GetCAExpireTime(context.Context, *GetCAExpireTimeRequest) (*GetCAExpireTimeResponse, error)
-	// Subscribe to trade updates for an account.
+	// Subscribe to trade updates (execution reports) for an account.
+	// 訂閱交易回報
 	SubscribeTrade(context.Context, *SubscribeTradeRequest) (*SubscribeTradeResponse, error)
 	// Unsubscribe from trade updates for an account.
+	// 取消訂閱交易回報
 	UnsubscribeTrade(context.Context, *UnsubscribeTradeRequest) (*UnsubscribeTradeResponse, error)
 	mustEmbedUnimplementedShioajiProviderServer()
 }

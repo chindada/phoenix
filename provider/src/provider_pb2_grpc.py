@@ -26,8 +26,8 @@ if _version_not_supported:
 
 
 class ShioajiProviderStub(object):
-    """Service Definition
-    ShioajiProvider service provides an interface for trading and market data access.
+    """ShioajiProvider service provides a gRPC interface for trading and market data access
+    using the Shioaji API (Taiwanese stock and futures trading).
     """
 
     def __init__(self, channel):
@@ -254,119 +254,134 @@ class ShioajiProviderStub(object):
 
 
 class ShioajiProviderServicer(object):
-    """Service Definition
-    ShioajiProvider service provides an interface for trading and market data access.
+    """ShioajiProvider service provides a gRPC interface for trading and market data access
+    using the Shioaji API (Taiwanese stock and futures trading).
     """
 
     def Login(self, request, context):
-        """Login to the Shioaji API.
+        """Login to the Shioaji API using API key and secret key.
+        This initiates a session and fetches security contracts.
+        登入
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def Logout(self, request, context):
-        """Logout from the Shioaji API.
+        """Logout from the Shioaji API and terminate the current session.
+        登出
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetUsage(self, request, context):
-        """Retrieve usage information.
+        """Retrieve usage information, including current connections and data consumption.
+        使用量
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListAccounts(self, request, context):
-        """List all available trading accounts.
+        """List all trading accounts associated with the logged-in user (e.g., Stock, Future, Option).
+        帳號列表
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetAccountBalance(self, request, context):
-        """Get the account balance.
-        SetDefaultAccount is client-side only in Python, but we might need it if the server maintains state per connection
-        skipping for now or can add later if needed.
+        """Get the account balance, including available balance and date.
+        帳戶餘額
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def PlaceOrder(self, request, context):
-        """Place a new order.
+        """Place a new order for a single contract.
+        下單
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def PlaceComboOrder(self, request, context):
-        """Place a combination order.
+        """Place a combination order (e.g., multiple legs for futures or options).
+        組合單下單
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UpdateOrder(self, request, context):
-        """Update an existing order.
+        """Update an existing order (e.g., modify price or quantity).
+        修改委託單
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def CancelOrder(self, request, context):
-        """Cancel an existing order.
+        """Cancel an existing active order.
+        撤銷委託單
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def CancelComboOrder(self, request, context):
-        """Cancel a combination order.
+        """Cancel an active combination order.
+        撤銷組合單委託
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UpdateStatus(self, request, context):
-        """Update the status of orders and trades for an account.
+        """Manually trigger an update for the status of orders and trades for a specific account.
+        更新委託單狀態
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UpdateComboStatus(self, request, context):
-        """Update the status of combination orders for an account.
+        """Manually trigger an update for the status of combination orders for a specific account.
+        更新組合單狀態
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListTrades(self, request, context):
-        """List all trades.
+        """List all trades (orders and their execution status) for the current session.
+        委託列表
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListComboTrades(self, request, context):
-        """List all combination trades.
+        """List all combination trades for the current session.
+        組合單委託列表
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetOrderDealRecords(self, request, context):
-        """Get order deal records.
+        """Retrieve deal records for orders associated with a specific account.
+        委託成交紀錄
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListPositions(self, request, context):
-        """List current positions for an account.
+        """List current open positions (unrealized profit and loss) for an account.
+        查詢部位
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -374,181 +389,207 @@ class ShioajiProviderServicer(object):
 
     def ListPositionDetail(self, request, context):
         """Get detailed information for a specific position.
+        查詢部位詳細資訊
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListProfitLoss(self, request, context):
-        """List realized profit and loss.
+        """List realized profit and loss for a specific account within a date range.
+        查詢損益
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListProfitLossDetail(self, request, context):
-        """Get detailed realized profit and loss for a specific entry.
+        """Get detailed realized profit and loss for a specific entry ID.
+        查詢損益詳細資訊
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListProfitLossSummary(self, request, context):
-        """Get a summary of profit and loss.
+        """Get a summary of realized profit and loss (buy cost, sell cost, pnl, etc.).
+        查詢損益匯總
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetSettlements(self, request, context):
-        """Get settlement information.
+        """Get settlement information for a stock account.
+        查詢結算資訊
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListSettlements(self, request, context):
-        """List settlement information (Alias).
+        """Alias for GetSettlements.
+        結算清單
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetMargin(self, request, context):
-        """Get margin information for a futures account.
+        """Get margin information for a futures/options account.
+        查詢保證金
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetTradingLimits(self, request, context):
-        """Get trading limits for a stock account.
+        """Get trading limits (e.g., maximum daily volume) for a stock account.
+        交易限額
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetStockReserveSummary(self, request, context):
-        """Get stock reserve summary.
+        """Get a summary of stock reserve availability for borrowing.
+        股票券源彙總
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetStockReserveDetail(self, request, context):
-        """Get stock reserve details.
+        """Get detailed information on stock reserve availability.
+        股票券源明細
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ReserveStock(self, request, context):
-        """Reserve stock for borrowing.
+        """Request a reservation for borrowing stock shares.
+        預約借券
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetEarmarkingDetail(self, request, context):
-        """Get earmarking details.
+        """Get details of earmarking (restricted funds for stock purchases).
+        圈存明細
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ReserveEarmarking(self, request, context):
-        """Apply for earmarking.
+        """Apply for earmarking shares at a specific price.
+        預約圈存
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetSnapshots(self, request, context):
-        """Get market snapshots for a list of contracts.
+        """Get market snapshots (last price, volume, high, low) for a list of contract codes.
+        行情快照
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetTicks(self, request, context):
-        """Get tick data for a specific contract and date.
+        """Get historical or real-time tick data for a contract on a specific date.
+        獲取逐筆報價
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetKbars(self, request, context):
-        """Get K-bar (candlestick) data for a specific contract and date range.
+        """Get K-bar (candlestick) data for a contract within a date range.
+        獲取K線資料
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetDailyQuotes(self, request, context):
-        """Get daily quotes.
+        """Get daily trading quotes (summary) for all contracts on a specific date.
+        每日報價
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def CreditEnquires(self, request, context):
-        """Enquire about credit for a list of contracts.
+        """Enquire about credit availability (margin/short) for a list of contracts.
+        信用交易查詢
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetShortStockSources(self, request, context):
-        """Get short stock sources for a list of contracts.
+        """Get available sources for shorting stock for a list of contracts.
+        借券水源
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetScanners(self, request, context):
-        """Get scanner results (ranked stocks).
+        """Run a market scanner to find stocks meeting specific ranking criteria.
+        選股器
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetPunish(self, request, context):
-        """Get punishment information (disposition stocks).
+        """Get information on disposition stocks (stocks under regulatory punishment).
+        處置股
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetNotice(self, request, context):
-        """Get notice information (attention stocks).
+        """Get information on attention stocks (notice stocks).
+        注意股
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def FetchContracts(self, request, context):
-        """Manually fetch contracts.
+        """Manually fetch and update security contracts from the server.
+        下載商品檔
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ActivateCA(self, request, context):
-        """Activate the Certificate Authority (CA).
+        """Activate the Certificate Authority (CA) for order placement security.
+        憑證開通
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetCAExpireTime(self, request, context):
-        """Get the CA expiration time.
+        """Get the expiration timestamp of the currently activated CA.
+        憑證過期時間
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def SubscribeTrade(self, request, context):
-        """Subscribe to trade updates for an account.
+        """Subscribe to trade updates (execution reports) for an account.
+        訂閱交易回報
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -556,6 +597,7 @@ class ShioajiProviderServicer(object):
 
     def UnsubscribeTrade(self, request, context):
         """Unsubscribe from trade updates for an account.
+        取消訂閱交易回報
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -788,8 +830,8 @@ def add_ShioajiProviderServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class ShioajiProvider(object):
-    """Service Definition
-    ShioajiProvider service provides an interface for trading and market data access.
+    """ShioajiProvider service provides a gRPC interface for trading and market data access
+    using the Shioaji API (Taiwanese stock and futures trading).
     """
 
     @staticmethod

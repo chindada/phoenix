@@ -5,12 +5,35 @@ provider.src.server -.
 import logging
 import os
 from concurrent import futures
-from typing import cast
+from datetime import datetime
+from typing import Any, cast
 
 import grpc
 from shioaji import constant as sj_constant
-from shioaji_client import ShioajiClient
 from shioaji.account import Account
+from shioaji.contracts import ComboContract, Contract
+from shioaji.order import (
+    ComboOrder,
+    ComboTrade,
+    Order,
+    OrderDealRecords,
+    OrderStatus,
+    Trade,
+)
+from shioaji.position import (
+    FuturePosition,
+    FuturePositionDetail,
+    FutureProfitDetail,
+    FutureProfitLoss,
+    FutureProfitLossSummary,
+    StockPosition,
+    StockPositionDetail,
+    StockProfitDetail,
+    StockProfitLoss,
+    StockProfitLossSummary,
+)
+
+from shioaji_client import ShioajiClient
 
 try:
     import provider_pb2
@@ -27,48 +50,140 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
     ShioajiService -.
     """
 
+    _SECURITY_TYPE_MAP = {
+        sj_constant.SecurityType.Index: provider_pb2.SECURITY_TYPE_IND,
+        sj_constant.SecurityType.Stock: provider_pb2.SECURITY_TYPE_STK,
+        sj_constant.SecurityType.Future: provider_pb2.SECURITY_TYPE_FUT,
+        sj_constant.SecurityType.Option: provider_pb2.SECURITY_TYPE_OPT,
+    }
+
+    _EXCHANGE_MAP = {
+        sj_constant.Exchange.TSE: provider_pb2.EXCHANGE_TSE,
+        sj_constant.Exchange.OTC: provider_pb2.EXCHANGE_OTC,
+        sj_constant.Exchange.OES: provider_pb2.EXCHANGE_OES,
+        sj_constant.Exchange.TAIFEX: provider_pb2.EXCHANGE_TAIFEX,
+    }
+
+    _CURRENCY_MAP = {
+        sj_constant.Currency.TWD: provider_pb2.CURRENCY_TWD,
+        sj_constant.Currency.USD: provider_pb2.CURRENCY_USD,
+        sj_constant.Currency.HKD: provider_pb2.CURRENCY_HKD,
+        sj_constant.Currency.GBP: provider_pb2.CURRENCY_GBP,
+        sj_constant.Currency.AUD: provider_pb2.CURRENCY_AUD,
+        sj_constant.Currency.CAD: provider_pb2.CURRENCY_CAD,
+        sj_constant.Currency.SGD: provider_pb2.CURRENCY_SGD,
+        sj_constant.Currency.CHF: provider_pb2.CURRENCY_CHF,
+        sj_constant.Currency.JPY: provider_pb2.CURRENCY_JPY,
+        sj_constant.Currency.ZAR: provider_pb2.CURRENCY_ZAR,
+        sj_constant.Currency.SEK: provider_pb2.CURRENCY_SEK,
+        sj_constant.Currency.NZD: provider_pb2.CURRENCY_NZD,
+        sj_constant.Currency.THB: provider_pb2.CURRENCY_THB,
+        sj_constant.Currency.PHP: provider_pb2.CURRENCY_PHP,
+        sj_constant.Currency.IDR: provider_pb2.CURRENCY_IDR,
+        sj_constant.Currency.EUR: provider_pb2.CURRENCY_EUR,
+        sj_constant.Currency.KRW: provider_pb2.CURRENCY_KRW,
+        sj_constant.Currency.VND: provider_pb2.CURRENCY_VND,
+        sj_constant.Currency.MYR: provider_pb2.CURRENCY_MYR,
+        sj_constant.Currency.CNY: provider_pb2.CURRENCY_CNY,
+    }
+
+    _OPTION_RIGHT_MAP = {
+        sj_constant.OptionRight.Call: provider_pb2.OPTION_RIGHT_CALL,
+        sj_constant.OptionRight.Put: provider_pb2.OPTION_RIGHT_PUT,
+    }
+
+    _DAY_TRADE_MAP = {
+        sj_constant.DayTrade.Yes: provider_pb2.DAY_TRADE_YES,
+        sj_constant.DayTrade.OnlyBuy: provider_pb2.DAY_TRADE_ONLYBUY,
+        sj_constant.DayTrade.No: provider_pb2.DAY_TRADE_NO,
+    }
+
+    _ACTION_MAP = {
+        sj_constant.Action.Buy: provider_pb2.ACTION_BUY,
+        sj_constant.Action.Sell: provider_pb2.ACTION_SELL,
+    }
+
+    _ORDER_TYPE_MAP = {
+        sj_constant.OrderType.ROD: provider_pb2.ORDER_TYPE_ROD,
+        sj_constant.OrderType.IOC: provider_pb2.ORDER_TYPE_IOC,
+        sj_constant.OrderType.FOK: provider_pb2.ORDER_TYPE_FOK,
+    }
+
+    _STATUS_MAP = {
+        sj_constant.Status.Cancelled: provider_pb2.STATUS_CANCELLED,
+        sj_constant.Status.Filled: provider_pb2.STATUS_FILLED,
+        sj_constant.Status.PartFilled: provider_pb2.STATUS_PARTFILLED,
+        sj_constant.Status.Inactive: provider_pb2.STATUS_INACTIVE,
+        sj_constant.Status.Failed: provider_pb2.STATUS_FAILED,
+        sj_constant.Status.PendingSubmit: provider_pb2.STATUS_PENDINGSUBMIT,
+        sj_constant.Status.PreSubmitted: provider_pb2.STATUS_PRESUBMITTED,
+        sj_constant.Status.Submitted: provider_pb2.STATUS_SUBMITTED,
+    }
+
+    _TICK_TYPE_MAP = {
+        sj_constant.TickType.No: provider_pb2.TICK_TYPE_NO,
+        sj_constant.TickType.Buy: provider_pb2.TICK_TYPE_BUY,
+        sj_constant.TickType.Sell: provider_pb2.TICK_TYPE_SELL,
+    }
+
+    _CHANGE_TYPE_MAP = {
+        sj_constant.ChangeType.LimitUp: provider_pb2.CHANGE_TYPE_LIMITUP,
+        sj_constant.ChangeType.Up: provider_pb2.CHANGE_TYPE_UP,
+        sj_constant.ChangeType.Unchanged: provider_pb2.CHANGE_TYPE_UNCHANGED,
+        sj_constant.ChangeType.Down: provider_pb2.CHANGE_TYPE_DOWN,
+        sj_constant.ChangeType.LimitDown: provider_pb2.CHANGE_TYPE_LIMITDOWN,
+    }
+
+    _STOCK_ORDER_COND_MAP = {
+        sj_constant.StockOrderCond.Cash: provider_pb2.STOCK_ORDER_COND_CASH,
+        sj_constant.StockOrderCond.MarginTrading: provider_pb2.STOCK_ORDER_COND_MARGINTRADING,
+        sj_constant.StockOrderCond.ShortSelling: provider_pb2.STOCK_ORDER_COND_SHORTSELLING,
+    }
+
+    _TRADE_TYPE_MAP = {
+        sj_constant.TradeType.Common: provider_pb2.TRADE_TYPE_COMMON,
+        sj_constant.TradeType.DayTrade: provider_pb2.TRADE_TYPE_DAYTRADE,
+    }
+
     def __init__(self):
-        # WARNING: This implementation is stateful and supports only a single user session.
-        # It is not suitable for concurrent multi-user environments.
         self.client = ShioajiClient()
         self.logged_in = False
 
+    def _get_enum(self, mapping: dict, value: Any) -> Any:
+        """Helper to look up enum values safely."""
+        if value is None:
+            return None
+        return mapping.get(value, None)
+
     @property
     def _stock_account(self) -> Account:
-        # Helper to safely get stock account and cast to Account type
         if not self.client.api.stock_account:
             raise ValueError("No stock account available")
         return cast(Account, self.client.api.stock_account)
 
     @property
     def _futopt_account(self) -> Account:
-        # Helper to safely get future/option account and cast to Account type
         if not self.client.api.futopt_account:
             raise ValueError("No future/option account available")
         return cast(Account, self.client.api.futopt_account)
 
-    def Login(self, request, context):
+    def Login(
+        self, request: provider_pb2.LoginRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.LoginResponse:
         """Login to the Shioaji API."""
         try:
             accounts = self.client.login(request.api_key, request.secret_key)
             self.logged_in = True
             return provider_pb2.LoginResponse(
-                accounts=[
-                    provider_pb2.Account(
-                        account_type=str(acc.account_type),
-                        person_id=acc.person_id,
-                        broker_id=acc.broker_id,
-                        account_id=acc.account_id,
-                        signed=acc.signed,
-                        username=acc.username,
-                    )
-                    for acc in accounts
-                ]
+                accounts=[self._to_pb_account(acc) for acc in accounts]
             )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.LoginResponse()
 
-    def Logout(self, request, context):
+    def Logout(
+        self, request: provider_pb2.Empty, context: grpc.ServicerContext
+    ) -> provider_pb2.LogoutResponse:
         """Logout from the Shioaji API."""
         try:
             success = self.client.logout()
@@ -76,8 +191,11 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             return provider_pb2.LogoutResponse(success=success)
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.LogoutResponse()
 
-    def GetUsage(self, request, context):
+    def GetUsage(
+        self, request: provider_pb2.Empty, context: grpc.ServicerContext
+    ) -> provider_pb2.UsageStatus:
         """Retrieve usage information."""
         try:
             usage = self.client.usage()
@@ -89,28 +207,24 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.UsageStatus()
 
-    def ListAccounts(self, request, context):
+    def ListAccounts(
+        self, request: provider_pb2.Empty, context: grpc.ServicerContext
+    ) -> provider_pb2.ListAccountsResponse:
         """List all available trading accounts."""
         try:
             accounts = self.client.list_accounts()
             return provider_pb2.ListAccountsResponse(
-                accounts=[
-                    provider_pb2.Account(
-                        account_type=str(acc.account_type),
-                        person_id=acc.person_id,
-                        broker_id=acc.broker_id,
-                        account_id=acc.account_id,
-                        signed=acc.signed,
-                        username=acc.username,
-                    )
-                    for acc in accounts
-                ]
+                accounts=[self._to_pb_account(acc) for acc in accounts]
             )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.ListAccountsResponse()
 
-    def GetAccountBalance(self, request, context):
+    def GetAccountBalance(
+        self, request: provider_pb2.Empty, context: grpc.ServicerContext
+    ) -> provider_pb2.AccountBalance:
         """Get the account balance."""
         try:
             balance = self.client.account_balance()
@@ -118,205 +232,739 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 acc_balance=balance.acc_balance,
                 date=str(balance.date),
                 errmsg=balance.errmsg,
-                currency="TWD",  # Inferred
             )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.AccountBalance()
 
-    # Helper to convert proto Contract to Shioaji Contract
-    def _to_sj_contract(self, proto_contract):
-        if proto_contract.security_type == "Stock":
+    def _to_pb_account(self, acc: Account):
+        """Convert Shioaji Account to Protobuf Account."""
+        return provider_pb2.Account(
+            account_type=str(acc.account_type),
+            person_id=acc.person_id,
+            broker_id=acc.broker_id,
+            account_id=acc.account_id,
+            username=acc.username,
+            signed=getattr(acc, "signed", False),
+        )
+
+    def _to_pb_contract(self, contract: Contract):
+        """Convert Shioaji Contract to Protobuf Contract."""
+        return provider_pb2.Contract(
+            security_type=self._get_enum(
+                self._SECURITY_TYPE_MAP, contract.security_type
+            ),
+            exchange=self._get_enum(self._EXCHANGE_MAP, contract.exchange),
+            code=contract.code,
+            symbol=contract.symbol,
+            name=contract.name,
+            currency=self._get_enum(self._CURRENCY_MAP, contract.currency),
+            category=contract.category,
+            delivery_month=contract.delivery_month,
+            delivery_date=contract.delivery_date,
+            strike_price=float(contract.strike_price),
+            option_right=self._get_enum(self._OPTION_RIGHT_MAP, contract.option_right),
+            underlying_kind=contract.underlying_kind,
+            underlying_code=contract.underlying_code,
+            unit=float(contract.unit),
+            multiplier=contract.multiplier,
+            limit_up=contract.limit_up,
+            limit_down=contract.limit_down,
+            reference=contract.reference,
+            update_date=contract.update_date,
+            margin_trading_balance=contract.margin_trading_balance,
+            short_selling_balance=contract.short_selling_balance,
+            day_trade=self._get_enum(self._DAY_TRADE_MAP, contract.day_trade),
+            target_code=contract.target_code,
+        )
+
+    def _to_pb_combo_base(self, combo_base):
+        """Convert Shioaji ComboBase to Protobuf ComboBase."""
+        return provider_pb2.ComboBase(
+            security_type=self._get_enum(
+                self._SECURITY_TYPE_MAP, combo_base.security_type
+            ),
+            exchange=self._get_enum(self._EXCHANGE_MAP, combo_base.exchange),
+            code=combo_base.code,
+            symbol=combo_base.symbol,
+            name=combo_base.name,
+            currency=self._get_enum(self._CURRENCY_MAP, combo_base.currency),
+            category=combo_base.category,
+            delivery_month=combo_base.delivery_month,
+            delivery_date=combo_base.delivery_date,
+            strike_price=float(combo_base.strike_price),
+            option_right=self._get_enum(
+                self._OPTION_RIGHT_MAP, combo_base.option_right
+            ),
+            underlying_kind=combo_base.underlying_kind,
+            underlying_code=combo_base.underlying_code,
+            unit=float(combo_base.unit),
+            multiplier=combo_base.multiplier,
+            limit_up=combo_base.limit_up,
+            limit_down=combo_base.limit_down,
+            reference=combo_base.reference,
+            update_date=combo_base.update_date,
+            margin_trading_balance=combo_base.margin_trading_balance,
+            short_selling_balance=combo_base.short_selling_balance,
+            day_trade=self._get_enum(self._DAY_TRADE_MAP, combo_base.day_trade),
+            target_code=combo_base.target_code,
+            action=self._get_enum(self._ACTION_MAP, combo_base.action),
+        )
+
+    def _to_pb_combo_contract(self, contract: ComboContract):
+        """Convert Shioaji ComboContract to Protobuf ComboContract."""
+        return provider_pb2.ComboContract(
+            legs=[self._to_pb_combo_base(leg) for leg in contract.legs]
+        )
+
+    def _to_pb_order(self, order: Order):
+        """Convert Shioaji Order to Protobuf Order."""
+        return provider_pb2.Order(
+            action=self._get_enum(self._ACTION_MAP, order.action),
+            price=order.price,
+            quantity=order.quantity,
+            id=order.id,
+            seqno=order.seqno,
+            ordno=order.ordno,
+            account=self._to_pb_account(order.account) if order.account else None,
+            price_type=str(order.price_type),
+            order_type=self._get_enum(self._ORDER_TYPE_MAP, order.order_type),
+        )
+
+    def _to_pb_combo_order(self, order: ComboOrder):
+        """Convert Shioaji ComboOrder to Protobuf ComboOrder."""
+        return provider_pb2.ComboOrder(
+            action=self._get_enum(self._ACTION_MAP, order.action),
+            price=order.price,
+            quantity=order.quantity,
+            id=order.id,
+            seqno=order.seqno,
+            ordno=order.ordno,
+            account=self._to_pb_account(order.account) if order.account else None,
+            price_type=str(order.price_type),
+            order_type=self._get_enum(self._ORDER_TYPE_MAP, order.order_type),
+        )
+
+    def _to_pb_deal(self, deal):
+        """Convert Shioaji Deal to Protobuf Deal."""
+        return provider_pb2.Deal(
+            seq=deal.seq,
+            price=deal.price,
+            quantity=deal.quantity,
+            ts=deal.ts,
+        )
+
+    def _to_pb_order_status(self, status: OrderStatus):
+        """Convert Shioaji OrderStatus to Protobuf OrderStatus."""
+        return provider_pb2.OrderStatus(
+            id=status.id,
+            status=self._get_enum(self._STATUS_MAP, status.status),
+            status_code=status.status_code,
+            order_datetime=str(status.order_datetime),
+            deal_quantity=status.deal_quantity,
+            cancel_quantity=status.cancel_quantity,
+            web_id=status.web_id,
+            msg=status.msg,
+            modified_time=str(status.modified_time),
+            modified_price=float(status.modified_price),
+            order_quantity=status.order_quantity,
+            deals=[self._to_pb_deal(d) for d in status.deals],
+        )
+
+    def _to_pb_trade(self, trade: Trade):
+        """Convert Shioaji Trade to Protobuf Trade."""
+        return provider_pb2.Trade(
+            contract=self._to_pb_contract(trade.contract),
+            order=self._to_pb_order(cast(Order, trade.order)),
+            status=self._to_pb_order_status(trade.status),
+        )
+
+    def _to_pb_combo_trade(self, trade: ComboTrade):
+        """Convert Shioaji ComboTrade to Protobuf ComboTrade."""
+        return provider_pb2.ComboTrade(
+            contract=self._to_pb_combo_contract(trade.contract),
+            order=self._to_pb_combo_order(cast(ComboOrder, trade.order)),
+            status=self._to_pb_order_status(trade.status),
+        )
+
+    def _to_pb_order_deal_record(self, record: OrderDealRecords):
+        """Convert Shioaji OrderDealRecord to Protobuf OrderDealRecord."""
+        # record.record is a dict containing the details
+        data = record.record
+        return provider_pb2.OrderDealRecord(
+            code=data.get("code", ""),
+            action=self._get_enum(self._ACTION_MAP, data.get("action")),
+            price=float(data.get("price", 0.0)),
+            quantity=int(data.get("quantity", 0)),
+            ts=str(data.get("ts", "")),
+        )
+
+    def _to_sj_contract(self, proto_contract: provider_pb2.Contract):
+        """Convert Protobuf Contract to Shioaji Contract."""
+        if proto_contract.security_type == provider_pb2.SECURITY_TYPE_STK:
             return self.client.api.Contracts.Stocks[proto_contract.code]
-        elif proto_contract.security_type == "Future":
+        if proto_contract.security_type == provider_pb2.SECURITY_TYPE_FUT:
             return self.client.api.Contracts.Futures[proto_contract.code]
-        elif proto_contract.security_type == "Option":
+        if proto_contract.security_type == provider_pb2.SECURITY_TYPE_OPT:
             return self.client.api.Contracts.Options[proto_contract.code]
-        elif proto_contract.security_type == "Index":
+        if proto_contract.security_type == provider_pb2.SECURITY_TYPE_IND:
             return self.client.api.Contracts.Indexs[proto_contract.code]
         return self.client.api.Contracts.Stocks[proto_contract.code]
 
-    # Helper to convert proto Order to Shioaji Order
-    def _to_sj_order(self, proto_order):
+    def _to_sj_combo_contract(self, proto_contract: provider_pb2.ComboContract):
+        """Convert Protobuf ComboContract to Shioaji ComboContract."""
+        # Assuming logic to retrieve combo contract
+
+    def _to_sj_order(self, proto_order: provider_pb2.Order):
+        """Convert Protobuf Order to Shioaji Order."""
+        action_map = {
+            provider_pb2.ACTION_BUY: sj_constant.Action.Buy,
+            provider_pb2.ACTION_SELL: sj_constant.Action.Sell,
+        }
+        order_type_map = {
+            provider_pb2.ORDER_TYPE_ROD: sj_constant.OrderType.ROD,
+            provider_pb2.ORDER_TYPE_IOC: sj_constant.OrderType.IOC,
+            provider_pb2.ORDER_TYPE_FOK: sj_constant.OrderType.FOK,
+        }
+
         return self.client.api.Order(
             price=proto_order.price,
             quantity=proto_order.quantity,
-            action=proto_order.action,
-            price_type=proto_order.price_type,
-            order_type=proto_order.order_type,
-            # Account mapping needed or rely on default
+            action=action_map.get(proto_order.action, sj_constant.Action.Buy),
+            price_type=cast(
+                Any, proto_order.price_type
+            ),  # cast to Any for str compatibility
+            order_type=order_type_map.get(
+                proto_order.order_type, sj_constant.OrderType.ROD
+            ),
         )
 
-    def PlaceOrder(self, request, context):
+    def PlaceOrder(
+        self, request: provider_pb2.PlaceOrderRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.Trade:
         """Place a new order."""
         try:
             contract = self._to_sj_contract(request.contract)
             order = self._to_sj_order(request.order)
             trade = self.client.place_order(contract, order)
-            # Simplified return
+            return self._to_pb_trade(trade)
+        except Exception as e:
+            context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.Trade()
+
+    def PlaceComboOrder(
+        self,
+        request: provider_pb2.PlaceComboOrderRequest,
+        context: grpc.ServicerContext,
+    ) -> provider_pb2.ComboTrade:
+        """Place a combination order."""
+        try:
+            # Logic to construct combo contract and order needed
+            context.abort(
+                grpc.StatusCode.UNIMPLEMENTED, "PlaceComboOrder not fully implemented"
+            )
+            return provider_pb2.ComboTrade()
+        except Exception as e:
+            context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.ComboTrade()
+
+    def UpdateOrder(
+        self, request: provider_pb2.UpdateOrderRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.Trade:
+        """Update an existing order."""
+        try:
+            context.abort(
+                grpc.StatusCode.UNIMPLEMENTED, "UpdateOrder not fully implemented"
+            )
             return provider_pb2.Trade()
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.Trade()
 
-    def PlaceComboOrder(self, request, context):
+    def CancelOrder(
+        self, request: provider_pb2.CancelOrderRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.Trade:
+        """Cancel an existing order."""
         try:
-            # Need proper conversion for ComboContract and ComboOrder
-            # Placeholder implementation
-            pass
+            context.abort(
+                grpc.StatusCode.UNIMPLEMENTED, "CancelOrder not fully implemented"
+            )
+            return provider_pb2.Trade()
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
-        return provider_pb2.ComboTrade()
+            return provider_pb2.Trade()
 
-    def UpdateOrder(self, request, context):
+    def CancelComboOrder(
+        self,
+        request: provider_pb2.CancelComboOrderRequest,
+        context: grpc.ServicerContext,
+    ) -> provider_pb2.ComboTrade:
+        """Cancel a combination order."""
         try:
-            # Requires mapping proto Trade back to SJ Trade object which is complex
-            # Typically requires finding the trade in local cache or by ID
-            pass
+            context.abort(
+                grpc.StatusCode.UNIMPLEMENTED, "CancelComboOrder not fully implemented"
+            )
+            return provider_pb2.ComboTrade()
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
-        return provider_pb2.Trade()
+            return provider_pb2.ComboTrade()
 
-    def CancelOrder(self, request, context):
+    def UpdateStatus(
+        self, request: provider_pb2.UpdateStatusRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.Empty:
+        """Update the status of orders and trades for an account."""
         try:
-            # Requires mapping proto Trade back to SJ Trade object
-            pass
-        except Exception as e:
-            context.abort(grpc.StatusCode.INTERNAL, str(e))
-        return provider_pb2.Trade()
-
-    def CancelComboOrder(self, request, context):
-        try:
-            pass
-        except Exception as e:
-            context.abort(grpc.StatusCode.INTERNAL, str(e))
-        return provider_pb2.ComboTrade()
-
-    def UpdateStatus(self, request, context):
-        try:
-            self.client.update_status(
-                self._stock_account
-            )  # Defaulting to stock account
+            self.client.update_status(self._stock_account)
             return provider_pb2.Empty()
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.Empty()
 
-    def UpdateComboStatus(self, request, context):
+    def UpdateComboStatus(
+        self, request: provider_pb2.UpdateStatusRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.Empty:
+        """Update the status of combination orders for an account."""
         try:
             self.client.update_combostatus(self._stock_account)
             return provider_pb2.Empty()
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.Empty()
 
-    def ListTrades(self, request, context):
+    def ListTrades(
+        self, request: provider_pb2.Empty, context: grpc.ServicerContext
+    ) -> provider_pb2.ListTradesResponse:
+        """List all trades."""
         try:
             trades = self.client.list_trades()
-            return provider_pb2.ListTradesResponse(trades=[])  # Conversion needed
+            return provider_pb2.ListTradesResponse(
+                trades=[self._to_pb_trade(t) for t in trades]
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.ListTradesResponse()
 
-    def ListComboTrades(self, request, context):
+    def ListComboTrades(
+        self, request: provider_pb2.Empty, context: grpc.ServicerContext
+    ) -> provider_pb2.ListComboTradesResponse:
+        """List all combination trades."""
         try:
             trades = self.client.list_combotrades()
-            return provider_pb2.ListComboTradesResponse(combo_trades=[])
+            return provider_pb2.ListComboTradesResponse(
+                combo_trades=[self._to_pb_combo_trade(t) for t in trades]
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.ListComboTradesResponse()
 
-    def GetOrderDealRecords(self, request, context):
+    def GetOrderDealRecords(
+        self,
+        request: provider_pb2.GetOrderDealRecordsRequest,
+        context: grpc.ServicerContext,
+    ) -> provider_pb2.GetOrderDealRecordsResponse:
+        """Get order deal records."""
         try:
             records = self.client.order_deal_records(self._stock_account)
-            return provider_pb2.GetOrderDealRecordsResponse(records=[])
+            return provider_pb2.GetOrderDealRecordsResponse(
+                records=[self._to_pb_order_deal_record(r) for r in records]
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.GetOrderDealRecordsResponse()
 
-    def ListPositions(self, request, context):
+    def ListPositions(
+        self, request: provider_pb2.ListPositionsRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.ListPositionsResponse:
+        """List current positions for an account."""
         try:
             positions = self.client.list_positions(self._stock_account)
-            return provider_pb2.ListPositionsResponse(positions=[])
+            pb_positions = []
+            for p in positions:
+                if isinstance(p, StockPosition):
+                    pb_positions.append(
+                        provider_pb2.Position(
+                            stock_position=provider_pb2.StockPosition(
+                                id=p.id,
+                                code=p.code,
+                                direction=self._get_enum(self._ACTION_MAP, p.direction),
+                                quantity=p.quantity,
+                                price=p.price,
+                                last_price=p.last_price,
+                                pnl=p.pnl,
+                                yd_quantity=p.yd_quantity,
+                                cond=self._get_enum(
+                                    self._STOCK_ORDER_COND_MAP,
+                                    p.cond,
+                                ),
+                                margin_purchase_amount=p.margin_purchase_amount,
+                                collateral=p.collateral,
+                                short_sale_margin=p.short_sale_margin,
+                                interest=p.interest,
+                            )
+                        )
+                    )
+                elif isinstance(p, FuturePosition):
+                    pb_positions.append(
+                        provider_pb2.Position(
+                            future_position=provider_pb2.FuturePosition(
+                                id=p.id,
+                                code=p.code,
+                                direction=self._get_enum(self._ACTION_MAP, p.direction),
+                                quantity=p.quantity,
+                                price=p.price,
+                                last_price=p.last_price,
+                                pnl=p.pnl,
+                            )
+                        )
+                    )
+            return provider_pb2.ListPositionsResponse(positions=pb_positions)
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.ListPositionsResponse()
 
-    def ListPositionDetail(self, request, context):
+    def ListPositionDetail(
+        self,
+        request: provider_pb2.ListPositionDetailRequest,
+        context: grpc.ServicerContext,
+    ) -> provider_pb2.ListPositionDetailResponse:
+        """Get detailed information for a specific position."""
         try:
             details = self.client.list_position_detail(
                 self._stock_account, request.detail_id
             )
-            return provider_pb2.ListPositionDetailResponse(details=[])
+            pb_details = []
+            for d in details:
+                if isinstance(d, StockPositionDetail):
+                    pb_details.append(
+                        provider_pb2.PositionDetail(
+                            stock_detail=provider_pb2.StockPositionDetail(
+                                date=d.date,
+                                code=d.code,
+                                quantity=d.quantity,
+                                price=d.price,
+                                last_price=d.last_price,
+                                pnl=d.pnl,
+                                dseq=d.dseq,
+                                direction=self._get_enum(self._ACTION_MAP, d.direction),
+                                currency=self._get_enum(self._CURRENCY_MAP, d.currency),
+                                fee=float(d.fee),
+                                cond=self._get_enum(
+                                    self._STOCK_ORDER_COND_MAP,
+                                    d.cond,
+                                ),
+                                ex_dividends=d.ex_dividends,
+                                interest=d.interest,
+                                margintrading_amt=d.margintrading_amt,
+                                collateral=d.collateral,
+                            )
+                        )
+                    )
+                elif isinstance(d, FuturePositionDetail):
+                    pb_details.append(
+                        provider_pb2.PositionDetail(
+                            future_detail=provider_pb2.FuturePositionDetail(
+                                date=d.date,
+                                code=d.code,
+                                quantity=d.quantity,
+                                price=d.price,
+                                last_price=d.last_price,
+                                pnl=d.pnl,
+                                dseq=d.dseq,
+                                direction=self._get_enum(self._ACTION_MAP, d.direction),
+                                currency=self._get_enum(self._CURRENCY_MAP, d.currency),
+                                fee=float(d.fee),
+                                entry_quantity=d.entry_quantity,
+                            )
+                        )
+                    )
+            return provider_pb2.ListPositionDetailResponse(details=pb_details)
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.ListPositionDetailResponse()
 
-    def ListProfitLoss(self, request, context):
+    def ListProfitLoss(
+        self, request: provider_pb2.ListProfitLossRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.ListProfitLossResponse:
+        """List realized profit and loss."""
         try:
-            # list_profit_loss signature only takes account
-            # Filtering by date likely needs to happen on the client or result filtering
-            # But the client stub implies it takes dates. Let's check ShioajiClient definition.
-            # Checking ShioajiClient.list_profit_loss in previous turns, it takes only account.
-            # The original shioaji method takes begin_date/end_date.
-            # I must have missed adding those args to ShioajiClient abstraction if they are needed.
-            # Re-checking ShioajiClient definition from file content in previous turn...
-            # It seems ShioajiClient.list_profit_loss(self, account: Account) -> ...
-            # So I should stick to that or update ShioajiClient.
-            # For now, to fix lint, I call it without date args as per current ShioajiClient definition.
             pnls = self.client.list_profit_loss(self._stock_account)
-            return provider_pb2.ListProfitLossResponse(profit_losses=[])
+            pb_pnls = []
+            for p in pnls:
+                if isinstance(p, StockProfitLoss):
+                    pb_pnls.append(
+                        provider_pb2.ProfitLoss(
+                            stock_pnl=provider_pb2.StockProfitLoss(
+                                dseq=p.dseq,
+                                code=p.code,
+                                quantity=p.quantity,
+                                price=p.price,
+                                pnl=p.pnl,
+                                pr_ratio=p.pr_ratio,
+                                cond=self._get_enum(
+                                    self._STOCK_ORDER_COND_MAP,
+                                    p.cond,
+                                ),
+                                date=p.date,
+                                seqno=p.seqno,
+                                id=p.id,
+                            )
+                        )
+                    )
+                elif isinstance(p, FutureProfitLoss):
+                    pb_pnls.append(
+                        provider_pb2.ProfitLoss(
+                            future_pnl=provider_pb2.FutureProfitLoss(
+                                date=p.date,
+                                code=p.code,
+                                quantity=p.quantity,
+                                entry_price=p.entry_price,
+                                cover_price=p.cover_price,
+                                direction=self._get_enum(self._ACTION_MAP, p.direction),
+                                pnl=p.pnl,
+                                tax=p.tax,
+                                fee=p.fee,
+                                id=p.id,
+                            )
+                        )
+                    )
+            return provider_pb2.ListProfitLossResponse(profit_losses=pb_pnls)
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.ListProfitLossResponse()
 
-    def ListProfitLossDetail(self, request, context):
+    def ListProfitLossDetail(
+        self,
+        request: provider_pb2.ListProfitLossDetailRequest,
+        context: grpc.ServicerContext,
+    ) -> provider_pb2.ListProfitLossDetailResponse:
+        """Get detailed realized profit and loss for a specific entry."""
         try:
             details = self.client.list_profit_loss_detail(
                 self._stock_account, request.detail_id
             )
-            return provider_pb2.ListProfitLossDetailResponse(details=[])
+            pb_details = []
+            for d in details:
+                if isinstance(d, StockProfitDetail):
+                    pb_details.append(
+                        provider_pb2.ProfitDetail(
+                            stock_detail=provider_pb2.StockProfitDetail(
+                                price=d.price,
+                                cost=d.cost,
+                                interest=d.interest,
+                                date=d.date,
+                                code=d.code,
+                                quantity=d.quantity,
+                                dseq=d.dseq,
+                                fee=d.fee,
+                                tax=d.tax,
+                                currency=self._get_enum(self._CURRENCY_MAP, d.currency),
+                                rep_margintrading_amt=d.rep_margintrading_amt,
+                                rep_collateral=d.rep_collateral,
+                                rep_margin=d.rep_margin,
+                                shortselling_fee=d.shortselling_fee,
+                                ex_dividend_amt=d.ex_dividend_amt,
+                                trade_type=self._get_enum(
+                                    self._TRADE_TYPE_MAP, d.trade_type
+                                ),
+                                cond=self._get_enum(
+                                    self._STOCK_ORDER_COND_MAP,
+                                    d.cond,
+                                ),
+                            )
+                        )
+                    )
+                elif isinstance(d, FutureProfitDetail):
+                    pb_details.append(
+                        provider_pb2.ProfitDetail(
+                            future_detail=provider_pb2.FutureProfitDetail(
+                                direction=self._get_enum(self._ACTION_MAP, d.direction),
+                                entry_date=d.entry_date,
+                                entry_price=d.entry_price,
+                                cover_price=d.cover_price,
+                                pnl=d.pnl,
+                                date=d.date,
+                                code=d.code,
+                                quantity=d.quantity,
+                                dseq=d.dseq,
+                                fee=d.fee,
+                                tax=d.tax,
+                                currency=self._get_enum(self._CURRENCY_MAP, d.currency),
+                            )
+                        )
+                    )
+            return provider_pb2.ListProfitLossDetailResponse(details=pb_details)
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.ListProfitLossDetailResponse()
 
-    def ListProfitLossSummary(self, request, context):
+    def ListProfitLossSummary(
+        self,
+        request: provider_pb2.ListProfitLossSummaryRequest,
+        context: grpc.ServicerContext,
+    ) -> provider_pb2.ListProfitLossSummaryResponse:
+        """Get a summary of profit and loss."""
         try:
             summaries = self.client.list_profit_loss_summary(self._stock_account)
-            return provider_pb2.ListProfitLossSummaryResponse(summaries=[])
+            pb_summaries = []
+            for s in summaries:
+                if isinstance(s, StockProfitLossSummary):
+                    pb_summaries.append(
+                        provider_pb2.ProfitLossSummary(
+                            stock_summary=provider_pb2.StockProfitLossSummary(
+                                entry_cost=s.entry_cost,
+                                cover_cost=s.cover_cost,
+                                code=s.code,
+                                quantity=s.quantity,
+                                entry_price=s.entry_price,
+                                cover_price=s.cover_price,
+                                pnl=s.pnl,
+                                currency=self._get_enum(self._CURRENCY_MAP, s.currency),
+                                buy_cost=s.buy_cost,
+                                sell_cost=s.sell_cost,
+                                pr_ratio=s.pr_ratio,
+                                cond=self._get_enum(
+                                    self._STOCK_ORDER_COND_MAP,
+                                    s.cond,
+                                ),
+                            )
+                        )
+                    )
+                elif isinstance(s, FutureProfitLossSummary):
+                    pb_summaries.append(
+                        provider_pb2.ProfitLossSummary(
+                            future_summary=provider_pb2.FutureProfitLossSummary(
+                                direction=self._get_enum(self._ACTION_MAP, s.direction),
+                                tax=s.tax,
+                                fee=s.fee,
+                                code=s.code,
+                                quantity=s.quantity,
+                                entry_price=s.entry_price,
+                                cover_price=s.cover_price,
+                                pnl=s.pnl,
+                                currency=self._get_enum(self._CURRENCY_MAP, s.currency),
+                            )
+                        )
+                    )
+            return provider_pb2.ListProfitLossSummaryResponse(summaries=pb_summaries)
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.ListProfitLossSummaryResponse()
 
-    def GetSettlements(self, request, context):
+    def GetSettlements(
+        self, request: provider_pb2.GetSettlementsRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.GetSettlementsResponse:
+        """Get settlement information."""
         try:
             settlements = self.client.settlements(self._stock_account)
-            return provider_pb2.GetSettlementsResponse(settlements=[])
+            return provider_pb2.GetSettlementsResponse(
+                settlements=[
+                    provider_pb2.Settlement(
+                        date=str(getattr(s, "date", "")),
+                        amount=getattr(s, "amount", 0.0),
+                        t_money=getattr(s, "t_money", 0.0),
+                        t_day=str(getattr(s, "t_day", "")),
+                        t1_money=getattr(s, "t1_money", 0.0),
+                        t1_day=str(getattr(s, "t1_day", "")),
+                        t2_money=getattr(s, "t2_money", 0.0),
+                        t2_day=str(getattr(s, "t2_day", "")),
+                    )
+                    for s in settlements
+                ]
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.GetSettlementsResponse()
 
-    def ListSettlements(self, request, context):
+    def ListSettlements(
+        self, request: provider_pb2.GetSettlementsRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.GetSettlementsResponse:
+        """List settlement information (Alias)."""
         return self.GetSettlements(request, context)
 
-    def GetMargin(self, request, context):
+    def GetMargin(
+        self, request: provider_pb2.GetMarginRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.Margin:
         try:
-            margin = self.client.margin(
-                self._futopt_account
-            )  # Margin is usually for futures
-            return provider_pb2.Margin()  # Populate fields
+            margin = self.client.margin(self._futopt_account)
+            return provider_pb2.Margin(
+                equity=margin.equity,
+                available_margin=margin.available_margin,
+                initial_margin=margin.initial_margin,
+                maintenance_margin=margin.maintenance_margin,
+                yesterday_balance=margin.yesterday_balance,
+                today_balance=margin.today_balance,
+                deposit_withdrawal=margin.deposit_withdrawal,
+                fee=margin.fee,
+                tax=margin.tax,
+                margin_call=margin.margin_call,
+                risk_indicator=margin.risk_indicator,
+                royalty_revenue_expenditure=margin.royalty_revenue_expenditure,
+                equity_amount=margin.equity_amount,
+                option_openbuy_market_value=margin.option_openbuy_market_value,
+                option_opensell_market_value=margin.option_opensell_market_value,
+                option_open_position=margin.option_open_position,
+                option_settle_profitloss=margin.option_settle_profitloss,
+                future_open_position=margin.future_open_position,
+                today_future_open_position=margin.today_future_open_position,
+                future_settle_profitloss=margin.future_settle_profitloss,
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.Margin()
 
-    def GetTradingLimits(self, request, context):
+    def GetTradingLimits(
+        self,
+        request: provider_pb2.GetTradingLimitsRequest,
+        context: grpc.ServicerContext,
+    ) -> provider_pb2.TradingLimits:
+        """Get trading limits for a stock account."""
         try:
             limits = self.client.trading_limits(self._stock_account)
-            return provider_pb2.TradingLimits()  # Populate fields
+            return provider_pb2.TradingLimits(
+                trading_limit=limits.trading_limit,
+                trading_used=limits.trading_used,
+                trading_available=limits.trading_available,
+                margin_limit=limits.margin_limit,
+                margin_used=limits.margin_used,
+                margin_available=limits.margin_available,
+                short_limit=limits.short_limit,
+                short_used=limits.short_used,
+                short_available=limits.short_available,
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.TradingLimits()
 
-    def GetStockReserveSummary(self, request, context):
+    def GetStockReserveSummary(
+        self,
+        request: provider_pb2.GetStockReserveSummaryRequest,
+        context: grpc.ServicerContext,
+    ) -> provider_pb2.ReserveStocksSummaryResponse:
+        """Get stock reserve summary."""
         try:
             summary = self.client.stock_reserve_summary(self._stock_account)
             return provider_pb2.ReserveStocksSummaryResponse(response_json=str(summary))
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.ReserveStocksSummaryResponse()
 
-    def GetStockReserveDetail(self, request, context):
+    def GetStockReserveDetail(
+        self,
+        request: provider_pb2.GetStockReserveDetailRequest,
+        context: grpc.ServicerContext,
+    ) -> provider_pb2.ReserveStocksDetailResponse:
+        """Get stock reserve details."""
         try:
             detail = self.client.stock_reserve_detail(self._stock_account)
             return provider_pb2.ReserveStocksDetailResponse(response_json=str(detail))
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.ReserveStocksDetailResponse()
 
-    def ReserveStock(self, request, context):
+    def ReserveStock(
+        self, request: provider_pb2.ReserveStockRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.ReserveStockResponse:
+        """Reserve stock for borrowing."""
         try:
             # Needs contract conversion
             contract = self._to_sj_contract(request.contract)
@@ -326,15 +974,27 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             return provider_pb2.ReserveStockResponse(response_json=str(resp))
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.ReserveStockResponse()
 
-    def GetEarmarkingDetail(self, request, context):
+    def GetEarmarkingDetail(
+        self,
+        request: provider_pb2.GetEarmarkingDetailRequest,
+        context: grpc.ServicerContext,
+    ) -> provider_pb2.EarmarkStocksDetailResponse:
+        """Get earmarking details."""
         try:
             detail = self.client.earmarking_detail(self._stock_account)
             return provider_pb2.EarmarkStocksDetailResponse(response_json=str(detail))
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.EarmarkStocksDetailResponse()
 
-    def ReserveEarmarking(self, request, context):
+    def ReserveEarmarking(
+        self,
+        request: provider_pb2.ReserveEarmarkingRequest,
+        context: grpc.ServicerContext,
+    ) -> provider_pb2.ReserveEarmarkingResponse:
+        """Apply for earmarking."""
         try:
             contract = self._to_sj_contract(request.contract)
             resp = self.client.reserve_earmarking(
@@ -343,98 +1003,293 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             return provider_pb2.ReserveEarmarkingResponse(response_json=str(resp))
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.ReserveEarmarkingResponse()
 
-    def GetSnapshots(self, request, context):
+    def GetSnapshots(
+        self, request: provider_pb2.GetSnapshotsRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.GetSnapshotsResponse:
+        """Get market snapshots for a list of contracts."""
         try:
             contracts = [
                 self.client.api.Contracts.Stocks[code]
                 for code in request.contract_codes
-            ]  # Assuming stocks
+            ]
             snapshots = self.client.snapshots(contracts)
-            return provider_pb2.GetSnapshotsResponse(snapshots=[])  # Populate
+            return provider_pb2.GetSnapshotsResponse(
+                snapshots=[
+                    provider_pb2.Snapshot(
+                        ts=s.ts,
+                        code=s.code,
+                        exchange=self._get_enum(self._EXCHANGE_MAP, s.exchange),
+                        open=s.open,
+                        high=s.high,
+                        low=s.low,
+                        close=s.close,
+                        change_price=s.change_price,
+                        change_rate=s.change_rate,
+                        average_price=s.average_price,
+                        volume=s.volume,
+                        total_volume=s.total_volume,
+                        amount=s.amount,
+                        total_amount=s.total_amount,
+                        buy_price=s.buy_price,
+                        buy_volume=float(s.buy_volume),
+                        sell_price=s.sell_price,
+                        sell_volume=s.sell_volume,
+                        tick_type=self._get_enum(self._TICK_TYPE_MAP, s.tick_type),
+                        change_type=self._get_enum(
+                            self._CHANGE_TYPE_MAP, s.change_type
+                        ),
+                        yesterday_volume=s.yesterday_volume,
+                        volume_ratio=s.volume_ratio,
+                    )
+                    for s in snapshots
+                ]
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.GetSnapshotsResponse()
 
-    def GetTicks(self, request, context):
+    def GetTicks(
+        self, request: provider_pb2.GetTicksRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.Ticks:
+        """Get tick data for a specific contract and date."""
         try:
             contract = self.client.api.Contracts.Stocks[request.contract_code]
             ticks = self.client.ticks(contract, request.date)
-            return provider_pb2.Ticks()  # Populate
+            return provider_pb2.Ticks(
+                ts=ticks.ts,
+                close=ticks.close,
+                volume=ticks.volume,
+                bid_price=ticks.bid_price,
+                bid_volume=ticks.bid_volume,
+                ask_price=ticks.ask_price,
+                ask_volume=ticks.ask_volume,
+                tick_type=ticks.tick_type,
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.Ticks()
 
-    def GetKbars(self, request, context):
+    def GetKbars(
+        self, request: provider_pb2.GetKbarsRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.Kbars:
+        """Get K-bar (candlestick) data for a specific contract and date range."""
         try:
             contract = self.client.api.Contracts.Stocks[request.contract_code]
             kbars = self.client.kbars(contract, request.start_date, request.end_date)
-            return provider_pb2.Kbars()  # Populate
+            return provider_pb2.Kbars(
+                ts=kbars.ts,
+                open=kbars.Open,
+                high=kbars.High,
+                low=kbars.Low,
+                close=kbars.Close,
+                volume=kbars.Volume,
+                amount=kbars.Amount,
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.Kbars()
 
-    def GetDailyQuotes(self, request, context):
+    def GetDailyQuotes(
+        self, request: provider_pb2.GetDailyQuotesRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.DailyQuotes:
+        """Get daily quotes."""
         try:
-            quotes = self.client.daily_quotes(request.date)
-            return provider_pb2.DailyQuotes()  # Populate
+            # request.date is string YYYY-MM-DD
+            date_obj = datetime.strptime(request.date, "%Y-%m-%d").date()
+            quotes = self.client.daily_quotes(date_obj)
+            return provider_pb2.DailyQuotes(
+                code=quotes.Code,
+                open=quotes.Open,
+                high=quotes.High,
+                low=quotes.Low,
+                close=quotes.Close,
+                volume=quotes.Volume,
+                date=[str(d) for d in quotes.Date],
+                transaction=quotes.Transaction,
+                amount=quotes.Amount,
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.DailyQuotes()
 
-    def CreditEnquires(self, request, context):
+    def CreditEnquires(
+        self, request: provider_pb2.CreditEnquiresRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.CreditEnquiresResponse:
+        """Enquire about credit for a list of contracts."""
         try:
             contracts = [
                 self.client.api.Contracts.Stocks[code]
                 for code in request.contract_codes
             ]
             res = self.client.credit_enquires(contracts)
-            return provider_pb2.CreditEnquiresResponse(credit_enquires=[])
+            return provider_pb2.CreditEnquiresResponse(
+                credit_enquires=[
+                    provider_pb2.CreditEnquire(
+                        stock_id=r.stock_id,
+                        margin_unit=r.margin_unit,
+                        short_unit=r.short_unit,
+                        update_time=r.update_time,
+                        system=r.system,
+                    )
+                    for r in res
+                ]
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.CreditEnquiresResponse()
 
-    def GetShortStockSources(self, request, context):
+    def GetShortStockSources(
+        self,
+        request: provider_pb2.GetShortStockSourcesRequest,
+        context: grpc.ServicerContext,
+    ) -> provider_pb2.GetShortStockSourcesResponse:
+        """Get short stock sources for a list of contracts."""
         try:
             contracts = [
                 self.client.api.Contracts.Stocks[code]
                 for code in request.contract_codes
             ]
             res = self.client.short_stock_sources(contracts)
-            return provider_pb2.GetShortStockSourcesResponse(sources=[])
+            return provider_pb2.GetShortStockSourcesResponse(
+                sources=[
+                    provider_pb2.ShortStockSource(
+                        code=s.code, short_stock_source=s.short_stock_source, ts=s.ts
+                    )
+                    for s in res
+                ]
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.GetShortStockSourcesResponse()
 
-    def GetScanners(self, request, context):
+    def GetScanners(
+        self, request: provider_pb2.GetScannersRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.GetScannersResponse:
+        """Get scanner results (ranked stocks)."""
         try:
-            # Scanner type mapping needed
+            # Reverse map Proto Enum to Shioaji Constant Enum (String)
+            # request.scanner_type is int
+            # scanner_type_name = provider_pb2.ScannerType.Name(request.scanner_type)
+            # Name is SCANNER_TYPE_AMOUNTRANK
+            # We want "AmountRank"
+
+            pb_to_sj_scanner = {
+                provider_pb2.SCANNER_TYPE_CHANGEPERCENTRANK: sj_constant.ScannerType.ChangePercentRank,
+                provider_pb2.SCANNER_TYPE_CHANGEPRICERANK: sj_constant.ScannerType.ChangePriceRank,
+                provider_pb2.SCANNER_TYPE_DAYRANGERANK: sj_constant.ScannerType.DayRangeRank,
+                provider_pb2.SCANNER_TYPE_VOLUMERANK: sj_constant.ScannerType.VolumeRank,
+                provider_pb2.SCANNER_TYPE_AMOUNTRANK: sj_constant.ScannerType.AmountRank,
+                provider_pb2.SCANNER_TYPE_TICKCOUNTRANK: sj_constant.ScannerType.TickCountRank,
+            }
+
+            stype = pb_to_sj_scanner.get(
+                request.scanner_type, sj_constant.ScannerType.AmountRank
+            )
+
             res = self.client.scanners(
-                scanner_type=sj_constant.ScannerType.AmountRank,  # Default or map from request
+                scanner_type=stype,
                 ascending=request.ascending,
                 date_str=request.date,
                 count=request.count,
             )
-            return provider_pb2.GetScannersResponse(scanners=[])
+            return provider_pb2.GetScannersResponse(
+                scanners=[
+                    provider_pb2.ScannerItem(
+                        code=s.code,
+                        name=s.name,
+                        close=s.close,
+                        date=s.date,
+                        ts=s.ts,
+                        open=s.open,
+                        high=s.high,
+                        low=s.low,
+                        price_range=s.price_range,
+                        tick_type=self._get_enum(self._TICK_TYPE_MAP, s.tick_type),
+                        change_price=s.change_price,
+                        change_type=self._get_enum(
+                            self._CHANGE_TYPE_MAP, s.change_type
+                        ),
+                        average_price=s.average_price,
+                        volume=s.volume,
+                        total_volume=s.total_volume,
+                        amount=s.amount,
+                        total_amount=s.total_amount,
+                        yesterday_volume=s.yesterday_volume,
+                        volume_ratio=s.volume_ratio,
+                        buy_price=s.buy_price,
+                        buy_volume=s.buy_volume,
+                        sell_price=s.sell_price,
+                        sell_volume=s.sell_volume,
+                        bid_orders=s.bid_orders,
+                        bid_volumes=s.bid_volumes,
+                        ask_orders=s.ask_orders,
+                        ask_volumes=s.ask_volumes,
+                        rank_value=s.rank_value,
+                    )
+                    for s in res
+                ]
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.GetScannersResponse()
 
-    def GetPunish(self, request, context):
+    def GetPunish(
+        self, request: provider_pb2.Empty, context: grpc.ServicerContext
+    ) -> provider_pb2.Punish:
+        """Get punishment information (disposition stocks)."""
         try:
             res = self.client.punish()
-            return provider_pb2.Punish()
+            return provider_pb2.Punish(
+                code=res.code,
+                start_date=[str(d) for d in res.start_date],
+                end_date=[str(d) for d in res.end_date],
+                interval=res.interval,
+                updated_at=[str(d) for d in res.updated_at],
+                unit_limit=[float(x) if x is not None else 0.0 for x in res.unit_limit],
+                total_limit=[
+                    float(x) if x is not None else 0.0 for x in res.total_limit
+                ],
+                description=res.description,
+                announced_date=[str(d) for d in res.announced_date],
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.Punish()
 
-    def GetNotice(self, request, context):
+    def GetNotice(
+        self, request: provider_pb2.Empty, context: grpc.ServicerContext
+    ) -> provider_pb2.Notice:
+        """Get notice information (attention stocks)."""
         try:
             res = self.client.notice()
-            return provider_pb2.Notice()
+            return provider_pb2.Notice(
+                code=res.code,
+                reason=res.reason,
+                updated_at=[str(d) for d in res.updated_at],
+                close=[float(x) if x is not None else 0.0 for x in res.close],
+                announced_date=[str(d) for d in res.announced_date],
+            )
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.Notice()
 
-    def FetchContracts(self, request, context):
+    def FetchContracts(
+        self, request: provider_pb2.FetchContractsRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.Empty:
+        """Manually fetch contracts."""
         try:
             self.client.fetch_contracts(request.contract_download)
             return provider_pb2.Empty()
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.Empty()
 
-    def ActivateCA(self, request, context):
+    def ActivateCA(
+        self, request: provider_pb2.ActivateCARequest, context: grpc.ServicerContext
+    ) -> provider_pb2.ActivateCAResponse:
+        """Activate the Certificate Authority (CA)."""
         try:
             success = self.client.activate_ca(
                 request.ca_path, request.ca_passwd, request.person_id
@@ -442,27 +1297,44 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             return provider_pb2.ActivateCAResponse(success=success)
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.ActivateCAResponse()
 
-    def GetCAExpireTime(self, request, context):
+    def GetCAExpireTime(
+        self,
+        request: provider_pb2.GetCAExpireTimeRequest,
+        context: grpc.ServicerContext,
+    ) -> provider_pb2.GetCAExpireTimeResponse:
+        """Get the CA expiration time."""
         try:
             expire_time = self.client.get_ca_expiretime(request.person_id)
             return provider_pb2.GetCAExpireTimeResponse(expire_time=str(expire_time))
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.GetCAExpireTimeResponse()
 
-    def SubscribeTrade(self, request, context):
+    def SubscribeTrade(
+        self, request: provider_pb2.SubscribeTradeRequest, context: grpc.ServicerContext
+    ) -> provider_pb2.SubscribeTradeResponse:
+        """Subscribe to trade updates for an account."""
         try:
             success = self.client.subscribe_trade(self._stock_account)
             return provider_pb2.SubscribeTradeResponse(success=success)
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.SubscribeTradeResponse()
 
-    def UnsubscribeTrade(self, request, context):
+    def UnsubscribeTrade(
+        self,
+        request: provider_pb2.UnsubscribeTradeRequest,
+        context: grpc.ServicerContext,
+    ) -> provider_pb2.UnsubscribeTradeResponse:
+        """Unsubscribe from trade updates for an account."""
         try:
             success = self.client.unsubscribe_trade(self._stock_account)
             return provider_pb2.UnsubscribeTradeResponse(success=success)
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, str(e))
+            return provider_pb2.UnsubscribeTradeResponse()
 
 
 def serve():

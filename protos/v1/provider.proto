@@ -2,316 +2,465 @@ syntax = "proto3";
 package v1;
 option go_package = "phoenix/processor/pkg/pb";
 
-// Service Definition
-// ShioajiProvider service provides an interface for trading and market data access.
+// ShioajiProvider service provides a gRPC interface for trading and market data access
+// using the Shioaji API (Taiwanese stock and futures trading).
 service ShioajiProvider {
-  // Login to the Shioaji API.
+  // Login to the Shioaji API using API key and secret key.
+  // This initiates a session and fetches security contracts.
+  // 登入
   rpc Login (LoginRequest) returns (LoginResponse) {}
-  // Logout from the Shioaji API.
+
+  // Logout from the Shioaji API and terminate the current session.
+  // 登出
   rpc Logout (Empty) returns (LogoutResponse) {}
-  // Retrieve usage information.
+
+  // Retrieve usage information, including current connections and data consumption.
+  // 使用量
   rpc GetUsage (Empty) returns (UsageStatus) {}
-  // List all available trading accounts.
+
+  // List all trading accounts associated with the logged-in user (e.g., Stock, Future, Option).
+  // 帳號列表
   rpc ListAccounts (Empty) returns (ListAccountsResponse) {}
-  // Get the account balance.
-  // SetDefaultAccount is client-side only in Python, but we might need it if the server maintains state per connection
-  // skipping for now or can add later if needed.
+
+  // Get the account balance, including available balance and date.
+  // 帳戶餘額
   rpc GetAccountBalance (Empty) returns (AccountBalance) {}
-  // Place a new order.
+
+  // Place a new order for a single contract.
+  // 下單
   rpc PlaceOrder (PlaceOrderRequest) returns (Trade) {}
-  // Place a combination order.
+
+  // Place a combination order (e.g., multiple legs for futures or options).
+  // 組合單下單
   rpc PlaceComboOrder (PlaceComboOrderRequest) returns (ComboTrade) {}
-  // Update an existing order.
+
+  // Update an existing order (e.g., modify price or quantity).
+  // 修改委託單
   rpc UpdateOrder (UpdateOrderRequest) returns (Trade) {}
-  // Cancel an existing order.
+
+  // Cancel an existing active order.
+  // 撤銷委託單
   rpc CancelOrder (CancelOrderRequest) returns (Trade) {}
-  // Cancel a combination order.
+
+  // Cancel an active combination order.
+  // 撤銷組合單委託
   rpc CancelComboOrder (CancelComboOrderRequest) returns (ComboTrade) {}
-  // Update the status of orders and trades for an account.
+
+  // Manually trigger an update for the status of orders and trades for a specific account.
+  // 更新委託單狀態
   rpc UpdateStatus (UpdateStatusRequest) returns (Empty) {}
-  // Update the status of combination orders for an account.
+
+  // Manually trigger an update for the status of combination orders for a specific account.
+  // 更新組合單狀態
   rpc UpdateComboStatus (UpdateStatusRequest) returns (Empty) {}
-  // List all trades.
+
+  // List all trades (orders and their execution status) for the current session.
+  // 委託列表
   rpc ListTrades (Empty) returns (ListTradesResponse) {}
-  // List all combination trades.
+
+  // List all combination trades for the current session.
+  // 組合單委託列表
   rpc ListComboTrades (Empty) returns (ListComboTradesResponse) {}
-  // Get order deal records.
+
+  // Retrieve deal records for orders associated with a specific account.
+  // 委託成交紀錄
   rpc GetOrderDealRecords (GetOrderDealRecordsRequest) returns (GetOrderDealRecordsResponse) {}
-  // List current positions for an account.
+
+  // List current open positions (unrealized profit and loss) for an account.
+  // 查詢部位
   rpc ListPositions (ListPositionsRequest) returns (ListPositionsResponse) {}
+
   // Get detailed information for a specific position.
+  // 查詢部位詳細資訊
   rpc ListPositionDetail (ListPositionDetailRequest) returns (ListPositionDetailResponse) {}
-  // List realized profit and loss.
+
+  // List realized profit and loss for a specific account within a date range.
+  // 查詢損益
   rpc ListProfitLoss (ListProfitLossRequest) returns (ListProfitLossResponse) {}
-  // Get detailed realized profit and loss for a specific entry.
+
+  // Get detailed realized profit and loss for a specific entry ID.
+  // 查詢損益詳細資訊
   rpc ListProfitLossDetail (ListProfitLossDetailRequest) returns (ListProfitLossDetailResponse) {}
-  // Get a summary of profit and loss.
+
+  // Get a summary of realized profit and loss (buy cost, sell cost, pnl, etc.).
+  // 查詢損益匯總
   rpc ListProfitLossSummary (ListProfitLossSummaryRequest) returns (ListProfitLossSummaryResponse) {}
-  // Get settlement information.
+
+  // Get settlement information for a stock account.
+  // 查詢結算資訊
   rpc GetSettlements (GetSettlementsRequest) returns (GetSettlementsResponse) {}
-  // List settlement information (Alias).
+
+  // Alias for GetSettlements.
+  // 結算清單
   rpc ListSettlements (GetSettlementsRequest) returns (GetSettlementsResponse) {}
-  // Get margin information for a futures account.
+
+  // Get margin information for a futures/options account.
+  // 查詢保證金
   rpc GetMargin (GetMarginRequest) returns (Margin) {}
-  // Get trading limits for a stock account.
+
+  // Get trading limits (e.g., maximum daily volume) for a stock account.
+  // 交易限額
   rpc GetTradingLimits (GetTradingLimitsRequest) returns (TradingLimits) {}
-  // Get stock reserve summary.
+
+  // Get a summary of stock reserve availability for borrowing.
+  // 股票券源彙總
   rpc GetStockReserveSummary (GetStockReserveSummaryRequest) returns (ReserveStocksSummaryResponse) {}
-  // Get stock reserve details.
+
+  // Get detailed information on stock reserve availability.
+  // 股票券源明細
   rpc GetStockReserveDetail (GetStockReserveDetailRequest) returns (ReserveStocksDetailResponse) {}
-  // Reserve stock for borrowing.
+
+  // Request a reservation for borrowing stock shares.
+  // 預約借券
   rpc ReserveStock (ReserveStockRequest) returns (ReserveStockResponse) {}
-  // Get earmarking details.
+
+  // Get details of earmarking (restricted funds for stock purchases).
+  // 圈存明細
   rpc GetEarmarkingDetail (GetEarmarkingDetailRequest) returns (EarmarkStocksDetailResponse) {}
-  // Apply for earmarking.
+
+  // Apply for earmarking shares at a specific price.
+  // 預約圈存
   rpc ReserveEarmarking (ReserveEarmarkingRequest) returns (ReserveEarmarkingResponse) {}
-  // Get market snapshots for a list of contracts.
+
+  // Get market snapshots (last price, volume, high, low) for a list of contract codes.
+  // 行情快照
   rpc GetSnapshots (GetSnapshotsRequest) returns (GetSnapshotsResponse) {}
-  // Get tick data for a specific contract and date.
+
+  // Get historical or real-time tick data for a contract on a specific date.
+  // 獲取逐筆報價
   rpc GetTicks (GetTicksRequest) returns (Ticks) {}
-  // Get K-bar (candlestick) data for a specific contract and date range.
+
+  // Get K-bar (candlestick) data for a contract within a date range.
+  // 獲取K線資料
   rpc GetKbars (GetKbarsRequest) returns (Kbars) {}
-  // Get daily quotes.
+
+  // Get daily trading quotes (summary) for all contracts on a specific date.
+  // 每日報價
   rpc GetDailyQuotes (GetDailyQuotesRequest) returns (DailyQuotes) {}
-  // Enquire about credit for a list of contracts.
+
+  // Enquire about credit availability (margin/short) for a list of contracts.
+  // 信用交易查詢
   rpc CreditEnquires (CreditEnquiresRequest) returns (CreditEnquiresResponse) {}
-  // Get short stock sources for a list of contracts.
+
+  // Get available sources for shorting stock for a list of contracts.
+  // 借券水源
   rpc GetShortStockSources (GetShortStockSourcesRequest) returns (GetShortStockSourcesResponse) {}
-  // Get scanner results (ranked stocks).
+
+  // Run a market scanner to find stocks meeting specific ranking criteria.
+  // 選股器
   rpc GetScanners (GetScannersRequest) returns (GetScannersResponse) {}
-  // Get punishment information (disposition stocks).
+
+  // Get information on disposition stocks (stocks under regulatory punishment).
+  // 處置股
   rpc GetPunish (Empty) returns (Punish) {}
-  // Get notice information (attention stocks).
+
+  // Get information on attention stocks (notice stocks).
+  // 注意股
   rpc GetNotice (Empty) returns (Notice) {}
-  // Manually fetch contracts.
+
+  // Manually fetch and update security contracts from the server.
+  // 下載商品檔
   rpc FetchContracts (FetchContractsRequest) returns (Empty) {}
-  // Activate the Certificate Authority (CA).
+
+  // Activate the Certificate Authority (CA) for order placement security.
+  // 憑證開通
   rpc ActivateCA (ActivateCARequest) returns (ActivateCAResponse) {}
-  // Get the CA expiration time.
+
+  // Get the expiration timestamp of the currently activated CA.
+  // 憑證過期時間
   rpc GetCAExpireTime (GetCAExpireTimeRequest) returns (GetCAExpireTimeResponse) {}
-  // Subscribe to trade updates for an account.
+
+  // Subscribe to trade updates (execution reports) for an account.
+  // 訂閱交易回報
   rpc SubscribeTrade (SubscribeTradeRequest) returns (SubscribeTradeResponse) {}
+
   // Unsubscribe from trade updates for an account.
+  // 取消訂閱交易回報
   rpc UnsubscribeTrade (UnsubscribeTradeRequest) returns (UnsubscribeTradeResponse) {}
 }
 
-// Represents an empty message.
+// Represents an empty message for requests/responses with no fields.
 message Empty {}
 
-// Request message for Login.
+// Request message for logging into the Shioaji API.
 message LoginRequest {
-  string api_key    = 1;
-  string secret_key = 2;
+  string api_key    = 1; // Your Sinopac API key.
+  string secret_key = 2; // Your Sinopac secret key.
 }
 
-// Response message for Login.
+// Response message for a successful login.
 message LoginResponse {
-  repeated Account accounts = 1;
+  repeated Account accounts = 1; // List of accounts associated with the credentials.
 }
 
-// Response message for Logout.
+// Response message for a logout request.
 message LogoutResponse {
-  bool success = 1;
+  bool success = 1; // True if logout was successful.
 }
 
-// Represents a trading account.
+// Represents a trading account (Stock or Future/Option).
 message Account {
-  string account_type = 1;
-  string person_id    = 2;
-  string broker_id    = 3;
-  string account_id   = 4;
-  bool   signed       = 5;
-  string username     = 6;
+  string account_type = 1; // Type of account (e.g., Stock, Future).
+  string person_id    = 2; // Unique identifier for the account holder.
+  string broker_id    = 3; // Identifier for the broker.
+  string account_id   = 4; // Unique identifier for the trading account.
+  string username     = 5; // User's name associated with the account.
+  bool   signed       = 6; // Whether the account has signed the trading agreement.
 }
 
-// Represents usage statistics.
+// Represents usage statistics of the API session.
 message UsageStatus {
-  int64 connections     = 1;
-  int64 bytes           = 2;
-  int64 limit_bytes     = 3;
-  int64 remaining_bytes = 4;
+  int64 connections     = 1; // Current number of active connections.
+  int64 bytes           = 2; // Amount of data consumed in bytes.
+  int64 limit_bytes     = 3; // Maximum data consumption limit in bytes.
+  int64 remaining_bytes = 4; // Remaining data allowance in bytes.
 }
 
-// Response message for ListAccounts.
+// Response message containing a list of trading accounts.
 message ListAccountsResponse {
   repeated Account accounts = 1;
 }
 
-// Represents account balance information.
+// Represents the financial balance of a trading account.
+// 帳戶餘額
 message AccountBalance {
-  double acc_balance = 1;
-  string date        = 2;
-  string errmsg      = 3;
-  string currency    = 4; // inferred, usually present
+  double      acc_balance = 1; // Current account balance.
+  string      date        = 2; // Date for which the balance is reported.
+  string      errmsg      = 3; // Error message if the fetch failed.
+  FetchStatus status      = 4; // Success/Failure status of the fetch operation.
 }
 
-// Simplified Contract message.
+// Simplified representation of a security contract.
 message Contract {
-  string security_type = 1;
-  string exchange      = 2;
-  string code          = 3;
-  string symbol        = 4;
-  string name          = 5;
-  string currency      = 6;
+  SecurityType security_type          = 1; // Commodity category (Stock, Future, etc.).
+  Exchange     exchange               = 2; // Exchange where the security is traded.
+  string       code                   = 3; // Security code (e.g., stock number).
+  string       symbol                 = 4; // Ticker symbol.
+  string       name                   = 5; // Full name of the security.
+  Currency     currency               = 6; // Currency used for trading.
+  string       category               = 7; // Sector or category.
+  string       delivery_month         = 8; // Delivery month (for derivatives).
+  string       delivery_date          = 9; // Specific delivery date.
+  double       strike_price           = 10; // Strike price (for options).
+  OptionRight  option_right           = 11; // Call or Put.
+  string       underlying_kind        = 12; // Type of underlying asset.
+  string       underlying_code        = 13; // Code of underlying asset.
+  double       unit                   = 14; // Trading unit.
+  int64        multiplier             = 15; // Price multiplier.
+  double       limit_up               = 16; // Ceiling price for the day.
+  double       limit_down             = 17; // Floor price for the day.
+  double       reference              = 18; // Yesterday's closing or reference price.
+  string       update_date            = 19; // Date of last update.
+  int64        margin_trading_balance = 20; // Margin trading limit/balance.
+  int64        short_selling_balance  = 21; // Short selling limit/balance.
+  DayTrade     day_trade              = 22; // Day trade eligibility.
+  string       target_code            = 23; // Target underlying code.
 }
 
-// Simplified Combo Contract message.
+// Represents a combination contract with multiple legs.
 message ComboContract {
-    // Simplified
-  string code = 1;
+  repeated ComboBase legs = 1; // Individual components of the combo contract.
 }
 
-// Represents a trading order.
+// Base structure for a leg in a combination contract.
+message ComboBase {
+  SecurityType security_type          = 1;
+  Exchange     exchange               = 2;
+  string       code                   = 3;
+  string       symbol                 = 4;
+  string       name                   = 5;
+  Currency     currency               = 6;
+  string       category               = 7;
+  string       delivery_month         = 8;
+  string       delivery_date          = 9;
+  double       strike_price           = 10;
+  OptionRight  option_right           = 11;
+  string       underlying_kind        = 12;
+  string       underlying_code        = 13;
+  double       unit                   = 14;
+  int64        multiplier             = 15;
+  double       limit_up               = 16;
+  double       limit_down             = 17;
+  double       reference              = 18;
+  string       update_date            = 19;
+  int64        margin_trading_balance = 20;
+  int64        short_selling_balance  = 21;
+  DayTrade     day_trade              = 22;
+  string       target_code            = 23;
+  Action       action                 = 24; // Buy or Sell action for this leg.
+}
+
+// Represents a trading order with specific parameters.
 message Order {
-  string  action     = 1;
-  double  price      = 2;
-  int64   quantity   = 3;
-  string  id         = 4;
-  string  seqno      = 5;
-  string  ordno      = 6;
-  Account account    = 7;
-  string  price_type = 8;
-  string  order_type = 9;
+  Action         action         = 1; // Buy or Sell.
+  double         price          = 2; // Order price.
+  int64          quantity       = 3; // Number of shares or contracts.
+  string         id             = 4; // Trade ID (internal).
+  string         seqno          = 5; // Platform sequence number.
+  string         ordno          = 6; // Exchange order number.
+  Account        account        = 7; // Account placing the order.
+  string         price_type     = 8; // Limit, Market, etc.
+  OrderType      order_type     = 9; // ROD, IOC, FOK.
+  FuturesOCType  octype         = 10; // New, Cover, DayTrade (Futures).
+  StockOrderLot  order_lot      = 11; // Common, Fixing, Odd (Stock).
+  StockOrderCond order_cond     = 12; // Cash, MarginTrading, ShortSelling (Stock).
+  bool           daytrade_short = 13; // Whether to allow short day trading.
+  string         custom_field   = 14; // User-defined data.
+  string         ca             = 15; // Certificate associated with the order.
 }
 
-// Represents a combination trading order.
+// Represents a combination trading order with multiple legs.
 message ComboOrder {
-  string  action     = 1;
-  double  price      = 2;
-  int64   quantity   = 3;
-  string  id         = 4;
-  string  seqno      = 5;
-  string  ordno      = 6;
-  Account account    = 7;
-  string  price_type = 8;
-  string  order_type = 9;
+  Action        action       = 1;
+  double        price        = 2;
+  int64         quantity     = 3;
+  string        id           = 4;
+  string        seqno        = 5;
+  string        ordno        = 6;
+  Account       account      = 7;
+  string        price_type   = 8;
+  OrderType     order_type   = 9;
+  FuturesOCType octype       = 10;
+  string        custom_field = 11;
+  string        ca           = 12;
 }
 
-// Represents the status of an order.
+// Represents the current status and execution details of an order.
 message OrderStatus {
-  string id              = 1;
-  string status          = 2;
-  string status_code     = 3;
-  string order_datetime  = 4; // datetime
-  int64  deal_quantity   = 5;
-  int64  cancel_quantity = 6;
-    // deals list omitted for brevity for now
+  string        id              = 1; // Trade ID.
+  Status        status          = 2; // Current status (Filled, Pending, etc.).
+  string        status_code     = 3; // Detailed status code from exchange.
+  string        order_datetime  = 4; // When the order was created.
+  int64         deal_quantity   = 5; // Quantity already filled.
+  int64         cancel_quantity = 6; // Quantity cancelled.
+  string        web_id          = 7; // Ordering platform code.
+  string        msg             = 8; // Message from the exchange (e.g., errors).
+  string        modified_time   = 9; // When the order was last modified.
+  double        modified_price  = 10; // Last price adjustment.
+  int64         order_quantity  = 11; // Original order quantity.
+  repeated Deal deals           = 12; // Individual fill details.
 }
 
-// Represents a trade (order execution).
+// Represents an individual fill/deal for an order.
+message Deal {
+  string seq      = 1; // Deal sequence number.
+  double price    = 2; // Fill price.
+  int64  quantity = 3; // Fill quantity.
+  double ts       = 4; // Timestamp of the fill.
+}
+
+// Represents a complete trade object containing contract, order, and status.
 message Trade {
   Contract    contract = 1;
   Order       order    = 2;
   OrderStatus status   = 3;
 }
 
-// Represents a combination trade.
+// Represents a complete combination trade.
 message ComboTrade {
   ComboContract contract = 1;
   ComboOrder    order    = 2;
-    // Status might be slightly different or same
-  OrderStatus status = 3;
+  OrderStatus   status   = 3;
 }
 
-// Request message for PlaceOrder.
+// Request to place a single order.
 message PlaceOrderRequest {
   Contract contract = 1;
   Order    order    = 2;
 }
 
-// Request message for PlaceComboOrder.
+// Request to place a combination order.
 message PlaceComboOrderRequest {
   ComboContract combo_contract = 1;
   ComboOrder    order          = 2;
 }
 
-// Request message for UpdateOrder.
+// Request to update an existing order's price and quantity.
 message UpdateOrderRequest {
-  Trade  trade    = 1; // Needs ID/Seqno/Ordno identification usually
+  Trade  trade    = 1;
   double price    = 2;
   int64  quantity = 3;
 }
 
-// Request message for CancelOrder.
+// Request to cancel a single order.
 message CancelOrderRequest {
   Trade trade = 1;
 }
 
-// Request message for CancelComboOrder.
+// Request to cancel a combination order.
 message CancelComboOrderRequest {
   ComboTrade combotrade = 1;
 }
 
-// Request message for UpdateStatus.
+// Request to update the status of all orders in an account.
 message UpdateStatusRequest {
   Account account = 1;
 }
 
-// Response message for ListTrades.
+// Response containing a list of single trades.
 message ListTradesResponse {
   repeated Trade trades = 1;
 }
 
-// Response message for ListComboTrades.
+// Response containing a list of combination trades.
 message ListComboTradesResponse {
   repeated ComboTrade combo_trades = 1;
 }
 
-// Request message for GetOrderDealRecords.
+// Request to get fill history (deal records) for an account.
 message GetOrderDealRecordsRequest {
   Account account = 1;
 }
 
-// Response message for GetOrderDealRecords.
+// Response containing deal records.
 message GetOrderDealRecordsResponse {
-    // simplified representation
   repeated OrderDealRecord records = 1;
 }
 
-// Represents a record of an order deal.
+// Represents a single fill/deal record.
 message OrderDealRecord {
-  string code     = 1;
-  string action   = 2;
-  double price    = 3;
-  int64  quantity = 4;
-  string ts       = 5;
+  string code     = 1; // Security code.
+  Action action   = 2; // Buy or Sell.
+  double price    = 3; // Execution price.
+  int64  quantity = 4; // Execution quantity.
+  string ts       = 5; // Timestamp.
 }
 
-// Request message for ListPositions.
+// Request to list current positions in an account.
 message ListPositionsRequest {
   Account account = 1;
-  string  unit    = 2; // "Common", "Share" etc
+  string  unit    = 2; // Units (e.g., Common).
 }
 
-// Represents a stock position.
+// Represents an unrealized position in a stock.
 message StockPosition {
-  int64  id                     = 1;
-  string code                   = 2;
-  string direction              = 3;
-  int64  quantity               = 4;
-  double price                  = 5;
-  double last_price             = 6;
-  double pnl                    = 7;
-  int64  yd_quantity            = 8;
-  string cond                   = 9;
-  int64  margin_purchase_amount = 10;
-  int64  collateral             = 11;
-  int64  short_sale_margin      = 12;
-  int64  interest               = 13;
+  int64          id                     = 1; // Internal ID.
+  string         code                   = 2; // Stock code.
+  Action         direction              = 3; // Long (Buy) or Short (Sell).
+  int64          quantity               = 4; // Holding quantity.
+  double         price                  = 5; // Average entry price.
+  double         last_price             = 6; // Current market price.
+  double         pnl                    = 7; // Unrealized profit/loss.
+  int64          yd_quantity            = 8; // Quantity held from yesterday.
+  StockOrderCond cond                   = 9; // Trading condition (Cash, Margin).
+  int64          margin_purchase_amount = 10; // Borrowed amount for margin purchase.
+  int64          collateral             = 11; // Collateral provided.
+  int64          short_sale_margin      = 12; // Margin for short selling.
+  int64          interest               = 13; // Accrued interest.
 }
 
-// Represents a futures position.
+// Represents an unrealized position in futures.
 message FuturePosition {
-  int64  id         = 1;
-  string code       = 2;
-  string direction  = 3;
-  int64  quantity   = 4;
-  double price      = 5;
-  double last_price = 6;
-  double pnl        = 7;
+  int64  id         = 1; // Internal ID.
+  string code       = 2; // Future code.
+  Action direction  = 3; // Long or Short.
+  int64  quantity   = 4; // Holding quantity.
+  double price      = 5; // Entry price.
+  double last_price = 6; // Market price.
+  double pnl        = 7; // Unrealized pnl.
 }
 
-// Represents a generic position (stock or future).
+// Generic position container.
 message Position {
   oneof position {
     StockPosition  stock_position  = 1;
@@ -319,41 +468,52 @@ message Position {
   }
 }
 
-// Response message for ListPositions.
+// Response containing current holdings.
 message ListPositionsResponse {
   repeated Position positions = 1;
 }
 
-// Request message for ListPositionDetail.
+// Request detailed breakdown for a position.
 message ListPositionDetailRequest {
   Account account   = 1;
   int64   detail_id = 2;
 }
 
-// Represents detailed information for a stock position.
+// Detailed fill history for a specific stock position.
 message StockPositionDetail {
-    // simplified
-  string date       = 1;
-  string code       = 2;
-  int64  quantity   = 3;
-  double price      = 4;
-  double last_price = 5;
-  double pnl        = 6;
+  string         date              = 1;
+  string         code              = 2;
+  int64          quantity          = 3;
+  double         price             = 4;
+  double         last_price        = 5;
+  double         pnl               = 6;
+  string         dseq              = 7;
+  Action         direction         = 8;
+  Currency       currency          = 9;
+  double         fee               = 10;
+  StockOrderCond cond              = 11;
+  int64          ex_dividends      = 12;
+  int64          interest          = 13;
+  int64          margintrading_amt = 14;
+  int64          collateral        = 15;
 }
 
-// Represents detailed information for a futures position.
+// Detailed fill history for a specific future position.
 message FuturePositionDetail {
-    // simplified
-  string date           = 1;
-  string code           = 2;
-  int64  quantity       = 3;
-  double price          = 4;
-  double last_price     = 5;
-  double pnl            = 6;
-  int64  entry_quantity = 7;
+  string   date           = 1;
+  string   code           = 2;
+  int64    quantity       = 3;
+  double   price          = 4;
+  double   last_price     = 5;
+  double   pnl            = 6;
+  string   dseq           = 7;
+  Action   direction      = 8;
+  Currency currency       = 9;
+  double   fee            = 10;
+  int64    entry_quantity = 11;
 }
 
-// Represents a generic position detail.
+// Generic container for position details.
 message PositionDetail {
   oneof detail {
     StockPositionDetail  stock_detail  = 1;
@@ -361,45 +521,47 @@ message PositionDetail {
   }
 }
 
-// Response message for ListPositionDetail.
+// Response containing position detail records.
 message ListPositionDetailResponse {
   repeated PositionDetail details = 1;
 }
 
-// Request message for ListProfitLoss.
+// Request realized profit and loss records.
 message ListProfitLossRequest {
   Account account    = 1;
-  string  begin_date = 2;
-  string  end_date   = 3;
+  string  begin_date = 2; // Start date YYYYMMDD.
+  string  end_date   = 3; // End date YYYYMMDD.
 }
 
-// Represents profit and loss for a stock trade.
+// Realized profit/loss for a stock trade.
 message StockProfitLoss {
-  string dseq     = 1;
-  string code     = 2;
-  int64  quantity = 3;
-  double price    = 4;
-  double pnl      = 5;
-  double pr_ratio = 6;
-  string cond     = 7;
-  string date     = 8;
-  string seqno    = 9;
+  string         dseq     = 1;
+  string         code     = 2;
+  int64          quantity = 3;
+  double         price    = 4;
+  double         pnl      = 5;
+  double         pr_ratio = 6;
+  StockOrderCond cond     = 7;
+  string         date     = 8;
+  string         seqno    = 9;
+  int64          id       = 10;
 }
 
-// Represents profit and loss for a futures trade.
+// Realized profit/loss for a futures trade.
 message FutureProfitLoss {
   string date        = 1;
   string code        = 2;
   int64  quantity    = 3;
   double entry_price = 4;
   double cover_price = 5;
-  string direction   = 6;
+  Action direction   = 6;
   double pnl         = 7;
   int64  tax         = 8;
   int64  fee         = 9;
+  int64  id          = 10;
 }
 
-// Represents a generic profit and loss entry.
+// Generic realized profit/loss container.
 message ProfitLoss {
   oneof item {
     StockProfitLoss  stock_pnl  = 1;
@@ -407,35 +569,55 @@ message ProfitLoss {
   }
 }
 
-// Response message for ListProfitLoss.
+// Response containing profit/loss records.
 message ListProfitLossResponse {
   repeated ProfitLoss profit_losses = 1;
 }
 
-// Request message for ListProfitLossDetail.
+// Request detailed profit/loss breakdown.
 message ListProfitLossDetailRequest {
   Account account   = 1;
   int64   detail_id = 2;
 }
 
-// Represents detailed profit and loss for a stock trade.
+// Detailed cost and tax breakdown for a realized stock trade.
 message StockProfitDetail {
-  double price    = 1;
-  int64  cost     = 2;
-  int64  interest = 3;
-    // ...
+  double         price                 = 1;
+  int64          cost                  = 2;
+  int64          interest              = 3;
+  string         date                  = 4;
+  string         code                  = 5;
+  int64          quantity              = 6;
+  string         dseq                  = 7;
+  int64          fee                   = 8;
+  int64          tax                   = 9;
+  Currency       currency              = 10;
+  int64          rep_margintrading_amt = 11;
+  int64          rep_collateral        = 12;
+  int64          rep_margin            = 13;
+  int64          shortselling_fee      = 14;
+  int64          ex_dividend_amt       = 15;
+  TradeType      trade_type            = 16;
+  StockOrderCond cond                  = 17;
 }
 
-// Represents detailed profit and loss for a futures trade.
+// Detailed cost breakdown for a realized future trade.
 message FutureProfitDetail {
-  string direction   = 1;
-  string entry_date  = 2;
-  double entry_price = 3;
-  double cover_price = 4;
-  int64  pnl         = 5;
+  Action   direction   = 1;
+  string   entry_date  = 2;
+  double   entry_price = 3;
+  double   cover_price = 4;
+  int64    pnl         = 5;
+  string   date        = 6;
+  string   code        = 7;
+  int64    quantity    = 8;
+  string   dseq        = 9;
+  int64    fee         = 10;
+  int64    tax         = 11;
+  Currency currency    = 12;
 }
 
-// Represents a generic detailed profit and loss entry.
+// Generic profit detail container.
 message ProfitDetail {
   oneof detail {
     StockProfitDetail  stock_detail  = 1;
@@ -443,32 +625,46 @@ message ProfitDetail {
   }
 }
 
-// Response message for ListProfitLossDetail.
+// Response containing profit detail records.
 message ListProfitLossDetailResponse {
   repeated ProfitDetail details = 1;
 }
 
-// Request message for ListProfitLossSummary.
+// Request summary of realized profit and loss.
 message ListProfitLossSummaryRequest {
   Account account = 1;
 }
 
-// Represents a summary of profit and loss for stocks.
+// Aggregated profit and loss for stock trading.
 message StockProfitLossSummary {
-  int64 entry_cost = 1;
-  int64 cover_cost = 2;
-    // ...
+  int64          entry_cost  = 1;
+  int64          cover_cost  = 2;
+  string         code        = 3;
+  int64          quantity    = 4;
+  double         entry_price = 5;
+  double         cover_price = 6;
+  double         pnl         = 7;
+  Currency       currency    = 8;
+  int64          buy_cost    = 9;
+  int64          sell_cost   = 10;
+  double         pr_ratio    = 11;
+  StockOrderCond cond        = 12;
 }
 
-// Represents a summary of profit and loss for futures.
+// Aggregated profit and loss for futures trading.
 message FutureProfitLossSummary {
-  string direction = 1;
-  int64  tax       = 2;
-  int64  fee       = 3;
-    // ...
+  Action   direction   = 1;
+  int64    tax         = 2;
+  int64    fee         = 3;
+  string   code        = 4;
+  int64    quantity    = 5;
+  double   entry_price = 6;
+  double   cover_price = 7;
+  double   pnl         = 8;
+  Currency currency    = 9;
 }
 
-// Represents a generic profit and loss summary.
+// Generic profit summary container.
 message ProfitLossSummary {
   oneof summary {
     StockProfitLossSummary  stock_summary  = 1;
@@ -476,110 +672,134 @@ message ProfitLossSummary {
   }
 }
 
-// Response message for ListProfitLossSummary.
+// Response containing profit summaries.
 message ListProfitLossSummaryResponse {
   repeated ProfitLossSummary summaries = 1;
 }
 
-// Request message for GetSettlements.
+// Request settlement info for a stock account.
 message GetSettlementsRequest {
   Account account = 1;
 }
 
-// Represents a settlement entry.
+// Settlement data for a specific day.
+// 結算資訊
 message Settlement {
-  string date     = 1;
-  double amount   = 2;
-  double t_money  = 3;
-  string t_day    = 4;
-  double t1_money = 5;
-  string t1_day   = 6;
-  double t2_money = 7;
-  string t2_day   = 8;
+  string      date     = 1; // Settlement date.
+  double      amount   = 2; // Total amount.
+  double      t_money  = 3; // Amount for T day.
+  string      t_day    = 4; // T date.
+  double      t1_money = 5; // Amount for T+1 day.
+  string      t1_day   = 6; // T+1 date.
+  double      t2_money = 7; // Amount for T+2 day.
+  string      t2_day   = 8; // T+2 date.
+  FetchStatus status   = 9; // Fetch status.
 }
 
-// Response message for GetSettlements.
+// Response containing settlement records.
 message GetSettlementsResponse {
   repeated Settlement settlements = 1;
 }
 
-// Request message for GetMargin.
+// Request margin information.
 message GetMarginRequest {
   Account account = 1;
 }
 
-// Represents margin information.
+// Detailed margin information for derivatives trading.
+// 保證金
 message Margin {
-  double equity             = 1;
-  double available_margin   = 2;
-  double initial_margin     = 3;
-  double maintenance_margin = 4;
-    // ... many fields
+  double      equity                       = 1; // Total equity.
+  double      available_margin             = 2; // Margin available for new trades.
+  double      initial_margin               = 3; // Initial margin requirement.
+  double      maintenance_margin           = 4; // Maintenance margin requirement.
+  double      yesterday_balance            = 5; // Yesterday's ending balance.
+  double      today_balance                = 6; // Today's current balance.
+  double      deposit_withdrawal           = 7; // Net deposits and withdrawals.
+  double      fee                          = 8; // Total fees paid.
+  double      tax                          = 9; // Total taxes paid.
+  double      margin_call                  = 10; // Current margin call amount.
+  double      risk_indicator               = 11; // Risk indicator percentage.
+  double      royalty_revenue_expenditure  = 12; // Net royalty from options.
+  double      equity_amount                = 13; // Liquid equity amount.
+  double      option_openbuy_market_value  = 14; // Value of long option positions.
+  double      option_opensell_market_value = 15; // Value of short option positions.
+  double      option_open_position         = 16; // Number of open option contracts.
+  double      option_settle_profitloss     = 17; // Settlement pnl for options.
+  double      future_open_position         = 18; // Number of open futures contracts.
+  double      today_future_open_position   = 19; // Futures opened today.
+  double      future_settle_profitloss     = 20; // Settlement pnl for futures.
+  double      plus_margin                  = 21; // Excess margin.
+  double      plus_margin_indicator        = 22; // Excess margin indicator.
+  double      security_collateral_amount   = 23; // Security collateral value.
+  double      order_margin_premium         = 24; // Margin premium for active orders.
+  double      collateral_amount            = 25; // Cash collateral amount.
+  FetchStatus status                       = 26; // Success or failure status.
 }
 
-// Request message for GetTradingLimits.
+// Request trading limit information.
 message GetTradingLimitsRequest {
   Account account = 1;
 }
 
-// Represents trading limits.
+// Information about account trading capacity and usage.
+// 交易限額
 message TradingLimits {
-  int64 trading_limit     = 1;
-  int64 trading_used      = 2;
-  int64 trading_available = 3;
-  int64 margin_limit      = 4;
-  int64 margin_used       = 5;
-  int64 margin_available  = 6;
-  int64 short_limit       = 7;
-  int64 short_used        = 8;
-  int64 short_available   = 9;
+  int64       trading_limit     = 1; // Total allowed trading limit.
+  int64       trading_used      = 2; // Currently utilized limit.
+  int64       trading_available = 3; // Remaining trading capacity.
+  int64       margin_limit      = 4; // Total margin trading limit.
+  int64       margin_used       = 5; // Utilized margin limit.
+  int64       margin_available  = 6; // Remaining margin capacity.
+  int64       short_limit       = 7; // Total short selling limit.
+  int64       short_used        = 8; // Utilized short selling limit.
+  int64       short_available   = 9; // Remaining short selling capacity.
+  FetchStatus status            = 10; // Fetch status.
 }
 
-// Request message for GetStockReserveSummary.
+// Request for stock reserve summary.
 message GetStockReserveSummaryRequest {
   Account account = 1;
 }
 
-// Response message for GetStockReserveSummary.
+// Response for stock reserve summary (JSON).
 message ReserveStocksSummaryResponse {
-    // JSON string or structured fields for ReserveStocksSummary
-    // Using simple string for complex nested response for now or define minimal structure
   string response_json = 1;
 }
 
-// Request message for GetStockReserveDetail.
+// Request for detailed stock reserve info.
 message GetStockReserveDetailRequest {
   Account account = 1;
 }
 
-// Response message for GetStockReserveDetail.
+// Response for detailed stock reserve info (JSON).
 message ReserveStocksDetailResponse {
   string response_json = 1;
 }
 
-// Request message for ReserveStock.
+// Request for reserving stock shares for borrowing.
 message ReserveStockRequest {
   Account  account  = 1;
   Contract contract = 2;
   int64    share    = 3;
 }
 
-// Response message for ReserveStock.
+// Response for stock reservation request (JSON).
 message ReserveStockResponse {
   string response_json = 1;
 }
 
-// Request message for GetEarmarkingDetail.
+// Request for earmarking detail.
 message GetEarmarkingDetailRequest {
   Account account = 1;
 }
 
-// Response message for GetEarmarkingDetail.
+// Response for earmarking detail (JSON).
 message EarmarkStocksDetailResponse {
   string response_json = 1;
 }
 
-// Request message for ReserveEarmarking.
+// Request for applying for earmarking.
 message ReserveEarmarkingRequest {
   Account  account  = 1;
   Contract contract = 2;
@@ -587,208 +807,494 @@ message ReserveEarmarkingRequest {
   double   price    = 4;
 }
 
-// Response message for ReserveEarmarking.
+// Response for earmarking reservation (JSON).
 message ReserveEarmarkingResponse {
   string response_json = 1;
 }
 
-// Request message for GetSnapshots.
+// Request market snapshots for multiple securities.
 message GetSnapshotsRequest {
-    // simplified contract identification
-  repeated string contract_codes = 1;
+  repeated string contract_codes = 1; // List of security codes.
 }
 
-// Response message for GetSnapshots.
+// Response containing market snapshots.
 message GetSnapshotsResponse {
   repeated Snapshot snapshots = 1;
 }
 
-// Represents a market snapshot.
+// Market state summary at a specific point in time.
+// 行情快照
 message Snapshot {
-  int64  ts            = 1;
-  string code          = 2;
-  string exchange      = 3;
-  double open          = 4;
-  double high          = 5;
-  double low           = 6;
-  double close         = 7;
-  double change_price  = 8;
-  double change_rate   = 9;
-  double average_price = 10;
-  int64  volume        = 11;
-  int64  total_volume  = 12;
-  int64  amount        = 13;
-  int64  total_amount  = 14;
-  double buy_price     = 15;
-  int64  buy_volume    = 16;
-  double sell_price    = 17;
-  int64  sell_volume   = 18;
+  int64      ts               = 1; // Timestamp.
+  string     code             = 2; // Security code.
+  Exchange   exchange         = 3; // Exchange.
+  double     open             = 4; // Open price.
+  double     high             = 5; // High price.
+  double     low              = 6; // Low price.
+  double     close            = 7; // Last/Close price.
+  double     change_price     = 8; // Price change relative to reference.
+  double     change_rate      = 9; // Percentage change.
+  double     average_price    = 10; // Average trade price.
+  int64      volume           = 11; // Trade volume in units.
+  int64      total_volume     = 12; // Total daily volume.
+  int64      amount           = 13; // Trade amount.
+  int64      total_amount     = 14; // Total daily amount.
+  double     buy_price        = 15; // Best bid price.
+  double     buy_volume       = 16; // Best bid volume.
+  double     sell_price       = 17; // Best ask price.
+  int64      sell_volume      = 18; // Best ask volume.
+  TickType   tick_type        = 19; // Up/Down tick.
+  ChangeType change_type      = 20; // Limit Up/Down etc.
+  double     yesterday_volume = 21; // Yesterday's total volume.
+  double     volume_ratio     = 22; // Volume ratio compared to average.
 }
 
-// Request message for GetTicks.
+// Request market ticks for a contract and date.
 message GetTicksRequest {
   string contract_code = 1;
-  string date          = 2;
+  string date          = 2; // Date YYYY-MM-DD.
 }
 
-// Represents tick data.
+// Sequential trade-by-trade market data.
+// 逐筆報價
 message Ticks {
-  repeated int64  ts         = 1;
-  repeated double close      = 2;
-  repeated int64  volume     = 3;
-  repeated double bid_price  = 4;
-  repeated int64  bid_volume = 5;
-  repeated double ask_price  = 6;
-  repeated int64  ask_volume = 7;
-  repeated int32  tick_type  = 8;
+  repeated int64  ts         = 1; // Timestamps.
+  repeated double close      = 2; // Execution prices.
+  repeated int64  volume     = 3; // Execution volumes.
+  repeated double bid_price  = 4; // Best bid at time of tick.
+  repeated int64  bid_volume = 5; // Best bid volume.
+  repeated double ask_price  = 6; // Best ask at time of tick.
+  repeated int64  ask_volume = 7; // Best ask volume.
+  repeated int32  tick_type  = 8; // Tick type indicators.
 }
 
-// Request message for GetKbars.
+// Request K-bar data for a contract and date range.
 message GetKbarsRequest {
   string contract_code = 1;
-  string start_date    = 2;
-  string end_date      = 3;
+  string start_date    = 2; // YYYY-MM-DD.
+  string end_date      = 3; // YYYY-MM-DD.
 }
 
-// Represents K-bar (candlestick) data.
+// Candlestick market data (OHLCV).
+// K線資料
 message Kbars {
-  repeated int64  ts     = 1;
-  repeated double open   = 2;
-  repeated double high   = 3;
-  repeated double low    = 4;
-  repeated double close  = 5;
-  repeated int64  volume = 6;
-  repeated double amount = 7;
+  repeated int64  ts     = 1; // Period timestamps.
+  repeated double open   = 2; // Open prices.
+  repeated double high   = 3; // High prices.
+  repeated double low    = 4; // Low prices.
+  repeated double close  = 5; // Close prices.
+  repeated int64  volume = 6; // Total period volumes.
+  repeated double amount = 7; // Total period amounts.
 }
 
-// Request message for GetDailyQuotes.
+// Request daily quotes for all securities.
 message GetDailyQuotesRequest {
-  string date = 1;
+  string date = 1; // YYYY-MM-DD.
 }
 
-// Represents daily quotes.
+// Daily summary data for a set of securities.
+// 每日報價
 message DailyQuotes {
-  repeated string code   = 1;
-  repeated double open   = 2;
-  repeated double high   = 3;
-  repeated double low    = 4;
-  repeated double close  = 5;
-  repeated int64  volume = 6;
+  repeated string code        = 1; // Security codes.
+  repeated double open        = 2; // Daily open.
+  repeated double high        = 3; // Daily high.
+  repeated double low         = 4; // Daily low.
+  repeated double close       = 5; // Daily close.
+  repeated int64  volume      = 6; // Daily volume.
+  repeated string date        = 7; // Report dates.
+  repeated int64  transaction = 8; // Transaction count.
+  repeated int64  amount      = 9; // Daily amount.
 }
 
-// Request message for CreditEnquires.
+// Request credit enquiry for multiple contracts.
 message CreditEnquiresRequest {
   repeated string contract_codes = 1;
 }
 
-// Response message for CreditEnquires.
+// Response containing credit information.
 message CreditEnquiresResponse {
   repeated CreditEnquire credit_enquires = 1;
 }
 
-// Represents a credit enquiry result.
+// Credit availability for margin trading or short selling.
+// 信用交易查詢
 message CreditEnquire {
-  string stock_id    = 1;
-  int64  margin_unit = 2;
-  int64  short_unit  = 3;
+  string stock_id    = 1; // Security code.
+  int64  margin_unit = 2; // Available margin units.
+  int64  short_unit  = 3; // Available short selling units.
+  string update_time = 4; // Update timestamp.
+  string system      = 5; // System code.
 }
 
-// Request message for GetShortStockSources.
+// Request for short stock source availability.
 message GetShortStockSourcesRequest {
   repeated string contract_codes = 1;
 }
 
-// Response message for GetShortStockSources.
+// Response for short stock sources.
 message GetShortStockSourcesResponse {
   repeated ShortStockSource sources = 1;
 }
 
-// Represents a short stock source.
+// Information on available shares for shorting.
+// 借券水源
 message ShortStockSource {
-  string code               = 1;
-  int64  short_stock_source = 2;
-  int64  ts                 = 3;
+  string code               = 1; // Security code.
+  int64  short_stock_source = 2; // Available shorting source volume.
+  int64  ts                 = 3; // Timestamp.
 }
 
-// Request message for GetScanners.
+// Request to run a market scanner.
 message GetScannersRequest {
-  string scanner_type = 1;
-  bool   ascending    = 2;
-  string date         = 3;
-  int32  count        = 4;
+  ScannerType scanner_type = 1; // Ranking criteria (e.g., volume, change).
+  bool        ascending    = 2; // Sort direction.
+  string      date         = 3; // Date for scanning.
+  int32       count        = 4; // Max number of results.
 }
 
-// Response message for GetScanners.
+// Response containing scanner results.
 message GetScannersResponse {
   repeated ScannerItem scanners = 1;
 }
 
-// Represents a scanner item (ranked stock).
+// Represents a security matching scanner criteria.
+// 選股器結果
 message ScannerItem {
-  string code         = 1;
-  string name         = 2;
-  double close        = 3;
-  double change_price = 4;
-  int64  total_volume = 5;
+  string     date             = 1; // Scan date.
+  string     code             = 2; // Security code.
+  string     name             = 3; // Name.
+  int64      ts               = 4; // Timestamp.
+  double     open             = 5; // Open price.
+  double     high             = 6; // High.
+  double     low              = 7; // Low.
+  double     close            = 8; // Last close.
+  double     price_range      = 9; // Daily price range.
+  TickType   tick_type        = 10; // Up/Down.
+  double     change_price     = 11; // Net change.
+  ChangeType change_type      = 12; // Change indicator.
+  double     average_price    = 13; // Avg price.
+  int64      volume           = 14; // Tick volume.
+  int64      total_volume     = 15; // Total volume.
+  int64      amount           = 16; // Tick amount.
+  int64      total_amount     = 17; // Total amount.
+  int64      yesterday_volume = 18; // Prev day volume.
+  double     volume_ratio     = 19; // Relative volume.
+  double     buy_price        = 20; // Best bid.
+  int64      buy_volume       = 21; // Best bid vol.
+  double     sell_price       = 22; // Best ask.
+  int64      sell_volume      = 23; // Best ask vol.
+  int64      bid_orders       = 24; // Bid order count.
+  int64      bid_volumes      = 25; // Total bid vol.
+  int64      ask_orders       = 26; // Ask order count.
+  int64      ask_volumes      = 27; // Total ask vol.
+  double     rank_value       = 28; // Ranking metric value.
 }
 
-// Represents punishment information (disposition stocks).
+// Detailed regulatory status for disposition stocks.
+// 處置股
 message Punish {
-  repeated string code       = 1;
-  repeated string start_date = 2;
-  repeated string end_date   = 3;
-  repeated string interval   = 4;
+  repeated string code           = 1; // Stock codes.
+  repeated string start_date     = 2; // Punishment start.
+  repeated string end_date       = 3; // Punishment end.
+  repeated string interval       = 4; // Trade interval.
+  repeated string updated_at     = 5; // Updated timestamp.
+  repeated double unit_limit     = 6; // Order unit limit.
+  repeated double total_limit    = 7; // Total limit.
+  repeated string description    = 8; // Detail description.
+  repeated string announced_date = 9; // Announcement date.
 }
 
-// Represents notice information (attention stocks).
+// Regulatory notice information for attention stocks.
+// 注意股
 message Notice {
-  repeated string code   = 1;
-  repeated string reason = 2;
+  repeated string code           = 1; // Stock codes.
+  repeated string reason         = 2; // Reason for notice.
+  repeated string updated_at     = 3; // Timestamp.
+  repeated double close          = 4; // Triggering close price.
+  repeated string announced_date = 5; // Date of notice.
 }
 
-// Request message for FetchContracts.
+// Request for fetching security contracts.
 message FetchContractsRequest {
-  bool contract_download = 1;
+  bool contract_download = 1; // Whether to perform a full download.
 }
 
-// Request message for ActivateCA.
+// Request to activate a security certificate.
 message ActivateCARequest {
-  string ca_path   = 1;
-  string ca_passwd = 2;
-  string person_id = 3;
+  string ca_path   = 1; // File path to CA.
+  string ca_passwd = 2; // CA password.
+  string person_id = 3; // Holder's person ID.
 }
 
-// Response message for ActivateCA.
+// Response for CA activation.
 message ActivateCAResponse {
   bool success = 1;
 }
 
-// Request message for GetCAExpireTime.
+// Request for checking CA expiration.
 message GetCAExpireTimeRequest {
   string person_id = 1;
 }
 
-// Response message for GetCAExpireTime.
+// Response containing CA expiration timestamp.
 message GetCAExpireTimeResponse {
   string expire_time = 1;
 }
 
-// Request message for SubscribeTrade.
+// Request to subscribe to trade execution reports.
 message SubscribeTradeRequest {
   Account account = 1;
 }
 
-// Response message for SubscribeTrade.
+// Response for trade subscription.
 message SubscribeTradeResponse {
   bool success = 1;
 }
 
-// Request message for UnsubscribeTrade.
+// Request to unsubscribe from trade execution reports.
 message UnsubscribeTradeRequest {
   Account account = 1;
 }
 
-// Response message for UnsubscribeTrade.
+// Response for trade unsubscription.
 message UnsubscribeTradeResponse {
   bool success = 1;
+}
+
+// Enums from shioaji.constant representing various trading states and types.
+
+// Action represents the side of the order (Buy/Sell).
+// 買賣別
+enum Action {
+  ACTION_UNSPECIFIED = 0;
+  ACTION_BUY         = 1; // Buy. 買進
+  ACTION_SELL        = 2; // Sell. 賣出
+}
+
+// OrderType represents the time in force or order conditions.
+// 委託類別
+enum OrderType {
+  ORDER_TYPE_UNSPECIFIED = 0;
+  ORDER_TYPE_ROD         = 1; // Rest of Day. 當日有效
+  ORDER_TYPE_IOC         = 2; // Immediate or Cancel. 立即成交或取消
+  ORDER_TYPE_FOK         = 3; // Fill or Kill. 全部成交或取消
+}
+
+// StockPriceType represents the price setting method.
+// 價格類別
+enum StockPriceType {
+  STOCK_PRICE_TYPE_UNSPECIFIED = 0;
+  STOCK_PRICE_TYPE_LMT         = 1; // Limit price. 限價
+  STOCK_PRICE_TYPE_MKT         = 2; // Market price. 市價
+  STOCK_PRICE_TYPE_CLOSE       = 3; // Closing price. 收盤價
+}
+
+// StockOrderLot represents the trading unit type for stocks.
+// 委託單位
+enum StockOrderLot {
+  STOCK_ORDER_LOT_UNSPECIFIED  = 0;
+  STOCK_ORDER_LOT_COMMON       = 1; // Standard lot. 整股
+  STOCK_ORDER_LOT_BLOCKTRADE   = 2; // Block trade. 鉅額
+  STOCK_ORDER_LOT_FIXING       = 3; // Fixed price. 定盤
+  STOCK_ORDER_LOT_ODD          = 4; // After-hours odd lot. 盤後零股
+  STOCK_ORDER_LOT_INTRADAY_ODD = 5; // Intraday odd lot. 盤中零股
+}
+
+// StockOrderCond represents the trading condition (Cash/Margin).
+// 委託條件
+enum StockOrderCond {
+  STOCK_ORDER_COND_UNSPECIFIED   = 0;
+  STOCK_ORDER_COND_CASH          = 1; // Cash settlement. 現股
+  STOCK_ORDER_COND_NETTING       = 2; // Day trade netting. 當沖
+  STOCK_ORDER_COND_MARGINTRADING = 3; // Buying on margin. 融資
+  STOCK_ORDER_COND_SHORTSELLING  = 4; // Short selling shares. 融券
+  STOCK_ORDER_COND_EMERGING      = 5; // Emerging market stock. 興櫃
+}
+
+// FuturesPriceType represents the price setting method for futures.
+// 期貨價格類別
+enum FuturesPriceType {
+  FUTURES_PRICE_TYPE_UNSPECIFIED = 0;
+  FUTURES_PRICE_TYPE_LMT         = 1; // Limit. 限價
+  FUTURES_PRICE_TYPE_MKT         = 2; // Market. 市價
+  FUTURES_PRICE_TYPE_MKP         = 3; // Market with protection. 範圍市價
+}
+
+// FuturesOCType represents Open/Close position type for futures.
+// 期貨倉別
+enum FuturesOCType {
+  FUTURES_OCTYPE_UNSPECIFIED = 0;
+  FUTURES_OCTYPE_AUTO        = 1; // Automatic detection. 自動
+  FUTURES_OCTYPE_NEW         = 2; // Opening new position. 新倉
+  FUTURES_OCTYPE_COVER       = 3; // Closing position. 平倉
+  FUTURES_OCTYPE_DAYTRADE    = 4; // Intraday day trade. 當沖
+}
+
+// SecurityType represents the financial instrument type.
+// 商品類別
+enum SecurityType {
+  SECURITY_TYPE_UNSPECIFIED = 0;
+  SECURITY_TYPE_IND         = 1; // Index. 指數
+  SECURITY_TYPE_STK         = 2; // Stock. 股票
+  SECURITY_TYPE_FUT         = 3; // Future. 期貨
+  SECURITY_TYPE_OPT         = 4; // Option. 選擇權
+}
+
+// Exchange represents the trading venue.
+// 交易所
+enum Exchange {
+  EXCHANGE_UNSPECIFIED = 0;
+  EXCHANGE_TSE         = 1; // Taiwan Stock Exchange. 上市
+  EXCHANGE_OTC         = 2; // Taipei Exchange (Over-the-Counter). 上櫃
+  EXCHANGE_OES         = 3; // Emerging Stock. 興櫃
+  EXCHANGE_TAIFEX      = 4; // Taiwan Futures Exchange. 期貨
+}
+
+// Currency represents the trading currency.
+// 幣別
+enum Currency {
+  CURRENCY_UNSPECIFIED = 0;
+  CURRENCY_TWD         = 1; // New Taiwan Dollar. 新台幣
+  CURRENCY_USD         = 2; // US Dollar. 美元
+  CURRENCY_HKD         = 3; // Hong Kong Dollar. 港幣
+  CURRENCY_GBP         = 4; // British Pound. 英鎊
+  CURRENCY_AUD         = 5; // Australian Dollar. 澳幣
+  CURRENCY_CAD         = 6; // Canadian Dollar. 加幣
+  CURRENCY_SGD         = 7; // Singapore Dollar. 新加坡幣
+  CURRENCY_CHF         = 8; // Swiss Franc. 瑞士法郎
+  CURRENCY_JPY         = 9; // Japanese Yen. 日圓
+  CURRENCY_ZAR         = 10; // South African Rand. 南非幣
+  CURRENCY_SEK         = 11; // Swedish Krona. 瑞典克朗
+  CURRENCY_NZD         = 12; // New Zealand Dollar. 紐西蘭幣
+  CURRENCY_THB         = 13; // Thai Baht. 泰銖
+  CURRENCY_PHP         = 14; // Philippine Peso. 菲律賓披索
+  CURRENCY_IDR         = 15; // Indonesian Rupiah. 印尼盾
+  CURRENCY_EUR         = 16; // Euro. 歐元
+  CURRENCY_KRW         = 17; // South Korean Won. 韓圓
+  CURRENCY_VND         = 18; // Vietnamese Dong. 越南盾
+  CURRENCY_MYR         = 19; // Malaysian Ringgit. 馬來西亞幣
+  CURRENCY_CNY         = 20; // Chinese Yuan. 人民幣
+}
+
+// OptionRight represents Call or Put for options.
+// 選擇權權利
+enum OptionRight {
+  OPTION_RIGHT_UNSPECIFIED = 0;
+  OPTION_RIGHT_NO          = 1; // None. 無
+  OPTION_RIGHT_CALL        = 2; // Call option. 買權
+  OPTION_RIGHT_PUT         = 3; // Put option. 賣權
+}
+
+// Status represents the current state of an order.
+// 委託狀態
+enum Status {
+  STATUS_UNSPECIFIED   = 0;
+  STATUS_CANCELLED     = 1; // Cancelled. 已刪單
+  STATUS_FILLED        = 2; // Fully filled. 完全成交
+  STATUS_PARTFILLED    = 3; // Partially filled. 部分成交
+  STATUS_INACTIVE      = 4; // Inactive/Failed. 失敗
+  STATUS_FAILED        = 5; // Failed. 失敗
+  STATUS_PENDINGSUBMIT = 6; // Pending submission. 傳送中
+  STATUS_PRESUBMITTED  = 7; // Pre-submitted. 預約單
+  STATUS_SUBMITTED     = 8; // Submitted. 委託成功
+}
+
+// OrderState represents the type of update in a callback.
+// 委託單狀態
+enum OrderState {
+  ORDER_STATE_UNSPECIFIED  = 0;
+  ORDER_STATE_STOCKDEAL    = 1; // Stock deal. 證券成交
+  ORDER_STATE_STOCKORDER   = 2; // Stock order update. 證券委託
+  ORDER_STATE_FUTURESORDER = 3; // Futures order update. 期貨委託
+  ORDER_STATE_FUTURESDEAL  = 4; // Futures deal. 期貨成交
+}
+
+// QuoteType represents the type of market data.
+// 報價類別
+enum QuoteType {
+  QUOTE_TYPE_UNSPECIFIED = 0;
+  QUOTE_TYPE_TICK        = 1; // Tick data. 逐筆
+  QUOTE_TYPE_BIDASK      = 2; // Bid/Ask data. 委託
+  QUOTE_TYPE_QUOTE       = 3; // Quote data. 報價
+}
+
+// QuoteVersion represents the data version.
+// 報價版本
+enum QuoteVersion {
+  QUOTE_VERSION_UNSPECIFIED = 0;
+  QUOTE_VERSION_V1          = 1; // Version 1.
+}
+
+// DayTrade represents whether a stock is eligible for day trading.
+// 當沖
+enum DayTrade {
+  DAY_TRADE_UNSPECIFIED = 0;
+  DAY_TRADE_YES         = 1; // Yes. 可現沖
+  DAY_TRADE_ONLYBUY     = 2; // Buy first only. 先買後賣
+  DAY_TRADE_NO          = 3; // No. 否
+}
+
+// TickType represents the direction of the trade tick.
+// 內外盤
+enum TickType {
+  TICK_TYPE_UNSPECIFIED = 0;
+  TICK_TYPE_NO          = 1; // No change.
+  TICK_TYPE_BUY         = 2; // Buy (Up/Outer). 外盤
+  TICK_TYPE_SELL        = 3; // Sell (Down/Inner). 內盤
+}
+
+// ChangeType represents the price movement status (e.g., Limit Up).
+// 漲跌狀態
+enum ChangeType {
+  CHANGE_TYPE_UNSPECIFIED = 0;
+  CHANGE_TYPE_LIMITUP     = 1; // Limit Up. 漲停
+  CHANGE_TYPE_UP          = 2; // Up. 漲
+  CHANGE_TYPE_UNCHANGED   = 3; // Unchanged. 平盤
+  CHANGE_TYPE_DOWN        = 4; // Down. 跌
+  CHANGE_TYPE_LIMITDOWN   = 5; // Limit Down. 跌停
+}
+
+// Unit represents the share unit.
+// 單位
+enum Unit {
+  UNIT_UNSPECIFIED = 0;
+  UNIT_COMMON      = 1; // Common (1000 shares). 張
+  UNIT_SHARE       = 2; // Share (1 share). 股
+}
+
+// TradeType represents the type of trade (Common/DayTrade).
+// 交易類別
+enum TradeType {
+  TRADE_TYPE_UNSPECIFIED = 0;
+  TRADE_TYPE_COMMON      = 1; // Common trade. 普通
+  TRADE_TYPE_DAYTRADE    = 2; // Day trade. 當沖
+}
+
+// ScannerType represents the ranking criteria for the scanner.
+// 選股條件
+enum ScannerType {
+  SCANNER_TYPE_UNSPECIFIED       = 0;
+  SCANNER_TYPE_CHANGEPERCENTRANK = 1; // Change percent rank. 漲跌幅排行
+  SCANNER_TYPE_CHANGEPRICERANK   = 2; // Change price rank. 漲跌價排行
+  SCANNER_TYPE_DAYRANGERANK      = 3; // Day range rank. 震幅排行
+  SCANNER_TYPE_VOLUMERANK        = 4; // Volume rank. 成交量排行
+  SCANNER_TYPE_AMOUNTRANK        = 5; // Amount rank. 成交金額排行
+  SCANNER_TYPE_TICKCOUNTRANK     = 6; // Tick count rank. 成交筆數排行
+}
+
+// TicksQueryType represents the filter for tick queries.
+// 逐筆查詢類別
+enum TicksQueryType {
+  TICKS_QUERY_TYPE_UNSPECIFIED = 0;
+  TICKS_QUERY_TYPE_ALLDAY      = 1; // All day. 全日
+  TICKS_QUERY_TYPE_RANGETIME   = 2; // Range time. 時間區間
+  TICKS_QUERY_TYPE_LASTCOUNT   = 3; // Last count. 最後N筆
+}
+
+// FetchStatus represents the success or failure of a data fetch.
+// 查詢狀態
+enum FetchStatus {
+  FETCH_STATUS_UNSPECIFIED = 0;
+  FETCH_STATUS_SUCCESS     = 1; // Success. 成功
+  FETCH_STATUS_FAIL        = 2; // Fail. 失敗
 }

@@ -50,6 +50,7 @@ disable=too-many-public-methods,
         too-many-positional-arguments,
         too-many-arguments,
         broad-exception-caught,
+        duplicate-code
 
 
 [REPORTS]
