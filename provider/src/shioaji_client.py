@@ -64,7 +64,7 @@ class ShioajiClient:
     def __init__(self, simulation: bool = False):
         self.api = sj.Shioaji(simulation=simulation)
 
-    def login(self, api_key: str, secret_key: str) -> List[Account]:
+    def login(self, api_key: str, secret_key: str, **kwargs) -> List[Account]:
         """
         Login to the Shioaji API.
         登入
@@ -81,11 +81,12 @@ class ShioajiClient:
         Args:
             api_key (str): Your API key.
             secret_key (str): Your secret key.
+            **kwargs: Additional arguments to pass to the underlying login method.
 
         Returns:
             List[Account]: A list of trading accounts.
         """
-        return self.api.login(api_key, secret_key)
+        return self.api.login(api_key, secret_key, **kwargs)
 
     def logout(self) -> bool:
         """

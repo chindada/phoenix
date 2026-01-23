@@ -6,12 +6,12 @@ import logging
 import os
 from concurrent import futures
 from datetime import datetime
-from typing import Any, cast
+from typing import Any, Optional, cast
 
 import grpc
 from shioaji import constant as sj_constant
 from shioaji.account import Account
-from shioaji.contracts import ComboContract, Contract
+from shioaji.contracts import ComboBase, ComboContract, Contract
 from shioaji.order import (
     ComboOrder,
     ComboTrade,
@@ -152,8 +152,38 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
     def _get_enum(self, mapping: dict, value: Any) -> Any:
         """Helper to look up enum values safely."""
         if value is None:
-            return None
-        return mapping.get(value, None)
+            return 0
+        return mapping.get(value, 0)
+
+    def _safe_str(self, value: Any) -> str:
+        """Helper to convert value to string safely, returning empty string if None."""
+        return str(value) if value is not None else ""
+
+    def _lookup_contract(self, code: str):
+        """Helper to find a contract by code across all categories."""
+        # Check if contracts are loaded; if not, they might need to be fetched,
+        # but here we just check what's available in memory.
+        if (
+            hasattr(self.client.api.Contracts, "Stocks")
+            and code in self.client.api.Contracts.Stocks
+        ):
+            return self.client.api.Contracts.Stocks[code]
+        if (
+            hasattr(self.client.api.Contracts, "Futures")
+            and code in self.client.api.Contracts.Futures
+        ):
+            return self.client.api.Contracts.Futures[code]
+        if (
+            hasattr(self.client.api.Contracts, "Options")
+            and code in self.client.api.Contracts.Options
+        ):
+            return self.client.api.Contracts.Options[code]
+        if (
+            hasattr(self.client.api.Contracts, "Indexs")
+            and code in self.client.api.Contracts.Indexs
+        ):
+            return self.client.api.Contracts.Indexs[code]
+        raise KeyError(f"Contract code not found: {code}")
 
     @property
     def _stock_account(self) -> Account:
@@ -178,6 +208,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 accounts=[self._to_pb_account(acc) for acc in accounts]
             )
         except Exception as e:
+            logging.error("Error in Login: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.LoginResponse()
 
@@ -190,6 +221,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             self.logged_in = False
             return provider_pb2.LogoutResponse(success=success)
         except Exception as e:
+            logging.error("Error in Logout: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.LogoutResponse()
 
@@ -206,6 +238,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 remaining_bytes=usage.remaining_bytes,
             )
         except Exception as e:
+            logging.error("Error in GetUsage: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.UsageStatus()
 
@@ -219,6 +252,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 accounts=[self._to_pb_account(acc) for acc in accounts]
             )
         except Exception as e:
+            logging.error("Error in ListAccounts: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListAccountsResponse()
 
@@ -234,13 +268,14 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 errmsg=balance.errmsg,
             )
         except Exception as e:
+            logging.error("Error in GetAccountBalance: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.AccountBalance()
 
     def _to_pb_account(self, acc: Account):
         """Convert Shioaji Account to Protobuf Account."""
         return provider_pb2.Account(
-            account_type=str(acc.account_type),
+            account_type=self._safe_str(acc.account_type),
             person_id=acc.person_id,
             broker_id=acc.broker_id,
             account_id=acc.account_id,
@@ -259,23 +294,23 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             symbol=contract.symbol,
             name=contract.name,
             currency=self._get_enum(self._CURRENCY_MAP, contract.currency),
-            category=contract.category,
-            delivery_month=contract.delivery_month,
-            delivery_date=contract.delivery_date,
+            category=self._safe_str(contract.category),
+            delivery_month=self._safe_str(contract.delivery_month),
+            delivery_date=self._safe_str(contract.delivery_date),
             strike_price=float(contract.strike_price),
             option_right=self._get_enum(self._OPTION_RIGHT_MAP, contract.option_right),
-            underlying_kind=contract.underlying_kind,
-            underlying_code=contract.underlying_code,
+            underlying_kind=self._safe_str(contract.underlying_kind),
+            underlying_code=self._safe_str(contract.underlying_code),
             unit=float(contract.unit),
-            multiplier=contract.multiplier,
+            multiplier=int(contract.multiplier) if contract.multiplier else 0,
             limit_up=contract.limit_up,
             limit_down=contract.limit_down,
             reference=contract.reference,
-            update_date=contract.update_date,
+            update_date=self._safe_str(contract.update_date),
             margin_trading_balance=contract.margin_trading_balance,
             short_selling_balance=contract.short_selling_balance,
             day_trade=self._get_enum(self._DAY_TRADE_MAP, contract.day_trade),
-            target_code=contract.target_code,
+            target_code=self._safe_str(contract.target_code),
         )
 
     def _to_pb_combo_base(self, combo_base):
@@ -289,25 +324,25 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             symbol=combo_base.symbol,
             name=combo_base.name,
             currency=self._get_enum(self._CURRENCY_MAP, combo_base.currency),
-            category=combo_base.category,
-            delivery_month=combo_base.delivery_month,
-            delivery_date=combo_base.delivery_date,
+            category=self._safe_str(combo_base.category),
+            delivery_month=self._safe_str(combo_base.delivery_month),
+            delivery_date=self._safe_str(combo_base.delivery_date),
             strike_price=float(combo_base.strike_price),
             option_right=self._get_enum(
                 self._OPTION_RIGHT_MAP, combo_base.option_right
             ),
-            underlying_kind=combo_base.underlying_kind,
-            underlying_code=combo_base.underlying_code,
+            underlying_kind=self._safe_str(combo_base.underlying_kind),
+            underlying_code=self._safe_str(combo_base.underlying_code),
             unit=float(combo_base.unit),
-            multiplier=combo_base.multiplier,
+            multiplier=int(combo_base.multiplier) if combo_base.multiplier else 0,
             limit_up=combo_base.limit_up,
             limit_down=combo_base.limit_down,
             reference=combo_base.reference,
-            update_date=combo_base.update_date,
+            update_date=self._safe_str(combo_base.update_date),
             margin_trading_balance=combo_base.margin_trading_balance,
             short_selling_balance=combo_base.short_selling_balance,
             day_trade=self._get_enum(self._DAY_TRADE_MAP, combo_base.day_trade),
-            target_code=combo_base.target_code,
+            target_code=self._safe_str(combo_base.target_code),
             action=self._get_enum(self._ACTION_MAP, combo_base.action),
         )
 
@@ -411,10 +446,6 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             return self.client.api.Contracts.Indexs[proto_contract.code]
         return self.client.api.Contracts.Stocks[proto_contract.code]
 
-    def _to_sj_combo_contract(self, proto_contract: provider_pb2.ComboContract):
-        """Convert Protobuf ComboContract to Shioaji ComboContract."""
-        # Assuming logic to retrieve combo contract
-
     def _to_sj_order(self, proto_order: provider_pb2.Order):
         """Convert Protobuf Order to Shioaji Order."""
         action_map = {
@@ -439,6 +470,89 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             ),
         )
 
+    def _to_sj_combo_contract(self, proto_contract: provider_pb2.ComboContract):
+        """Convert Protobuf ComboContract to Shioaji ComboContract."""
+        legs = []
+        action_map = {
+            provider_pb2.ACTION_BUY: sj_constant.Action.Buy,
+            provider_pb2.ACTION_SELL: sj_constant.Action.Sell,
+        }
+
+        for leg in proto_contract.legs:
+            # Create a temporary proto contract to reuse _to_sj_contract logic
+            temp_proto = provider_pb2.Contract(
+                security_type=leg.security_type, exchange=leg.exchange, code=leg.code
+            )
+            base_contract = self._to_sj_contract(temp_proto)
+
+            # ComboBase requires action and contract fields
+            # We use dict() to unpack contract fields
+            legs.append(
+                ComboBase(
+                    action=action_map.get(leg.action, sj_constant.Action.Buy),
+                    **base_contract.dict(),
+                )
+            )
+
+        return ComboContract(legs=legs)
+
+    def _to_sj_combo_order(self, proto_order: provider_pb2.ComboOrder):
+        """Convert Protobuf ComboOrder to Shioaji ComboOrder."""
+        action_map = {
+            provider_pb2.ACTION_BUY: sj_constant.Action.Buy,
+            provider_pb2.ACTION_SELL: sj_constant.Action.Sell,
+        }
+        order_type_map = {
+            provider_pb2.ORDER_TYPE_ROD: sj_constant.OrderType.ROD,
+            provider_pb2.ORDER_TYPE_IOC: sj_constant.OrderType.IOC,
+            provider_pb2.ORDER_TYPE_FOK: sj_constant.OrderType.FOK,
+        }
+        octype_map = {
+            provider_pb2.FUTURES_OCTYPE_AUTO: sj_constant.FuturesOCType.Auto,
+            provider_pb2.FUTURES_OCTYPE_NEW: sj_constant.FuturesOCType.New,
+            provider_pb2.FUTURES_OCTYPE_COVER: sj_constant.FuturesOCType.Cover,
+            provider_pb2.FUTURES_OCTYPE_DAYTRADE: sj_constant.FuturesOCType.DayTrade,
+        }
+
+        return ComboOrder(
+            price=proto_order.price,
+            quantity=proto_order.quantity,
+            action=action_map.get(proto_order.action, sj_constant.Action.Buy),
+            price_type=cast(Any, proto_order.price_type),
+            order_type=order_type_map.get(
+                proto_order.order_type, sj_constant.OrderType.ROD
+            ),
+            octype=octype_map.get(proto_order.octype, sj_constant.FuturesOCType.Auto),
+        )
+
+    def _find_trade(self, proto_trade: provider_pb2.Trade) -> Optional[Trade]:
+        """Find a Shioaji Trade object based on Protobuf Trade info."""
+        trades = self.client.list_trades()
+        target_seqno = proto_trade.order.seqno
+        target_id = proto_trade.order.id
+
+        for trade in trades:
+            if target_seqno and trade.order.seqno == target_seqno:
+                return trade
+            if target_id and trade.order.id == target_id:
+                return trade
+        return None
+
+    def _find_combo_trade(
+        self, proto_trade: provider_pb2.ComboTrade
+    ) -> Optional[ComboTrade]:
+        """Find a Shioaji ComboTrade object based on Protobuf ComboTrade info."""
+        trades = self.client.list_combotrades()
+        target_seqno = proto_trade.order.seqno
+        target_id = proto_trade.order.id
+
+        for trade in trades:
+            if target_seqno and trade.order.seqno == target_seqno:
+                return trade
+            if target_id and trade.order.id == target_id:
+                return trade
+        return None
+
     def PlaceOrder(
         self, request: provider_pb2.PlaceOrderRequest, context: grpc.ServicerContext
     ) -> provider_pb2.Trade:
@@ -448,7 +562,12 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             order = self._to_sj_order(request.order)
             trade = self.client.place_order(contract, order)
             return self._to_pb_trade(trade)
+        except KeyError as e:
+            logging.error("KeyError in PlaceOrder: %s", e, exc_info=True)
+            context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
+            return provider_pb2.Trade()
         except Exception as e:
+            logging.error("Error in PlaceOrder: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Trade()
 
@@ -459,12 +578,16 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
     ) -> provider_pb2.ComboTrade:
         """Place a combination order."""
         try:
-            # Logic to construct combo contract and order needed
-            context.abort(
-                grpc.StatusCode.UNIMPLEMENTED, "PlaceComboOrder not fully implemented"
-            )
+            combo_contract = self._to_sj_combo_contract(request.combo_contract)
+            order = self._to_sj_combo_order(request.order)
+            trade = self.client.place_comboorder(combo_contract, order)
+            return self._to_pb_combo_trade(trade)
+        except KeyError as e:
+            logging.error("KeyError in PlaceComboOrder: %s", e, exc_info=True)
+            context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
             return provider_pb2.ComboTrade()
         except Exception as e:
+            logging.error("Error in PlaceComboOrder: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ComboTrade()
 
@@ -473,11 +596,18 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
     ) -> provider_pb2.Trade:
         """Update an existing order."""
         try:
-            context.abort(
-                grpc.StatusCode.UNIMPLEMENTED, "UpdateOrder not fully implemented"
+            trade = self._find_trade(request.trade)
+            if not trade:
+                context.abort(grpc.StatusCode.NOT_FOUND, "Trade not found")
+                return provider_pb2.Trade()
+
+            # The client.update_order expects the trade object, price (float), and qty (int)
+            res = self.client.update_order(
+                trade, price=request.price, qty=request.quantity
             )
-            return provider_pb2.Trade()
+            return self._to_pb_trade(res)
         except Exception as e:
+            logging.error("Error in UpdateOrder: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Trade()
 
@@ -486,11 +616,15 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
     ) -> provider_pb2.Trade:
         """Cancel an existing order."""
         try:
-            context.abort(
-                grpc.StatusCode.UNIMPLEMENTED, "CancelOrder not fully implemented"
-            )
-            return provider_pb2.Trade()
+            trade = self._find_trade(request.trade)
+            if not trade:
+                context.abort(grpc.StatusCode.NOT_FOUND, "Trade not found")
+                return provider_pb2.Trade()
+
+            res = self.client.cancel_order(trade)
+            return self._to_pb_trade(res)
         except Exception as e:
+            logging.error("Error in CancelOrder: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Trade()
 
@@ -501,11 +635,15 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
     ) -> provider_pb2.ComboTrade:
         """Cancel a combination order."""
         try:
-            context.abort(
-                grpc.StatusCode.UNIMPLEMENTED, "CancelComboOrder not fully implemented"
-            )
-            return provider_pb2.ComboTrade()
+            trade = self._find_combo_trade(request.combotrade)
+            if not trade:
+                context.abort(grpc.StatusCode.NOT_FOUND, "ComboTrade not found")
+                return provider_pb2.ComboTrade()
+
+            res = self.client.cancel_comboorder(trade)
+            return self._to_pb_combo_trade(res)
         except Exception as e:
+            logging.error("Error in CancelComboOrder: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ComboTrade()
 
@@ -517,6 +655,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             self.client.update_status(self._stock_account)
             return provider_pb2.Empty()
         except Exception as e:
+            logging.error("Error in UpdateStatus: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Empty()
 
@@ -528,6 +667,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             self.client.update_combostatus(self._stock_account)
             return provider_pb2.Empty()
         except Exception as e:
+            logging.error("Error in UpdateComboStatus: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Empty()
 
@@ -541,6 +681,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 trades=[self._to_pb_trade(t) for t in trades]
             )
         except Exception as e:
+            logging.error("Error in ListTrades: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListTradesResponse()
 
@@ -554,6 +695,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 combo_trades=[self._to_pb_combo_trade(t) for t in trades]
             )
         except Exception as e:
+            logging.error("Error in ListComboTrades: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListComboTradesResponse()
 
@@ -569,6 +711,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 records=[self._to_pb_order_deal_record(r) for r in records]
             )
         except Exception as e:
+            logging.error("Error in GetOrderDealRecords: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.GetOrderDealRecordsResponse()
 
@@ -619,6 +762,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                     )
             return provider_pb2.ListPositionsResponse(positions=pb_positions)
         except Exception as e:
+            logging.error("Error in ListPositions: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListPositionsResponse()
 
@@ -679,6 +823,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                     )
             return provider_pb2.ListPositionDetailResponse(details=pb_details)
         except Exception as e:
+            logging.error("Error in ListPositionDetail: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListPositionDetailResponse()
 
@@ -729,6 +874,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                     )
             return provider_pb2.ListProfitLossResponse(profit_losses=pb_pnls)
         except Exception as e:
+            logging.error("Error in ListProfitLoss: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListProfitLossResponse()
 
@@ -794,6 +940,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                     )
             return provider_pb2.ListProfitLossDetailResponse(details=pb_details)
         except Exception as e:
+            logging.error("Error in ListProfitLossDetail: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListProfitLossDetailResponse()
 
@@ -847,6 +994,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                     )
             return provider_pb2.ListProfitLossSummaryResponse(summaries=pb_summaries)
         except Exception as e:
+            logging.error("Error in ListProfitLossSummary: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListProfitLossSummaryResponse()
 
@@ -872,6 +1020,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 ]
             )
         except Exception as e:
+            logging.error("Error in GetSettlements: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.GetSettlementsResponse()
 
@@ -909,6 +1058,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 future_settle_profitloss=margin.future_settle_profitloss,
             )
         except Exception as e:
+            logging.error("Error in GetMargin: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Margin()
 
@@ -932,6 +1082,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 short_available=limits.short_available,
             )
         except Exception as e:
+            logging.error("Error in GetTradingLimits: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.TradingLimits()
 
@@ -945,6 +1096,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             summary = self.client.stock_reserve_summary(self._stock_account)
             return provider_pb2.ReserveStocksSummaryResponse(response_json=str(summary))
         except Exception as e:
+            logging.error("Error in GetStockReserveSummary: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ReserveStocksSummaryResponse()
 
@@ -958,6 +1110,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             detail = self.client.stock_reserve_detail(self._stock_account)
             return provider_pb2.ReserveStocksDetailResponse(response_json=str(detail))
         except Exception as e:
+            logging.error("Error in GetStockReserveDetail: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ReserveStocksDetailResponse()
 
@@ -972,7 +1125,12 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 self._stock_account, contract, request.share
             )
             return provider_pb2.ReserveStockResponse(response_json=str(resp))
+        except KeyError as e:
+            logging.error("KeyError in ReserveStock: %s", e, exc_info=True)
+            context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
+            return provider_pb2.ReserveStockResponse()
         except Exception as e:
+            logging.error("Error in ReserveStock: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ReserveStockResponse()
 
@@ -986,6 +1144,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             detail = self.client.earmarking_detail(self._stock_account)
             return provider_pb2.EarmarkStocksDetailResponse(response_json=str(detail))
         except Exception as e:
+            logging.error("Error in GetEarmarkingDetail: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.EarmarkStocksDetailResponse()
 
@@ -1001,7 +1160,12 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 self._stock_account, contract, request.share, request.price
             )
             return provider_pb2.ReserveEarmarkingResponse(response_json=str(resp))
+        except KeyError as e:
+            logging.error("KeyError in ReserveEarmarking: %s", e, exc_info=True)
+            context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
+            return provider_pb2.ReserveEarmarkingResponse()
         except Exception as e:
+            logging.error("Error in ReserveEarmarking: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ReserveEarmarkingResponse()
 
@@ -1010,10 +1174,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
     ) -> provider_pb2.GetSnapshotsResponse:
         """Get market snapshots for a list of contracts."""
         try:
-            contracts = [
-                self.client.api.Contracts.Stocks[code]
-                for code in request.contract_codes
-            ]
+            contracts = [self._lookup_contract(code) for code in request.contract_codes]
             snapshots = self.client.snapshots(contracts)
             return provider_pb2.GetSnapshotsResponse(
                 snapshots=[
@@ -1046,7 +1207,12 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                     for s in snapshots
                 ]
             )
+        except KeyError as e:
+            logging.error("KeyError in GetSnapshots: %s", e, exc_info=True)
+            context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
+            return provider_pb2.GetSnapshotsResponse()
         except Exception as e:
+            logging.error("Error in GetSnapshots: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.GetSnapshotsResponse()
 
@@ -1055,7 +1221,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
     ) -> provider_pb2.Ticks:
         """Get tick data for a specific contract and date."""
         try:
-            contract = self.client.api.Contracts.Stocks[request.contract_code]
+            contract = self._lookup_contract(request.contract_code)
             ticks = self.client.ticks(contract, request.date)
             return provider_pb2.Ticks(
                 ts=ticks.ts,
@@ -1067,7 +1233,12 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 ask_volume=ticks.ask_volume,
                 tick_type=ticks.tick_type,
             )
+        except KeyError as e:
+            logging.error("KeyError in GetTicks: %s", e, exc_info=True)
+            context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
+            return provider_pb2.Ticks()
         except Exception as e:
+            logging.error("Error in GetTicks: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Ticks()
 
@@ -1076,7 +1247,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
     ) -> provider_pb2.Kbars:
         """Get K-bar (candlestick) data for a specific contract and date range."""
         try:
-            contract = self.client.api.Contracts.Stocks[request.contract_code]
+            contract = self._lookup_contract(request.contract_code)
             kbars = self.client.kbars(contract, request.start_date, request.end_date)
             return provider_pb2.Kbars(
                 ts=kbars.ts,
@@ -1087,7 +1258,12 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 volume=kbars.Volume,
                 amount=kbars.Amount,
             )
+        except KeyError as e:
+            logging.error("KeyError in GetKbars: %s", e, exc_info=True)
+            context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
+            return provider_pb2.Kbars()
         except Exception as e:
+            logging.error("Error in GetKbars: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Kbars()
 
@@ -1097,7 +1273,15 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
         """Get daily quotes."""
         try:
             # request.date is string YYYY-MM-DD
-            date_obj = datetime.strptime(request.date, "%Y-%m-%d").date()
+            try:
+                date_obj = datetime.strptime(request.date, "%Y-%m-%d").date()
+            except ValueError:
+                context.abort(
+                    grpc.StatusCode.INVALID_ARGUMENT,
+                    f"Invalid date format: {request.date}. Expected YYYY-MM-DD",
+                )
+                return provider_pb2.DailyQuotes()
+
             quotes = self.client.daily_quotes(date_obj)
             return provider_pb2.DailyQuotes(
                 code=quotes.Code,
@@ -1111,6 +1295,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 amount=quotes.Amount,
             )
         except Exception as e:
+            logging.error("Error in GetDailyQuotes: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.DailyQuotes()
 
@@ -1136,7 +1321,12 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                     for r in res
                 ]
             )
+        except KeyError as e:
+            logging.error("KeyError in CreditEnquires: %s", e, exc_info=True)
+            context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
+            return provider_pb2.CreditEnquiresResponse()
         except Exception as e:
+            logging.error("Error in CreditEnquires: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.CreditEnquiresResponse()
 
@@ -1160,7 +1350,12 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                     for s in res
                 ]
             )
+        except KeyError as e:
+            logging.error("KeyError in GetShortStockSources: %s", e, exc_info=True)
+            context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
+            return provider_pb2.GetShortStockSourcesResponse()
         except Exception as e:
+            logging.error("Error in GetShortStockSources: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.GetShortStockSourcesResponse()
 
@@ -1232,6 +1427,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 ]
             )
         except Exception as e:
+            logging.error("Error in GetScanners: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.GetScannersResponse()
 
@@ -1255,6 +1451,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 announced_date=[str(d) for d in res.announced_date],
             )
         except Exception as e:
+            logging.error("Error in GetPunish: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Punish()
 
@@ -1272,6 +1469,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 announced_date=[str(d) for d in res.announced_date],
             )
         except Exception as e:
+            logging.error("Error in GetNotice: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Notice()
 
@@ -1283,6 +1481,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             self.client.fetch_contracts(request.contract_download)
             return provider_pb2.Empty()
         except Exception as e:
+            logging.error("Error in FetchContracts: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Empty()
 
@@ -1296,6 +1495,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             )
             return provider_pb2.ActivateCAResponse(success=success)
         except Exception as e:
+            logging.error("Error in ActivateCA: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ActivateCAResponse()
 
@@ -1309,6 +1509,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             expire_time = self.client.get_ca_expiretime(request.person_id)
             return provider_pb2.GetCAExpireTimeResponse(expire_time=str(expire_time))
         except Exception as e:
+            logging.error("Error in GetCAExpireTime: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.GetCAExpireTimeResponse()
 
@@ -1320,6 +1521,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             success = self.client.subscribe_trade(self._stock_account)
             return provider_pb2.SubscribeTradeResponse(success=success)
         except Exception as e:
+            logging.error("Error in SubscribeTrade: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.SubscribeTradeResponse()
 
@@ -1333,6 +1535,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             success = self.client.unsubscribe_trade(self._stock_account)
             return provider_pb2.UnsubscribeTradeResponse(success=success)
         except Exception as e:
+            logging.error("Error in UnsubscribeTrade: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.UnsubscribeTradeResponse()
 
