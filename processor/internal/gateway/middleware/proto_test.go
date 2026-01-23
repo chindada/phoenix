@@ -2,6 +2,7 @@ package middleware_test
 
 import (
 	"bytes"
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -20,7 +21,7 @@ func TestBind(t *testing.T) {
 		c, _ := gin.CreateTestContext(w)
 		
 		jsonBody := `{"api_key": "123", "secret_key": "abc"}`
-		req, _ := http.NewRequest("POST", "/", bytes.NewBufferString(jsonBody))
+		req, _ := http.NewRequestWithContext(context.Background(), "POST", "/", bytes.NewBufferString(jsonBody))
 		req.Header.Set("Content-Type", "application/json")
 		c.Request = req
 
@@ -39,7 +40,7 @@ func TestBind(t *testing.T) {
 		
 		protoObj := &pb.LoginRequest{ApiKey: "123", SecretKey: "abc"}
 		data, _ := proto.Marshal(protoObj)
-		req, _ := http.NewRequest("POST", "/", bytes.NewBuffer(data))
+		req, _ := http.NewRequestWithContext(context.Background(), "POST", "/", bytes.NewBuffer(data))
 		req.Header.Set("Content-Type", "application/x-protobuf")
 		c.Request = req
 
@@ -60,7 +61,7 @@ func TestRender(t *testing.T) {
 	t.Run("JSON", func(t *testing.T) {
 		w := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(w)
-		req, _ := http.NewRequest("GET", "/", nil)
+		req, _ := http.NewRequestWithContext(context.Background(), "GET", "/", nil)
 		req.Header.Set("Accept", "application/json")
 		c.Request = req
 
@@ -73,7 +74,7 @@ func TestRender(t *testing.T) {
 	t.Run("Proto", func(t *testing.T) {
 		w := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(w)
-		req, _ := http.NewRequest("GET", "/", nil)
+		req, _ := http.NewRequestWithContext(context.Background(), "GET", "/", nil)
 		req.Header.Set("Accept", "application/x-protobuf")
 		c.Request = req
 

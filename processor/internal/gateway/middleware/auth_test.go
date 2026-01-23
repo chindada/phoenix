@@ -1,6 +1,7 @@
 package middleware_test
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -52,7 +53,7 @@ func TestAuthMiddleware(t *testing.T) {
 			w := httptest.NewRecorder()
 			c, _ := gin.CreateTestContext(w)
 			
-			req, _ := http.NewRequest("GET", "/", nil)
+			req, _ := http.NewRequestWithContext(context.Background(), "GET", "/", nil)
 			if tt.setupToken != nil {
 				req.Header.Set("Authorization", tt.setupToken())
 			} else if tt.token != "" {
