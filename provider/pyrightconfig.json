@@ -2,6 +2,11 @@
   "include": ["."],
   "venvPath": "..",
   "venv": ".venv",
+  "executionEnvironments": [
+    {
+      "root": "src"
+    }
+  ],
   "exclude": [
     "src/*_pb2.py",
     "src/*_pb2.pyi",
