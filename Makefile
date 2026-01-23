@@ -38,7 +38,7 @@ test: test-py test-go
 
 test-py:
 	@echo "Running Python tests..."
-	@PYTHONPATH=$(SRC_DIR) $(BIN)/pytest $(PROVIDER_DIR)/tests -v
+	@PYTHONPATH=$(SRC_DIR) SJ_LOG_PATH=$(shell pwd)/$(PROVIDER_DIR)/logs/shioaji.log SJ_CONTRACTS_PATH=$(shell pwd)/$(PROVIDER_DIR)/data $(BIN)/pytest $(PROVIDER_DIR)/tests -v
 
 test-go:
 	@echo "Running Go tests..."
