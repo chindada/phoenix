@@ -17,7 +17,7 @@ func TestAuthMiddleware(t *testing.T) {
 	// Setup
 	gin.SetMode(gin.TestMode)
 	secret := "test-secret"
-	
+
 	tests := []struct {
 		name       string
 		token      string
@@ -52,7 +52,7 @@ func TestAuthMiddleware(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			w := httptest.NewRecorder()
 			c, _ := gin.CreateTestContext(w)
-			
+
 			req, _ := http.NewRequestWithContext(context.Background(), http.MethodGet, "/", nil)
 			if tt.setupToken != nil {
 				req.Header.Set("Authorization", tt.setupToken())

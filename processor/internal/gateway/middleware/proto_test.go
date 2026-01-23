@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/protobuf/proto"
+
 	"phoenix/processor/internal/gateway/middleware"
 	"phoenix/processor/pkg/pb"
 )
@@ -19,9 +20,14 @@ func TestBind(t *testing.T) {
 	t.Run("JSON", func(t *testing.T) {
 		w := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(w)
-		
+
 		jsonBody := `{"api_key": "123", "secret_key": "abc"}`
-		req, _ := http.NewRequestWithContext(context.Background(), http.MethodPost, "/", bytes.NewBufferString(jsonBody))
+		req, _ := http.NewRequestWithContext(
+			context.Background(),
+			http.MethodPost,
+			"/",
+			bytes.NewBufferString(jsonBody),
+		)
 		req.Header.Set("Content-Type", "application/json")
 		c.Request = req
 
@@ -37,7 +43,7 @@ func TestBind(t *testing.T) {
 	t.Run("Proto", func(t *testing.T) {
 		w := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(w)
-		
+
 		protoObj := &pb.LoginRequest{ApiKey: "123", SecretKey: "abc"}
 		data, _ := proto.Marshal(protoObj)
 		req, _ := http.NewRequestWithContext(context.Background(), http.MethodPost, "/", bytes.NewBuffer(data))

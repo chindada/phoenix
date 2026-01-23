@@ -39,6 +39,8 @@ lint-py: type-check type-check-pyright
 
 lint-go:
 	@echo "Linting all platforms..."
+	@cd $(PROCESSOR_DIR); gofumpt -l -w .
+	@cd $(PROCESSOR_DIR); golangci-lint-v2 fmt ./...
 	make lint-windows
 	make lint-darwin
 	make lint-linux

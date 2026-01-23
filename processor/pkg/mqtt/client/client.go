@@ -9,6 +9,8 @@ import (
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"go.uber.org/zap"
+
+	"phoenix/processor/pkg/log"
 )
 
 const (
@@ -101,11 +103,7 @@ func (c *client) validate() error {
 		return ErrPortRequired
 	}
 	if c.logger == nil {
-		l, err := zap.NewProduction()
-		if err != nil {
-			return err
-		}
-		c.logger = l
+		c.logger = log.L()
 	}
 
 	if c.scheme == "" {

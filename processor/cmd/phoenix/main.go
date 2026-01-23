@@ -2,14 +2,16 @@ package main
 
 import (
 	"context"
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"go.uber.org/zap"
+
 	"phoenix/processor/internal/client"
 	"phoenix/processor/internal/gateway"
+	"phoenix/processor/pkg/log"
 )
 
 func main() {
@@ -28,13 +30,13 @@ func main() {
 	}
 
 	// Initialize gRPC Client
-	log.Printf("Connecting to provider at %s...", providerAddr)
+	log.L().Info("Connecting to provider", zap.String("address", providerAddr))
 	grpcClient, err := client.New(client.Config{
 		Target:   providerAddr,
 		PoolSize: 5,
 	})
 	if err != nil {
-		log.Fatalf("Failed to create grpc client: %v", err)
+		log.L().Fatal("Failed to create grpc client", zap.Error(err))
 	}
 	defer grpcClient.Close()
 
@@ -43,9 +45,9 @@ func main() {
 
 	// Run Server in Goroutine
 	go func() {
-		log.Printf("Starting REST Gateway on port %s...", port)
-		if err := srv.Run(); err != nil {
-			log.Fatalf("Server failed: %v", err)
+		log.L().Info("Starting REST Gateway", zap.String("port", port))
+		if errRun := srv.Run(); errRun != nil {
+			log.L().Fatal("Server failed", zap.Error(errRun))
 		}
 	}()
 
@@ -53,13 +55,13 @@ func main() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
-	log.Println("Shutting down server...")
+	log.L().Info("Shutting down server...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatalf("Server forced to shutdown: %v", err)
+	if errShutdown := srv.Shutdown(ctx); errShutdown != nil {
+		log.L().Fatal("Server forced to shutdown", zap.Error(errShutdown))
 	}
 
-	log.Println("Server exiting")
+	log.L().Info("Server exiting")
 }

@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+
 	"phoenix/processor/internal/client"
 	"phoenix/processor/internal/gateway/middleware"
 	"phoenix/processor/pkg/pb"
@@ -38,10 +39,10 @@ func (h *Handler) Login(c *gin.Context) {
 
 	// Generate JWT
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": "user", 
+		"sub": "user",
 		"exp": time.Now().Add(24 * time.Hour).Unix(),
 	})
-	
+
 	tokenString, err := token.SignedString([]byte(h.secret))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
@@ -50,6 +51,6 @@ func (h *Handler) Login(c *gin.Context) {
 
 	// Add token to header
 	c.Header("X-Auth-Token", tokenString)
-	
+
 	middleware.Render(c, http.StatusOK, resp)
 }

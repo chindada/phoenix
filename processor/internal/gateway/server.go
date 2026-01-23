@@ -16,8 +16,8 @@ func New(client client.ShioajiClient, secret string, port string) *Server {
 	router := NewRouter(client, secret)
 	return &Server{
 		httpServer: &http.Server{
-			Addr:    ":" + port,
-			Handler: router,
+			Addr:         ":" + port,
+			Handler:      router,
 			ReadTimeout:  5 * time.Second,
 			WriteTimeout: 10 * time.Second,
 		},

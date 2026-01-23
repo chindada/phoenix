@@ -15,6 +15,8 @@ import (
 	"github.com/mochi-mqtt/server/v2/listeners"
 	"github.com/mochi-mqtt/server/v2/packets"
 	"go.uber.org/zap"
+
+	"phoenix/processor/pkg/log"
 )
 
 const (
@@ -97,11 +99,7 @@ func (m *mqBkr) readCerts() (*tls.Certificate, error) {
 
 func (m *mqBkr) Serve() error {
 	if m.logger == nil {
-		l, err := zap.NewProduction()
-		if err != nil {
-			return err
-		}
-		m.logger = l
+		m.logger = log.L()
 	}
 	errChan := make(chan error)
 	go func() {
