@@ -1,186 +1,114 @@
 # Fix Lint Errors Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development to implement this plan task-by-task.
+> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Fix all 27 linting errors reported by `make lint-darwin` in the `processor` module.
+**Goal:** Resolve all linting errors reported by `make lint` in the Go processor component.
 
-**Architecture:** Refactor code to comply with `golangci-lint` rules including `errcheck`, `goimports`, `golines`, `gosec`, `intrange`, `modernize`, `noctx`, `protogetter`, and `testpackage`.
+**Architecture:** 
+- Refactor `main.go` to reduce cognitive and cyclomatic complexity by extracting initialization logic into smaller functions.
+- Improve error handling in repositories by using `errors.Is` and sentinel errors.
+- Clean up minor linting issues like variable shadowing and outdated type syntax.
 
-**Tech Stack:** Go 1.25+, golangci-lint v2
+**Tech Stack:** Go 1.25+, zap, pgx, gin
 
 ---
 
-## Task 1: Fix Test Package Names (`testpackage`)
+### Task 1: Fix Repository Lint Errors
 
 **Files:**
+- Modify: `processor/internal/repository/user.go`
+- Modify: `processor/internal/repository/model.go` (to add ErrNotFound)
+- Modify: `processor/internal/gateway/handler/auth.go` (to handle new error)
 
-- Modify: `processor/internal/client/pool_test.go`
-- Modify: `processor/internal/gateway/middleware/auth_test.go`
-- Modify: `processor/internal/gateway/middleware/proto_test.go`
+**Step 1: Define ErrNotFound in model.go**
+Add `var ErrNotFound = errors.New("not found")` to `processor/internal/repository/model.go`.
 
-***Step 1: Verify current state***
-Run: `make lint-darwin` (verify `testpackage` errors exist)
+**Step 2: Update GetByUsername in user.go**
+- Import `errors`.
+- Use `errors.Is(err, pgx.ErrNoRows)`.
+- Return `nil, ErrNotFound` instead of `nil, nil`.
 
-***Step 2: Rename packages***
+**Step 3: Update Login handler in auth.go**
+- Import `errors` and `phoenix/processor/internal/repository`.
+- Update error check to handle `repository.ErrNotFound`.
 
-- In `pool_test.go`: Change `package client` to `package client_test` and import `phoenix/processor/internal/client`.
-- In `auth_test.go` & `proto_test.go`: Change `package middleware` to `package middleware_test` and import `phoenix/processor/internal/gateway/middleware`.
+**Step 4: Verify with Lint**
+Run: `make lint-go`
+Expected: `user.go` errors resolved.
 
-***Step 3: Verify Fix***
-Run: `make lint-darwin`
-Expected: `testpackage` errors gone.
-
-***Step 4: Commit***
-
+**Step 5: Commit**
 ```bash
-git add processor/internal
-git commit -m "fix(lint): use _test package suffix for test files"
+git add processor/internal/repository/user.go processor/internal/repository/model.go processor/internal/gateway/handler/auth.go
+git commit -m "refactor: improve repository error handling and fix lint errors"
 ```
 
 ---
 
-## Task 2: Fix HTTP Request Context (`noctx`)
+### Task 2: Fix Auth Handler Minor Lint Errors
 
 **Files:**
-
-- Modify: `processor/internal/gateway/middleware/auth_test.go`
-- Modify: `processor/internal/gateway/middleware/proto_test.go`
-
-***Step 1: Verify current state***
-Run: `make lint-darwin` (verify `noctx` errors exist)
-
-***Step 2: Use NewRequestWithContext***
-
-- Replace `http.NewRequest(...)` with `http.NewRequestWithContext(context.Background(), ...)`
-
-***Step 3: Verify Fix***
-Run: `make lint-darwin`
-Expected: `noctx` errors gone.
-
-***Step 4: Commit***
-
-```bash
-git add processor/internal/gateway/middleware
-git commit -m "fix(lint): use http.NewRequestWithContext in tests"
-```
-
----
-
-## Task 3: Fix Proto Getters (`protogetter`)
-
-**Files:**
-
-- Modify: `processor/internal/gateway/middleware/proto_test.go`
-
-***Step 1: Verify current state***
-Run: `make lint-darwin` (verify `protogetter` errors exist)
-
-***Step 2: Use Getters***
-
-- Replace `reqObj.ApiKey` with `reqObj.GetApiKey()`
-
-***Step 3: Verify Fix***
-Run: `make lint-darwin`
-Expected: `protogetter` errors gone.
-
-***Step 4: Commit***
-
-```bash
-git add processor/internal/gateway/middleware/proto_test.go
-git commit -m "fix(lint): use proto getter methods"
-```
-
----
-
-## Task 4: Fix Loops and Modernize (`intrange`, `modernize`)
-
-**Files:**
-
-- Modify: `processor/internal/client/pool.go`
-- Modify: `processor/internal/gateway/middleware/auth.go`
-
-***Step 1: Verify current state***
-Run: `make lint-darwin` (verify `intrange` and `modernize` errors exist)
-
-***Step 2: Modernize Loops in `pool.go`***
-
-- Replace `for i := 0; i < cfg.PoolSize; i++` with `for range cfg.PoolSize` (or `for _ = range cfg.PoolSize` depending on Go version, strictly Go 1.22+ supports integer range).
-- *Correction*: `for i := range cfg.PoolSize` if `i` is used.
-
-***Step 3: Modernize Interface in `auth.go`***
-
-- Replace `interface{}` with `any`
-
-***Step 4: Verify Fix***
-Run: `make lint-darwin`
-Expected: `intrange` and `modernize` errors gone.
-
-***Step 5: Commit***
-
-```bash
-git add processor/internal
-git commit -m "fix(lint): modernize loops and use any"
-```
-
----
-
-## Task 5: Fix Logic Errors (`errcheck`, `gosec`)
-
-**Files:**
-
-- Modify: `processor/internal/gateway/middleware/proto.go`
-- Modify: `processor/internal/client/pool.go`
-
-***Step 1: Verify current state***
-Run: `make lint-darwin` (verify `errcheck` and `gosec` errors exist)
-
-***Step 2: Handle Errors***
-
-- In `proto.go`: explicitly ignore error `_ = c.AbortWithError(...)` or handle it.
-- In `pool.go`: explicitly ignore close error `_ = conns[j].Close()` or log it.
-
-***Step 3: Verify Fix***
-Run: `make lint-darwin`
-Expected: `errcheck` and `gosec` errors gone.
-
-***Step 4: Commit***
-
-```bash
-git add processor/internal
-git commit -m "fix(lint): handle unchecked errors"
-```
-
----
-
-## Task 6: Fix Formatting (`goimports`, `golines`)
-
-**Files:**
-
-- Modify: `processor/internal/client/pool.go`
-- Modify: `processor/internal/client/pool_test.go`
-- Modify: `processor/internal/client/wrappers.go`
 - Modify: `processor/internal/gateway/handler/auth.go`
-- Modify: `processor/internal/gateway/handler/trade.go`
-- Modify: `processor/internal/gateway/middleware/auth_test.go`
-- Modify: `processor/internal/gateway/middleware/proto_test.go`
-- Modify: `processor/internal/gateway/router.go`
-- Modify: `processor/internal/gateway/server.go`
 
-***Step 1: Verify current state***
-Run: `make lint-darwin` (verify formatting errors exist)
+**Step 1: Fix shadowed err**
+Rename the inner `err` in `bcrypt.CompareHashAndPassword` check.
 
-***Step 2: Fix Imports and Lines***
+**Step 2: Replace interface{} with any**
+Change `[]interface{}{}` to `[]any{}`.
 
-- Group imports correctly (std lib, then 3rd party, then local).
-- Split long line in `wrappers.go`.
+**Step 3: Verify with Lint**
+Run: `make lint-go`
+Expected: `auth.go` errors resolved.
 
-***Step 3: Verify Fix***
-Run: `make lint-darwin`
-Expected: All errors gone.
-
-***Step 4: Commit***
-
+**Step 4: Commit**
 ```bash
-git add processor
-git commit -m "fix(lint): formatting and imports"
+git add processor/internal/gateway/handler/auth.go
+git commit -m "refactor: fix shadowed variable and modernize type syntax in auth handler"
+```
+
+---
+
+### Task 3: Refactor Main to Reduce Complexity
+
+**Files:**
+- Modify: `processor/cmd/phoenix/main.go`
+
+**Step 1: Fix perfsprint error**
+Change `fmt.Sprintf("postgres://...")` to just the string literal.
+
+**Step 2: Extract DB Initialization**
+Create `initDB(log *zap.Logger) (*launcher.Launcher, error)` function.
+
+**Step 3: Extract Admin Seeding**
+Create `seedAdminUser(ctx context.Context, repo repository.UserRepository) error` function.
+
+**Step 4: Extract gRPC Client Initialization**
+Create `initGRPCClient(ctx context.Context, addr string, key, secret string) (*client.Client, error)` function.
+
+**Step 5: Re-assemble Main**
+Clean up `main` by calling the extracted functions.
+
+**Step 6: Verify with Lint**
+Run: `make lint-go`
+Expected: `main.go` complexity and perfsprint errors resolved.
+
+**Step 7: Commit**
+```bash
+git add processor/cmd/phoenix/main.go
+git commit -m "refactor: reduce main function complexity and fix lint errors"
+```
+
+---
+
+### Task 4: Final Verification
+
+**Step 1: Run all tests**
+Run: `make test-go` (Wait, I should check if there is a make test-go)
+Run: `go test ./processor/...`
+
+**Step 2: Run final lint**
+Run: `make lint`
+
+**Step 3: Commit**
+```bash
+git commit --allow-empty -m "chore: final verification of lint fixes"
 ```

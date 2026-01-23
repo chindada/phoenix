@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -20,98 +19,103 @@ import (
 	"phoenix/processor/pkg/postgres/launcher"
 )
 
-func main() {
-	// Configuration
-	providerAddr := os.Getenv("PROVIDER_ADDR")
-	if providerAddr == "" {
-		providerAddr = "localhost:50051"
-	}
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-	jwtSecret := os.Getenv("JWT_SECRET")
-	if jwtSecret == "" {
-		jwtSecret = "default-secret-do-not-use-in-prod"
-	}
-	shioajiKey := os.Getenv("SHIOAJI_API_KEY")
-	shioajiSecret := os.Getenv("SHIOAJI_SECRET_KEY")
+type config struct {
+	providerAddr  string
+	port          string
+	jwtSecret     string
+	shioajiKey    string
+	shioajiSecret string
+}
 
-	// Initialize Database
+func loadConfig() config {
+	return config{
+		providerAddr:  getEnv("PROVIDER_ADDR", "localhost:50051"),
+		port:          getEnv("PORT", "8080"),
+		jwtSecret:     getEnv("JWT_SECRET", "default-secret-do-not-use-in-prod"),
+		shioajiKey:    os.Getenv("SHIOAJI_API_KEY"),
+		shioajiSecret: os.Getenv("SHIOAJI_SECRET_KEY"),
+	}
+}
+
+func getEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
+}
+
+func setupDB() (launcher.Launcher, pgClient.PGClient, error) {
 	dbLauncher, err := launcher.New(
 		launcher.DBName("mojave"),
 		launcher.AddLogger(log.L()),
 	)
 	if err != nil {
-		log.L().Fatal("Failed to create db launcher", zap.Error(err))
+		return nil, nil, err
 	}
 
 	if !dbLauncher.DatabaseAlreadyExists() {
 		if err = dbLauncher.InitDB(true); err != nil {
-			log.L().Fatal("Failed to initialize database", zap.Error(err))
+			return nil, nil, err
 		}
 	} else {
 		if err = dbLauncher.StartDB(); err != nil {
-			log.L().Fatal("Failed to start database", zap.Error(err))
+			return nil, nil, err
 		}
 	}
-	defer func() {
-		if errStop := dbLauncher.StopDB(); errStop != nil {
-			log.L().Error("Failed to stop database", zap.Error(errStop))
-		}
-	}()
 
 	if err = dbLauncher.MigrateScheme(nil); err != nil {
-		log.L().Fatal("Failed to run migrations", zap.Error(err))
+		return dbLauncher, nil, err
 	}
 
-	// Initialize PG Client
-	pgUrl := fmt.Sprintf("postgres://postgres:password@localhost:5432/mojave?sslmode=disable")
-	pg, err := pgClient.New(pgUrl, pgClient.AddLogger(log.L()))
+	pgURL := "postgres://postgres:password@localhost:5432/mojave?sslmode=disable"
+	pg, err := pgClient.New(pgURL, pgClient.AddLogger(log.L()))
 	if err != nil {
-		log.L().Fatal("Failed to connect to postgres", zap.Error(err))
+		return dbLauncher, nil, err
 	}
-	defer pg.Close()
 
-	userRepo := repository.NewUserRepository(pg)
+	return dbLauncher, pg, nil
+}
 
-	// Seed Admin User
-	ctx := context.Background()
-	count, err := userRepo.Count(ctx)
+func seedAdminUser(ctx context.Context, repo repository.UserRepository) error {
+	count, err := repo.Count(ctx)
 	if err != nil {
-		log.L().Fatal("Failed to count users", zap.Error(err))
+		return err
 	}
+
 	if count == 0 {
-		hash, _ := bcrypt.GenerateFromPassword([]byte("admin"), bcrypt.DefaultCost)
-		err = userRepo.Create(ctx, &repository.User{
+		hash, errHash := bcrypt.GenerateFromPassword([]byte("admin"), bcrypt.DefaultCost)
+		if errHash != nil {
+			return errHash
+		}
+		err = repo.Create(ctx, &repository.User{
 			Username:     "admin",
 			PasswordHash: string(hash),
 			CreatedAt:    time.Now(),
 			UpdatedAt:    time.Now(),
 		})
 		if err != nil {
-			log.L().Fatal("Failed to seed admin user", zap.Error(err))
+			return err
 		}
 		log.L().Info("Seeded default admin user")
 	}
+	return nil
+}
 
-	// Initialize gRPC Client
-	log.L().Info("Connecting to provider", zap.String("address", providerAddr))
+func initGRPCClient(ctx context.Context, addr, key, secret string) (*client.Client, error) {
+	log.L().Info("Connecting to provider", zap.String("address", addr))
 	grpcClient, err := client.New(client.Config{
-		Target:   providerAddr,
+		Target:   addr,
 		PoolSize: 5,
 	})
 	if err != nil {
-		log.L().Fatal("Failed to create grpc client", zap.Error(err))
+		return nil, err
 	}
-	defer grpcClient.Close()
 
-	// System Login to Provider
-	if shioajiKey != "" && shioajiSecret != "" {
+	if key != "" && secret != "" {
 		log.L().Info("Performing system login to provider")
 		_, err = grpcClient.Login(ctx, &pb.LoginRequest{
-			ApiKey:    shioajiKey,
-			SecretKey: shioajiSecret,
+			ApiKey:    key,
+			SecretKey: secret,
 		})
 		if err != nil {
 			log.L().Error("System login failed", zap.Error(err))
@@ -122,12 +126,43 @@ func main() {
 		log.L().Warn("SHIOAJI_API_KEY or SHIOAJI_SECRET_KEY not set, skipping system login")
 	}
 
-	// Initialize REST Gateway
-	srv := gateway.New(grpcClient, userRepo, jwtSecret, port)
+	return grpcClient, nil
+}
 
-	// Run Server in Goroutine
+func main() {
+	cfg := loadConfig()
+	ctx := context.Background()
+
+	// Initialize Database
+	dbLauncher, pg, err := setupDB()
+	if err != nil {
+		log.L().Fatal("Failed to setup database", zap.Error(err))
+	}
+	defer func() {
+		if dbLauncher != nil {
+			_ = dbLauncher.StopDB()
+		}
+	}()
+	defer pg.Close()
+
+	userRepo := repository.NewUserRepository(pg)
+	if err = seedAdminUser(ctx, userRepo); err != nil {
+		log.L().Fatal("Failed to seed admin user", zap.Error(err))
+	}
+
+	// Initialize gRPC Client
+	grpcClient, err := initGRPCClient(ctx, cfg.providerAddr, cfg.shioajiKey, cfg.shioajiSecret)
+	if err != nil {
+		log.L().Fatal("Failed to create grpc client", zap.Error(err))
+	}
+	defer grpcClient.Close()
+
+	// Initialize REST Gateway
+	srv := gateway.New(grpcClient, userRepo, cfg.jwtSecret, cfg.port)
+
+	// Run Server
 	go func() {
-		log.L().Info("Starting REST Gateway", zap.String("port", port))
+		log.L().Info("Starting REST Gateway", zap.String("port", cfg.port))
 		if errRun := srv.Run(); errRun != nil {
 			log.L().Fatal("Server failed", zap.Error(errRun))
 		}

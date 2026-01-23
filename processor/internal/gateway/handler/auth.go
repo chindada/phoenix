@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 	"time"
 
@@ -42,16 +43,15 @@ func (h *Handler) Login(c *gin.Context) {
 
 	user, err := h.userRepo.GetByUsername(c.Request.Context(), req.Username)
 	if err != nil {
+		if errors.Is(err, repository.ErrNotFound) {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+			return
+		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
 	}
 
-	if user == nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
-		return
-	}
-
-	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(req.Password)); err != nil {
+	if errCompare := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(req.Password)); errCompare != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 		return
 	}
@@ -76,7 +76,7 @@ func (h *Handler) Login(c *gin.Context) {
 	if err != nil {
 		// Even if fetching accounts fails, we might still want to return the token
 		// but for now, let's treat it as an error or return empty accounts
-		c.JSON(http.StatusOK, gin.H{"token": tokenString, "accounts": []interface{}{}})
+		c.JSON(http.StatusOK, gin.H{"token": tokenString, "accounts": []any{}})
 		return
 	}
 

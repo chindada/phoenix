@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/jackc/pgx/v5"
@@ -40,8 +41,8 @@ func (r *userRepo) GetByUsername(ctx context.Context, username string) (*User, e
 	var user User
 	err = row.Scan(&user.Username, &user.PasswordHash, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
-		if err == pgx.ErrNoRows {
-			return nil, nil
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, ErrNotFound
 		}
 		return nil, fmt.Errorf("UserRepository.GetByUsername - row.Scan: %w", err)
 	}
