@@ -1,4 +1,3 @@
-//nolint:dupl // similar handler structure is intentional
 package handler
 
 import (
