@@ -1,4 +1,4 @@
-.PHONY: install codegen codegen-go run-server clean-venv venv lint format type-check install-lint-go lint-go
+.PHONY: install codegen codegen-go run-server clean-venv venv lint format type-check install-lint-go lint-go build-go
 
 PROTO_DIR = ./protos/v1
 PROVIDER_DIR = ./provider
@@ -29,6 +29,10 @@ codegen-go:
 		--go_out=$(GO_PB_DIR) --go_opt=paths=source_relative \
 		--go-grpc_out=$(GO_PB_DIR) --go-grpc_opt=paths=source_relative \
 		$(PROTO_DIR)/provider.proto
+
+build-go:
+	@mkdir -p $(PROCESSOR_DIR)/bin
+	@cd $(PROCESSOR_DIR) && go build -o bin/server cmd/phoenix/main.go
 
 lint: lint-py lint-go
 

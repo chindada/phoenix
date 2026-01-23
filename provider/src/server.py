@@ -1541,11 +1541,27 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
 
 
 def serve():
-    port = os.getenv("PORT", "50051")
+    """Start the gRPC server."""
+    addr = os.getenv("PROVIDER_ADDR", "localhost:50051")
+    if addr.startswith("unix:"):
+        # Extract the path from the unix address
+        # unix:///tmp/phoenix.sock -> /tmp/phoenix.sock
+        # unix:./phoenix.sock -> ./phoenix.sock
+        path = addr[5:]
+        if path.startswith("//"):
+            path = path[2:]
+
+        if os.path.exists(path):
+            try:
+                os.unlink(path)
+                logging.info("Removed existing socket file: %s", path)
+            except OSError as e:
+                logging.error("Error removing socket file: %s", e)
+
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     provider_pb2_grpc.add_ShioajiProviderServicer_to_server(ShioajiService(), server)
-    server.add_insecure_port("[::]:" + port)
-    logging.info("Server started, listening on %s", port)
+    server.add_insecure_port(addr)
+    logging.info("Server started, listening on %s", addr)
     server.start()
     server.wait_for_termination()
 
