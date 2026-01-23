@@ -55,7 +55,7 @@ func newFileCore(level zapcore.Level) (zapcore.Core, error) {
 	if err != nil {
 		return nil, err
 	}
-	folder := filepath.Join(filepath.Clean(filepath.Dir(ex)), "..", "..", "logs")
+	folder := filepath.Join(filepath.Clean(filepath.Dir(ex)), "..", "logs")
 	if err = os.MkdirAll(folder, 0o750); err != nil {
 		return nil, err
 	}
