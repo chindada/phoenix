@@ -30,12 +30,31 @@ codegen-go:
 		--go-grpc_out=$(GO_PB_DIR) --go-grpc_opt=paths=source_relative \
 		$(PROTO_DIR)/provider.proto
 
-lint: lint-py
+lint: lint-py lint-go
 
 lint-py: type-check type-check-pyright
 	@$(BIN)/ruff format --exclude $(SRC_DIR)/*_pb2.py --exclude $(SRC_DIR)/*_pb2.pyi --exclude $(SRC_DIR)/*_pb2_grpc.py
 	@$(BIN)/ruff check --fix $(PROVIDER_DIR) --exclude $(SRC_DIR)/*_pb2.py --exclude $(SRC_DIR)/*_pb2.pyi --exclude $(SRC_DIR)/*_pb2_grpc.py
 	@$(BIN)/pylint --rcfile=$(PROVIDER_DIR)/.pylintrc $(PROVIDER_DIR)
+
+lint-go:
+	@echo "Linting all platforms..."
+	make lint-windows
+	make lint-darwin
+	make lint-linux
+
+lint-windows:
+	@echo "Linting for windows..."
+	@cd $(PROCESSOR_DIR); CGO_ENABLED=0 GOOS=windows GOARCH=amd64 golangci-lint-v2 run --config ./.golangci.yml  ./...
+
+lint-darwin:
+	@echo "Linting for darwin..."
+	@cd $(PROCESSOR_DIR); CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 golangci-lint-v2 run --config ./.golangci.yml  ./...
+
+lint-linux:
+	@echo "Linting for linux..."
+	@cd $(PROCESSOR_DIR); CGO_ENABLED=0 GOOS=linux GOARCH=amd64 golangci-lint-v2 run --config ./.golangci.yml  ./...
+
 
 type-check:
 	@$(BIN)/mypy $(PROVIDER_DIR) --exclude $(SRC_DIR)/*_pb2.py --exclude $(SRC_DIR)/*_pb2.pyi --exclude $(SRC_DIR)/*_pb2_grpc.py --disable-error-code=import-untyped
@@ -48,3 +67,7 @@ run-server:
 
 clean-venv:
 	@rm -rf $(VENV)
+
+migrate-create-phoenix:
+	@go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+	@migrate create -ext sql -dir migrations/phoenix -tz "Asia/Taipei" -seq -digits 4 'phoenix'
