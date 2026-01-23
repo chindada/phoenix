@@ -78,7 +78,7 @@ type-check-pyright:
 	@cd $(PROVIDER_DIR) && $(BIN)/pyright
 
 run-server:
-	@SJ_LOG_PATH=$(shell pwd)/logs/shioaji.log SJ_CONTRACTS_PATH=$(shell pwd)/$(PROVIDER_DIR)/data $(PYTHON) $(SRC_DIR)/server.py
+	@SJ_LOG_PATH=$(shell pwd)/$(PROVIDER_DIR)/logs/shioaji.log SJ_CONTRACTS_PATH=$(shell pwd)/$(PROVIDER_DIR)/data $(PYTHON) $(SRC_DIR)/server.py
 
 clean-venv:
 	@rm -rf $(VENV)

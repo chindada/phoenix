@@ -1,3 +1,7 @@
+"""
+Tests for the gRPC server implementation.
+"""
+
 from unittest.mock import MagicMock
 
 import grpc
