@@ -9,31 +9,13 @@ import (
 	"phoenix/processor/pkg/pb"
 )
 
-func (h *Handler) ListTrades(c *gin.Context) {
-	resp, err := h.client.ListTrades(c.Request.Context(), &pb.Empty{})
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	middleware.Render(c, http.StatusOK, resp)
-}
-
-func (h *Handler) ListComboTrades(c *gin.Context) {
-	resp, err := h.client.ListComboTrades(c.Request.Context(), &pb.Empty{})
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	middleware.Render(c, http.StatusOK, resp)
-}
-
-func (h *Handler) GetOrderDealRecords(c *gin.Context) {
-	var req pb.GetOrderDealRecordsRequest
+func (h *Handler) ListPositions(c *gin.Context) {
+	var req pb.ListPositionsRequest
 	if err := middleware.Bind(c, &req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	resp, err := h.client.GetOrderDealRecords(c.Request.Context(), &req)
+	resp, err := h.client.ListPositions(c.Request.Context(), &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -41,13 +23,13 @@ func (h *Handler) GetOrderDealRecords(c *gin.Context) {
 	middleware.Render(c, http.StatusOK, resp)
 }
 
-func (h *Handler) SubscribeTrade(c *gin.Context) {
-	var req pb.SubscribeTradeRequest
+func (h *Handler) ListPositionDetail(c *gin.Context) {
+	var req pb.ListPositionDetailRequest
 	if err := middleware.Bind(c, &req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	resp, err := h.client.SubscribeTrade(c.Request.Context(), &req)
+	resp, err := h.client.ListPositionDetail(c.Request.Context(), &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -55,13 +37,41 @@ func (h *Handler) SubscribeTrade(c *gin.Context) {
 	middleware.Render(c, http.StatusOK, resp)
 }
 
-func (h *Handler) UnsubscribeTrade(c *gin.Context) {
-	var req pb.UnsubscribeTradeRequest
+func (h *Handler) ListProfitLoss(c *gin.Context) {
+	var req pb.ListProfitLossRequest
 	if err := middleware.Bind(c, &req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	resp, err := h.client.UnsubscribeTrade(c.Request.Context(), &req)
+	resp, err := h.client.ListProfitLoss(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	middleware.Render(c, http.StatusOK, resp)
+}
+
+func (h *Handler) ListProfitLossDetail(c *gin.Context) {
+	var req pb.ListProfitLossDetailRequest
+	if err := middleware.Bind(c, &req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	resp, err := h.client.ListProfitLossDetail(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	middleware.Render(c, http.StatusOK, resp)
+}
+
+func (h *Handler) ListProfitLossSummary(c *gin.Context) {
+	var req pb.ListProfitLossSummaryRequest
+	if err := middleware.Bind(c, &req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	resp, err := h.client.ListProfitLossSummary(c.Request.Context(), &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

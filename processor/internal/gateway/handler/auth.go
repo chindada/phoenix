@@ -9,25 +9,10 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 
-	"phoenix/processor/internal/client"
 	"phoenix/processor/internal/gateway/middleware"
 	"phoenix/processor/internal/repository"
 	"phoenix/processor/pkg/pb"
 )
-
-type Handler struct {
-	client   client.ShioajiClient
-	userRepo repository.UserRepository
-	secret   string
-}
-
-func New(client client.ShioajiClient, userRepo repository.UserRepository, secret string) *Handler {
-	return &Handler{
-		client:   client,
-		userRepo: userRepo,
-		secret:   secret,
-	}
-}
 
 type LoginRequest struct {
 	Username string `json:"username" binding:"required"`
@@ -80,5 +65,42 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
+	middleware.Render(c, http.StatusOK, resp)
+}
+
+func (h *Handler) Logout(c *gin.Context) {
+	resp, err := h.client.Logout(c.Request.Context(), &pb.Empty{})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	middleware.Render(c, http.StatusOK, resp)
+}
+
+func (h *Handler) ActivateCA(c *gin.Context) {
+	var req pb.ActivateCARequest
+	if err := middleware.Bind(c, &req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	resp, err := h.client.ActivateCA(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	middleware.Render(c, http.StatusOK, resp)
+}
+
+func (h *Handler) GetCAExpireTime(c *gin.Context) {
+	var req pb.GetCAExpireTimeRequest
+	if err := middleware.Bind(c, &req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	resp, err := h.client.GetCAExpireTime(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 	middleware.Render(c, http.StatusOK, resp)
 }
