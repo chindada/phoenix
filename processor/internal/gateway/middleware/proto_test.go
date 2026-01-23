@@ -1,4 +1,4 @@
-package middleware
+package middleware_test
 
 import (
 	"bytes"
@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/protobuf/proto"
+	"phoenix/processor/internal/gateway/middleware"
 	"phoenix/processor/pkg/pb"
 )
 
@@ -24,7 +25,7 @@ func TestBind(t *testing.T) {
 		c.Request = req
 
 		var reqObj pb.LoginRequest
-		if err := Bind(c, &reqObj); err != nil {
+		if err := middleware.Bind(c, &reqObj); err != nil {
 			t.Fatalf("Bind() error = %v", err)
 		}
 		if reqObj.ApiKey != "123" {
@@ -43,7 +44,7 @@ func TestBind(t *testing.T) {
 		c.Request = req
 
 		var reqObj pb.LoginRequest
-		if err := Bind(c, &reqObj); err != nil {
+		if err := middleware.Bind(c, &reqObj); err != nil {
 			t.Fatalf("Bind() error = %v", err)
 		}
 		if reqObj.ApiKey != "123" {
@@ -63,7 +64,7 @@ func TestRender(t *testing.T) {
 		req.Header.Set("Accept", "application/json")
 		c.Request = req
 
-		Render(c, http.StatusOK, respObj)
+		middleware.Render(c, http.StatusOK, respObj)
 		if w.Header().Get("Content-Type") != "application/json; charset=utf-8" {
 			t.Errorf("Content-Type = %v, want %v", w.Header().Get("Content-Type"), "application/json; charset=utf-8")
 		}
@@ -76,7 +77,7 @@ func TestRender(t *testing.T) {
 		req.Header.Set("Accept", "application/x-protobuf")
 		c.Request = req
 
-		Render(c, http.StatusOK, respObj)
+		middleware.Render(c, http.StatusOK, respObj)
 		if w.Header().Get("Content-Type") != "application/x-protobuf" {
 			t.Errorf("Content-Type = %v, want %v", w.Header().Get("Content-Type"), "application/x-protobuf")
 		}

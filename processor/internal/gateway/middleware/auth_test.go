@@ -1,4 +1,4 @@
-package middleware
+package middleware_test
 
 import (
 	"net/http"
@@ -8,6 +8,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+
+	"phoenix/processor/internal/gateway/middleware"
 )
 
 func TestAuthMiddleware(t *testing.T) {
@@ -59,7 +61,7 @@ func TestAuthMiddleware(t *testing.T) {
 			c.Request = req
 
 			// Call middleware
-			handler := Auth(secret)
+			handler := middleware.Auth(secret)
 			handler(c)
 
 			if w.Code != tt.wantStatus {

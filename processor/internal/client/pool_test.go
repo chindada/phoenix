@@ -1,16 +1,18 @@
-package client
+package client_test
 
 import (
 	"testing"
+
+	"phoenix/processor/internal/client"
 )
 
 func TestNewClient(t *testing.T) {
-	cfg := Config{
+	cfg := client.Config{
 		Target:   "localhost:50051",
 		PoolSize: 2,
 	}
-	
-	c, err := New(cfg)
+
+	c, err := client.New(cfg)
 	if err != nil {
 		t.Fatalf("New() failed: %v", err)
 	}
