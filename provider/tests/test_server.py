@@ -36,3 +36,23 @@ def test_login_failure(service, mock_shioaji_client):
     
     # Verify
     context.abort.assert_called_once_with(grpc.StatusCode.INTERNAL, "Login failed")
+
+def test_list_accounts(service, mock_shioaji_client):
+    mock_acc = MagicMock()
+    mock_acc.account_type = "F"
+    mock_acc.person_id = "A123456789"
+    mock_acc.broker_id = "F000"
+    mock_acc.account_id = "7654321"
+    mock_acc.username = "testuser"
+    mock_acc.signed = False
+    
+    mock_shioaji_client.list_accounts.return_value = [mock_acc]
+    
+    request = provider_pb2.Empty()
+    context = MagicMock()
+    response = service.ListAccounts(request, context)
+    
+    mock_shioaji_client.list_accounts.assert_called_once()
+    assert len(response.accounts) == 1
+    assert response.accounts[0].account_id == "7654321"
+    assert response.accounts[0].account_type == "F"
