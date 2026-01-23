@@ -1,4 +1,4 @@
-.PHONY: install codegen codegen-go run-server clean-venv venv lint format type-check install-lint-go lint-go build-go
+.PHONY: install codegen codegen-go run-server clean-venv venv lint format type-check install-lint-go lint-go build-go test test-py test-go
 
 PROTO_DIR = ./protos/v1
 PROVIDER_DIR = ./provider
@@ -34,6 +34,16 @@ build-go:
 	@mkdir -p $(PROCESSOR_DIR)/bin
 	@cd $(PROCESSOR_DIR) && go build -o bin/server cmd/phoenix/main.go
 
+test: test-py test-go
+
+test-py:
+	@echo "Running Python tests..."
+	@PYTHONPATH=$(SRC_DIR) $(BIN)/pytest $(PROVIDER_DIR)/tests -v
+
+test-go:
+	@echo "Running Go tests..."
+	@cd $(PROCESSOR_DIR) && go test ./...
+
 lint: lint-py lint-go
 
 lint-py: type-check type-check-pyright
@@ -60,7 +70,6 @@ lint-darwin:
 lint-linux:
 	@echo "Linting for linux..."
 	@cd $(PROCESSOR_DIR); CGO_ENABLED=0 GOOS=linux GOARCH=amd64 golangci-lint-v2 run --config ./.golangci.yml  ./...
-
 
 type-check:
 	@$(BIN)/mypy $(PROVIDER_DIR) --exclude $(SRC_DIR)/*_pb2.py --exclude $(SRC_DIR)/*_pb2.pyi --exclude $(SRC_DIR)/*_pb2_grpc.py --disable-error-code=import-untyped
