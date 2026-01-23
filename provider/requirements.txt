@@ -8,3 +8,5 @@ types-protobuf
 types-grpcio
 pylint
 pyright
+pytest
+pytest-mock
