@@ -31,3 +31,4 @@ provider/logs/*
 provider/data/*
 !provider/data/.gitkeep
 .worktrees/
+processor/data

@@ -6,14 +6,15 @@ import (
 	"time"
 
 	"phoenix/processor/internal/client"
+	"phoenix/processor/internal/repository"
 )
 
 type Server struct {
 	httpServer *http.Server
 }
 
-func New(client client.ShioajiClient, secret string, port string) *Server {
-	router := NewRouter(client, secret)
+func New(client client.ShioajiClient, userRepo repository.UserRepository, secret string, port string) *Server {
+	router := NewRouter(client, userRepo, secret)
 	return &Server{
 		httpServer: &http.Server{
 			Addr:         ":" + port,

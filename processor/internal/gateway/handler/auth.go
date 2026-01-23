@@ -6,40 +6,59 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"golang.org/x/crypto/bcrypt"
 
 	"phoenix/processor/internal/client"
 	"phoenix/processor/internal/gateway/middleware"
+	"phoenix/processor/internal/repository"
 	"phoenix/processor/pkg/pb"
 )
 
 type Handler struct {
-	client client.ShioajiClient
-	secret string
+	client   client.ShioajiClient
+	userRepo repository.UserRepository
+	secret   string
 }
 
-func New(client client.ShioajiClient, secret string) *Handler {
+func New(client client.ShioajiClient, userRepo repository.UserRepository, secret string) *Handler {
 	return &Handler{
-		client: client,
-		secret: secret,
+		client:   client,
+		userRepo: userRepo,
+		secret:   secret,
 	}
 }
 
+type LoginRequest struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
 func (h *Handler) Login(c *gin.Context) {
-	var req pb.LoginRequest
-	if err := middleware.Bind(c, &req); err != nil {
+	var req LoginRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	resp, err := h.client.Login(c.Request.Context(), &req)
+	user, err := h.userRepo.GetByUsername(c.Request.Context(), req.Username)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+		return
+	}
+
+	if user == nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+		return
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(req.Password)); err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 		return
 	}
 
 	// Generate JWT
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": "user",
+		"sub": user.Username,
 		"exp": time.Now().Add(24 * time.Hour).Unix(),
 	})
 
@@ -51,6 +70,15 @@ func (h *Handler) Login(c *gin.Context) {
 
 	// Add token to header
 	c.Header("X-Auth-Token", tokenString)
+
+	// Fetch accounts from provider using global session
+	resp, err := h.client.ListAccounts(c.Request.Context(), &pb.Empty{})
+	if err != nil {
+		// Even if fetching accounts fails, we might still want to return the token
+		// but for now, let's treat it as an error or return empty accounts
+		c.JSON(http.StatusOK, gin.H{"token": tokenString, "accounts": []interface{}{}})
+		return
+	}
 
 	middleware.Render(c, http.StatusOK, resp)
 }
