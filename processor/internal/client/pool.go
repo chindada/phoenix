@@ -46,11 +46,11 @@ func New(cfg Config) (*Client, error) {
 		grpc.WithDefaultServiceConfig(serviceConfig),
 	}
 
-	for i := 0; i < cfg.PoolSize; i++ {
+	for i := range cfg.PoolSize {
 		conn, err := grpc.NewClient(cfg.Target, opts...)
 		if err != nil {
 			// Clean up already opened connections
-			for j := 0; j < i; j++ {
+			for j := range i {
 				conns[j].Close()
 			}
 			return nil, fmt.Errorf("failed to dial %s: %w", cfg.Target, err)

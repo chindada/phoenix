@@ -53,7 +53,7 @@ func TestAuthMiddleware(t *testing.T) {
 			w := httptest.NewRecorder()
 			c, _ := gin.CreateTestContext(w)
 			
-			req, _ := http.NewRequestWithContext(context.Background(), "GET", "/", nil)
+			req, _ := http.NewRequestWithContext(context.Background(), http.MethodGet, "/", nil)
 			if tt.setupToken != nil {
 				req.Header.Set("Authorization", tt.setupToken())
 			} else if tt.token != "" {
