@@ -1562,7 +1562,11 @@ def serve():
     server.add_insecure_port(addr)
     logging.info("Server started, listening on %s", addr)
     server.start()
-    server.wait_for_termination()
+    try:
+        server.wait_for_termination()
+    except KeyboardInterrupt:
+        logging.info("Stopping server...")
+        server.stop(0)
 
 
 if __name__ == "__main__":
