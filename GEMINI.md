@@ -43,7 +43,7 @@ Use the `Makefile` for common tasks:
   * `make codegen-go`: Go only
 * **Linting**: `make lint` (Runs comprehensive linting for both Python and Go)
   * `make lint-py`: Python only (ruff, pylint, mypy, pyright)
-  * `make lint-go`: Go only (gofumpt, golangci-lint-v2 for darwin, linux, windows)
+  * `make lint-go`: Go only (gofumpt, golangci-lint-v2 for darwin, linux)
 * **Testing**: `make test` (Runs all tests)
   * `make test-py`: Python tests using `pytest`
   * `make test-go`: Go tests using `go test`

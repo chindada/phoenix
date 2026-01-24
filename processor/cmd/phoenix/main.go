@@ -69,6 +69,10 @@ func setupDB() (launcher.Launcher, pgClient.PGClient, error) {
 	}
 
 	pgURL := "postgres://postgres:password@localhost:5432/phoenix?sslmode=disable"
+	if socket := dbLauncher.GetSocketPath(); socket != "" {
+		pgURL = "postgres://postgres:password@?host=localhost&port=5432&dbname=phoenix&sslmode=disable"
+		log.L().Info("Connecting to postgres socket", zap.String("path", socket))
+	}
 	pg, err := pgClient.New(pgURL, pgClient.AddLogger(log.L()))
 	if err != nil {
 		return dbLauncher, nil, err

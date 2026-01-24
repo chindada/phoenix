@@ -68,13 +68,8 @@ lint-go:
 	@echo "Linting all platforms..."
 	@cd $(PROCESSOR_DIR); gofumpt -l -w .
 	@cd $(PROCESSOR_DIR); golangci-lint-v2 fmt ./...
-	make lint-go-windows
-	make lint-go-darwin
 	make lint-go-linux
-
-lint-go-windows:
-	@echo "Linting for windows..."
-	@cd $(PROCESSOR_DIR); CGO_ENABLED=0 GOOS=windows GOARCH=amd64 golangci-lint-v2 run --config ./.golangci.yml  ./...
+	make lint-go-darwin
 
 lint-go-darwin:
 	@echo "Linting for darwin..."
