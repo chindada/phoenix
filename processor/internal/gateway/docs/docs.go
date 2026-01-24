@@ -24,6 +24,221 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/accounts": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "List all accounts available for the user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "List Accounts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ListAccountsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/accounts/balance": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get balance for the account",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Get Account Balance",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.AccountBalance"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/accounts/limits": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get trading limits information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Get Trading Limits",
+                "parameters": [
+                    {
+                        "description": "Trading Limits Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetTradingLimitsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.TradingLimits"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/accounts/margin": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get margin information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Get Margin",
+                "parameters": [
+                    {
+                        "description": "Margin Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetMarginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.Margin"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/accounts/settlements": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get settlement information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Get Settlements",
+                "parameters": [
+                    {
+                        "description": "Settlement Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetSettlementsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetSettlementsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/ca/activate": {
             "post": {
                 "security": [
@@ -198,6 +413,374 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/pb.LogoutResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/market/contracts/fetch": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Fetch contract definitions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market"
+                ],
+                "summary": "Fetch Contracts",
+                "parameters": [
+                    {
+                        "description": "Fetch Contracts Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.FetchContractsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.Empty"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/market/daily-quotes": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get daily quotes",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market"
+                ],
+                "summary": "Get Daily Quotes",
+                "parameters": [
+                    {
+                        "description": "Daily Quotes Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetDailyQuotesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.DailyQuotes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/market/kbars": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get market kbars",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market"
+                ],
+                "summary": "Get Kbars",
+                "parameters": [
+                    {
+                        "description": "Kbars Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetKbarsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.Kbars"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/market/notice": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get market notices",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market"
+                ],
+                "summary": "Get Market Notices",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.Notice"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/market/punish": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get stock punishment information",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market"
+                ],
+                "summary": "Get Punish Info",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.Punish"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/market/scanners": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get market scanners",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market"
+                ],
+                "summary": "Get Scanners",
+                "parameters": [
+                    {
+                        "description": "Scanners Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetScannersRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetScannersResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/market/snapshots": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get market snapshots",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market"
+                ],
+                "summary": "Get Snapshots",
+                "parameters": [
+                    {
+                        "description": "Snapshots Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetSnapshotsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetSnapshotsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/market/ticks": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get market ticks",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market"
+                ],
+                "summary": "Get Ticks",
+                "parameters": [
+                    {
+                        "description": "Ticks Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetTicksRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.Ticks"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
                         }
                     },
                     "500": {
@@ -491,6 +1074,864 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/api/v1/positions": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "List all positions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Position"
+                ],
+                "summary": "List Positions",
+                "parameters": [
+                    {
+                        "description": "Positions Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.ListPositionsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ListPositionsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/positions/detail": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get detailed position information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Position"
+                ],
+                "summary": "List Position Detail",
+                "parameters": [
+                    {
+                        "description": "Position Detail Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.ListPositionDetailRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ListPositionDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/positions/pnl": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get profit and loss information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Position"
+                ],
+                "summary": "List Profit Loss",
+                "parameters": [
+                    {
+                        "description": "P/L Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.ListProfitLossRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ListProfitLossResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/positions/pnl/detail": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get detailed profit and loss information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Position"
+                ],
+                "summary": "List Profit Loss Detail",
+                "parameters": [
+                    {
+                        "description": "P/L Detail Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.ListProfitLossDetailRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ListProfitLossDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/positions/pnl/summary": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get profit and loss summary",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Position"
+                ],
+                "summary": "List Profit Loss Summary",
+                "parameters": [
+                    {
+                        "description": "P/L Summary Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.ListProfitLossSummaryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ListProfitLossSummaryResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reserve/credit-enquires": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Enquire about credit",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reserve"
+                ],
+                "summary": "Credit Enquiries",
+                "parameters": [
+                    {
+                        "description": "Credit Enquiries Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.CreditEnquiresRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.CreditEnquiresResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reserve/earmarking": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Reserve funds for earmarking",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reserve"
+                ],
+                "summary": "Reserve Earmarking",
+                "parameters": [
+                    {
+                        "description": "Reserve Earmarking Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.ReserveEarmarkingRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ReserveEarmarkingResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reserve/earmarking/detail": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get earmarking details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reserve"
+                ],
+                "summary": "Get Earmarking Detail",
+                "parameters": [
+                    {
+                        "description": "Earmarking Detail Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetEarmarkingDetailRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.EarmarkStocksDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reserve/short-stock-sources": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get sources for short selling",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reserve"
+                ],
+                "summary": "Get Short Stock Sources",
+                "parameters": [
+                    {
+                        "description": "Short Stock Sources Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetShortStockSourcesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetShortStockSourcesResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reserve/stocks": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Reserve stock for trading",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reserve"
+                ],
+                "summary": "Reserve Stock",
+                "parameters": [
+                    {
+                        "description": "Reserve Stock Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.ReserveStockRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ReserveStockResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reserve/stocks/detail": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get detailed stock reserve info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reserve"
+                ],
+                "summary": "Get Stock Reserve Detail",
+                "parameters": [
+                    {
+                        "description": "Reserve Detail Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetStockReserveDetailRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ReserveStocksDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reserve/stocks/summary": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get summary of stock reserves",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reserve"
+                ],
+                "summary": "Get Stock Reserve Summary",
+                "parameters": [
+                    {
+                        "description": "Reserve Summary Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetStockReserveSummaryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ReserveStocksSummaryResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/trades": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "List all trades",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trade"
+                ],
+                "summary": "List Trades",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ListTradesResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/trades/combo": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "List all combo trades",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trade"
+                ],
+                "summary": "List Combo Trades",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ListComboTradesResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/trades/deals": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get deal records for orders",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trade"
+                ],
+                "summary": "Get Order Deal Records",
+                "parameters": [
+                    {
+                        "description": "Deal Records Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetOrderDealRecordsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetOrderDealRecordsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/trades/subscribe": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Subscribe to trade updates",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trade"
+                ],
+                "summary": "Subscribe Trade",
+                "parameters": [
+                    {
+                        "description": "Subscribe Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.SubscribeTradeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.SubscribeTradeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/trades/unsubscribe": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Unsubscribe from trade updates",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trade"
+                ],
+                "summary": "Unsubscribe Trade",
+                "parameters": [
+                    {
+                        "description": "Unsubscribe Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.UnsubscribeTradeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.UnsubscribeTradeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/usage": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get usage information",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Get Usage",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.UsageStatus"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -544,6 +1985,31 @@ const docTemplate = `{
                 "username": {
                     "description": "User's name associated with the account.",
                     "type": "string"
+                }
+            }
+        },
+        "pb.AccountBalance": {
+            "type": "object",
+            "properties": {
+                "acc_balance": {
+                    "description": "Current account balance.",
+                    "type": "number"
+                },
+                "date": {
+                    "description": "Date for which the balance is reported.",
+                    "type": "string"
+                },
+                "errmsg": {
+                    "description": "Error message if the fetch failed.",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Success/Failure status of the fetch operation.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.FetchStatus"
+                        }
+                    ]
                 }
             }
         },
@@ -602,6 +2068,41 @@ const docTemplate = `{
                     "$ref": "#/definitions/pb.Trade"
                 }
             }
+        },
+        "pb.ChangeType": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "x-enum-comments": {
+                "ChangeType_CHANGE_TYPE_DOWN": "Down. 跌",
+                "ChangeType_CHANGE_TYPE_LIMITDOWN": "Limit Down. 跌停",
+                "ChangeType_CHANGE_TYPE_LIMITUP": "Limit Up. 漲停",
+                "ChangeType_CHANGE_TYPE_UNCHANGED": "Unchanged. 平盤",
+                "ChangeType_CHANGE_TYPE_UP": "Up. 漲"
+            },
+            "x-enum-descriptions": [
+                "",
+                "Limit Up. 漲停",
+                "Up. 漲",
+                "Unchanged. 平盤",
+                "Down. 跌",
+                "Limit Down. 跌停"
+            ],
+            "x-enum-varnames": [
+                "ChangeType_CHANGE_TYPE_UNSPECIFIED",
+                "ChangeType_CHANGE_TYPE_LIMITUP",
+                "ChangeType_CHANGE_TYPE_UP",
+                "ChangeType_CHANGE_TYPE_UNCHANGED",
+                "ChangeType_CHANGE_TYPE_DOWN",
+                "ChangeType_CHANGE_TYPE_LIMITDOWN"
+            ]
         },
         "pb.ComboBase": {
             "type": "object",
@@ -869,6 +2370,53 @@ const docTemplate = `{
                 }
             }
         },
+        "pb.CreditEnquire": {
+            "type": "object",
+            "properties": {
+                "margin_unit": {
+                    "description": "Available margin units.",
+                    "type": "integer"
+                },
+                "short_unit": {
+                    "description": "Available short selling units.",
+                    "type": "integer"
+                },
+                "stock_id": {
+                    "description": "Security code.",
+                    "type": "string"
+                },
+                "system": {
+                    "description": "System code.",
+                    "type": "string"
+                },
+                "update_time": {
+                    "description": "Update timestamp.",
+                    "type": "string"
+                }
+            }
+        },
+        "pb.CreditEnquiresRequest": {
+            "type": "object",
+            "properties": {
+                "contract_codes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "pb.CreditEnquiresResponse": {
+            "type": "object",
+            "properties": {
+                "credit_enquires": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.CreditEnquire"
+                    }
+                }
+            }
+        },
         "pb.Currency": {
             "type": "integer",
             "format": "int32",
@@ -964,6 +2512,74 @@ const docTemplate = `{
                 "Currency_CURRENCY_CNY"
             ]
         },
+        "pb.DailyQuotes": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "Daily amount.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "close": {
+                    "description": "Daily close.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "code": {
+                    "description": "Security codes.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "date": {
+                    "description": "Report dates.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "high": {
+                    "description": "Daily high.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "low": {
+                    "description": "Daily low.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "open": {
+                    "description": "Daily open.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "transaction": {
+                    "description": "Transaction count.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "volume": {
+                    "description": "Daily volume.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
         "pb.DayTrade": {
             "type": "integer",
             "format": "int32",
@@ -1012,6 +2628,17 @@ const docTemplate = `{
                 }
             }
         },
+        "pb.EarmarkStocksDetailResponse": {
+            "type": "object",
+            "properties": {
+                "response_json": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.Empty": {
+            "type": "object"
+        },
         "pb.Exchange": {
             "type": "integer",
             "format": "int32",
@@ -1041,6 +2668,38 @@ const docTemplate = `{
                 "Exchange_EXCHANGE_OTC",
                 "Exchange_EXCHANGE_OES",
                 "Exchange_EXCHANGE_TAIFEX"
+            ]
+        },
+        "pb.FetchContractsRequest": {
+            "type": "object",
+            "properties": {
+                "contract_download": {
+                    "description": "Whether to perform a full download.",
+                    "type": "boolean"
+                }
+            }
+        },
+        "pb.FetchStatus": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2
+            ],
+            "x-enum-comments": {
+                "FetchStatus_FETCH_STATUS_FAIL": "Fail. 失敗",
+                "FetchStatus_FETCH_STATUS_SUCCESS": "Success. 成功"
+            },
+            "x-enum-descriptions": [
+                "",
+                "Success. 成功",
+                "Fail. 失敗"
+            ],
+            "x-enum-varnames": [
+                "FetchStatus_FETCH_STATUS_UNSPECIFIED",
+                "FetchStatus_FETCH_STATUS_SUCCESS",
+                "FetchStatus_FETCH_STATUS_FAIL"
             ]
         },
         "pb.FuturesOCType": {
@@ -1090,6 +2749,256 @@ const docTemplate = `{
                 }
             }
         },
+        "pb.GetDailyQuotesRequest": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "description": "YYYY-MM-DD.",
+                    "type": "string"
+                }
+            }
+        },
+        "pb.GetEarmarkingDetailRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                }
+            }
+        },
+        "pb.GetKbarsRequest": {
+            "type": "object",
+            "properties": {
+                "contract_code": {
+                    "type": "string"
+                },
+                "end_date": {
+                    "description": "YYYY-MM-DD.",
+                    "type": "string"
+                },
+                "start_date": {
+                    "description": "YYYY-MM-DD.",
+                    "type": "string"
+                }
+            }
+        },
+        "pb.GetMarginRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                }
+            }
+        },
+        "pb.GetOrderDealRecordsRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                }
+            }
+        },
+        "pb.GetOrderDealRecordsResponse": {
+            "type": "object",
+            "properties": {
+                "records": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.OrderDealRecord"
+                    }
+                }
+            }
+        },
+        "pb.GetScannersRequest": {
+            "type": "object",
+            "properties": {
+                "ascending": {
+                    "description": "Sort direction.",
+                    "type": "boolean"
+                },
+                "count": {
+                    "description": "Max number of results.",
+                    "type": "integer"
+                },
+                "date": {
+                    "description": "Date for scanning.",
+                    "type": "string"
+                },
+                "scanner_type": {
+                    "description": "Ranking criteria (e.g., volume, change).",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.ScannerType"
+                        }
+                    ]
+                }
+            }
+        },
+        "pb.GetScannersResponse": {
+            "type": "object",
+            "properties": {
+                "scanners": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.ScannerItem"
+                    }
+                }
+            }
+        },
+        "pb.GetSettlementsRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                }
+            }
+        },
+        "pb.GetSettlementsResponse": {
+            "type": "object",
+            "properties": {
+                "settlements": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.Settlement"
+                    }
+                }
+            }
+        },
+        "pb.GetShortStockSourcesRequest": {
+            "type": "object",
+            "properties": {
+                "contract_codes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "pb.GetShortStockSourcesResponse": {
+            "type": "object",
+            "properties": {
+                "sources": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.ShortStockSource"
+                    }
+                }
+            }
+        },
+        "pb.GetSnapshotsRequest": {
+            "type": "object",
+            "properties": {
+                "contract_codes": {
+                    "description": "List of security codes.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "pb.GetSnapshotsResponse": {
+            "type": "object",
+            "properties": {
+                "snapshots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.Snapshot"
+                    }
+                }
+            }
+        },
+        "pb.GetStockReserveDetailRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                }
+            }
+        },
+        "pb.GetStockReserveSummaryRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                }
+            }
+        },
+        "pb.GetTicksRequest": {
+            "type": "object",
+            "properties": {
+                "contract_code": {
+                    "type": "string"
+                },
+                "date": {
+                    "description": "Date YYYY-MM-DD.",
+                    "type": "string"
+                }
+            }
+        },
+        "pb.GetTradingLimitsRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                }
+            }
+        },
+        "pb.Kbars": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "Total period amounts.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "close": {
+                    "description": "Close prices.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "high": {
+                    "description": "High prices.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "low": {
+                    "description": "Low prices.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "open": {
+                    "description": "Open prices.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "ts": {
+                    "description": "Period timestamps.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "volume": {
+                    "description": "Total period volumes.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
         "pb.ListAccountsResponse": {
             "type": "object",
             "properties": {
@@ -1101,12 +3010,300 @@ const docTemplate = `{
                 }
             }
         },
+        "pb.ListComboTradesResponse": {
+            "type": "object",
+            "properties": {
+                "combo_trades": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.ComboTrade"
+                    }
+                }
+            }
+        },
+        "pb.ListPositionDetailRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                },
+                "detail_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pb.ListPositionDetailResponse": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.PositionDetail"
+                    }
+                }
+            }
+        },
+        "pb.ListPositionsRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                },
+                "unit": {
+                    "description": "Units (e.g., Common).",
+                    "type": "string"
+                }
+            }
+        },
+        "pb.ListPositionsResponse": {
+            "type": "object",
+            "properties": {
+                "positions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.Position"
+                    }
+                }
+            }
+        },
+        "pb.ListProfitLossDetailRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                },
+                "detail_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pb.ListProfitLossDetailResponse": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.ProfitDetail"
+                    }
+                }
+            }
+        },
+        "pb.ListProfitLossRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                },
+                "begin_date": {
+                    "description": "Start date YYYYMMDD.",
+                    "type": "string"
+                },
+                "end_date": {
+                    "description": "End date YYYYMMDD.",
+                    "type": "string"
+                }
+            }
+        },
+        "pb.ListProfitLossResponse": {
+            "type": "object",
+            "properties": {
+                "profit_losses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.ProfitLoss"
+                    }
+                }
+            }
+        },
+        "pb.ListProfitLossSummaryRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                }
+            }
+        },
+        "pb.ListProfitLossSummaryResponse": {
+            "type": "object",
+            "properties": {
+                "summaries": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.ProfitLossSummary"
+                    }
+                }
+            }
+        },
+        "pb.ListTradesResponse": {
+            "type": "object",
+            "properties": {
+                "trades": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.Trade"
+                    }
+                }
+            }
+        },
         "pb.LogoutResponse": {
             "type": "object",
             "properties": {
                 "success": {
                     "description": "True if logout was successful.",
                     "type": "boolean"
+                }
+            }
+        },
+        "pb.Margin": {
+            "type": "object",
+            "properties": {
+                "available_margin": {
+                    "description": "Margin available for new trades.",
+                    "type": "number"
+                },
+                "collateral_amount": {
+                    "description": "Cash collateral amount.",
+                    "type": "number"
+                },
+                "deposit_withdrawal": {
+                    "description": "Net deposits and withdrawals.",
+                    "type": "number"
+                },
+                "equity": {
+                    "description": "Total equity.",
+                    "type": "number"
+                },
+                "equity_amount": {
+                    "description": "Liquid equity amount.",
+                    "type": "number"
+                },
+                "fee": {
+                    "description": "Total fees paid.",
+                    "type": "number"
+                },
+                "future_open_position": {
+                    "description": "Number of open futures contracts.",
+                    "type": "number"
+                },
+                "future_settle_profitloss": {
+                    "description": "Settlement pnl for futures.",
+                    "type": "number"
+                },
+                "initial_margin": {
+                    "description": "Initial margin requirement.",
+                    "type": "number"
+                },
+                "maintenance_margin": {
+                    "description": "Maintenance margin requirement.",
+                    "type": "number"
+                },
+                "margin_call": {
+                    "description": "Current margin call amount.",
+                    "type": "number"
+                },
+                "option_open_position": {
+                    "description": "Number of open option contracts.",
+                    "type": "number"
+                },
+                "option_openbuy_market_value": {
+                    "description": "Value of long option positions.",
+                    "type": "number"
+                },
+                "option_opensell_market_value": {
+                    "description": "Value of short option positions.",
+                    "type": "number"
+                },
+                "option_settle_profitloss": {
+                    "description": "Settlement pnl for options.",
+                    "type": "number"
+                },
+                "order_margin_premium": {
+                    "description": "Margin premium for active orders.",
+                    "type": "number"
+                },
+                "plus_margin": {
+                    "description": "Excess margin.",
+                    "type": "number"
+                },
+                "plus_margin_indicator": {
+                    "description": "Excess margin indicator.",
+                    "type": "number"
+                },
+                "risk_indicator": {
+                    "description": "Risk indicator percentage.",
+                    "type": "number"
+                },
+                "royalty_revenue_expenditure": {
+                    "description": "Net royalty from options.",
+                    "type": "number"
+                },
+                "security_collateral_amount": {
+                    "description": "Security collateral value.",
+                    "type": "number"
+                },
+                "status": {
+                    "description": "Success or failure status.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.FetchStatus"
+                        }
+                    ]
+                },
+                "tax": {
+                    "description": "Total taxes paid.",
+                    "type": "number"
+                },
+                "today_balance": {
+                    "description": "Today's current balance.",
+                    "type": "number"
+                },
+                "today_future_open_position": {
+                    "description": "Futures opened today.",
+                    "type": "number"
+                },
+                "yesterday_balance": {
+                    "description": "Yesterday's ending balance.",
+                    "type": "number"
+                }
+            }
+        },
+        "pb.Notice": {
+            "type": "object",
+            "properties": {
+                "announced_date": {
+                    "description": "Date of notice.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "close": {
+                    "description": "Triggering close price.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "code": {
+                    "description": "Stock codes.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "reason": {
+                    "description": "Reason for notice.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "updated_at": {
+                    "description": "Timestamp.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -1226,6 +3423,35 @@ const docTemplate = `{
                 }
             }
         },
+        "pb.OrderDealRecord": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "description": "Buy or Sell.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.Action"
+                        }
+                    ]
+                },
+                "code": {
+                    "description": "Security code.",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "Execution price.",
+                    "type": "number"
+                },
+                "quantity": {
+                    "description": "Execution quantity.",
+                    "type": "integer"
+                },
+                "ts": {
+                    "description": "Timestamp.",
+                    "type": "string"
+                }
+            }
+        },
         "pb.OrderStatus": {
             "type": "object",
             "properties": {
@@ -1335,6 +3561,341 @@ const docTemplate = `{
                 }
             }
         },
+        "pb.Position": {
+            "type": "object",
+            "properties": {
+                "position": {
+                    "description": "Types that are valid to be assigned to Position:\n\n\t*Position_StockPosition\n\t*Position_FuturePosition"
+                }
+            }
+        },
+        "pb.PositionDetail": {
+            "type": "object",
+            "properties": {
+                "detail": {
+                    "description": "Types that are valid to be assigned to Detail:\n\n\t*PositionDetail_StockDetail\n\t*PositionDetail_FutureDetail"
+                }
+            }
+        },
+        "pb.ProfitDetail": {
+            "type": "object",
+            "properties": {
+                "detail": {
+                    "description": "Types that are valid to be assigned to Detail:\n\n\t*ProfitDetail_StockDetail\n\t*ProfitDetail_FutureDetail"
+                }
+            }
+        },
+        "pb.ProfitLoss": {
+            "type": "object",
+            "properties": {
+                "item": {
+                    "description": "Types that are valid to be assigned to Item:\n\n\t*ProfitLoss_StockPnl\n\t*ProfitLoss_FuturePnl"
+                }
+            }
+        },
+        "pb.ProfitLossSummary": {
+            "type": "object",
+            "properties": {
+                "summary": {
+                    "description": "Types that are valid to be assigned to Summary:\n\n\t*ProfitLossSummary_StockSummary\n\t*ProfitLossSummary_FutureSummary"
+                }
+            }
+        },
+        "pb.Punish": {
+            "type": "object",
+            "properties": {
+                "announced_date": {
+                    "description": "Announcement date.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "code": {
+                    "description": "Stock codes.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "description": {
+                    "description": "Detail description.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "end_date": {
+                    "description": "Punishment end.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "interval": {
+                    "description": "Trade interval.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "start_date": {
+                    "description": "Punishment start.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "total_limit": {
+                    "description": "Total limit.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "unit_limit": {
+                    "description": "Order unit limit.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "updated_at": {
+                    "description": "Updated timestamp.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "pb.ReserveEarmarkingRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                },
+                "contract": {
+                    "$ref": "#/definitions/pb.Contract"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "share": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pb.ReserveEarmarkingResponse": {
+            "type": "object",
+            "properties": {
+                "response_json": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.ReserveStockRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                },
+                "contract": {
+                    "$ref": "#/definitions/pb.Contract"
+                },
+                "share": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pb.ReserveStockResponse": {
+            "type": "object",
+            "properties": {
+                "response_json": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.ReserveStocksDetailResponse": {
+            "type": "object",
+            "properties": {
+                "response_json": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.ReserveStocksSummaryResponse": {
+            "type": "object",
+            "properties": {
+                "response_json": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.ScannerItem": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "Tick amount.",
+                    "type": "integer"
+                },
+                "ask_orders": {
+                    "description": "Ask order count.",
+                    "type": "integer"
+                },
+                "ask_volumes": {
+                    "description": "Total ask vol.",
+                    "type": "integer"
+                },
+                "average_price": {
+                    "description": "Avg price.",
+                    "type": "number"
+                },
+                "bid_orders": {
+                    "description": "Bid order count.",
+                    "type": "integer"
+                },
+                "bid_volumes": {
+                    "description": "Total bid vol.",
+                    "type": "integer"
+                },
+                "buy_price": {
+                    "description": "Best bid.",
+                    "type": "number"
+                },
+                "buy_volume": {
+                    "description": "Best bid vol.",
+                    "type": "integer"
+                },
+                "change_price": {
+                    "description": "Net change.",
+                    "type": "number"
+                },
+                "change_type": {
+                    "description": "Change indicator.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.ChangeType"
+                        }
+                    ]
+                },
+                "close": {
+                    "description": "Last close.",
+                    "type": "number"
+                },
+                "code": {
+                    "description": "Security code.",
+                    "type": "string"
+                },
+                "date": {
+                    "description": "Scan date.",
+                    "type": "string"
+                },
+                "high": {
+                    "description": "High.",
+                    "type": "number"
+                },
+                "low": {
+                    "description": "Low.",
+                    "type": "number"
+                },
+                "name": {
+                    "description": "Name.",
+                    "type": "string"
+                },
+                "open": {
+                    "description": "Open price.",
+                    "type": "number"
+                },
+                "price_range": {
+                    "description": "Daily price range.",
+                    "type": "number"
+                },
+                "rank_value": {
+                    "description": "Ranking metric value.",
+                    "type": "number"
+                },
+                "sell_price": {
+                    "description": "Best ask.",
+                    "type": "number"
+                },
+                "sell_volume": {
+                    "description": "Best ask vol.",
+                    "type": "integer"
+                },
+                "tick_type": {
+                    "description": "Up/Down.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.TickType"
+                        }
+                    ]
+                },
+                "total_amount": {
+                    "description": "Total amount.",
+                    "type": "integer"
+                },
+                "total_volume": {
+                    "description": "Total volume.",
+                    "type": "integer"
+                },
+                "ts": {
+                    "description": "Timestamp.",
+                    "type": "integer"
+                },
+                "volume": {
+                    "description": "Tick volume.",
+                    "type": "integer"
+                },
+                "volume_ratio": {
+                    "description": "Relative volume.",
+                    "type": "number"
+                },
+                "yesterday_volume": {
+                    "description": "Prev day volume.",
+                    "type": "integer"
+                }
+            }
+        },
+        "pb.ScannerType": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+            ],
+            "x-enum-comments": {
+                "ScannerType_SCANNER_TYPE_AMOUNTRANK": "Amount rank. 成交金額排行",
+                "ScannerType_SCANNER_TYPE_CHANGEPERCENTRANK": "Change percent rank. 漲跌幅排行",
+                "ScannerType_SCANNER_TYPE_CHANGEPRICERANK": "Change price rank. 漲跌價排行",
+                "ScannerType_SCANNER_TYPE_DAYRANGERANK": "Day range rank. 震幅排行",
+                "ScannerType_SCANNER_TYPE_TICKCOUNTRANK": "Tick count rank. 成交筆數排行",
+                "ScannerType_SCANNER_TYPE_VOLUMERANK": "Volume rank. 成交量排行"
+            },
+            "x-enum-descriptions": [
+                "",
+                "Change percent rank. 漲跌幅排行",
+                "Change price rank. 漲跌價排行",
+                "Day range rank. 震幅排行",
+                "Volume rank. 成交量排行",
+                "Amount rank. 成交金額排行",
+                "Tick count rank. 成交筆數排行"
+            ],
+            "x-enum-varnames": [
+                "ScannerType_SCANNER_TYPE_UNSPECIFIED",
+                "ScannerType_SCANNER_TYPE_CHANGEPERCENTRANK",
+                "ScannerType_SCANNER_TYPE_CHANGEPRICERANK",
+                "ScannerType_SCANNER_TYPE_DAYRANGERANK",
+                "ScannerType_SCANNER_TYPE_VOLUMERANK",
+                "ScannerType_SCANNER_TYPE_AMOUNTRANK",
+                "ScannerType_SCANNER_TYPE_TICKCOUNTRANK"
+            ]
+        },
         "pb.SecurityType": {
             "type": "integer",
             "format": "int32",
@@ -1365,6 +3926,173 @@ const docTemplate = `{
                 "SecurityType_SECURITY_TYPE_FUT",
                 "SecurityType_SECURITY_TYPE_OPT"
             ]
+        },
+        "pb.Settlement": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "Total amount.",
+                    "type": "number"
+                },
+                "date": {
+                    "description": "Settlement date.",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Fetch status.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.FetchStatus"
+                        }
+                    ]
+                },
+                "t1_day": {
+                    "description": "T+1 date.",
+                    "type": "string"
+                },
+                "t1_money": {
+                    "description": "Amount for T+1 day.",
+                    "type": "number"
+                },
+                "t2_day": {
+                    "description": "T+2 date.",
+                    "type": "string"
+                },
+                "t2_money": {
+                    "description": "Amount for T+2 day.",
+                    "type": "number"
+                },
+                "t_day": {
+                    "description": "T date.",
+                    "type": "string"
+                },
+                "t_money": {
+                    "description": "Amount for T day.",
+                    "type": "number"
+                }
+            }
+        },
+        "pb.ShortStockSource": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "Security code.",
+                    "type": "string"
+                },
+                "short_stock_source": {
+                    "description": "Available shorting source volume.",
+                    "type": "integer"
+                },
+                "ts": {
+                    "description": "Timestamp.",
+                    "type": "integer"
+                }
+            }
+        },
+        "pb.Snapshot": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "Trade amount.",
+                    "type": "integer"
+                },
+                "average_price": {
+                    "description": "Average trade price.",
+                    "type": "number"
+                },
+                "buy_price": {
+                    "description": "Best bid price.",
+                    "type": "number"
+                },
+                "buy_volume": {
+                    "description": "Best bid volume.",
+                    "type": "number"
+                },
+                "change_price": {
+                    "description": "Price change relative to reference.",
+                    "type": "number"
+                },
+                "change_rate": {
+                    "description": "Percentage change.",
+                    "type": "number"
+                },
+                "change_type": {
+                    "description": "Limit Up/Down etc.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.ChangeType"
+                        }
+                    ]
+                },
+                "close": {
+                    "description": "Last/Close price.",
+                    "type": "number"
+                },
+                "code": {
+                    "description": "Security code.",
+                    "type": "string"
+                },
+                "exchange": {
+                    "description": "Exchange.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.Exchange"
+                        }
+                    ]
+                },
+                "high": {
+                    "description": "High price.",
+                    "type": "number"
+                },
+                "low": {
+                    "description": "Low price.",
+                    "type": "number"
+                },
+                "open": {
+                    "description": "Open price.",
+                    "type": "number"
+                },
+                "sell_price": {
+                    "description": "Best ask price.",
+                    "type": "number"
+                },
+                "sell_volume": {
+                    "description": "Best ask volume.",
+                    "type": "integer"
+                },
+                "tick_type": {
+                    "description": "Up/Down tick.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.TickType"
+                        }
+                    ]
+                },
+                "total_amount": {
+                    "description": "Total daily amount.",
+                    "type": "integer"
+                },
+                "total_volume": {
+                    "description": "Total daily volume.",
+                    "type": "integer"
+                },
+                "ts": {
+                    "description": "Timestamp.",
+                    "type": "integer"
+                },
+                "volume": {
+                    "description": "Trade volume in units.",
+                    "type": "integer"
+                },
+                "volume_ratio": {
+                    "description": "Volume ratio compared to average.",
+                    "type": "number"
+                },
+                "yesterday_volume": {
+                    "description": "Yesterday's total volume.",
+                    "type": "number"
+                }
+            }
         },
         "pb.Status": {
             "type": "integer",
@@ -1483,6 +4211,110 @@ const docTemplate = `{
                 "StockOrderLot_STOCK_ORDER_LOT_INTRADAY_ODD"
             ]
         },
+        "pb.SubscribeTradeRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                }
+            }
+        },
+        "pb.SubscribeTradeResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "pb.TickType": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2,
+                3
+            ],
+            "x-enum-comments": {
+                "TickType_TICK_TYPE_BUY": "Buy (Up/Outer). 外盤",
+                "TickType_TICK_TYPE_NO": "No change.",
+                "TickType_TICK_TYPE_SELL": "Sell (Down/Inner). 內盤"
+            },
+            "x-enum-descriptions": [
+                "",
+                "No change.",
+                "Buy (Up/Outer). 外盤",
+                "Sell (Down/Inner). 內盤"
+            ],
+            "x-enum-varnames": [
+                "TickType_TICK_TYPE_UNSPECIFIED",
+                "TickType_TICK_TYPE_NO",
+                "TickType_TICK_TYPE_BUY",
+                "TickType_TICK_TYPE_SELL"
+            ]
+        },
+        "pb.Ticks": {
+            "type": "object",
+            "properties": {
+                "ask_price": {
+                    "description": "Best ask at time of tick.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "ask_volume": {
+                    "description": "Best ask volume.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "bid_price": {
+                    "description": "Best bid at time of tick.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "bid_volume": {
+                    "description": "Best bid volume.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "close": {
+                    "description": "Execution prices.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "tick_type": {
+                    "description": "Tick type indicators.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "ts": {
+                    "description": "Timestamps.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "volume": {
+                    "description": "Execution volumes.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
         "pb.Trade": {
             "type": "object",
             "properties": {
@@ -1494,6 +4326,71 @@ const docTemplate = `{
                 },
                 "status": {
                     "$ref": "#/definitions/pb.OrderStatus"
+                }
+            }
+        },
+        "pb.TradingLimits": {
+            "type": "object",
+            "properties": {
+                "margin_available": {
+                    "description": "Remaining margin capacity.",
+                    "type": "integer"
+                },
+                "margin_limit": {
+                    "description": "Total margin trading limit.",
+                    "type": "integer"
+                },
+                "margin_used": {
+                    "description": "Utilized margin limit.",
+                    "type": "integer"
+                },
+                "short_available": {
+                    "description": "Remaining short selling capacity.",
+                    "type": "integer"
+                },
+                "short_limit": {
+                    "description": "Total short selling limit.",
+                    "type": "integer"
+                },
+                "short_used": {
+                    "description": "Utilized short selling limit.",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "Fetch status.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.FetchStatus"
+                        }
+                    ]
+                },
+                "trading_available": {
+                    "description": "Remaining trading capacity.",
+                    "type": "integer"
+                },
+                "trading_limit": {
+                    "description": "Total allowed trading limit.",
+                    "type": "integer"
+                },
+                "trading_used": {
+                    "description": "Currently utilized limit.",
+                    "type": "integer"
+                }
+            }
+        },
+        "pb.UnsubscribeTradeRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                }
+            }
+        },
+        "pb.UnsubscribeTradeResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
                 }
             }
         },
@@ -1516,6 +4413,27 @@ const docTemplate = `{
             "properties": {
                 "account": {
                     "$ref": "#/definitions/pb.Account"
+                }
+            }
+        },
+        "pb.UsageStatus": {
+            "type": "object",
+            "properties": {
+                "bytes": {
+                    "description": "Amount of data consumed in bytes.",
+                    "type": "integer"
+                },
+                "connections": {
+                    "description": "Current number of active connections.",
+                    "type": "integer"
+                },
+                "limit_bytes": {
+                    "description": "Maximum data consumption limit in bytes.",
+                    "type": "integer"
+                },
+                "remaining_bytes": {
+                    "description": "Remaining data allowance in bytes.",
+                    "type": "integer"
                 }
             }
         }

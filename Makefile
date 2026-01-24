@@ -1,11 +1,12 @@
 .PHONY: install codegen codegen-go run-server clean-venv venv lint format type-check install-lint-go lint-go build-go test test-py test-go swagger-install swagger-fmt swagger-gen swagger
 
+PWD = $(shell pwd)
 PROTO_DIR = ./protos/v1
 PROVIDER_DIR = ./provider
 PROCESSOR_DIR = ./processor
 GO_PB_DIR = $(PROCESSOR_DIR)/pkg/pb
 SRC_DIR = $(PROVIDER_DIR)/src
-VENV = $(shell pwd)/.venv
+VENV = $(PWD)/.venv
 BIN = $(VENV)/bin
 PYTHON = $(BIN)/python
 PIP = $(BIN)/pip
@@ -20,7 +21,7 @@ venv: $(VENV)
 install:
 	@$(PIP) install -r $(PROVIDER_DIR)/requirements.txt
 
-codegen: codegen-py codegen-go
+codegen: codegen-py codegen-go swagger
 
 codegen-py:
 	@$(PYTHON) -m grpc_tools.protoc -I$(PROTO_DIR) --python_out=$(SRC_DIR) --pyi_out=$(SRC_DIR) --grpc_python_out=$(SRC_DIR) $(PROTO_DIR)/provider.proto
@@ -38,7 +39,7 @@ swagger-fmt:
 	@cd $(PROCESSOR_DIR)/internal/gateway; swag fmt -g router.go
 
 swagger-gen: swagger-fmt
-	@cd $(PROCESSOR_DIR)/internal/gateway; swag init -g router.go --parseDependency 1 --parseInternal
+	@cd $(PROCESSOR_DIR)/internal/gateway; swag init -q -g router.go --parseDependency 1 --parseInternal
 
 swagger: swagger-install swagger-gen
 
@@ -50,7 +51,7 @@ test: test-py test-go
 
 test-py:
 	@echo "Running Python tests..."
-	@PYTHONPATH=$(SRC_DIR) SJ_LOG_PATH=$(shell pwd)/$(PROVIDER_DIR)/logs/shioaji.log SJ_CONTRACTS_PATH=$(shell pwd)/$(PROVIDER_DIR)/data $(BIN)/pytest $(PROVIDER_DIR)/tests -v
+	@PYTHONPATH=$(SRC_DIR) SJ_LOG_PATH=$(PWD)/$(PROVIDER_DIR)/logs/shioaji.log SJ_CONTRACTS_PATH=$(PWD)/$(PROVIDER_DIR)/data $(BIN)/pytest $(PROVIDER_DIR)/tests -v
 
 test-go:
 	@echo "Running Go tests..."
@@ -67,19 +68,19 @@ lint-go:
 	@echo "Linting all platforms..."
 	@cd $(PROCESSOR_DIR); gofumpt -l -w .
 	@cd $(PROCESSOR_DIR); golangci-lint-v2 fmt ./...
-	make lint-windows
-	make lint-darwin
-	make lint-linux
+	make lint-go-windows
+	make lint-go-darwin
+	make lint-go-linux
 
-lint-windows:
+lint-go-windows:
 	@echo "Linting for windows..."
 	@cd $(PROCESSOR_DIR); CGO_ENABLED=0 GOOS=windows GOARCH=amd64 golangci-lint-v2 run --config ./.golangci.yml  ./...
 
-lint-darwin:
+lint-go-darwin:
 	@echo "Linting for darwin..."
 	@cd $(PROCESSOR_DIR); CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 golangci-lint-v2 run --config ./.golangci.yml  ./...
 
-lint-linux:
+lint-go-linux:
 	@echo "Linting for linux..."
 	@cd $(PROCESSOR_DIR); CGO_ENABLED=0 GOOS=linux GOARCH=amd64 golangci-lint-v2 run --config ./.golangci.yml  ./...
 
@@ -90,7 +91,7 @@ type-check-pyright:
 	@cd $(PROVIDER_DIR); $(BIN)/pyright
 
 run-server:
-	@SJ_LOG_PATH=$(shell pwd)/$(PROVIDER_DIR)/logs/shioaji.log SJ_CONTRACTS_PATH=$(shell pwd)/$(PROVIDER_DIR)/data $(PYTHON) $(SRC_DIR)/server.py
+	@SJ_LOG_PATH=$(PWD)/$(PROVIDER_DIR)/logs/shioaji.log SJ_CONTRACTS_PATH=$(PWD)/$(PROVIDER_DIR)/data $(PYTHON) $(SRC_DIR)/server.py
 
 clean-venv:
 	@rm -rf $(VENV)

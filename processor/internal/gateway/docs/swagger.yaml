@@ -37,6 +37,22 @@ definitions:
         description: User's name associated with the account.
         type: string
     type: object
+  pb.AccountBalance:
+    properties:
+      acc_balance:
+        description: Current account balance.
+        type: number
+      date:
+        description: Date for which the balance is reported.
+        type: string
+      errmsg:
+        description: Error message if the fetch failed.
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/pb.FetchStatus'
+        description: Success/Failure status of the fetch operation.
+    type: object
   pb.Action:
     enum:
     - 0
@@ -77,6 +93,36 @@ definitions:
       trade:
         $ref: '#/definitions/pb.Trade'
     type: object
+  pb.ChangeType:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    format: int32
+    type: integer
+    x-enum-comments:
+      ChangeType_CHANGE_TYPE_DOWN: Down. 跌
+      ChangeType_CHANGE_TYPE_LIMITDOWN: Limit Down. 跌停
+      ChangeType_CHANGE_TYPE_LIMITUP: Limit Up. 漲停
+      ChangeType_CHANGE_TYPE_UNCHANGED: Unchanged. 平盤
+      ChangeType_CHANGE_TYPE_UP: Up. 漲
+    x-enum-descriptions:
+    - ""
+    - Limit Up. 漲停
+    - Up. 漲
+    - Unchanged. 平盤
+    - Down. 跌
+    - Limit Down. 跌停
+    x-enum-varnames:
+    - ChangeType_CHANGE_TYPE_UNSPECIFIED
+    - ChangeType_CHANGE_TYPE_LIMITUP
+    - ChangeType_CHANGE_TYPE_UP
+    - ChangeType_CHANGE_TYPE_UNCHANGED
+    - ChangeType_CHANGE_TYPE_DOWN
+    - ChangeType_CHANGE_TYPE_LIMITDOWN
   pb.ComboBase:
     properties:
       action:
@@ -251,6 +297,38 @@ definitions:
         description: Date of last update.
         type: string
     type: object
+  pb.CreditEnquire:
+    properties:
+      margin_unit:
+        description: Available margin units.
+        type: integer
+      short_unit:
+        description: Available short selling units.
+        type: integer
+      stock_id:
+        description: Security code.
+        type: string
+      system:
+        description: System code.
+        type: string
+      update_time:
+        description: Update timestamp.
+        type: string
+    type: object
+  pb.CreditEnquiresRequest:
+    properties:
+      contract_codes:
+        items:
+          type: string
+        type: array
+    type: object
+  pb.CreditEnquiresResponse:
+    properties:
+      credit_enquires:
+        items:
+          $ref: '#/definitions/pb.CreditEnquire'
+        type: array
+    type: object
   pb.Currency:
     enum:
     - 0
@@ -341,6 +419,54 @@ definitions:
     - Currency_CURRENCY_VND
     - Currency_CURRENCY_MYR
     - Currency_CURRENCY_CNY
+  pb.DailyQuotes:
+    properties:
+      amount:
+        description: Daily amount.
+        items:
+          type: integer
+        type: array
+      close:
+        description: Daily close.
+        items:
+          type: number
+        type: array
+      code:
+        description: Security codes.
+        items:
+          type: string
+        type: array
+      date:
+        description: Report dates.
+        items:
+          type: string
+        type: array
+      high:
+        description: Daily high.
+        items:
+          type: number
+        type: array
+      low:
+        description: Daily low.
+        items:
+          type: number
+        type: array
+      open:
+        description: Daily open.
+        items:
+          type: number
+        type: array
+      transaction:
+        description: Transaction count.
+        items:
+          type: integer
+        type: array
+      volume:
+        description: Daily volume.
+        items:
+          type: integer
+        type: array
+    type: object
   pb.DayTrade:
     enum:
     - 0
@@ -378,6 +504,13 @@ definitions:
         description: Timestamp of the fill.
         type: number
     type: object
+  pb.EarmarkStocksDetailResponse:
+    properties:
+      response_json:
+        type: string
+    type: object
+  pb.Empty:
+    type: object
   pb.Exchange:
     enum:
     - 0
@@ -404,6 +537,30 @@ definitions:
     - Exchange_EXCHANGE_OTC
     - Exchange_EXCHANGE_OES
     - Exchange_EXCHANGE_TAIFEX
+  pb.FetchContractsRequest:
+    properties:
+      contract_download:
+        description: Whether to perform a full download.
+        type: boolean
+    type: object
+  pb.FetchStatus:
+    enum:
+    - 0
+    - 1
+    - 2
+    format: int32
+    type: integer
+    x-enum-comments:
+      FetchStatus_FETCH_STATUS_FAIL: Fail. 失敗
+      FetchStatus_FETCH_STATUS_SUCCESS: Success. 成功
+    x-enum-descriptions:
+    - ""
+    - Success. 成功
+    - Fail. 失敗
+    x-enum-varnames:
+    - FetchStatus_FETCH_STATUS_UNSPECIFIED
+    - FetchStatus_FETCH_STATUS_SUCCESS
+    - FetchStatus_FETCH_STATUS_FAIL
   pb.FuturesOCType:
     enum:
     - 0
@@ -440,6 +597,170 @@ definitions:
       expire_time:
         type: string
     type: object
+  pb.GetDailyQuotesRequest:
+    properties:
+      date:
+        description: YYYY-MM-DD.
+        type: string
+    type: object
+  pb.GetEarmarkingDetailRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+    type: object
+  pb.GetKbarsRequest:
+    properties:
+      contract_code:
+        type: string
+      end_date:
+        description: YYYY-MM-DD.
+        type: string
+      start_date:
+        description: YYYY-MM-DD.
+        type: string
+    type: object
+  pb.GetMarginRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+    type: object
+  pb.GetOrderDealRecordsRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+    type: object
+  pb.GetOrderDealRecordsResponse:
+    properties:
+      records:
+        items:
+          $ref: '#/definitions/pb.OrderDealRecord'
+        type: array
+    type: object
+  pb.GetScannersRequest:
+    properties:
+      ascending:
+        description: Sort direction.
+        type: boolean
+      count:
+        description: Max number of results.
+        type: integer
+      date:
+        description: Date for scanning.
+        type: string
+      scanner_type:
+        allOf:
+        - $ref: '#/definitions/pb.ScannerType'
+        description: Ranking criteria (e.g., volume, change).
+    type: object
+  pb.GetScannersResponse:
+    properties:
+      scanners:
+        items:
+          $ref: '#/definitions/pb.ScannerItem'
+        type: array
+    type: object
+  pb.GetSettlementsRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+    type: object
+  pb.GetSettlementsResponse:
+    properties:
+      settlements:
+        items:
+          $ref: '#/definitions/pb.Settlement'
+        type: array
+    type: object
+  pb.GetShortStockSourcesRequest:
+    properties:
+      contract_codes:
+        items:
+          type: string
+        type: array
+    type: object
+  pb.GetShortStockSourcesResponse:
+    properties:
+      sources:
+        items:
+          $ref: '#/definitions/pb.ShortStockSource'
+        type: array
+    type: object
+  pb.GetSnapshotsRequest:
+    properties:
+      contract_codes:
+        description: List of security codes.
+        items:
+          type: string
+        type: array
+    type: object
+  pb.GetSnapshotsResponse:
+    properties:
+      snapshots:
+        items:
+          $ref: '#/definitions/pb.Snapshot'
+        type: array
+    type: object
+  pb.GetStockReserveDetailRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+    type: object
+  pb.GetStockReserveSummaryRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+    type: object
+  pb.GetTicksRequest:
+    properties:
+      contract_code:
+        type: string
+      date:
+        description: Date YYYY-MM-DD.
+        type: string
+    type: object
+  pb.GetTradingLimitsRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+    type: object
+  pb.Kbars:
+    properties:
+      amount:
+        description: Total period amounts.
+        items:
+          type: number
+        type: array
+      close:
+        description: Close prices.
+        items:
+          type: number
+        type: array
+      high:
+        description: High prices.
+        items:
+          type: number
+        type: array
+      low:
+        description: Low prices.
+        items:
+          type: number
+        type: array
+      open:
+        description: Open prices.
+        items:
+          type: number
+        type: array
+      ts:
+        description: Period timestamps.
+        items:
+          type: integer
+        type: array
+      volume:
+        description: Total period volumes.
+        items:
+          type: integer
+        type: array
+    type: object
   pb.ListAccountsResponse:
     properties:
       accounts:
@@ -447,11 +768,208 @@ definitions:
           $ref: '#/definitions/pb.Account'
         type: array
     type: object
+  pb.ListComboTradesResponse:
+    properties:
+      combo_trades:
+        items:
+          $ref: '#/definitions/pb.ComboTrade'
+        type: array
+    type: object
+  pb.ListPositionDetailRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+      detail_id:
+        type: integer
+    type: object
+  pb.ListPositionDetailResponse:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/pb.PositionDetail'
+        type: array
+    type: object
+  pb.ListPositionsRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+      unit:
+        description: Units (e.g., Common).
+        type: string
+    type: object
+  pb.ListPositionsResponse:
+    properties:
+      positions:
+        items:
+          $ref: '#/definitions/pb.Position'
+        type: array
+    type: object
+  pb.ListProfitLossDetailRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+      detail_id:
+        type: integer
+    type: object
+  pb.ListProfitLossDetailResponse:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/pb.ProfitDetail'
+        type: array
+    type: object
+  pb.ListProfitLossRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+      begin_date:
+        description: Start date YYYYMMDD.
+        type: string
+      end_date:
+        description: End date YYYYMMDD.
+        type: string
+    type: object
+  pb.ListProfitLossResponse:
+    properties:
+      profit_losses:
+        items:
+          $ref: '#/definitions/pb.ProfitLoss'
+        type: array
+    type: object
+  pb.ListProfitLossSummaryRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+    type: object
+  pb.ListProfitLossSummaryResponse:
+    properties:
+      summaries:
+        items:
+          $ref: '#/definitions/pb.ProfitLossSummary'
+        type: array
+    type: object
+  pb.ListTradesResponse:
+    properties:
+      trades:
+        items:
+          $ref: '#/definitions/pb.Trade'
+        type: array
+    type: object
   pb.LogoutResponse:
     properties:
       success:
         description: True if logout was successful.
         type: boolean
+    type: object
+  pb.Margin:
+    properties:
+      available_margin:
+        description: Margin available for new trades.
+        type: number
+      collateral_amount:
+        description: Cash collateral amount.
+        type: number
+      deposit_withdrawal:
+        description: Net deposits and withdrawals.
+        type: number
+      equity:
+        description: Total equity.
+        type: number
+      equity_amount:
+        description: Liquid equity amount.
+        type: number
+      fee:
+        description: Total fees paid.
+        type: number
+      future_open_position:
+        description: Number of open futures contracts.
+        type: number
+      future_settle_profitloss:
+        description: Settlement pnl for futures.
+        type: number
+      initial_margin:
+        description: Initial margin requirement.
+        type: number
+      maintenance_margin:
+        description: Maintenance margin requirement.
+        type: number
+      margin_call:
+        description: Current margin call amount.
+        type: number
+      option_open_position:
+        description: Number of open option contracts.
+        type: number
+      option_openbuy_market_value:
+        description: Value of long option positions.
+        type: number
+      option_opensell_market_value:
+        description: Value of short option positions.
+        type: number
+      option_settle_profitloss:
+        description: Settlement pnl for options.
+        type: number
+      order_margin_premium:
+        description: Margin premium for active orders.
+        type: number
+      plus_margin:
+        description: Excess margin.
+        type: number
+      plus_margin_indicator:
+        description: Excess margin indicator.
+        type: number
+      risk_indicator:
+        description: Risk indicator percentage.
+        type: number
+      royalty_revenue_expenditure:
+        description: Net royalty from options.
+        type: number
+      security_collateral_amount:
+        description: Security collateral value.
+        type: number
+      status:
+        allOf:
+        - $ref: '#/definitions/pb.FetchStatus'
+        description: Success or failure status.
+      tax:
+        description: Total taxes paid.
+        type: number
+      today_balance:
+        description: Today's current balance.
+        type: number
+      today_future_open_position:
+        description: Futures opened today.
+        type: number
+      yesterday_balance:
+        description: Yesterday's ending balance.
+        type: number
+    type: object
+  pb.Notice:
+    properties:
+      announced_date:
+        description: Date of notice.
+        items:
+          type: string
+        type: array
+      close:
+        description: Triggering close price.
+        items:
+          type: number
+        type: array
+      code:
+        description: Stock codes.
+        items:
+          type: string
+        type: array
+      reason:
+        description: Reason for notice.
+        items:
+          type: string
+        type: array
+      updated_at:
+        description: Timestamp.
+        items:
+          type: string
+        type: array
     type: object
   pb.OptionRight:
     enum:
@@ -527,6 +1045,25 @@ definitions:
         type: integer
       seqno:
         description: Platform sequence number.
+        type: string
+    type: object
+  pb.OrderDealRecord:
+    properties:
+      action:
+        allOf:
+        - $ref: '#/definitions/pb.Action'
+        description: Buy or Sell.
+      code:
+        description: Security code.
+        type: string
+      price:
+        description: Execution price.
+        type: number
+      quantity:
+        description: Execution quantity.
+        type: integer
+      ts:
+        description: Timestamp.
         type: string
     type: object
   pb.OrderStatus:
@@ -607,6 +1144,242 @@ definitions:
       order:
         $ref: '#/definitions/pb.Order'
     type: object
+  pb.Position:
+    properties:
+      position:
+        description: "Types that are valid to be assigned to Position:\n\n\t*Position_StockPosition\n\t*Position_FuturePosition"
+    type: object
+  pb.PositionDetail:
+    properties:
+      detail:
+        description: "Types that are valid to be assigned to Detail:\n\n\t*PositionDetail_StockDetail\n\t*PositionDetail_FutureDetail"
+    type: object
+  pb.ProfitDetail:
+    properties:
+      detail:
+        description: "Types that are valid to be assigned to Detail:\n\n\t*ProfitDetail_StockDetail\n\t*ProfitDetail_FutureDetail"
+    type: object
+  pb.ProfitLoss:
+    properties:
+      item:
+        description: "Types that are valid to be assigned to Item:\n\n\t*ProfitLoss_StockPnl\n\t*ProfitLoss_FuturePnl"
+    type: object
+  pb.ProfitLossSummary:
+    properties:
+      summary:
+        description: "Types that are valid to be assigned to Summary:\n\n\t*ProfitLossSummary_StockSummary\n\t*ProfitLossSummary_FutureSummary"
+    type: object
+  pb.Punish:
+    properties:
+      announced_date:
+        description: Announcement date.
+        items:
+          type: string
+        type: array
+      code:
+        description: Stock codes.
+        items:
+          type: string
+        type: array
+      description:
+        description: Detail description.
+        items:
+          type: string
+        type: array
+      end_date:
+        description: Punishment end.
+        items:
+          type: string
+        type: array
+      interval:
+        description: Trade interval.
+        items:
+          type: string
+        type: array
+      start_date:
+        description: Punishment start.
+        items:
+          type: string
+        type: array
+      total_limit:
+        description: Total limit.
+        items:
+          type: number
+        type: array
+      unit_limit:
+        description: Order unit limit.
+        items:
+          type: number
+        type: array
+      updated_at:
+        description: Updated timestamp.
+        items:
+          type: string
+        type: array
+    type: object
+  pb.ReserveEarmarkingRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+      contract:
+        $ref: '#/definitions/pb.Contract'
+      price:
+        type: number
+      share:
+        type: integer
+    type: object
+  pb.ReserveEarmarkingResponse:
+    properties:
+      response_json:
+        type: string
+    type: object
+  pb.ReserveStockRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+      contract:
+        $ref: '#/definitions/pb.Contract'
+      share:
+        type: integer
+    type: object
+  pb.ReserveStockResponse:
+    properties:
+      response_json:
+        type: string
+    type: object
+  pb.ReserveStocksDetailResponse:
+    properties:
+      response_json:
+        type: string
+    type: object
+  pb.ReserveStocksSummaryResponse:
+    properties:
+      response_json:
+        type: string
+    type: object
+  pb.ScannerItem:
+    properties:
+      amount:
+        description: Tick amount.
+        type: integer
+      ask_orders:
+        description: Ask order count.
+        type: integer
+      ask_volumes:
+        description: Total ask vol.
+        type: integer
+      average_price:
+        description: Avg price.
+        type: number
+      bid_orders:
+        description: Bid order count.
+        type: integer
+      bid_volumes:
+        description: Total bid vol.
+        type: integer
+      buy_price:
+        description: Best bid.
+        type: number
+      buy_volume:
+        description: Best bid vol.
+        type: integer
+      change_price:
+        description: Net change.
+        type: number
+      change_type:
+        allOf:
+        - $ref: '#/definitions/pb.ChangeType'
+        description: Change indicator.
+      close:
+        description: Last close.
+        type: number
+      code:
+        description: Security code.
+        type: string
+      date:
+        description: Scan date.
+        type: string
+      high:
+        description: High.
+        type: number
+      low:
+        description: Low.
+        type: number
+      name:
+        description: Name.
+        type: string
+      open:
+        description: Open price.
+        type: number
+      price_range:
+        description: Daily price range.
+        type: number
+      rank_value:
+        description: Ranking metric value.
+        type: number
+      sell_price:
+        description: Best ask.
+        type: number
+      sell_volume:
+        description: Best ask vol.
+        type: integer
+      tick_type:
+        allOf:
+        - $ref: '#/definitions/pb.TickType'
+        description: Up/Down.
+      total_amount:
+        description: Total amount.
+        type: integer
+      total_volume:
+        description: Total volume.
+        type: integer
+      ts:
+        description: Timestamp.
+        type: integer
+      volume:
+        description: Tick volume.
+        type: integer
+      volume_ratio:
+        description: Relative volume.
+        type: number
+      yesterday_volume:
+        description: Prev day volume.
+        type: integer
+    type: object
+  pb.ScannerType:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    format: int32
+    type: integer
+    x-enum-comments:
+      ScannerType_SCANNER_TYPE_AMOUNTRANK: Amount rank. 成交金額排行
+      ScannerType_SCANNER_TYPE_CHANGEPERCENTRANK: Change percent rank. 漲跌幅排行
+      ScannerType_SCANNER_TYPE_CHANGEPRICERANK: Change price rank. 漲跌價排行
+      ScannerType_SCANNER_TYPE_DAYRANGERANK: Day range rank. 震幅排行
+      ScannerType_SCANNER_TYPE_TICKCOUNTRANK: Tick count rank. 成交筆數排行
+      ScannerType_SCANNER_TYPE_VOLUMERANK: Volume rank. 成交量排行
+    x-enum-descriptions:
+    - ""
+    - Change percent rank. 漲跌幅排行
+    - Change price rank. 漲跌價排行
+    - Day range rank. 震幅排行
+    - Volume rank. 成交量排行
+    - Amount rank. 成交金額排行
+    - Tick count rank. 成交筆數排行
+    x-enum-varnames:
+    - ScannerType_SCANNER_TYPE_UNSPECIFIED
+    - ScannerType_SCANNER_TYPE_CHANGEPERCENTRANK
+    - ScannerType_SCANNER_TYPE_CHANGEPRICERANK
+    - ScannerType_SCANNER_TYPE_DAYRANGERANK
+    - ScannerType_SCANNER_TYPE_VOLUMERANK
+    - ScannerType_SCANNER_TYPE_AMOUNTRANK
+    - ScannerType_SCANNER_TYPE_TICKCOUNTRANK
   pb.SecurityType:
     enum:
     - 0
@@ -633,6 +1406,121 @@ definitions:
     - SecurityType_SECURITY_TYPE_STK
     - SecurityType_SECURITY_TYPE_FUT
     - SecurityType_SECURITY_TYPE_OPT
+  pb.Settlement:
+    properties:
+      amount:
+        description: Total amount.
+        type: number
+      date:
+        description: Settlement date.
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/pb.FetchStatus'
+        description: Fetch status.
+      t_day:
+        description: T date.
+        type: string
+      t_money:
+        description: Amount for T day.
+        type: number
+      t1_day:
+        description: T+1 date.
+        type: string
+      t1_money:
+        description: Amount for T+1 day.
+        type: number
+      t2_day:
+        description: T+2 date.
+        type: string
+      t2_money:
+        description: Amount for T+2 day.
+        type: number
+    type: object
+  pb.ShortStockSource:
+    properties:
+      code:
+        description: Security code.
+        type: string
+      short_stock_source:
+        description: Available shorting source volume.
+        type: integer
+      ts:
+        description: Timestamp.
+        type: integer
+    type: object
+  pb.Snapshot:
+    properties:
+      amount:
+        description: Trade amount.
+        type: integer
+      average_price:
+        description: Average trade price.
+        type: number
+      buy_price:
+        description: Best bid price.
+        type: number
+      buy_volume:
+        description: Best bid volume.
+        type: number
+      change_price:
+        description: Price change relative to reference.
+        type: number
+      change_rate:
+        description: Percentage change.
+        type: number
+      change_type:
+        allOf:
+        - $ref: '#/definitions/pb.ChangeType'
+        description: Limit Up/Down etc.
+      close:
+        description: Last/Close price.
+        type: number
+      code:
+        description: Security code.
+        type: string
+      exchange:
+        allOf:
+        - $ref: '#/definitions/pb.Exchange'
+        description: Exchange.
+      high:
+        description: High price.
+        type: number
+      low:
+        description: Low price.
+        type: number
+      open:
+        description: Open price.
+        type: number
+      sell_price:
+        description: Best ask price.
+        type: number
+      sell_volume:
+        description: Best ask volume.
+        type: integer
+      tick_type:
+        allOf:
+        - $ref: '#/definitions/pb.TickType'
+        description: Up/Down tick.
+      total_amount:
+        description: Total daily amount.
+        type: integer
+      total_volume:
+        description: Total daily volume.
+        type: integer
+      ts:
+        description: Timestamp.
+        type: integer
+      volume:
+        description: Trade volume in units.
+        type: integer
+      volume_ratio:
+        description: Volume ratio compared to average.
+        type: number
+      yesterday_volume:
+        description: Yesterday's total volume.
+        type: number
+    type: object
   pb.Status:
     enum:
     - 0
@@ -735,6 +1623,81 @@ definitions:
     - StockOrderLot_STOCK_ORDER_LOT_FIXING
     - StockOrderLot_STOCK_ORDER_LOT_ODD
     - StockOrderLot_STOCK_ORDER_LOT_INTRADAY_ODD
+  pb.SubscribeTradeRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+    type: object
+  pb.SubscribeTradeResponse:
+    properties:
+      success:
+        type: boolean
+    type: object
+  pb.TickType:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    format: int32
+    type: integer
+    x-enum-comments:
+      TickType_TICK_TYPE_BUY: Buy (Up/Outer). 外盤
+      TickType_TICK_TYPE_NO: No change.
+      TickType_TICK_TYPE_SELL: Sell (Down/Inner). 內盤
+    x-enum-descriptions:
+    - ""
+    - No change.
+    - Buy (Up/Outer). 外盤
+    - Sell (Down/Inner). 內盤
+    x-enum-varnames:
+    - TickType_TICK_TYPE_UNSPECIFIED
+    - TickType_TICK_TYPE_NO
+    - TickType_TICK_TYPE_BUY
+    - TickType_TICK_TYPE_SELL
+  pb.Ticks:
+    properties:
+      ask_price:
+        description: Best ask at time of tick.
+        items:
+          type: number
+        type: array
+      ask_volume:
+        description: Best ask volume.
+        items:
+          type: integer
+        type: array
+      bid_price:
+        description: Best bid at time of tick.
+        items:
+          type: number
+        type: array
+      bid_volume:
+        description: Best bid volume.
+        items:
+          type: integer
+        type: array
+      close:
+        description: Execution prices.
+        items:
+          type: number
+        type: array
+      tick_type:
+        description: Tick type indicators.
+        items:
+          type: integer
+        type: array
+      ts:
+        description: Timestamps.
+        items:
+          type: integer
+        type: array
+      volume:
+        description: Execution volumes.
+        items:
+          type: integer
+        type: array
+    type: object
   pb.Trade:
     properties:
       contract:
@@ -743,6 +1706,50 @@ definitions:
         $ref: '#/definitions/pb.Order'
       status:
         $ref: '#/definitions/pb.OrderStatus'
+    type: object
+  pb.TradingLimits:
+    properties:
+      margin_available:
+        description: Remaining margin capacity.
+        type: integer
+      margin_limit:
+        description: Total margin trading limit.
+        type: integer
+      margin_used:
+        description: Utilized margin limit.
+        type: integer
+      short_available:
+        description: Remaining short selling capacity.
+        type: integer
+      short_limit:
+        description: Total short selling limit.
+        type: integer
+      short_used:
+        description: Utilized short selling limit.
+        type: integer
+      status:
+        allOf:
+        - $ref: '#/definitions/pb.FetchStatus'
+        description: Fetch status.
+      trading_available:
+        description: Remaining trading capacity.
+        type: integer
+      trading_limit:
+        description: Total allowed trading limit.
+        type: integer
+      trading_used:
+        description: Currently utilized limit.
+        type: integer
+    type: object
+  pb.UnsubscribeTradeRequest:
+    properties:
+      account:
+        $ref: '#/definitions/pb.Account'
+    type: object
+  pb.UnsubscribeTradeResponse:
+    properties:
+      success:
+        type: boolean
     type: object
   pb.UpdateOrderRequest:
     properties:
@@ -758,6 +1765,21 @@ definitions:
       account:
         $ref: '#/definitions/pb.Account'
     type: object
+  pb.UsageStatus:
+    properties:
+      bytes:
+        description: Amount of data consumed in bytes.
+        type: integer
+      connections:
+        description: Current number of active connections.
+        type: integer
+      limit_bytes:
+        description: Maximum data consumption limit in bytes.
+        type: integer
+      remaining_bytes:
+        description: Remaining data allowance in bytes.
+        type: integer
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -772,6 +1794,140 @@ info:
   title: Phoenix API
   version: "1.0"
 paths:
+  /api/v1/accounts:
+    get:
+      description: List all accounts available for the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.ListAccountsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: List Accounts
+      tags:
+      - Account
+  /api/v1/accounts/balance:
+    get:
+      description: Get balance for the account
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.AccountBalance'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Account Balance
+      tags:
+      - Account
+  /api/v1/accounts/limits:
+    get:
+      consumes:
+      - application/json
+      description: Get trading limits information
+      parameters:
+      - description: Trading Limits Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetTradingLimitsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.TradingLimits'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Trading Limits
+      tags:
+      - Account
+  /api/v1/accounts/margin:
+    get:
+      consumes:
+      - application/json
+      description: Get margin information
+      parameters:
+      - description: Margin Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetMarginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.Margin'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Margin
+      tags:
+      - Account
+  /api/v1/accounts/settlements:
+    get:
+      consumes:
+      - application/json
+      description: Get settlement information
+      parameters:
+      - description: Settlement Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetSettlementsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.GetSettlementsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Settlements
+      tags:
+      - Account
   /api/v1/ca/activate:
     post:
       consumes:
@@ -889,6 +2045,236 @@ paths:
       summary: User Logout
       tags:
       - Auth
+  /api/v1/market/contracts/fetch:
+    post:
+      consumes:
+      - application/json
+      description: Fetch contract definitions
+      parameters:
+      - description: Fetch Contracts Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.FetchContractsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.Empty'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Fetch Contracts
+      tags:
+      - Market
+  /api/v1/market/daily-quotes:
+    post:
+      consumes:
+      - application/json
+      description: Get daily quotes
+      parameters:
+      - description: Daily Quotes Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetDailyQuotesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.DailyQuotes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Daily Quotes
+      tags:
+      - Market
+  /api/v1/market/kbars:
+    post:
+      consumes:
+      - application/json
+      description: Get market kbars
+      parameters:
+      - description: Kbars Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetKbarsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.Kbars'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Kbars
+      tags:
+      - Market
+  /api/v1/market/notice:
+    get:
+      description: Get market notices
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.Notice'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Market Notices
+      tags:
+      - Market
+  /api/v1/market/punish:
+    get:
+      description: Get stock punishment information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.Punish'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Punish Info
+      tags:
+      - Market
+  /api/v1/market/scanners:
+    post:
+      consumes:
+      - application/json
+      description: Get market scanners
+      parameters:
+      - description: Scanners Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetScannersRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.GetScannersResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Scanners
+      tags:
+      - Market
+  /api/v1/market/snapshots:
+    post:
+      consumes:
+      - application/json
+      description: Get market snapshots
+      parameters:
+      - description: Snapshots Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetSnapshotsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.GetSnapshotsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Snapshots
+      tags:
+      - Market
+  /api/v1/market/ticks:
+    post:
+      consumes:
+      - application/json
+      description: Get market ticks
+      parameters:
+      - description: Ticks Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetTicksRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.Ticks'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Ticks
+      tags:
+      - Market
   /api/v1/orders:
     post:
       consumes:
@@ -1068,6 +2454,543 @@ paths:
       summary: Update combo order status
       tags:
       - Order
+  /api/v1/positions:
+    post:
+      consumes:
+      - application/json
+      description: List all positions
+      parameters:
+      - description: Positions Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.ListPositionsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.ListPositionsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: List Positions
+      tags:
+      - Position
+  /api/v1/positions/detail:
+    post:
+      consumes:
+      - application/json
+      description: Get detailed position information
+      parameters:
+      - description: Position Detail Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.ListPositionDetailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.ListPositionDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: List Position Detail
+      tags:
+      - Position
+  /api/v1/positions/pnl:
+    post:
+      consumes:
+      - application/json
+      description: Get profit and loss information
+      parameters:
+      - description: P/L Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.ListProfitLossRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.ListProfitLossResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: List Profit Loss
+      tags:
+      - Position
+  /api/v1/positions/pnl/detail:
+    post:
+      consumes:
+      - application/json
+      description: Get detailed profit and loss information
+      parameters:
+      - description: P/L Detail Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.ListProfitLossDetailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.ListProfitLossDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: List Profit Loss Detail
+      tags:
+      - Position
+  /api/v1/positions/pnl/summary:
+    post:
+      consumes:
+      - application/json
+      description: Get profit and loss summary
+      parameters:
+      - description: P/L Summary Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.ListProfitLossSummaryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.ListProfitLossSummaryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: List Profit Loss Summary
+      tags:
+      - Position
+  /api/v1/reserve/credit-enquires:
+    post:
+      consumes:
+      - application/json
+      description: Enquire about credit
+      parameters:
+      - description: Credit Enquiries Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.CreditEnquiresRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.CreditEnquiresResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Credit Enquiries
+      tags:
+      - Reserve
+  /api/v1/reserve/earmarking:
+    post:
+      consumes:
+      - application/json
+      description: Reserve funds for earmarking
+      parameters:
+      - description: Reserve Earmarking Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.ReserveEarmarkingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.ReserveEarmarkingResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Reserve Earmarking
+      tags:
+      - Reserve
+  /api/v1/reserve/earmarking/detail:
+    post:
+      consumes:
+      - application/json
+      description: Get earmarking details
+      parameters:
+      - description: Earmarking Detail Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetEarmarkingDetailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.EarmarkStocksDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Earmarking Detail
+      tags:
+      - Reserve
+  /api/v1/reserve/short-stock-sources:
+    post:
+      consumes:
+      - application/json
+      description: Get sources for short selling
+      parameters:
+      - description: Short Stock Sources Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetShortStockSourcesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.GetShortStockSourcesResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Short Stock Sources
+      tags:
+      - Reserve
+  /api/v1/reserve/stocks:
+    post:
+      consumes:
+      - application/json
+      description: Reserve stock for trading
+      parameters:
+      - description: Reserve Stock Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.ReserveStockRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.ReserveStockResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Reserve Stock
+      tags:
+      - Reserve
+  /api/v1/reserve/stocks/detail:
+    post:
+      consumes:
+      - application/json
+      description: Get detailed stock reserve info
+      parameters:
+      - description: Reserve Detail Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetStockReserveDetailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.ReserveStocksDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Stock Reserve Detail
+      tags:
+      - Reserve
+  /api/v1/reserve/stocks/summary:
+    post:
+      consumes:
+      - application/json
+      description: Get summary of stock reserves
+      parameters:
+      - description: Reserve Summary Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetStockReserveSummaryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.ReserveStocksSummaryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Stock Reserve Summary
+      tags:
+      - Reserve
+  /api/v1/trades:
+    get:
+      description: List all trades
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.ListTradesResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: List Trades
+      tags:
+      - Trade
+  /api/v1/trades/combo:
+    get:
+      description: List all combo trades
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.ListComboTradesResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: List Combo Trades
+      tags:
+      - Trade
+  /api/v1/trades/deals:
+    get:
+      consumes:
+      - application/json
+      description: Get deal records for orders
+      parameters:
+      - description: Deal Records Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetOrderDealRecordsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.GetOrderDealRecordsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Order Deal Records
+      tags:
+      - Trade
+  /api/v1/trades/subscribe:
+    post:
+      consumes:
+      - application/json
+      description: Subscribe to trade updates
+      parameters:
+      - description: Subscribe Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.SubscribeTradeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.SubscribeTradeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Subscribe Trade
+      tags:
+      - Trade
+  /api/v1/trades/unsubscribe:
+    post:
+      consumes:
+      - application/json
+      description: Unsubscribe from trade updates
+      parameters:
+      - description: Unsubscribe Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.UnsubscribeTradeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.UnsubscribeTradeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Unsubscribe Trade
+      tags:
+      - Trade
+  /api/v1/usage:
+    get:
+      description: Get usage information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.UsageStatus'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      security:
+      - Bearer: []
+      summary: Get Usage
+      tags:
+      - Account
 securityDefinitions:
   Bearer:
     description: Type "Bearer" followed by a space and then your token.
