@@ -1564,7 +1564,7 @@ def serve():
     server.add_insecure_port(addr)
     logging.info("Server started, listening on %s", addr)
 
-    def shutdown_handler(signum, frame):  # pylint: disable=unused-argument
+    def shutdown_handler(signum, _):
         logging.info("Received signal %s. Starting graceful shutdown...", signum)
         if service.logged_in:
             try:

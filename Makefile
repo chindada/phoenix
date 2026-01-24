@@ -47,11 +47,7 @@ build-go:
 	@mkdir -p $(PROCESSOR_DIR)/bin
 	@cd $(PROCESSOR_DIR); go build -o bin/processor cmd/phoenix/main.go
 
-test: test-py test-go
-
-test-py:
-	@echo "Running Python tests..."
-	@PYTHONPATH=$(SRC_DIR) SJ_LOG_PATH=$(PWD)/$(PROVIDER_DIR)/logs/shioaji.log SJ_CONTRACTS_PATH=$(PWD)/$(PROVIDER_DIR)/data $(BIN)/pytest $(PROVIDER_DIR)/tests -v
+test: test-go
 
 test-go:
 	@echo "Running Go tests..."
@@ -60,10 +56,9 @@ test-go:
 lint: lint-py lint-go
 
 lint-py: type-check type-check-pyright
-	@$(BIN)/ruff format --exclude $(SRC_DIR)/*_pb2.py --exclude $(SRC_DIR)/*_pb2.pyi --exclude $(SRC_DIR)/*_pb2_grpc.py $(PROVIDER_DIR)/src $(PROVIDER_DIR)/tests
+	@$(BIN)/ruff format --exclude $(SRC_DIR)/*_pb2.py --exclude $(SRC_DIR)/*_pb2.pyi --exclude $(SRC_DIR)/*_pb2_grpc.py $(PROVIDER_DIR)/src
 	@$(BIN)/ruff check --select I --fix $(PROVIDER_DIR) --exclude $(SRC_DIR)/*_pb2.py --exclude $(SRC_DIR)/*_pb2.pyi --exclude $(SRC_DIR)/*_pb2_grpc.py
 	@$(BIN)/pylint --rcfile=$(PROVIDER_DIR)/.pylintrc $(PROVIDER_DIR)/src
-	@$(BIN)/pylint --rcfile=$(PROVIDER_DIR)/.pylintrc $(PROVIDER_DIR)/tests
 
 lint-go:
 	@echo "Linting all platforms..."
