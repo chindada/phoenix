@@ -129,6 +129,25 @@ func initGRPCClient(ctx context.Context, addr, key, secret string) (*client.Clie
 	return grpcClient, nil
 }
 
+// @title           Phoenix API
+// @version         1.0
+// @description     REST API Gateway for Shioaji Trading Provider.
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name   API Support
+// @contact.url    http://www.swagger.io/support
+// @contact.email  support@swagger.io
+
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:8080
+// @BasePath  /
+
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
+// @description Type "Bearer" followed by a space and then your token.
 func main() {
 	cfg := loadConfig()
 	ctx := context.Background()
