@@ -3,7 +3,6 @@ Tests for signal handling in the Provider.
 """
 
 import signal
-from unittest.mock import MagicMock
 
 from provider import serve
 
