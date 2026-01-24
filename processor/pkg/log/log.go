@@ -106,11 +106,3 @@ func L() *zap.Logger {
 func S() *zap.SugaredLogger {
 	return zap.S()
 }
-
-func Get() *zap.Logger {
-	return zap.L()
-}
-
-func GetSugar() *zap.SugaredLogger {
-	return zap.S()
-}

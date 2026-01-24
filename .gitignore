@@ -30,7 +30,7 @@ provider/logs/*
 !provider/logs/.gitkeep
 provider/data/*
 !provider/data/.gitkeep
-.worktrees/
+processor/logs
 
 processor/data
 processor/db_backup

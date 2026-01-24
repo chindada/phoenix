@@ -48,6 +48,7 @@ func setupDB() (launcher.Launcher, pgClient.PGClient, error) {
 	dbLauncher, err := launcher.New(
 		launcher.DBName("phoenix"),
 		launcher.AddLogger(log.L()),
+		launcher.EnableLog(),
 	)
 	if err != nil {
 		return nil, nil, err
@@ -164,7 +165,7 @@ func main() {
 	go func() {
 		log.L().Info("Starting REST Gateway", zap.String("port", cfg.port))
 		if errRun := srv.Run(); errRun != nil {
-			log.L().Fatal("Server failed", zap.Error(errRun))
+			log.L().Error("REST Gateway stopped", zap.Error(errRun))
 		}
 	}()
 

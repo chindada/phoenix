@@ -17,8 +17,4 @@ func TestLog(t *testing.T) {
 	s := log.S()
 	assert.NotNil(t, s)
 	s.Info("test sugar log")
-
-	// Test deprecated
-	assert.Equal(t, l, log.Get())
-	assert.Equal(t, s, log.GetSugar())
 }
