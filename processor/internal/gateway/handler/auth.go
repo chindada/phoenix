@@ -19,6 +19,18 @@ type LoginRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
+// Login godoc
+// @Summary      System/User Login
+// @Description  Authenticate with username and password to get a JWT token
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Param        request body LoginRequest true "Login Credentials"
+// @Success      200  {object}  pb.AccountResponse
+// @Failure      400  {object}  APIError
+// @Failure      401  {object}  APIError
+// @Failure      500  {object}  APIError
+// @Router       /api/v1/login [post]
 func (h *Handler) Login(c *gin.Context) {
 	var req LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -68,6 +80,15 @@ func (h *Handler) Login(c *gin.Context) {
 	middleware.Render(c, http.StatusOK, resp)
 }
 
+// Logout godoc
+// @Summary      User Logout
+// @Description  Invalidate the session (placeholder for now)
+// @Tags         Auth
+// @Produce      json
+// @Security     Bearer
+// @Success      200  {object}  pb.LogoutResponse
+// @Failure      500  {object}  APIError
+// @Router       /api/v1/logout [post]
 func (h *Handler) Logout(c *gin.Context) {
 	resp, err := h.client.Logout(c.Request.Context(), &pb.Empty{})
 	if err != nil {
@@ -77,6 +98,18 @@ func (h *Handler) Logout(c *gin.Context) {
 	middleware.Render(c, http.StatusOK, resp)
 }
 
+// ActivateCA godoc
+// @Summary      Activate CA
+// @Description  Activate the Certificate Authority for the user
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Param        request body pb.ActivateCARequest true "CA Activation Details"
+// @Security     Bearer
+// @Success      200  {object}  pb.ActivateCAResponse
+// @Failure      400  {object}  APIError
+// @Failure      500  {object}  APIError
+// @Router       /api/v1/ca/activate [post]
 func (h *Handler) ActivateCA(c *gin.Context) {
 	var req pb.ActivateCARequest
 	if err := middleware.Bind(c, &req); err != nil {
@@ -91,6 +124,18 @@ func (h *Handler) ActivateCA(c *gin.Context) {
 	middleware.Render(c, http.StatusOK, resp)
 }
 
+// GetCAExpireTime godoc
+// @Summary      Get CA Expire Time
+// @Description  Retrieve the expiration time of the user's Certificate Authority
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Param        request body pb.GetCAExpireTimeRequest true "CA Details"
+// @Security     Bearer
+// @Success      200  {object}  pb.GetCAExpireTimeResponse
+// @Failure      400  {object}  APIError
+// @Failure      500  {object}  APIError
+// @Router       /api/v1/ca/expire [get]
 func (h *Handler) GetCAExpireTime(c *gin.Context) {
 	var req pb.GetCAExpireTimeRequest
 	if err := middleware.Bind(c, &req); err != nil {
