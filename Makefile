@@ -1,4 +1,4 @@
-.PHONY: install codegen codegen-go run-server clean-venv venv lint format type-check install-lint-go lint-go build-go test test-py test-go
+.PHONY: install codegen codegen-go run-server clean-venv venv lint format type-check install-lint-go lint-go build-go test test-py test-go swagger-install swagger-fmt swagger-gen swagger
 
 PROTO_DIR = ./protos/v1
 PROVIDER_DIR = ./provider
@@ -9,6 +9,7 @@ VENV = $(shell pwd)/.venv
 BIN = $(VENV)/bin
 PYTHON = $(BIN)/python
 PIP = $(BIN)/pip
+SWAG_VERSION := v1.16.4
 
 $(VENV):
 	@python3 -m venv $(VENV)
@@ -29,6 +30,17 @@ codegen-go:
 		--go_out=$(GO_PB_DIR) --go_opt=paths=source_relative \
 		--go-grpc_out=$(GO_PB_DIR) --go-grpc_opt=paths=source_relative \
 		$(PROTO_DIR)/provider.proto
+
+swagger-install:
+	@go install github.com/swaggo/swag/cmd/swag@$(SWAG_VERSION)
+
+swagger-fmt:
+	@cd $(PROCESSOR_DIR) && swag fmt
+
+swagger-gen: swagger-fmt
+	@cd $(PROCESSOR_DIR) && swag init -g cmd/phoenix/main.go --parseDependency --parseInternal
+
+swagger: swagger-install swagger-gen
 
 build-go:
 	@mkdir -p $(PROCESSOR_DIR)/bin
