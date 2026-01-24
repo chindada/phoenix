@@ -18,7 +18,7 @@ def mock_shioaji_client(mocker):
 
 
 @pytest.fixture
-def service(mock_shioaji_client):  # pylint: disable=redefined-outer-name, unused-argument
+def service(_mock_shioaji_client):  # pylint: disable=invalid-name
     """Fixture to create ShioajiService instance."""
     # Initialize ShioajiService which will use the mocked ShioajiClient
     return ShioajiService()
