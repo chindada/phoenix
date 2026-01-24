@@ -11,6 +11,11 @@ type Handler struct {
 	secret   string
 }
 
+// APIError represents a standard error response
+type APIError struct {
+	Error string `json:"error" example:"error message"`
+}
+
 func New(client client.ShioajiClient, userRepo repository.UserRepository, secret string) *Handler {
 	return &Handler{
 		client:   client,
