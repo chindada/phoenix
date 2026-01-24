@@ -3,14 +3,22 @@ package gateway
 import (
 	"github.com/gin-gonic/gin"
 
+	_ "phoenix/processor/docs"
 	"phoenix/processor/internal/client"
 	"phoenix/processor/internal/gateway/handler"
 	"phoenix/processor/internal/gateway/middleware"
 	"phoenix/processor/internal/repository"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func NewRouter(client client.ShioajiClient, userRepo repository.UserRepository, secret string) *gin.Engine {
 	r := gin.Default()
+
+	// Swagger UI
+	r.GET("/api/doc/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	h := handler.New(client, userRepo, secret)
 
 	v1 := r.Group("/api/v1")
