@@ -1,4 +1,4 @@
-.PHONY: install codegen codegen-go run-server clean-venv venv lint format type-check install-lint-go lint-go build-go test test-py test-go swagger-install swagger-fmt swagger-gen swagger
+.PHONY: install codegen codegen-go run-provider clean-venv venv lint format type-check install-lint-go lint-go build-go test test-py test-go swagger-install swagger-fmt swagger-gen swagger
 
 PWD = $(shell pwd)
 PROTO_DIR = ./protos/v1
@@ -45,7 +45,7 @@ swagger: swagger-install swagger-gen
 
 build-go:
 	@mkdir -p $(PROCESSOR_DIR)/bin
-	@cd $(PROCESSOR_DIR); go build -o bin/server cmd/phoenix/main.go
+	@cd $(PROCESSOR_DIR); go build -o bin/processor cmd/phoenix/main.go
 
 test: test-py test-go
 
@@ -62,7 +62,8 @@ lint: lint-py lint-go
 lint-py: type-check type-check-pyright
 	@$(BIN)/ruff format --exclude $(SRC_DIR)/*_pb2.py --exclude $(SRC_DIR)/*_pb2.pyi --exclude $(SRC_DIR)/*_pb2_grpc.py $(PROVIDER_DIR)/src $(PROVIDER_DIR)/tests
 	@$(BIN)/ruff check --select I --fix $(PROVIDER_DIR) --exclude $(SRC_DIR)/*_pb2.py --exclude $(SRC_DIR)/*_pb2.pyi --exclude $(SRC_DIR)/*_pb2_grpc.py
-	@$(BIN)/pylint --rcfile=$(PROVIDER_DIR)/.pylintrc $(PROVIDER_DIR)
+	@$(BIN)/pylint --rcfile=$(PROVIDER_DIR)/.pylintrc $(PROVIDER_DIR)/src
+	@$(BIN)/pylint --rcfile=$(PROVIDER_DIR)/.pylintrc $(PROVIDER_DIR)/tests
 
 lint-go:
 	@echo "Linting all platforms..."
@@ -85,8 +86,8 @@ type-check:
 type-check-pyright:
 	@cd $(PROVIDER_DIR); $(BIN)/pyright
 
-run-server:
-	@SJ_LOG_PATH=$(PWD)/$(PROVIDER_DIR)/logs/shioaji.log SJ_CONTRACTS_PATH=$(PWD)/$(PROVIDER_DIR)/data $(PYTHON) $(SRC_DIR)/server.py
+run-provider:
+	@SJ_LOG_PATH=$(PWD)/$(PROVIDER_DIR)/logs/shioaji.log SJ_CONTRACTS_PATH=$(PWD)/$(PROVIDER_DIR)/data $(PYTHON) $(SRC_DIR)/provider.py
 
 clean-venv:
 	@rm -rf $(VENV)
