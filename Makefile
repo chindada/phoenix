@@ -9,7 +9,7 @@ VENV = $(shell pwd)/.venv
 BIN = $(VENV)/bin
 PYTHON = $(BIN)/python
 PIP = $(BIN)/pip
-SWAG_VERSION := v1.16.4
+SWAG_VERSION := latest
 
 $(VENV):
 	@python3 -m venv $(VENV)
@@ -35,16 +35,16 @@ swagger-install:
 	@go install github.com/swaggo/swag/cmd/swag@$(SWAG_VERSION)
 
 swagger-fmt:
-	@cd $(PROCESSOR_DIR) && swag fmt
+	@cd $(PROCESSOR_DIR)/internal/gateway; swag fmt -g router.go
 
 swagger-gen: swagger-fmt
-	@cd $(PROCESSOR_DIR) && swag init -g cmd/phoenix/main.go --parseDependency --parseInternal
+	@cd $(PROCESSOR_DIR)/internal/gateway; swag init -g router.go --parseDependency 1 --parseInternal
 
 swagger: swagger-install swagger-gen
 
 build-go:
 	@mkdir -p $(PROCESSOR_DIR)/bin
-	@cd $(PROCESSOR_DIR) && go build -o bin/server cmd/phoenix/main.go
+	@cd $(PROCESSOR_DIR); go build -o bin/server cmd/phoenix/main.go
 
 test: test-py test-go
 
@@ -54,7 +54,7 @@ test-py:
 
 test-go:
 	@echo "Running Go tests..."
-	@cd $(PROCESSOR_DIR) && go test ./...
+	@cd $(PROCESSOR_DIR); go test ./...
 
 lint: lint-py lint-go
 
@@ -87,7 +87,7 @@ type-check:
 	@$(BIN)/mypy $(PROVIDER_DIR) --exclude $(SRC_DIR)/*_pb2.py --exclude $(SRC_DIR)/*_pb2.pyi --exclude $(SRC_DIR)/*_pb2_grpc.py --disable-error-code=import-untyped
 
 type-check-pyright:
-	@cd $(PROVIDER_DIR) && $(BIN)/pyright
+	@cd $(PROVIDER_DIR); $(BIN)/pyright
 
 run-server:
 	@SJ_LOG_PATH=$(shell pwd)/$(PROVIDER_DIR)/logs/shioaji.log SJ_CONTRACTS_PATH=$(shell pwd)/$(PROVIDER_DIR)/data $(PYTHON) $(SRC_DIR)/server.py

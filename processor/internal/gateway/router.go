@@ -3,8 +3,8 @@ package gateway
 import (
 	"github.com/gin-gonic/gin"
 
-	_ "phoenix/processor/docs"
 	"phoenix/processor/internal/client"
+	_ "phoenix/processor/internal/gateway/docs"
 	"phoenix/processor/internal/gateway/handler"
 	"phoenix/processor/internal/gateway/middleware"
 	"phoenix/processor/internal/repository"
@@ -13,6 +13,23 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// NewRouter -.
+//
+//	@title						Phoenix API
+//	@version					1.0
+//	@description				REST API Gateway for Shioaji Trading Provider.
+//	@termsOfService				http://swagger.io/terms/
+//	@contact.name				API Support
+//	@contact.url				http://www.swagger.io/support
+//	@contact.email				support@swagger.io
+//	@license.name				Apache 2.0
+//	@license.url				http://www.apache.org/licenses/LICENSE-2.0.html
+//	@host						localhost:8080
+//	@BasePath					/
+//	@securityDefinitions.apikey	Bearer
+//	@in							header
+//	@name						Authorization
+//	@description				Type "Bearer" followed by a space and then your token.
 func NewRouter(client client.ShioajiClient, userRepo repository.UserRepository, secret string) *gin.Engine {
 	r := gin.Default()
 

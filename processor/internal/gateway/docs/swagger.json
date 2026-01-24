@@ -1,0 +1,1525 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "REST API Gateway for Shioaji Trading Provider.",
+        "title": "Phoenix API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/api/v1/ca/activate": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Activate the Certificate Authority for the user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Activate CA",
+                "parameters": [
+                    {
+                        "description": "CA Activation Details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.ActivateCARequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ActivateCAResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/ca/expire": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retrieve the expiration time of the user's Certificate Authority",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Get CA Expire Time",
+                "parameters": [
+                    {
+                        "description": "CA Details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetCAExpireTimeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetCAExpireTimeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/login": {
+            "post": {
+                "description": "Authenticate with username and password to get a JWT token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "System/User Login",
+                "parameters": [
+                    {
+                        "description": "Login Credentials",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ListAccountsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/logout": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Invalidate the session (placeholder for now)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User Logout",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.LogoutResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/orders": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Modify the price or quantity of an open order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Update an existing order",
+                "parameters": [
+                    {
+                        "description": "Update Order Details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.UpdateOrderRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.Trade"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Submit a buy or sell order to the provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Place a new order",
+                "parameters": [
+                    {
+                        "description": "Order Details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.PlaceOrderRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.Trade"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/orders/cancel": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Cancel a single open order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Cancel an existing order",
+                "parameters": [
+                    {
+                        "description": "Cancel Order Details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.CancelOrderRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.Trade"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/orders/combo": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Submit a multi-leg combo order to the provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Place a new combo order",
+                "parameters": [
+                    {
+                        "description": "Combo Order Details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.PlaceComboOrderRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ComboTrade"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/orders/combo/status": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Manually trigger a status update for a combo order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Update combo order status",
+                "parameters": [
+                    {
+                        "description": "Combo Status Update Details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.UpdateStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.ComboTrade"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handler.APIError": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "error message"
+                }
+            }
+        },
+        "handler.LoginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.Account": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "description": "Unique identifier for the trading account.",
+                    "type": "string"
+                },
+                "account_type": {
+                    "description": "Type of account (e.g., Stock, Future).",
+                    "type": "string"
+                },
+                "broker_id": {
+                    "description": "Identifier for the broker.",
+                    "type": "string"
+                },
+                "person_id": {
+                    "description": "Unique identifier for the account holder.",
+                    "type": "string"
+                },
+                "signed": {
+                    "description": "Whether the account has signed the trading agreement.",
+                    "type": "boolean"
+                },
+                "username": {
+                    "description": "User's name associated with the account.",
+                    "type": "string"
+                }
+            }
+        },
+        "pb.Action": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2
+            ],
+            "x-enum-comments": {
+                "Action_ACTION_BUY": "Buy. 買進",
+                "Action_ACTION_SELL": "Sell. 賣出"
+            },
+            "x-enum-descriptions": [
+                "",
+                "Buy. 買進",
+                "Sell. 賣出"
+            ],
+            "x-enum-varnames": [
+                "Action_ACTION_UNSPECIFIED",
+                "Action_ACTION_BUY",
+                "Action_ACTION_SELL"
+            ]
+        },
+        "pb.ActivateCARequest": {
+            "type": "object",
+            "properties": {
+                "ca_passwd": {
+                    "description": "CA password.",
+                    "type": "string"
+                },
+                "ca_path": {
+                    "description": "File path to CA.",
+                    "type": "string"
+                },
+                "person_id": {
+                    "description": "Holder's person ID.",
+                    "type": "string"
+                }
+            }
+        },
+        "pb.ActivateCAResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "pb.CancelOrderRequest": {
+            "type": "object",
+            "properties": {
+                "trade": {
+                    "$ref": "#/definitions/pb.Trade"
+                }
+            }
+        },
+        "pb.ComboBase": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "description": "Buy or Sell action for this leg.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.Action"
+                        }
+                    ]
+                },
+                "category": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "currency": {
+                    "$ref": "#/definitions/pb.Currency"
+                },
+                "day_trade": {
+                    "$ref": "#/definitions/pb.DayTrade"
+                },
+                "delivery_date": {
+                    "type": "string"
+                },
+                "delivery_month": {
+                    "type": "string"
+                },
+                "exchange": {
+                    "$ref": "#/definitions/pb.Exchange"
+                },
+                "limit_down": {
+                    "type": "number"
+                },
+                "limit_up": {
+                    "type": "number"
+                },
+                "margin_trading_balance": {
+                    "type": "integer"
+                },
+                "multiplier": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "option_right": {
+                    "$ref": "#/definitions/pb.OptionRight"
+                },
+                "reference": {
+                    "type": "number"
+                },
+                "security_type": {
+                    "$ref": "#/definitions/pb.SecurityType"
+                },
+                "short_selling_balance": {
+                    "type": "integer"
+                },
+                "strike_price": {
+                    "type": "number"
+                },
+                "symbol": {
+                    "type": "string"
+                },
+                "target_code": {
+                    "type": "string"
+                },
+                "underlying_code": {
+                    "type": "string"
+                },
+                "underlying_kind": {
+                    "type": "string"
+                },
+                "unit": {
+                    "type": "number"
+                },
+                "update_date": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.ComboContract": {
+            "type": "object",
+            "properties": {
+                "legs": {
+                    "description": "Individual components of the combo contract.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.ComboBase"
+                    }
+                }
+            }
+        },
+        "pb.ComboOrder": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                },
+                "action": {
+                    "$ref": "#/definitions/pb.Action"
+                },
+                "ca": {
+                    "type": "string"
+                },
+                "custom_field": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "octype": {
+                    "$ref": "#/definitions/pb.FuturesOCType"
+                },
+                "order_type": {
+                    "$ref": "#/definitions/pb.OrderType"
+                },
+                "ordno": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "price_type": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "seqno": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.ComboTrade": {
+            "type": "object",
+            "properties": {
+                "contract": {
+                    "$ref": "#/definitions/pb.ComboContract"
+                },
+                "order": {
+                    "$ref": "#/definitions/pb.ComboOrder"
+                },
+                "status": {
+                    "$ref": "#/definitions/pb.OrderStatus"
+                }
+            }
+        },
+        "pb.Contract": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "description": "Sector or category.",
+                    "type": "string"
+                },
+                "code": {
+                    "description": "Security code (e.g., stock number).",
+                    "type": "string"
+                },
+                "currency": {
+                    "description": "Currency used for trading.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.Currency"
+                        }
+                    ]
+                },
+                "day_trade": {
+                    "description": "Day trade eligibility.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.DayTrade"
+                        }
+                    ]
+                },
+                "delivery_date": {
+                    "description": "Specific delivery date.",
+                    "type": "string"
+                },
+                "delivery_month": {
+                    "description": "Delivery month (for derivatives).",
+                    "type": "string"
+                },
+                "exchange": {
+                    "description": "Exchange where the security is traded.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.Exchange"
+                        }
+                    ]
+                },
+                "limit_down": {
+                    "description": "Floor price for the day.",
+                    "type": "number"
+                },
+                "limit_up": {
+                    "description": "Ceiling price for the day.",
+                    "type": "number"
+                },
+                "margin_trading_balance": {
+                    "description": "Margin trading limit/balance.",
+                    "type": "integer"
+                },
+                "multiplier": {
+                    "description": "Price multiplier.",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "Full name of the security.",
+                    "type": "string"
+                },
+                "option_right": {
+                    "description": "Call or Put.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.OptionRight"
+                        }
+                    ]
+                },
+                "reference": {
+                    "description": "Yesterday's closing or reference price.",
+                    "type": "number"
+                },
+                "security_type": {
+                    "description": "Commodity category (Stock, Future, etc.).",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.SecurityType"
+                        }
+                    ]
+                },
+                "short_selling_balance": {
+                    "description": "Short selling limit/balance.",
+                    "type": "integer"
+                },
+                "strike_price": {
+                    "description": "Strike price (for options).",
+                    "type": "number"
+                },
+                "symbol": {
+                    "description": "Ticker symbol.",
+                    "type": "string"
+                },
+                "target_code": {
+                    "description": "Target underlying code.",
+                    "type": "string"
+                },
+                "underlying_code": {
+                    "description": "Code of underlying asset.",
+                    "type": "string"
+                },
+                "underlying_kind": {
+                    "description": "Type of underlying asset.",
+                    "type": "string"
+                },
+                "unit": {
+                    "description": "Trading unit.",
+                    "type": "number"
+                },
+                "update_date": {
+                    "description": "Date of last update.",
+                    "type": "string"
+                }
+            }
+        },
+        "pb.Currency": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20
+            ],
+            "x-enum-comments": {
+                "Currency_CURRENCY_AUD": "Australian Dollar. 澳幣",
+                "Currency_CURRENCY_CAD": "Canadian Dollar. 加幣",
+                "Currency_CURRENCY_CHF": "Swiss Franc. 瑞士法郎",
+                "Currency_CURRENCY_CNY": "Chinese Yuan. 人民幣",
+                "Currency_CURRENCY_EUR": "Euro. 歐元",
+                "Currency_CURRENCY_GBP": "British Pound. 英鎊",
+                "Currency_CURRENCY_HKD": "Hong Kong Dollar. 港幣",
+                "Currency_CURRENCY_IDR": "Indonesian Rupiah. 印尼盾",
+                "Currency_CURRENCY_JPY": "Japanese Yen. 日圓",
+                "Currency_CURRENCY_KRW": "South Korean Won. 韓圓",
+                "Currency_CURRENCY_MYR": "Malaysian Ringgit. 馬來西亞幣",
+                "Currency_CURRENCY_NZD": "New Zealand Dollar. 紐西蘭幣",
+                "Currency_CURRENCY_PHP": "Philippine Peso. 菲律賓披索",
+                "Currency_CURRENCY_SEK": "Swedish Krona. 瑞典克朗",
+                "Currency_CURRENCY_SGD": "Singapore Dollar. 新加坡幣",
+                "Currency_CURRENCY_THB": "Thai Baht. 泰銖",
+                "Currency_CURRENCY_TWD": "New Taiwan Dollar. 新台幣",
+                "Currency_CURRENCY_USD": "US Dollar. 美元",
+                "Currency_CURRENCY_VND": "Vietnamese Dong. 越南盾",
+                "Currency_CURRENCY_ZAR": "South African Rand. 南非幣"
+            },
+            "x-enum-descriptions": [
+                "",
+                "New Taiwan Dollar. 新台幣",
+                "US Dollar. 美元",
+                "Hong Kong Dollar. 港幣",
+                "British Pound. 英鎊",
+                "Australian Dollar. 澳幣",
+                "Canadian Dollar. 加幣",
+                "Singapore Dollar. 新加坡幣",
+                "Swiss Franc. 瑞士法郎",
+                "Japanese Yen. 日圓",
+                "South African Rand. 南非幣",
+                "Swedish Krona. 瑞典克朗",
+                "New Zealand Dollar. 紐西蘭幣",
+                "Thai Baht. 泰銖",
+                "Philippine Peso. 菲律賓披索",
+                "Indonesian Rupiah. 印尼盾",
+                "Euro. 歐元",
+                "South Korean Won. 韓圓",
+                "Vietnamese Dong. 越南盾",
+                "Malaysian Ringgit. 馬來西亞幣",
+                "Chinese Yuan. 人民幣"
+            ],
+            "x-enum-varnames": [
+                "Currency_CURRENCY_UNSPECIFIED",
+                "Currency_CURRENCY_TWD",
+                "Currency_CURRENCY_USD",
+                "Currency_CURRENCY_HKD",
+                "Currency_CURRENCY_GBP",
+                "Currency_CURRENCY_AUD",
+                "Currency_CURRENCY_CAD",
+                "Currency_CURRENCY_SGD",
+                "Currency_CURRENCY_CHF",
+                "Currency_CURRENCY_JPY",
+                "Currency_CURRENCY_ZAR",
+                "Currency_CURRENCY_SEK",
+                "Currency_CURRENCY_NZD",
+                "Currency_CURRENCY_THB",
+                "Currency_CURRENCY_PHP",
+                "Currency_CURRENCY_IDR",
+                "Currency_CURRENCY_EUR",
+                "Currency_CURRENCY_KRW",
+                "Currency_CURRENCY_VND",
+                "Currency_CURRENCY_MYR",
+                "Currency_CURRENCY_CNY"
+            ]
+        },
+        "pb.DayTrade": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2,
+                3
+            ],
+            "x-enum-comments": {
+                "DayTrade_DAY_TRADE_NO": "No. 否",
+                "DayTrade_DAY_TRADE_ONLYBUY": "Buy first only. 先買後賣",
+                "DayTrade_DAY_TRADE_YES": "Yes. 可現沖"
+            },
+            "x-enum-descriptions": [
+                "",
+                "Yes. 可現沖",
+                "Buy first only. 先買後賣",
+                "No. 否"
+            ],
+            "x-enum-varnames": [
+                "DayTrade_DAY_TRADE_UNSPECIFIED",
+                "DayTrade_DAY_TRADE_YES",
+                "DayTrade_DAY_TRADE_ONLYBUY",
+                "DayTrade_DAY_TRADE_NO"
+            ]
+        },
+        "pb.Deal": {
+            "type": "object",
+            "properties": {
+                "price": {
+                    "description": "Fill price.",
+                    "type": "number"
+                },
+                "quantity": {
+                    "description": "Fill quantity.",
+                    "type": "integer"
+                },
+                "seq": {
+                    "description": "Deal sequence number.",
+                    "type": "string"
+                },
+                "ts": {
+                    "description": "Timestamp of the fill.",
+                    "type": "number"
+                }
+            }
+        },
+        "pb.Exchange": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4
+            ],
+            "x-enum-comments": {
+                "Exchange_EXCHANGE_OES": "Emerging Stock. 興櫃",
+                "Exchange_EXCHANGE_OTC": "Taipei Exchange (Over-the-Counter). 上櫃",
+                "Exchange_EXCHANGE_TAIFEX": "Taiwan Futures Exchange. 期貨",
+                "Exchange_EXCHANGE_TSE": "Taiwan Stock Exchange. 上市"
+            },
+            "x-enum-descriptions": [
+                "",
+                "Taiwan Stock Exchange. 上市",
+                "Taipei Exchange (Over-the-Counter). 上櫃",
+                "Emerging Stock. 興櫃",
+                "Taiwan Futures Exchange. 期貨"
+            ],
+            "x-enum-varnames": [
+                "Exchange_EXCHANGE_UNSPECIFIED",
+                "Exchange_EXCHANGE_TSE",
+                "Exchange_EXCHANGE_OTC",
+                "Exchange_EXCHANGE_OES",
+                "Exchange_EXCHANGE_TAIFEX"
+            ]
+        },
+        "pb.FuturesOCType": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4
+            ],
+            "x-enum-comments": {
+                "FuturesOCType_FUTURES_OCTYPE_AUTO": "Automatic detection. 自動",
+                "FuturesOCType_FUTURES_OCTYPE_COVER": "Closing position. 平倉",
+                "FuturesOCType_FUTURES_OCTYPE_DAYTRADE": "Intraday day trade. 當沖",
+                "FuturesOCType_FUTURES_OCTYPE_NEW": "Opening new position. 新倉"
+            },
+            "x-enum-descriptions": [
+                "",
+                "Automatic detection. 自動",
+                "Opening new position. 新倉",
+                "Closing position. 平倉",
+                "Intraday day trade. 當沖"
+            ],
+            "x-enum-varnames": [
+                "FuturesOCType_FUTURES_OCTYPE_UNSPECIFIED",
+                "FuturesOCType_FUTURES_OCTYPE_AUTO",
+                "FuturesOCType_FUTURES_OCTYPE_NEW",
+                "FuturesOCType_FUTURES_OCTYPE_COVER",
+                "FuturesOCType_FUTURES_OCTYPE_DAYTRADE"
+            ]
+        },
+        "pb.GetCAExpireTimeRequest": {
+            "type": "object",
+            "properties": {
+                "person_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.GetCAExpireTimeResponse": {
+            "type": "object",
+            "properties": {
+                "expire_time": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.ListAccountsResponse": {
+            "type": "object",
+            "properties": {
+                "accounts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.Account"
+                    }
+                }
+            }
+        },
+        "pb.LogoutResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "description": "True if logout was successful.",
+                    "type": "boolean"
+                }
+            }
+        },
+        "pb.OptionRight": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2,
+                3
+            ],
+            "x-enum-comments": {
+                "OptionRight_OPTION_RIGHT_CALL": "Call option. 買權",
+                "OptionRight_OPTION_RIGHT_NO": "None. 無",
+                "OptionRight_OPTION_RIGHT_PUT": "Put option. 賣權"
+            },
+            "x-enum-descriptions": [
+                "",
+                "None. 無",
+                "Call option. 買權",
+                "Put option. 賣權"
+            ],
+            "x-enum-varnames": [
+                "OptionRight_OPTION_RIGHT_UNSPECIFIED",
+                "OptionRight_OPTION_RIGHT_NO",
+                "OptionRight_OPTION_RIGHT_CALL",
+                "OptionRight_OPTION_RIGHT_PUT"
+            ]
+        },
+        "pb.Order": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "description": "Account placing the order.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.Account"
+                        }
+                    ]
+                },
+                "action": {
+                    "description": "Buy or Sell.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.Action"
+                        }
+                    ]
+                },
+                "ca": {
+                    "description": "Certificate associated with the order.",
+                    "type": "string"
+                },
+                "custom_field": {
+                    "description": "User-defined data.",
+                    "type": "string"
+                },
+                "daytrade_short": {
+                    "description": "Whether to allow short day trading.",
+                    "type": "boolean"
+                },
+                "id": {
+                    "description": "Trade ID (internal).",
+                    "type": "string"
+                },
+                "octype": {
+                    "description": "New, Cover, DayTrade (Futures).",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.FuturesOCType"
+                        }
+                    ]
+                },
+                "order_cond": {
+                    "description": "Cash, MarginTrading, ShortSelling (Stock).",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.StockOrderCond"
+                        }
+                    ]
+                },
+                "order_lot": {
+                    "description": "Common, Fixing, Odd (Stock).",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.StockOrderLot"
+                        }
+                    ]
+                },
+                "order_type": {
+                    "description": "ROD, IOC, FOK.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.OrderType"
+                        }
+                    ]
+                },
+                "ordno": {
+                    "description": "Exchange order number.",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "Order price.",
+                    "type": "number"
+                },
+                "price_type": {
+                    "description": "Limit, Market, etc.",
+                    "type": "string"
+                },
+                "quantity": {
+                    "description": "Number of shares or contracts.",
+                    "type": "integer"
+                },
+                "seqno": {
+                    "description": "Platform sequence number.",
+                    "type": "string"
+                }
+            }
+        },
+        "pb.OrderStatus": {
+            "type": "object",
+            "properties": {
+                "cancel_quantity": {
+                    "description": "Quantity cancelled.",
+                    "type": "integer"
+                },
+                "deal_quantity": {
+                    "description": "Quantity already filled.",
+                    "type": "integer"
+                },
+                "deals": {
+                    "description": "Individual fill details.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.Deal"
+                    }
+                },
+                "id": {
+                    "description": "Trade ID.",
+                    "type": "string"
+                },
+                "modified_price": {
+                    "description": "Last price adjustment.",
+                    "type": "number"
+                },
+                "modified_time": {
+                    "description": "When the order was last modified.",
+                    "type": "string"
+                },
+                "msg": {
+                    "description": "Message from the exchange (e.g., errors).",
+                    "type": "string"
+                },
+                "order_datetime": {
+                    "description": "When the order was created.",
+                    "type": "string"
+                },
+                "order_quantity": {
+                    "description": "Original order quantity.",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "Current status (Filled, Pending, etc.).",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/pb.Status"
+                        }
+                    ]
+                },
+                "status_code": {
+                    "description": "Detailed status code from exchange.",
+                    "type": "string"
+                },
+                "web_id": {
+                    "description": "Ordering platform code.",
+                    "type": "string"
+                }
+            }
+        },
+        "pb.OrderType": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2,
+                3
+            ],
+            "x-enum-comments": {
+                "OrderType_ORDER_TYPE_FOK": "Fill or Kill. 全部成交或取消",
+                "OrderType_ORDER_TYPE_IOC": "Immediate or Cancel. 立即成交或取消",
+                "OrderType_ORDER_TYPE_ROD": "Rest of Day. 當日有效"
+            },
+            "x-enum-descriptions": [
+                "",
+                "Rest of Day. 當日有效",
+                "Immediate or Cancel. 立即成交或取消",
+                "Fill or Kill. 全部成交或取消"
+            ],
+            "x-enum-varnames": [
+                "OrderType_ORDER_TYPE_UNSPECIFIED",
+                "OrderType_ORDER_TYPE_ROD",
+                "OrderType_ORDER_TYPE_IOC",
+                "OrderType_ORDER_TYPE_FOK"
+            ]
+        },
+        "pb.PlaceComboOrderRequest": {
+            "type": "object",
+            "properties": {
+                "combo_contract": {
+                    "$ref": "#/definitions/pb.ComboContract"
+                },
+                "order": {
+                    "$ref": "#/definitions/pb.ComboOrder"
+                }
+            }
+        },
+        "pb.PlaceOrderRequest": {
+            "type": "object",
+            "properties": {
+                "contract": {
+                    "$ref": "#/definitions/pb.Contract"
+                },
+                "order": {
+                    "$ref": "#/definitions/pb.Order"
+                }
+            }
+        },
+        "pb.SecurityType": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4
+            ],
+            "x-enum-comments": {
+                "SecurityType_SECURITY_TYPE_FUT": "Future. 期貨",
+                "SecurityType_SECURITY_TYPE_IND": "Index. 指數",
+                "SecurityType_SECURITY_TYPE_OPT": "Option. 選擇權",
+                "SecurityType_SECURITY_TYPE_STK": "Stock. 股票"
+            },
+            "x-enum-descriptions": [
+                "",
+                "Index. 指數",
+                "Stock. 股票",
+                "Future. 期貨",
+                "Option. 選擇權"
+            ],
+            "x-enum-varnames": [
+                "SecurityType_SECURITY_TYPE_UNSPECIFIED",
+                "SecurityType_SECURITY_TYPE_IND",
+                "SecurityType_SECURITY_TYPE_STK",
+                "SecurityType_SECURITY_TYPE_FUT",
+                "SecurityType_SECURITY_TYPE_OPT"
+            ]
+        },
+        "pb.Status": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+            ],
+            "x-enum-comments": {
+                "Status_STATUS_CANCELLED": "Cancelled. 已刪單",
+                "Status_STATUS_FAILED": "Failed. 失敗",
+                "Status_STATUS_FILLED": "Fully filled. 完全成交",
+                "Status_STATUS_INACTIVE": "Inactive/Failed. 失敗",
+                "Status_STATUS_PARTFILLED": "Partially filled. 部分成交",
+                "Status_STATUS_PENDINGSUBMIT": "Pending submission. 傳送中",
+                "Status_STATUS_PRESUBMITTED": "Pre-submitted. 預約單",
+                "Status_STATUS_SUBMITTED": "Submitted. 委託成功"
+            },
+            "x-enum-descriptions": [
+                "",
+                "Cancelled. 已刪單",
+                "Fully filled. 完全成交",
+                "Partially filled. 部分成交",
+                "Inactive/Failed. 失敗",
+                "Failed. 失敗",
+                "Pending submission. 傳送中",
+                "Pre-submitted. 預約單",
+                "Submitted. 委託成功"
+            ],
+            "x-enum-varnames": [
+                "Status_STATUS_UNSPECIFIED",
+                "Status_STATUS_CANCELLED",
+                "Status_STATUS_FILLED",
+                "Status_STATUS_PARTFILLED",
+                "Status_STATUS_INACTIVE",
+                "Status_STATUS_FAILED",
+                "Status_STATUS_PENDINGSUBMIT",
+                "Status_STATUS_PRESUBMITTED",
+                "Status_STATUS_SUBMITTED"
+            ]
+        },
+        "pb.StockOrderCond": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "x-enum-comments": {
+                "StockOrderCond_STOCK_ORDER_COND_CASH": "Cash settlement. 現股",
+                "StockOrderCond_STOCK_ORDER_COND_EMERGING": "Emerging market stock. 興櫃",
+                "StockOrderCond_STOCK_ORDER_COND_MARGINTRADING": "Buying on margin. 融資",
+                "StockOrderCond_STOCK_ORDER_COND_NETTING": "Day trade netting. 當沖",
+                "StockOrderCond_STOCK_ORDER_COND_SHORTSELLING": "Short selling shares. 融券"
+            },
+            "x-enum-descriptions": [
+                "",
+                "Cash settlement. 現股",
+                "Day trade netting. 當沖",
+                "Buying on margin. 融資",
+                "Short selling shares. 融券",
+                "Emerging market stock. 興櫃"
+            ],
+            "x-enum-varnames": [
+                "StockOrderCond_STOCK_ORDER_COND_UNSPECIFIED",
+                "StockOrderCond_STOCK_ORDER_COND_CASH",
+                "StockOrderCond_STOCK_ORDER_COND_NETTING",
+                "StockOrderCond_STOCK_ORDER_COND_MARGINTRADING",
+                "StockOrderCond_STOCK_ORDER_COND_SHORTSELLING",
+                "StockOrderCond_STOCK_ORDER_COND_EMERGING"
+            ]
+        },
+        "pb.StockOrderLot": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "x-enum-comments": {
+                "StockOrderLot_STOCK_ORDER_LOT_BLOCKTRADE": "Block trade. 鉅額",
+                "StockOrderLot_STOCK_ORDER_LOT_COMMON": "Standard lot. 整股",
+                "StockOrderLot_STOCK_ORDER_LOT_FIXING": "Fixed price. 定盤",
+                "StockOrderLot_STOCK_ORDER_LOT_INTRADAY_ODD": "Intraday odd lot. 盤中零股",
+                "StockOrderLot_STOCK_ORDER_LOT_ODD": "After-hours odd lot. 盤後零股"
+            },
+            "x-enum-descriptions": [
+                "",
+                "Standard lot. 整股",
+                "Block trade. 鉅額",
+                "Fixed price. 定盤",
+                "After-hours odd lot. 盤後零股",
+                "Intraday odd lot. 盤中零股"
+            ],
+            "x-enum-varnames": [
+                "StockOrderLot_STOCK_ORDER_LOT_UNSPECIFIED",
+                "StockOrderLot_STOCK_ORDER_LOT_COMMON",
+                "StockOrderLot_STOCK_ORDER_LOT_BLOCKTRADE",
+                "StockOrderLot_STOCK_ORDER_LOT_FIXING",
+                "StockOrderLot_STOCK_ORDER_LOT_ODD",
+                "StockOrderLot_STOCK_ORDER_LOT_INTRADAY_ODD"
+            ]
+        },
+        "pb.Trade": {
+            "type": "object",
+            "properties": {
+                "contract": {
+                    "$ref": "#/definitions/pb.Contract"
+                },
+                "order": {
+                    "$ref": "#/definitions/pb.Order"
+                },
+                "status": {
+                    "$ref": "#/definitions/pb.OrderStatus"
+                }
+            }
+        },
+        "pb.UpdateOrderRequest": {
+            "type": "object",
+            "properties": {
+                "price": {
+                    "type": "number"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "trade": {
+                    "$ref": "#/definitions/pb.Trade"
+                }
+            }
+        },
+        "pb.UpdateStatusRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/pb.Account"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "description": "Type \"Bearer\" followed by a space and then your token.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
