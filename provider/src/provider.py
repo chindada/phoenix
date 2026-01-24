@@ -4,6 +4,7 @@ provider.src.server -.
 
 import logging
 import os
+import signal
 from concurrent import futures
 from datetime import datetime
 from typing import Any, Optional, cast
@@ -1558,15 +1559,29 @@ def serve():
                 logging.error("Error removing socket file: %s", e)
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    provider_pb2_grpc.add_ShioajiProviderServicer_to_server(ShioajiService(), server)
+    service = ShioajiService()
+    provider_pb2_grpc.add_ShioajiProviderServicer_to_server(service, server)
     server.add_insecure_port(addr)
     logging.info("Server started, listening on %s", addr)
-    server.start()
-    try:
-        server.wait_for_termination()
-    except KeyboardInterrupt:
-        logging.info("Stopping server...")
+
+    def shutdown_handler(signum, frame):  # pylint: disable=unused-argument
+        logging.info("Received signal %s. Starting graceful shutdown...", signum)
+        if service.logged_in:
+            try:
+                logging.info("Logging out from Shioaji...")
+                service.client.logout()
+                logging.info("Shioaji logout successful.")
+            except Exception as e:
+                logging.error("Error during Shioaji logout: %s", e)
         server.stop(0)
+        logging.info("Server stopped.")
+
+    # Register signals
+    for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGQUIT):
+        signal.signal(sig, shutdown_handler)
+
+    server.start()
+    server.wait_for_termination()
 
 
 if __name__ == "__main__":
