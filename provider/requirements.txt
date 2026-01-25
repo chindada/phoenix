@@ -10,3 +10,5 @@ pylint
 pyright
 pytest
 pytest-mock
+colorlog
+python-json-logger

@@ -2,7 +2,6 @@
 provider.src.server -.
 """
 
-import logging
 import os
 import signal
 from concurrent import futures
@@ -10,6 +9,7 @@ from datetime import datetime
 from typing import Any, Optional, cast
 
 import grpc
+from log import logger
 from shioaji import constant as sj_constant
 from shioaji.account import Account
 from shioaji.contracts import ComboBase, ComboContract, Contract
@@ -213,14 +213,14 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             if not activated:
                 context.abort(grpc.StatusCode.UNAUTHENTICATED, "Invalid credentials")
                 return provider_pb2.LoginResponse()
-            logging.info("Login successful")
+            logger.info("Login successful")
 
             self.logged_in = True
             return provider_pb2.LoginResponse(
                 accounts=[self._to_pb_account(acc) for acc in accounts]
             )
         except Exception as e:
-            logging.error("Error in Login: %s", e, exc_info=True)
+            logger.error("Error in Login: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.LoginResponse()
 
@@ -233,7 +233,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             self.logged_in = False
             return provider_pb2.LogoutResponse(success=success)
         except Exception as e:
-            logging.error("Error in Logout: %s", e, exc_info=True)
+            logger.error("Error in Logout: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.LogoutResponse()
 
@@ -250,7 +250,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 remaining_bytes=usage.remaining_bytes,
             )
         except Exception as e:
-            logging.error("Error in GetUsage: %s", e, exc_info=True)
+            logger.error("Error in GetUsage: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.UsageStatus()
 
@@ -264,7 +264,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 accounts=[self._to_pb_account(acc) for acc in accounts]
             )
         except Exception as e:
-            logging.error("Error in ListAccounts: %s", e, exc_info=True)
+            logger.error("Error in ListAccounts: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListAccountsResponse()
 
@@ -280,7 +280,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 errmsg=balance.errmsg,
             )
         except Exception as e:
-            logging.error("Error in GetAccountBalance: %s", e, exc_info=True)
+            logger.error("Error in GetAccountBalance: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.AccountBalance()
 
@@ -575,11 +575,11 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             trade = self.client.place_order(contract, order)
             return self._to_pb_trade(trade)
         except KeyError as e:
-            logging.error("KeyError in PlaceOrder: %s", e, exc_info=True)
+            logger.error("KeyError in PlaceOrder: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
             return provider_pb2.Trade()
         except Exception as e:
-            logging.error("Error in PlaceOrder: %s", e, exc_info=True)
+            logger.error("Error in PlaceOrder: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Trade()
 
@@ -595,11 +595,11 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             trade = self.client.place_comboorder(combo_contract, order)
             return self._to_pb_combo_trade(trade)
         except KeyError as e:
-            logging.error("KeyError in PlaceComboOrder: %s", e, exc_info=True)
+            logger.error("KeyError in PlaceComboOrder: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
             return provider_pb2.ComboTrade()
         except Exception as e:
-            logging.error("Error in PlaceComboOrder: %s", e, exc_info=True)
+            logger.error("Error in PlaceComboOrder: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ComboTrade()
 
@@ -619,7 +619,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             )
             return self._to_pb_trade(res)
         except Exception as e:
-            logging.error("Error in UpdateOrder: %s", e, exc_info=True)
+            logger.error("Error in UpdateOrder: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Trade()
 
@@ -636,7 +636,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             res = self.client.cancel_order(trade)
             return self._to_pb_trade(res)
         except Exception as e:
-            logging.error("Error in CancelOrder: %s", e, exc_info=True)
+            logger.error("Error in CancelOrder: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Trade()
 
@@ -655,7 +655,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             res = self.client.cancel_comboorder(trade)
             return self._to_pb_combo_trade(res)
         except Exception as e:
-            logging.error("Error in CancelComboOrder: %s", e, exc_info=True)
+            logger.error("Error in CancelComboOrder: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ComboTrade()
 
@@ -667,7 +667,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             self.client.update_status(self._stock_account)
             return provider_pb2.Empty()
         except Exception as e:
-            logging.error("Error in UpdateStatus: %s", e, exc_info=True)
+            logger.error("Error in UpdateStatus: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Empty()
 
@@ -679,7 +679,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             self.client.update_combostatus(self._stock_account)
             return provider_pb2.Empty()
         except Exception as e:
-            logging.error("Error in UpdateComboStatus: %s", e, exc_info=True)
+            logger.error("Error in UpdateComboStatus: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Empty()
 
@@ -693,7 +693,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 trades=[self._to_pb_trade(t) for t in trades]
             )
         except Exception as e:
-            logging.error("Error in ListTrades: %s", e, exc_info=True)
+            logger.error("Error in ListTrades: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListTradesResponse()
 
@@ -707,7 +707,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 combo_trades=[self._to_pb_combo_trade(t) for t in trades]
             )
         except Exception as e:
-            logging.error("Error in ListComboTrades: %s", e, exc_info=True)
+            logger.error("Error in ListComboTrades: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListComboTradesResponse()
 
@@ -723,7 +723,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 records=[self._to_pb_order_deal_record(r) for r in records]
             )
         except Exception as e:
-            logging.error("Error in GetOrderDealRecords: %s", e, exc_info=True)
+            logger.error("Error in GetOrderDealRecords: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.GetOrderDealRecordsResponse()
 
@@ -774,7 +774,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                     )
             return provider_pb2.ListPositionsResponse(positions=pb_positions)
         except Exception as e:
-            logging.error("Error in ListPositions: %s", e, exc_info=True)
+            logger.error("Error in ListPositions: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListPositionsResponse()
 
@@ -835,7 +835,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                     )
             return provider_pb2.ListPositionDetailResponse(details=pb_details)
         except Exception as e:
-            logging.error("Error in ListPositionDetail: %s", e, exc_info=True)
+            logger.error("Error in ListPositionDetail: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListPositionDetailResponse()
 
@@ -886,7 +886,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                     )
             return provider_pb2.ListProfitLossResponse(profit_losses=pb_pnls)
         except Exception as e:
-            logging.error("Error in ListProfitLoss: %s", e, exc_info=True)
+            logger.error("Error in ListProfitLoss: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListProfitLossResponse()
 
@@ -952,7 +952,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                     )
             return provider_pb2.ListProfitLossDetailResponse(details=pb_details)
         except Exception as e:
-            logging.error("Error in ListProfitLossDetail: %s", e, exc_info=True)
+            logger.error("Error in ListProfitLossDetail: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListProfitLossDetailResponse()
 
@@ -1006,7 +1006,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                     )
             return provider_pb2.ListProfitLossSummaryResponse(summaries=pb_summaries)
         except Exception as e:
-            logging.error("Error in ListProfitLossSummary: %s", e, exc_info=True)
+            logger.error("Error in ListProfitLossSummary: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ListProfitLossSummaryResponse()
 
@@ -1032,7 +1032,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 ]
             )
         except Exception as e:
-            logging.error("Error in GetSettlements: %s", e, exc_info=True)
+            logger.error("Error in GetSettlements: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.GetSettlementsResponse()
 
@@ -1070,7 +1070,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 future_settle_profitloss=margin.future_settle_profitloss,
             )
         except Exception as e:
-            logging.error("Error in GetMargin: %s", e, exc_info=True)
+            logger.error("Error in GetMargin: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Margin()
 
@@ -1094,7 +1094,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 short_available=limits.short_available,
             )
         except Exception as e:
-            logging.error("Error in GetTradingLimits: %s", e, exc_info=True)
+            logger.error("Error in GetTradingLimits: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.TradingLimits()
 
@@ -1108,7 +1108,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             summary = self.client.stock_reserve_summary(self._stock_account)
             return provider_pb2.ReserveStocksSummaryResponse(response_json=str(summary))
         except Exception as e:
-            logging.error("Error in GetStockReserveSummary: %s", e, exc_info=True)
+            logger.error("Error in GetStockReserveSummary: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ReserveStocksSummaryResponse()
 
@@ -1122,7 +1122,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             detail = self.client.stock_reserve_detail(self._stock_account)
             return provider_pb2.ReserveStocksDetailResponse(response_json=str(detail))
         except Exception as e:
-            logging.error("Error in GetStockReserveDetail: %s", e, exc_info=True)
+            logger.error("Error in GetStockReserveDetail: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ReserveStocksDetailResponse()
 
@@ -1138,11 +1138,11 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             )
             return provider_pb2.ReserveStockResponse(response_json=str(resp))
         except KeyError as e:
-            logging.error("KeyError in ReserveStock: %s", e, exc_info=True)
+            logger.error("KeyError in ReserveStock: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
             return provider_pb2.ReserveStockResponse()
         except Exception as e:
-            logging.error("Error in ReserveStock: %s", e, exc_info=True)
+            logger.error("Error in ReserveStock: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ReserveStockResponse()
 
@@ -1156,7 +1156,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             detail = self.client.earmarking_detail(self._stock_account)
             return provider_pb2.EarmarkStocksDetailResponse(response_json=str(detail))
         except Exception as e:
-            logging.error("Error in GetEarmarkingDetail: %s", e, exc_info=True)
+            logger.error("Error in GetEarmarkingDetail: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.EarmarkStocksDetailResponse()
 
@@ -1173,11 +1173,11 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             )
             return provider_pb2.ReserveEarmarkingResponse(response_json=str(resp))
         except KeyError as e:
-            logging.error("KeyError in ReserveEarmarking: %s", e, exc_info=True)
+            logger.error("KeyError in ReserveEarmarking: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
             return provider_pb2.ReserveEarmarkingResponse()
         except Exception as e:
-            logging.error("Error in ReserveEarmarking: %s", e, exc_info=True)
+            logger.error("Error in ReserveEarmarking: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.ReserveEarmarkingResponse()
 
@@ -1220,11 +1220,11 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 ]
             )
         except KeyError as e:
-            logging.error("KeyError in GetSnapshots: %s", e, exc_info=True)
+            logger.error("KeyError in GetSnapshots: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
             return provider_pb2.GetSnapshotsResponse()
         except Exception as e:
-            logging.error("Error in GetSnapshots: %s", e, exc_info=True)
+            logger.error("Error in GetSnapshots: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.GetSnapshotsResponse()
 
@@ -1246,11 +1246,11 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 tick_type=ticks.tick_type,
             )
         except KeyError as e:
-            logging.error("KeyError in GetTicks: %s", e, exc_info=True)
+            logger.error("KeyError in GetTicks: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
             return provider_pb2.Ticks()
         except Exception as e:
-            logging.error("Error in GetTicks: %s", e, exc_info=True)
+            logger.error("Error in GetTicks: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Ticks()
 
@@ -1271,11 +1271,11 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 amount=kbars.Amount,
             )
         except KeyError as e:
-            logging.error("KeyError in GetKbars: %s", e, exc_info=True)
+            logger.error("KeyError in GetKbars: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
             return provider_pb2.Kbars()
         except Exception as e:
-            logging.error("Error in GetKbars: %s", e, exc_info=True)
+            logger.error("Error in GetKbars: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Kbars()
 
@@ -1307,7 +1307,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 amount=quotes.Amount,
             )
         except Exception as e:
-            logging.error("Error in GetDailyQuotes: %s", e, exc_info=True)
+            logger.error("Error in GetDailyQuotes: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.DailyQuotes()
 
@@ -1334,11 +1334,11 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 ]
             )
         except KeyError as e:
-            logging.error("KeyError in CreditEnquires: %s", e, exc_info=True)
+            logger.error("KeyError in CreditEnquires: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
             return provider_pb2.CreditEnquiresResponse()
         except Exception as e:
-            logging.error("Error in CreditEnquires: %s", e, exc_info=True)
+            logger.error("Error in CreditEnquires: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.CreditEnquiresResponse()
 
@@ -1363,11 +1363,11 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 ]
             )
         except KeyError as e:
-            logging.error("KeyError in GetShortStockSources: %s", e, exc_info=True)
+            logger.error("KeyError in GetShortStockSources: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.NOT_FOUND, f"Contract not found: {e}")
             return provider_pb2.GetShortStockSourcesResponse()
         except Exception as e:
-            logging.error("Error in GetShortStockSources: %s", e, exc_info=True)
+            logger.error("Error in GetShortStockSources: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.GetShortStockSourcesResponse()
 
@@ -1439,7 +1439,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 ]
             )
         except Exception as e:
-            logging.error("Error in GetScanners: %s", e, exc_info=True)
+            logger.error("Error in GetScanners: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.GetScannersResponse()
 
@@ -1463,7 +1463,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 announced_date=[str(d) for d in res.announced_date],
             )
         except Exception as e:
-            logging.error("Error in GetPunish: %s", e, exc_info=True)
+            logger.error("Error in GetPunish: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Punish()
 
@@ -1481,7 +1481,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
                 announced_date=[str(d) for d in res.announced_date],
             )
         except Exception as e:
-            logging.error("Error in GetNotice: %s", e, exc_info=True)
+            logger.error("Error in GetNotice: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Notice()
 
@@ -1493,7 +1493,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             self.client.fetch_contracts(request.contract_download)
             return provider_pb2.Empty()
         except Exception as e:
-            logging.error("Error in FetchContracts: %s", e, exc_info=True)
+            logger.error("Error in FetchContracts: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Empty()
 
@@ -1507,7 +1507,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             expire_time = self.client.get_ca_expiretime(request.person_id)
             return provider_pb2.GetCAExpireTimeResponse(expire_time=str(expire_time))
         except Exception as e:
-            logging.error("Error in GetCAExpireTime: %s", e, exc_info=True)
+            logger.error("Error in GetCAExpireTime: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.GetCAExpireTimeResponse()
 
@@ -1519,7 +1519,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             success = self.client.subscribe_trade(self._stock_account)
             return provider_pb2.SubscribeTradeResponse(success=success)
         except Exception as e:
-            logging.error("Error in SubscribeTrade: %s", e, exc_info=True)
+            logger.error("Error in SubscribeTrade: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.SubscribeTradeResponse()
 
@@ -1533,7 +1533,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             success = self.client.unsubscribe_trade(self._stock_account)
             return provider_pb2.UnsubscribeTradeResponse(success=success)
         except Exception as e:
-            logging.error("Error in UnsubscribeTrade: %s", e, exc_info=True)
+            logger.error("Error in UnsubscribeTrade: %s", e, exc_info=True)
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.UnsubscribeTradeResponse()
 
@@ -1552,27 +1552,27 @@ def serve():
         if os.path.exists(path):
             try:
                 os.unlink(path)
-                logging.info("Removed existing socket file: %s", path)
+                logger.info("Removed existing socket file: %s", path)
             except OSError as e:
-                logging.error("Error removing socket file: %s", e)
+                logger.error("Error removing socket file: %s", e)
 
     server = grpc.server(futures.ThreadPoolExecutor())
     service = ShioajiService()
     provider_pb2_grpc.add_ShioajiProviderServicer_to_server(service, server)
     server.add_insecure_port(addr)
-    logging.info("Server started, listening on %s", addr)
+    logger.info("Server started, listening on %s", addr)
 
     def shutdown_handler(signum, _):
-        logging.info("Received signal %s. Starting graceful shutdown...", signum)
+        logger.info("Received signal %s. Starting graceful shutdown...", signum)
         if service.logged_in:
             try:
-                logging.info("Logging out from Shioaji...")
+                logger.info("Logout from Shioaji...")
                 service.client.logout()
-                logging.info("Shioaji logout successful.")
+                logger.info("Shioaji logout successful.")
             except Exception as e:
-                logging.error("Error during Shioaji logout: %s", e)
+                logger.error("Error during Shioaji logout: %s", e)
         server.stop(0)
-        logging.info("Server stopped.")
+        logger.info("Server stopped.")
 
     # Register signals
     for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGQUIT):
@@ -1583,6 +1583,5 @@ def serve():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
     serve()
     os._exit(0)  # pylint: disable=protected-access
