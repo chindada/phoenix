@@ -162,10 +162,6 @@ service ShioajiProvider {
   // 下載商品檔
   rpc FetchContracts (FetchContractsRequest) returns (Empty) {}
 
-  // Activate the Certificate Authority (CA) for order placement security.
-  // 憑證開通
-  rpc ActivateCA (ActivateCARequest) returns (ActivateCAResponse) {}
-
   // Get the expiration timestamp of the currently activated CA.
   // 憑證過期時間
   rpc GetCAExpireTime (GetCAExpireTimeRequest) returns (GetCAExpireTimeResponse) {}

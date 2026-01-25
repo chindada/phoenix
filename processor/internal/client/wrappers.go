@@ -284,14 +284,6 @@ func (c *Client) FetchContracts(
 	return c.getNextClient().FetchContracts(ctx, in, opts...)
 }
 
-func (c *Client) ActivateCA(
-	ctx context.Context,
-	in *pb.ActivateCARequest,
-	opts ...grpc.CallOption,
-) (*pb.ActivateCAResponse, error) {
-	return c.getNextClient().ActivateCA(ctx, in, opts...)
-}
-
 func (c *Client) GetCAExpireTime(
 	ctx context.Context,
 	in *pb.GetCAExpireTimeRequest,

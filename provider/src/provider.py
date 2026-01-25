@@ -5,6 +5,7 @@ provider.src.server -.
 import logging
 import os
 import signal
+import sys
 from concurrent import futures
 from datetime import datetime
 from typing import Any, Optional, cast
@@ -202,7 +203,19 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
     ) -> provider_pb2.LoginResponse:
         """Login to the Shioaji API."""
         try:
+            # get current folder path
+            current_folder = os.path.dirname(os.path.abspath(__file__))
             accounts = self.client.login(request.api_key, request.secret_key)
+            activated = self.client.activate_ca(
+                ca_path=os.path.join(current_folder, "..", "data", "ca.pfx"),
+                person_id="F127522501",
+                ca_passwd="F127522501",
+            )
+            if not activated:
+                context.abort(grpc.StatusCode.UNAUTHENTICATED, "Invalid credentials")
+                return provider_pb2.LoginResponse()
+            logging.info("Login successful")
+
             self.logged_in = True
             return provider_pb2.LoginResponse(
                 accounts=[self._to_pb_account(acc) for acc in accounts]
@@ -1485,20 +1498,6 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
             context.abort(grpc.StatusCode.INTERNAL, str(e))
             return provider_pb2.Empty()
 
-    def ActivateCA(
-        self, request: provider_pb2.ActivateCARequest, context: grpc.ServicerContext
-    ) -> provider_pb2.ActivateCAResponse:
-        """Activate the Certificate Authority (CA)."""
-        try:
-            success = self.client.activate_ca(
-                request.ca_path, request.ca_passwd, request.person_id
-            )
-            return provider_pb2.ActivateCAResponse(success=success)
-        except Exception as e:
-            logging.error("Error in ActivateCA: %s", e, exc_info=True)
-            context.abort(grpc.StatusCode.INTERNAL, str(e))
-            return provider_pb2.ActivateCAResponse()
-
     def GetCAExpireTime(
         self,
         request: provider_pb2.GetCAExpireTimeRequest,
@@ -1587,3 +1586,5 @@ def serve():
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     serve()
+    sys.exit(0)
+

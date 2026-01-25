@@ -9721,7 +9721,7 @@ const file_provider_proto_rawDesc = "" +
 	"\vFetchStatus\x12\x1c\n" +
 	"\x18FETCH_STATUS_UNSPECIFIED\x10\x00\x12\x18\n" +
 	"\x14FETCH_STATUS_SUCCESS\x10\x01\x12\x15\n" +
-	"\x11FETCH_STATUS_FAIL\x10\x022\xbd\x16\n" +
+	"\x11FETCH_STATUS_FAIL\x10\x022\xfe\x15\n" +
 	"\x0fShioajiProvider\x12.\n" +
 	"\x05Login\x12\x10.v1.LoginRequest\x1a\x11.v1.LoginResponse\"\x00\x12)\n" +
 	"\x06Logout\x12\t.v1.Empty\x1a\x12.v1.LogoutResponse\"\x00\x12(\n" +
@@ -9766,9 +9766,7 @@ const file_provider_proto_rawDesc = "" +
 	".v1.Punish\"\x00\x12$\n" +
 	"\tGetNotice\x12\t.v1.Empty\x1a\n" +
 	".v1.Notice\"\x00\x128\n" +
-	"\x0eFetchContracts\x12\x19.v1.FetchContractsRequest\x1a\t.v1.Empty\"\x00\x12=\n" +
-	"\n" +
-	"ActivateCA\x12\x15.v1.ActivateCARequest\x1a\x16.v1.ActivateCAResponse\"\x00\x12L\n" +
+	"\x0eFetchContracts\x12\x19.v1.FetchContractsRequest\x1a\t.v1.Empty\"\x00\x12L\n" +
 	"\x0fGetCAExpireTime\x12\x1a.v1.GetCAExpireTimeRequest\x1a\x1b.v1.GetCAExpireTimeResponse\"\x00\x12I\n" +
 	"\x0eSubscribeTrade\x12\x19.v1.SubscribeTradeRequest\x1a\x1a.v1.SubscribeTradeResponse\"\x00\x12O\n" +
 	"\x10UnsubscribeTrade\x12\x1b.v1.UnsubscribeTradeRequest\x1a\x1c.v1.UnsubscribeTradeResponse\"\x00B\x1aZ\x18phoenix/processor/pkg/pbb\x06proto3"
@@ -10062,55 +10060,53 @@ var file_provider_proto_depIdxs = []int32{
 	23,  // 147: v1.ShioajiProvider.GetPunish:input_type -> v1.Empty
 	23,  // 148: v1.ShioajiProvider.GetNotice:input_type -> v1.Empty
 	113, // 149: v1.ShioajiProvider.FetchContracts:input_type -> v1.FetchContractsRequest
-	114, // 150: v1.ShioajiProvider.ActivateCA:input_type -> v1.ActivateCARequest
-	116, // 151: v1.ShioajiProvider.GetCAExpireTime:input_type -> v1.GetCAExpireTimeRequest
-	118, // 152: v1.ShioajiProvider.SubscribeTrade:input_type -> v1.SubscribeTradeRequest
-	120, // 153: v1.ShioajiProvider.UnsubscribeTrade:input_type -> v1.UnsubscribeTradeRequest
-	25,  // 154: v1.ShioajiProvider.Login:output_type -> v1.LoginResponse
-	26,  // 155: v1.ShioajiProvider.Logout:output_type -> v1.LogoutResponse
-	28,  // 156: v1.ShioajiProvider.GetUsage:output_type -> v1.UsageStatus
-	29,  // 157: v1.ShioajiProvider.ListAccounts:output_type -> v1.ListAccountsResponse
-	30,  // 158: v1.ShioajiProvider.GetAccountBalance:output_type -> v1.AccountBalance
-	38,  // 159: v1.ShioajiProvider.PlaceOrder:output_type -> v1.Trade
-	39,  // 160: v1.ShioajiProvider.PlaceComboOrder:output_type -> v1.ComboTrade
-	38,  // 161: v1.ShioajiProvider.UpdateOrder:output_type -> v1.Trade
-	38,  // 162: v1.ShioajiProvider.CancelOrder:output_type -> v1.Trade
-	39,  // 163: v1.ShioajiProvider.CancelComboOrder:output_type -> v1.ComboTrade
-	23,  // 164: v1.ShioajiProvider.UpdateStatus:output_type -> v1.Empty
-	23,  // 165: v1.ShioajiProvider.UpdateComboStatus:output_type -> v1.Empty
-	46,  // 166: v1.ShioajiProvider.ListTrades:output_type -> v1.ListTradesResponse
-	47,  // 167: v1.ShioajiProvider.ListComboTrades:output_type -> v1.ListComboTradesResponse
-	49,  // 168: v1.ShioajiProvider.GetOrderDealRecords:output_type -> v1.GetOrderDealRecordsResponse
-	55,  // 169: v1.ShioajiProvider.ListPositions:output_type -> v1.ListPositionsResponse
-	60,  // 170: v1.ShioajiProvider.ListPositionDetail:output_type -> v1.ListPositionDetailResponse
-	65,  // 171: v1.ShioajiProvider.ListProfitLoss:output_type -> v1.ListProfitLossResponse
-	70,  // 172: v1.ShioajiProvider.ListProfitLossDetail:output_type -> v1.ListProfitLossDetailResponse
-	75,  // 173: v1.ShioajiProvider.ListProfitLossSummary:output_type -> v1.ListProfitLossSummaryResponse
-	78,  // 174: v1.ShioajiProvider.GetSettlements:output_type -> v1.GetSettlementsResponse
-	78,  // 175: v1.ShioajiProvider.ListSettlements:output_type -> v1.GetSettlementsResponse
-	80,  // 176: v1.ShioajiProvider.GetMargin:output_type -> v1.Margin
-	82,  // 177: v1.ShioajiProvider.GetTradingLimits:output_type -> v1.TradingLimits
-	84,  // 178: v1.ShioajiProvider.GetStockReserveSummary:output_type -> v1.ReserveStocksSummaryResponse
-	86,  // 179: v1.ShioajiProvider.GetStockReserveDetail:output_type -> v1.ReserveStocksDetailResponse
-	88,  // 180: v1.ShioajiProvider.ReserveStock:output_type -> v1.ReserveStockResponse
-	90,  // 181: v1.ShioajiProvider.GetEarmarkingDetail:output_type -> v1.EarmarkStocksDetailResponse
-	92,  // 182: v1.ShioajiProvider.ReserveEarmarking:output_type -> v1.ReserveEarmarkingResponse
-	94,  // 183: v1.ShioajiProvider.GetSnapshots:output_type -> v1.GetSnapshotsResponse
-	97,  // 184: v1.ShioajiProvider.GetTicks:output_type -> v1.Ticks
-	99,  // 185: v1.ShioajiProvider.GetKbars:output_type -> v1.Kbars
-	101, // 186: v1.ShioajiProvider.GetDailyQuotes:output_type -> v1.DailyQuotes
-	103, // 187: v1.ShioajiProvider.CreditEnquires:output_type -> v1.CreditEnquiresResponse
-	106, // 188: v1.ShioajiProvider.GetShortStockSources:output_type -> v1.GetShortStockSourcesResponse
-	109, // 189: v1.ShioajiProvider.GetScanners:output_type -> v1.GetScannersResponse
-	111, // 190: v1.ShioajiProvider.GetPunish:output_type -> v1.Punish
-	112, // 191: v1.ShioajiProvider.GetNotice:output_type -> v1.Notice
-	23,  // 192: v1.ShioajiProvider.FetchContracts:output_type -> v1.Empty
-	115, // 193: v1.ShioajiProvider.ActivateCA:output_type -> v1.ActivateCAResponse
-	117, // 194: v1.ShioajiProvider.GetCAExpireTime:output_type -> v1.GetCAExpireTimeResponse
-	119, // 195: v1.ShioajiProvider.SubscribeTrade:output_type -> v1.SubscribeTradeResponse
-	121, // 196: v1.ShioajiProvider.UnsubscribeTrade:output_type -> v1.UnsubscribeTradeResponse
-	154, // [154:197] is the sub-list for method output_type
-	111, // [111:154] is the sub-list for method input_type
+	116, // 150: v1.ShioajiProvider.GetCAExpireTime:input_type -> v1.GetCAExpireTimeRequest
+	118, // 151: v1.ShioajiProvider.SubscribeTrade:input_type -> v1.SubscribeTradeRequest
+	120, // 152: v1.ShioajiProvider.UnsubscribeTrade:input_type -> v1.UnsubscribeTradeRequest
+	25,  // 153: v1.ShioajiProvider.Login:output_type -> v1.LoginResponse
+	26,  // 154: v1.ShioajiProvider.Logout:output_type -> v1.LogoutResponse
+	28,  // 155: v1.ShioajiProvider.GetUsage:output_type -> v1.UsageStatus
+	29,  // 156: v1.ShioajiProvider.ListAccounts:output_type -> v1.ListAccountsResponse
+	30,  // 157: v1.ShioajiProvider.GetAccountBalance:output_type -> v1.AccountBalance
+	38,  // 158: v1.ShioajiProvider.PlaceOrder:output_type -> v1.Trade
+	39,  // 159: v1.ShioajiProvider.PlaceComboOrder:output_type -> v1.ComboTrade
+	38,  // 160: v1.ShioajiProvider.UpdateOrder:output_type -> v1.Trade
+	38,  // 161: v1.ShioajiProvider.CancelOrder:output_type -> v1.Trade
+	39,  // 162: v1.ShioajiProvider.CancelComboOrder:output_type -> v1.ComboTrade
+	23,  // 163: v1.ShioajiProvider.UpdateStatus:output_type -> v1.Empty
+	23,  // 164: v1.ShioajiProvider.UpdateComboStatus:output_type -> v1.Empty
+	46,  // 165: v1.ShioajiProvider.ListTrades:output_type -> v1.ListTradesResponse
+	47,  // 166: v1.ShioajiProvider.ListComboTrades:output_type -> v1.ListComboTradesResponse
+	49,  // 167: v1.ShioajiProvider.GetOrderDealRecords:output_type -> v1.GetOrderDealRecordsResponse
+	55,  // 168: v1.ShioajiProvider.ListPositions:output_type -> v1.ListPositionsResponse
+	60,  // 169: v1.ShioajiProvider.ListPositionDetail:output_type -> v1.ListPositionDetailResponse
+	65,  // 170: v1.ShioajiProvider.ListProfitLoss:output_type -> v1.ListProfitLossResponse
+	70,  // 171: v1.ShioajiProvider.ListProfitLossDetail:output_type -> v1.ListProfitLossDetailResponse
+	75,  // 172: v1.ShioajiProvider.ListProfitLossSummary:output_type -> v1.ListProfitLossSummaryResponse
+	78,  // 173: v1.ShioajiProvider.GetSettlements:output_type -> v1.GetSettlementsResponse
+	78,  // 174: v1.ShioajiProvider.ListSettlements:output_type -> v1.GetSettlementsResponse
+	80,  // 175: v1.ShioajiProvider.GetMargin:output_type -> v1.Margin
+	82,  // 176: v1.ShioajiProvider.GetTradingLimits:output_type -> v1.TradingLimits
+	84,  // 177: v1.ShioajiProvider.GetStockReserveSummary:output_type -> v1.ReserveStocksSummaryResponse
+	86,  // 178: v1.ShioajiProvider.GetStockReserveDetail:output_type -> v1.ReserveStocksDetailResponse
+	88,  // 179: v1.ShioajiProvider.ReserveStock:output_type -> v1.ReserveStockResponse
+	90,  // 180: v1.ShioajiProvider.GetEarmarkingDetail:output_type -> v1.EarmarkStocksDetailResponse
+	92,  // 181: v1.ShioajiProvider.ReserveEarmarking:output_type -> v1.ReserveEarmarkingResponse
+	94,  // 182: v1.ShioajiProvider.GetSnapshots:output_type -> v1.GetSnapshotsResponse
+	97,  // 183: v1.ShioajiProvider.GetTicks:output_type -> v1.Ticks
+	99,  // 184: v1.ShioajiProvider.GetKbars:output_type -> v1.Kbars
+	101, // 185: v1.ShioajiProvider.GetDailyQuotes:output_type -> v1.DailyQuotes
+	103, // 186: v1.ShioajiProvider.CreditEnquires:output_type -> v1.CreditEnquiresResponse
+	106, // 187: v1.ShioajiProvider.GetShortStockSources:output_type -> v1.GetShortStockSourcesResponse
+	109, // 188: v1.ShioajiProvider.GetScanners:output_type -> v1.GetScannersResponse
+	111, // 189: v1.ShioajiProvider.GetPunish:output_type -> v1.Punish
+	112, // 190: v1.ShioajiProvider.GetNotice:output_type -> v1.Notice
+	23,  // 191: v1.ShioajiProvider.FetchContracts:output_type -> v1.Empty
+	117, // 192: v1.ShioajiProvider.GetCAExpireTime:output_type -> v1.GetCAExpireTimeResponse
+	119, // 193: v1.ShioajiProvider.SubscribeTrade:output_type -> v1.SubscribeTradeResponse
+	121, // 194: v1.ShioajiProvider.UnsubscribeTrade:output_type -> v1.UnsubscribeTradeResponse
+	153, // [153:195] is the sub-list for method output_type
+	111, // [111:153] is the sub-list for method input_type
 	111, // [111:111] is the sub-list for extension type_name
 	111, // [111:111] is the sub-list for extension extendee
 	0,   // [0:111] is the sub-list for field type_name

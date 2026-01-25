@@ -48,7 +48,6 @@ func NewRouter(client client.ShioajiClient, userRepo repository.UserRepository, 
 		{
 			// Auth
 			protected.POST("/logout", h.Logout)
-			protected.POST("/ca/activate", h.ActivateCA)
 			protected.GET("/ca/expire", h.GetCAExpireTime)
 
 			// Account

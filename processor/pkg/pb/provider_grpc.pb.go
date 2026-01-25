@@ -58,7 +58,6 @@ const (
 	ShioajiProvider_GetPunish_FullMethodName              = "/v1.ShioajiProvider/GetPunish"
 	ShioajiProvider_GetNotice_FullMethodName              = "/v1.ShioajiProvider/GetNotice"
 	ShioajiProvider_FetchContracts_FullMethodName         = "/v1.ShioajiProvider/FetchContracts"
-	ShioajiProvider_ActivateCA_FullMethodName             = "/v1.ShioajiProvider/ActivateCA"
 	ShioajiProvider_GetCAExpireTime_FullMethodName        = "/v1.ShioajiProvider/GetCAExpireTime"
 	ShioajiProvider_SubscribeTrade_FullMethodName         = "/v1.ShioajiProvider/SubscribeTrade"
 	ShioajiProvider_UnsubscribeTrade_FullMethodName       = "/v1.ShioajiProvider/UnsubscribeTrade"
@@ -189,9 +188,6 @@ type ShioajiProviderClient interface {
 	// Manually fetch and update security contracts from the server.
 	// 下載商品檔
 	FetchContracts(ctx context.Context, in *FetchContractsRequest, opts ...grpc.CallOption) (*Empty, error)
-	// Activate the Certificate Authority (CA) for order placement security.
-	// 憑證開通
-	ActivateCA(ctx context.Context, in *ActivateCARequest, opts ...grpc.CallOption) (*ActivateCAResponse, error)
 	// Get the expiration timestamp of the currently activated CA.
 	// 憑證過期時間
 	GetCAExpireTime(ctx context.Context, in *GetCAExpireTimeRequest, opts ...grpc.CallOption) (*GetCAExpireTimeResponse, error)
@@ -601,16 +597,6 @@ func (c *shioajiProviderClient) FetchContracts(ctx context.Context, in *FetchCon
 	return out, nil
 }
 
-func (c *shioajiProviderClient) ActivateCA(ctx context.Context, in *ActivateCARequest, opts ...grpc.CallOption) (*ActivateCAResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ActivateCAResponse)
-	err := c.cc.Invoke(ctx, ShioajiProvider_ActivateCA_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *shioajiProviderClient) GetCAExpireTime(ctx context.Context, in *GetCAExpireTimeRequest, opts ...grpc.CallOption) (*GetCAExpireTimeResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetCAExpireTimeResponse)
@@ -766,9 +752,6 @@ type ShioajiProviderServer interface {
 	// Manually fetch and update security contracts from the server.
 	// 下載商品檔
 	FetchContracts(context.Context, *FetchContractsRequest) (*Empty, error)
-	// Activate the Certificate Authority (CA) for order placement security.
-	// 憑證開通
-	ActivateCA(context.Context, *ActivateCARequest) (*ActivateCAResponse, error)
 	// Get the expiration timestamp of the currently activated CA.
 	// 憑證過期時間
 	GetCAExpireTime(context.Context, *GetCAExpireTimeRequest) (*GetCAExpireTimeResponse, error)
@@ -904,9 +887,6 @@ func (UnimplementedShioajiProviderServer) GetNotice(context.Context, *Empty) (*N
 }
 func (UnimplementedShioajiProviderServer) FetchContracts(context.Context, *FetchContractsRequest) (*Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method FetchContracts not implemented")
-}
-func (UnimplementedShioajiProviderServer) ActivateCA(context.Context, *ActivateCARequest) (*ActivateCAResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ActivateCA not implemented")
 }
 func (UnimplementedShioajiProviderServer) GetCAExpireTime(context.Context, *GetCAExpireTimeRequest) (*GetCAExpireTimeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetCAExpireTime not implemented")
@@ -1640,24 +1620,6 @@ func _ShioajiProvider_FetchContracts_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ShioajiProvider_ActivateCA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ActivateCARequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ShioajiProviderServer).ActivateCA(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ShioajiProvider_ActivateCA_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShioajiProviderServer).ActivateCA(ctx, req.(*ActivateCARequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _ShioajiProvider_GetCAExpireTime_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetCAExpireTimeRequest)
 	if err := dec(in); err != nil {
@@ -1874,10 +1836,6 @@ var ShioajiProvider_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FetchContracts",
 			Handler:    _ShioajiProvider_FetchContracts_Handler,
-		},
-		{
-			MethodName: "ActivateCA",
-			Handler:    _ShioajiProvider_ActivateCA_Handler,
 		},
 		{
 			MethodName: "GetCAExpireTime",

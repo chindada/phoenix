@@ -231,11 +231,6 @@ class ShioajiProviderStub(object):
                 request_serializer=provider__pb2.FetchContractsRequest.SerializeToString,
                 response_deserializer=provider__pb2.Empty.FromString,
                 _registered_method=True)
-        self.ActivateCA = channel.unary_unary(
-                '/v1.ShioajiProvider/ActivateCA',
-                request_serializer=provider__pb2.ActivateCARequest.SerializeToString,
-                response_deserializer=provider__pb2.ActivateCAResponse.FromString,
-                _registered_method=True)
         self.GetCAExpireTime = channel.unary_unary(
                 '/v1.ShioajiProvider/GetCAExpireTime',
                 request_serializer=provider__pb2.GetCAExpireTimeRequest.SerializeToString,
@@ -571,14 +566,6 @@ class ShioajiProviderServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ActivateCA(self, request, context):
-        """Activate the Certificate Authority (CA) for order placement security.
-        憑證開通
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def GetCAExpireTime(self, request, context):
         """Get the expiration timestamp of the currently activated CA.
         憑證過期時間
@@ -800,11 +787,6 @@ def add_ShioajiProviderServicer_to_server(servicer, server):
                     servicer.FetchContracts,
                     request_deserializer=provider__pb2.FetchContractsRequest.FromString,
                     response_serializer=provider__pb2.Empty.SerializeToString,
-            ),
-            'ActivateCA': grpc.unary_unary_rpc_method_handler(
-                    servicer.ActivateCA,
-                    request_deserializer=provider__pb2.ActivateCARequest.FromString,
-                    response_serializer=provider__pb2.ActivateCAResponse.SerializeToString,
             ),
             'GetCAExpireTime': grpc.unary_unary_rpc_method_handler(
                     servicer.GetCAExpireTime,
@@ -1877,33 +1859,6 @@ class ShioajiProvider(object):
             '/v1.ShioajiProvider/FetchContracts',
             provider__pb2.FetchContractsRequest.SerializeToString,
             provider__pb2.Empty.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def ActivateCA(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/v1.ShioajiProvider/ActivateCA',
-            provider__pb2.ActivateCARequest.SerializeToString,
-            provider__pb2.ActivateCAResponse.FromString,
             options,
             channel_credentials,
             insecure,

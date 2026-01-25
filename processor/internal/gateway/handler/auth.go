@@ -100,33 +100,6 @@ func (h *Handler) Logout(c *gin.Context) {
 	middleware.Render(c, http.StatusOK, resp)
 }
 
-// ActivateCA godoc
-//
-//	@Summary		Activate CA
-//	@Description	Activate the Certificate Authority for the user
-//	@Tags			Auth
-//	@Accept			json
-//	@Produce		json
-//	@Param			request	body	pb.ActivateCARequest	true	"CA Activation Details"
-//	@Security		Bearer
-//	@Success		200	{object}	pb.ActivateCAResponse
-//	@Failure		400	{object}	APIError
-//	@Failure		500	{object}	APIError
-//	@Router			/api/v1/ca/activate [post]
-func (h *Handler) ActivateCA(c *gin.Context) {
-	var req pb.ActivateCARequest
-	if err := middleware.Bind(c, &req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	resp, err := h.client.ActivateCA(c.Request.Context(), &req)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	middleware.Render(c, http.StatusOK, resp)
-}
-
 // GetCAExpireTime godoc
 //
 //	@Summary		Get CA Expire Time

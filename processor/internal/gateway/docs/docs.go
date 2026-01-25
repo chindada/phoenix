@@ -239,57 +239,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/ca/activate": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Activate the Certificate Authority for the user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Activate CA",
-                "parameters": [
-                    {
-                        "description": "CA Activation Details",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/pb.ActivateCARequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/pb.ActivateCAResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/handler.APIError"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/handler.APIError"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/ca/expire": {
             "get": {
                 "security": [
@@ -2035,31 +1984,6 @@ const docTemplate = `{
                 "Action_ACTION_BUY",
                 "Action_ACTION_SELL"
             ]
-        },
-        "pb.ActivateCARequest": {
-            "type": "object",
-            "properties": {
-                "ca_passwd": {
-                    "description": "CA password.",
-                    "type": "string"
-                },
-                "ca_path": {
-                    "description": "File path to CA.",
-                    "type": "string"
-                },
-                "person_id": {
-                    "description": "Holder's person ID.",
-                    "type": "string"
-                }
-            }
-        },
-        "pb.ActivateCAResponse": {
-            "type": "object",
-            "properties": {
-                "success": {
-                    "type": "boolean"
-                }
-            }
         },
         "pb.CancelOrderRequest": {
             "type": "object",
