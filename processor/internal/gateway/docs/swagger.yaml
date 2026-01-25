@@ -1766,7 +1766,6 @@ definitions:
 host: localhost:8080
 info:
   contact:
-    email: support@swagger.io
     name: API Support
     url: http://www.swagger.io/support
   description: REST API Gateway for Shioaji Trading Provider.
@@ -1775,7 +1774,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
   title: Phoenix API
-  version: "1.0"
+  version: 0.1.0
 paths:
   /api/v1/accounts:
     get:
@@ -1816,7 +1815,7 @@ paths:
       tags:
       - Account
   /api/v1/accounts/limits:
-    get:
+    post:
       consumes:
       - application/json
       description: Get trading limits information
@@ -1848,7 +1847,7 @@ paths:
       tags:
       - Account
   /api/v1/accounts/margin:
-    get:
+    post:
       consumes:
       - application/json
       description: Get margin information
@@ -1880,7 +1879,7 @@ paths:
       tags:
       - Account
   /api/v1/accounts/settlements:
-    get:
+    post:
       consumes:
       - application/json
       description: Get settlement information
@@ -1912,7 +1911,7 @@ paths:
       tags:
       - Account
   /api/v1/ca/expire:
-    get:
+    post:
       consumes:
       - application/json
       description: Retrieve the expiration time of the user's Certificate Authority
@@ -2828,7 +2827,7 @@ paths:
       tags:
       - Trade
   /api/v1/trades/deals:
-    get:
+    post:
       consumes:
       - application/json
       description: Get deal records for orders

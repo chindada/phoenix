@@ -146,7 +146,7 @@ class ShioajiService(provider_pb2_grpc.ShioajiProviderServicer):
     }
 
     def __init__(self):
-        self.client = ShioajiClient()
+        self.client = ShioajiClient(simulation=True)
         self.logged_in = False
 
     def _get_enum(self, mapping: dict, value: Any) -> Any:

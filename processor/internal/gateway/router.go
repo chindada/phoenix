@@ -43,15 +43,15 @@ func NewRouter(client client.ShioajiClient, userRepo repository.UserRepository, 
 		{
 			// Auth
 			protected.POST("/logout", h.Logout)
-			protected.GET("/ca/expire", h.GetCAExpireTime)
+			protected.POST("/ca/expire", h.GetCAExpireTime)
 
 			// Account
 			protected.GET("/accounts", h.ListAccounts)
 			protected.GET("/usage", h.GetUsage)
 			protected.GET("/accounts/balance", h.GetAccountBalance)
-			protected.GET("/accounts/settlements", h.GetSettlements)
-			protected.GET("/accounts/margin", h.GetMargin)
-			protected.GET("/accounts/limits", h.GetTradingLimits)
+			protected.POST("/accounts/settlements", h.GetSettlements)
+			protected.POST("/accounts/margin", h.GetMargin)
+			protected.POST("/accounts/limits", h.GetTradingLimits)
 
 			// Order
 			protected.POST("/orders", h.PlaceOrder)
@@ -65,7 +65,7 @@ func NewRouter(client client.ShioajiClient, userRepo repository.UserRepository, 
 			// Trade
 			protected.GET("/trades", h.ListTrades)
 			protected.GET("/trades/combo", h.ListComboTrades)
-			protected.GET("/trades/deals", h.GetOrderDealRecords)
+			protected.POST("/trades/deals", h.GetOrderDealRecords)
 			protected.POST("/trades/subscribe", h.SubscribeTrade)
 			protected.POST("/trades/unsubscribe", h.UnsubscribeTrade)
 

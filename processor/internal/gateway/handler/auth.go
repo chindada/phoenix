@@ -110,7 +110,7 @@ func (h *Handler) Logout(c *gin.Context) {
 //	@Success		200	{object}	pb.GetCAExpireTimeResponse
 //	@Failure		400	{object}	APIError
 //	@Failure		500	{object}	APIError
-//	@Router			/api/v1/ca/expire [get]
+//	@Router			/api/v1/ca/expire [post]
 func (h *Handler) GetCAExpireTime(c *gin.Context) {
 	var req pb.GetCAExpireTimeRequest
 	if err := middleware.Bind(c, &req); err != nil {

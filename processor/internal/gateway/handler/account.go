@@ -78,7 +78,7 @@ func (h *Handler) GetAccountBalance(c *gin.Context) {
 //	@Success		200	{object}	pb.GetSettlementsResponse
 //	@Failure		400	{object}	APIError
 //	@Failure		500	{object}	APIError
-//	@Router			/api/v1/accounts/settlements [get]
+//	@Router			/api/v1/accounts/settlements [post]
 func (h *Handler) GetSettlements(c *gin.Context) {
 	var req pb.GetSettlementsRequest
 	if err := middleware.Bind(c, &req); err != nil {
@@ -105,7 +105,7 @@ func (h *Handler) GetSettlements(c *gin.Context) {
 //	@Success		200	{object}	pb.Margin
 //	@Failure		400	{object}	APIError
 //	@Failure		500	{object}	APIError
-//	@Router			/api/v1/accounts/margin [get]
+//	@Router			/api/v1/accounts/margin [post]
 func (h *Handler) GetMargin(c *gin.Context) {
 	var req pb.GetMarginRequest
 	if err := middleware.Bind(c, &req); err != nil {
@@ -132,7 +132,7 @@ func (h *Handler) GetMargin(c *gin.Context) {
 //	@Success		200	{object}	pb.TradingLimits
 //	@Failure		400	{object}	APIError
 //	@Failure		500	{object}	APIError
-//	@Router			/api/v1/accounts/limits [get]
+//	@Router			/api/v1/accounts/limits [post]
 func (h *Handler) GetTradingLimits(c *gin.Context) {
 	var req pb.GetTradingLimitsRequest
 	if err := middleware.Bind(c, &req); err != nil {

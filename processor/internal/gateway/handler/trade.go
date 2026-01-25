@@ -59,7 +59,7 @@ func (h *Handler) ListComboTrades(c *gin.Context) {
 //	@Success		200	{object}	pb.GetOrderDealRecordsResponse
 //	@Failure		400	{object}	APIError
 //	@Failure		500	{object}	APIError
-//	@Router			/api/v1/trades/deals [get]
+//	@Router			/api/v1/trades/deals [post]
 func (h *Handler) GetOrderDealRecords(c *gin.Context) {
 	var req pb.GetOrderDealRecordsRequest
 	if err := middleware.Bind(c, &req); err != nil {
