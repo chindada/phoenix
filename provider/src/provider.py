@@ -5,7 +5,6 @@ provider.src.server -.
 import logging
 import os
 import signal
-import sys
 from concurrent import futures
 from datetime import datetime
 from typing import Any, Optional, cast
@@ -1557,7 +1556,7 @@ def serve():
             except OSError as e:
                 logging.error("Error removing socket file: %s", e)
 
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    server = grpc.server(futures.ThreadPoolExecutor())
     service = ShioajiService()
     provider_pb2_grpc.add_ShioajiProviderServicer_to_server(service, server)
     server.add_insecure_port(addr)
@@ -1586,5 +1585,4 @@ def serve():
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     serve()
-    sys.exit(0)
-
+    os._exit(0)  # pylint: disable=protected-access
