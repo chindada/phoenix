@@ -49,16 +49,6 @@
             "preLaunchTask": "Check venv",
             "internalConsoleOptions": "neverOpen",
         }
-    ],
-    "compounds": [
-        {
-            "name": "integrated",
-            "configurations": [
-                "provider",
-                "processor"
-            ],
-            "stopAll": true
-        }
     ]
 }
 ```

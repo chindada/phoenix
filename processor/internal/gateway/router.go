@@ -1,27 +1,28 @@
 package gateway
 
 import (
+	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"phoenix/processor/internal/client"
-	_ "phoenix/processor/internal/gateway/docs"
+	"phoenix/processor/internal/gateway/docs"
 	"phoenix/processor/internal/gateway/handler"
 	"phoenix/processor/internal/gateway/middleware"
 	"phoenix/processor/internal/repository"
-
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // NewRouter -.
 //
 //	@title						Phoenix API
-//	@version					1.0
+//	@version					0.1.0
 //	@description				REST API Gateway for Shioaji Trading Provider.
 //	@termsOfService				http://swagger.io/terms/
 //	@contact.name				API Support
 //	@contact.url				http://www.swagger.io/support
-//	@contact.email				support@swagger.io
 //	@license.name				Apache 2.0
 //	@license.url				http://www.apache.org/licenses/LICENSE-2.0.html
 //	@host						localhost:8080
@@ -32,17 +33,11 @@ import (
 //	@description				Type "Bearer" followed by a space and then your token.
 func NewRouter(client client.ShioajiClient, userRepo repository.UserRepository, secret string) *gin.Engine {
 	r := gin.Default()
-
-	// Swagger UI
-	r.GET("/api/doc/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
+	root := r.Group("/api")
 	h := handler.New(client, userRepo, secret)
-
-	v1 := r.Group("/api/v1")
+	v1 := root.Group("/v1")
 	{
 		v1.POST("/login", h.Login)
-
-		// Protected routes
 		protected := v1.Group("/")
 		protected.Use(middleware.Auth(secret))
 		{
@@ -101,5 +96,17 @@ func NewRouter(client client.ShioajiClient, userRepo repository.UserRepository, 
 			protected.POST("/reserve/short-stock-sources", h.GetShortStockSources)
 		}
 	}
+	swaggerRoute(root)
 	return r
+}
+
+func swaggerRoute(root *gin.RouterGroup) {
+	ir := root.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	ir.Use(func(c *gin.Context) {
+		docs.SwaggerInfo.Host = c.Request.Host
+		c.Next()
+	})
+	root.GET("/docs", func(c *gin.Context) {
+		c.Redirect(http.StatusFound, fmt.Sprintf("%s/swagger/index.html", root.BasePath()))
+	})
 }

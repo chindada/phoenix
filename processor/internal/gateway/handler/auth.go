@@ -72,8 +72,6 @@ func (h *Handler) Login(c *gin.Context) {
 	// Fetch accounts from provider using global session
 	resp, err := h.client.ListAccounts(c.Request.Context(), &pb.Empty{})
 	if err != nil {
-		// Even if fetching accounts fails, we might still want to return the token
-		// but for now, let's treat it as an error or return empty accounts
 		c.JSON(http.StatusOK, gin.H{"token": tokenString, "accounts": []any{}})
 		return
 	}
